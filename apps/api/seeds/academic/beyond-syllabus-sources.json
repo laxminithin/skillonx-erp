@@ -1,0 +1,750 @@
+[
+  {
+    "sourceId": "SRC-CBS-BIS701-001",
+    "cbsId": "CBS-BIS701-001",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Cloud managed analytics platforms vs Hadoop syllabus scope",
+    "notes": "Enrichment analysis",
+    "sourceRow": 2
+  },
+  {
+    "sourceId": "SRC-CBS-BIS701-002",
+    "cbsId": "CBS-BIS701-002",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BIS701-001",
+    "notes": "Linked gap GAP-BIS701-001",
+    "sourceRow": 3
+  },
+  {
+    "sourceId": "SRC-CBS-BIS701-003",
+    "cbsId": "CBS-BIS701-003",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Emerging NoSQL / AI retrieval patterns",
+    "notes": "Enrichment analysis",
+    "sourceRow": 4
+  },
+  {
+    "sourceId": "SRC-CBS-BIS701-004",
+    "cbsId": "CBS-BIS701-004",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Lakehouse vs Hadoop teaching gap",
+    "notes": "Linked gap GAP-BIS701-002",
+    "sourceRow": 5
+  },
+  {
+    "sourceId": "SRC-CBS-BIS701-005",
+    "cbsId": "CBS-BIS701-005",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Streaming beyond batch syllabus",
+    "notes": "Enrichment analysis",
+    "sourceRow": 6
+  },
+  {
+    "sourceId": "SRC-CBS-BIS701-006",
+    "cbsId": "CBS-BIS701-006",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BIS701-003",
+    "notes": "Linked gap GAP-BIS701-003",
+    "sourceRow": 7
+  },
+  {
+    "sourceId": "SRC-CBS-BIS703-001",
+    "cbsId": "CBS-BIS703-001",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "TLS operational practice",
+    "notes": "Linked gap GAP-BIS703-001",
+    "sourceRow": 8
+  },
+  {
+    "sourceId": "SRC-CBS-BIS703-002",
+    "cbsId": "CBS-BIS703-002",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BIS703-002",
+    "notes": "Linked gap GAP-BIS703-002",
+    "sourceRow": 9
+  },
+  {
+    "sourceId": "SRC-CBS-BIS703-003",
+    "cbsId": "CBS-BIS703-003",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "OAuth/OIDC enrichment",
+    "notes": "Enrichment analysis",
+    "sourceRow": 10
+  },
+  {
+    "sourceId": "SRC-CBS-BIS703-004",
+    "cbsId": "CBS-BIS703-004",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Zero-trust overview",
+    "notes": "Enrichment analysis",
+    "sourceRow": 11
+  },
+  {
+    "sourceId": "SRC-CBS-BIS703-005",
+    "cbsId": "CBS-BIS703-005",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BIS703-003",
+    "notes": "Linked gap GAP-BIS703-003",
+    "sourceRow": 12
+  },
+  {
+    "sourceId": "SRC-CBS-BCS403-001",
+    "cbsId": "CBS-BCS403-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS403-001",
+    "notes": "Linked gap GAP-BCS403-001",
+    "sourceRow": 13
+  },
+  {
+    "sourceId": "SRC-CBS-BCS403-002",
+    "cbsId": "CBS-BCS403-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Query plan enrichment",
+    "notes": "Linked gap GAP-BCS403-002",
+    "sourceRow": 14
+  },
+  {
+    "sourceId": "SRC-CBS-BCS403-003",
+    "cbsId": "CBS-BCS403-003",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS403-003",
+    "notes": "Linked gap GAP-BCS403-003",
+    "sourceRow": 15
+  },
+  {
+    "sourceId": "SRC-CBS-BCS403-004",
+    "cbsId": "CBS-BCS403-004",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Managed RDBMS overview",
+    "notes": "Enrichment analysis",
+    "sourceRow": 16
+  },
+  {
+    "sourceId": "SRC-CBS-BCS403-005",
+    "cbsId": "CBS-BCS403-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Polyglot persistence",
+    "notes": "Enrichment analysis",
+    "sourceRow": 17
+  },
+  {
+    "sourceId": "SRC-CBS-10CS55-001",
+    "cbsId": "CBS-10CS55-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-10CS55-001",
+    "notes": "Linked gap GAP-10CS55-001",
+    "sourceRow": 18
+  },
+  {
+    "sourceId": "SRC-CBS-10CS55-002",
+    "cbsId": "CBS-10CS55-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-10CS55-002",
+    "notes": "Linked gap GAP-10CS55-002",
+    "sourceRow": 19
+  },
+  {
+    "sourceId": "SRC-CBS-10CS55-003",
+    "cbsId": "CBS-10CS55-003",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "SDN enrichment",
+    "notes": "Enrichment analysis",
+    "sourceRow": 20
+  },
+  {
+    "sourceId": "SRC-CBS-10CS55-004",
+    "cbsId": "CBS-10CS55-004",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-10CS55-003",
+    "notes": "Linked gap GAP-10CS55-003",
+    "sourceRow": 21
+  },
+  {
+    "sourceId": "SRC-CBS-10CS55-005",
+    "cbsId": "CBS-10CS55-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Hardening seminar",
+    "notes": "Enrichment analysis",
+    "sourceRow": 22
+  },
+  {
+    "sourceId": "SRC-CBS-BCS503-001",
+    "cbsId": "CBS-BCS503-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS503-001",
+    "notes": "Linked gap GAP-BCS503-001",
+    "sourceRow": 23
+  },
+  {
+    "sourceId": "SRC-CBS-BCS503-002",
+    "cbsId": "CBS-BCS503-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS503-002",
+    "notes": "Linked gap GAP-BCS503-002",
+    "sourceRow": 24
+  },
+  {
+    "sourceId": "SRC-CBS-BCS503-003",
+    "cbsId": "CBS-BCS503-003",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Parser generators",
+    "notes": "Enrichment analysis",
+    "sourceRow": 25
+  },
+  {
+    "sourceId": "SRC-CBS-BCS503-004",
+    "cbsId": "CBS-BCS503-004",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Undecidability seminar",
+    "notes": "Enrichment analysis",
+    "sourceRow": 26
+  },
+  {
+    "sourceId": "SRC-CBS-BCS503-005",
+    "cbsId": "CBS-BCS503-005",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS503-003",
+    "notes": "Linked gap GAP-BCS503-003",
+    "sourceRow": 27
+  },
+  {
+    "sourceId": "SRC-CBS-BCS702-001",
+    "cbsId": "CBS-BCS702-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS702-001",
+    "notes": "Linked gap GAP-BCS702-001",
+    "sourceRow": 28
+  },
+  {
+    "sourceId": "SRC-CBS-BCS702-002",
+    "cbsId": "CBS-BCS702-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS702-002",
+    "notes": "Linked gap GAP-BCS702-002",
+    "sourceRow": 29
+  },
+  {
+    "sourceId": "SRC-CBS-BCS702-003",
+    "cbsId": "CBS-BCS702-003",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS702-003",
+    "notes": "Linked gap GAP-BCS702-003",
+    "sourceRow": 30
+  },
+  {
+    "sourceId": "SRC-CBS-BCS702-004",
+    "cbsId": "CBS-BCS702-004",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "OpenMP advanced",
+    "notes": "Enrichment analysis",
+    "sourceRow": 31
+  },
+  {
+    "sourceId": "SRC-CBS-BCS702-005",
+    "cbsId": "CBS-BCS702-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Industry session",
+    "notes": "Enrichment analysis",
+    "sourceRow": 32
+  },
+  {
+    "sourceId": "SRC-CBS-22MBA401-001",
+    "cbsId": "CBS-22MBA401-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-22MBA401-001",
+    "notes": "Linked gap GAP-22MBA401-001",
+    "sourceRow": 39
+  },
+  {
+    "sourceId": "SRC-CBS-22MBA401-002",
+    "cbsId": "CBS-22MBA401-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-22MBA401-002",
+    "notes": "Linked gap GAP-22MBA401-002",
+    "sourceRow": 40
+  },
+  {
+    "sourceId": "SRC-CBS-22MBA401-003",
+    "cbsId": "CBS-22MBA401-003",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-22MBA401-003",
+    "notes": "Linked gap GAP-22MBA401-003",
+    "sourceRow": 41
+  },
+  {
+    "sourceId": "SRC-CBS-22MBA401-004",
+    "cbsId": "CBS-22MBA401-004",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Advanced clinic",
+    "notes": "Enrichment analysis",
+    "sourceRow": 42
+  },
+  {
+    "sourceId": "SRC-CBS-22MBA401-005",
+    "cbsId": "CBS-22MBA401-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Faculty seminar",
+    "notes": "Enrichment analysis",
+    "sourceRow": 43
+  },
+  {
+    "sourceId": "SRC-CBS-22MBA401-006",
+    "cbsId": "CBS-22MBA401-006",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Interdisciplinary case",
+    "notes": "Enrichment analysis",
+    "sourceRow": 44
+  },
+  {
+    "sourceId": "SRC-CBS-BRMK557-001",
+    "cbsId": "CBS-BRMK557-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BRMK557-001",
+    "notes": "Linked gap GAP-BRMK557-001",
+    "sourceRow": 45
+  },
+  {
+    "sourceId": "SRC-CBS-BRMK557-002",
+    "cbsId": "CBS-BRMK557-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BRMK557-002",
+    "notes": "Linked gap GAP-BRMK557-002",
+    "sourceRow": 46
+  },
+  {
+    "sourceId": "SRC-CBS-BRMK557-003",
+    "cbsId": "CBS-BRMK557-003",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BRMK557-003",
+    "notes": "Linked gap GAP-BRMK557-003",
+    "sourceRow": 47
+  },
+  {
+    "sourceId": "SRC-CBS-BRMK557-004",
+    "cbsId": "CBS-BRMK557-004",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Advanced clinic",
+    "notes": "Enrichment analysis",
+    "sourceRow": 48
+  },
+  {
+    "sourceId": "SRC-CBS-BRMK557-005",
+    "cbsId": "CBS-BRMK557-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Faculty seminar",
+    "notes": "Enrichment analysis",
+    "sourceRow": 49
+  },
+  {
+    "sourceId": "SRC-CBS-BRMK557-006",
+    "cbsId": "CBS-BRMK557-006",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Interdisciplinary case",
+    "notes": "Enrichment analysis",
+    "sourceRow": 50
+  },
+  {
+    "sourceId": "SRC-CBS-1BCHES102202-001",
+    "cbsId": "CBS-1BCHES102202-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-1BCHES102202-001",
+    "notes": "Linked gap GAP-1BCHES102202-001",
+    "sourceRow": 51
+  },
+  {
+    "sourceId": "SRC-CBS-1BCHES102202-002",
+    "cbsId": "CBS-1BCHES102202-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-1BCHES102202-002",
+    "notes": "Linked gap GAP-1BCHES102202-002",
+    "sourceRow": 52
+  },
+  {
+    "sourceId": "SRC-CBS-1BCHES102202-003",
+    "cbsId": "CBS-1BCHES102202-003",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-1BCHES102202-003",
+    "notes": "Linked gap GAP-1BCHES102202-003",
+    "sourceRow": 53
+  },
+  {
+    "sourceId": "SRC-CBS-1BCHES102202-004",
+    "cbsId": "CBS-1BCHES102202-004",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Advanced clinic",
+    "notes": "Enrichment analysis",
+    "sourceRow": 54
+  },
+  {
+    "sourceId": "SRC-CBS-1BCHES102202-005",
+    "cbsId": "CBS-1BCHES102202-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Faculty seminar",
+    "notes": "Enrichment analysis",
+    "sourceRow": 55
+  },
+  {
+    "sourceId": "SRC-CBS-1BCHES102202-006",
+    "cbsId": "CBS-1BCHES102202-006",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Interdisciplinary case",
+    "notes": "Enrichment analysis",
+    "sourceRow": 56
+  },
+  {
+    "sourceId": "SRC-CBS-BCA701-001",
+    "cbsId": "CBS-BCA701-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCA701-001",
+    "notes": "Linked gap GAP-BCA701-001",
+    "sourceRow": 57
+  },
+  {
+    "sourceId": "SRC-CBS-BCA701-002",
+    "cbsId": "CBS-BCA701-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCA701-002",
+    "notes": "Linked gap GAP-BCA701-002",
+    "sourceRow": 58
+  },
+  {
+    "sourceId": "SRC-CBS-BCA701-003",
+    "cbsId": "CBS-BCA701-003",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "PEFT overview",
+    "notes": "Enrichment analysis",
+    "sourceRow": 59
+  },
+  {
+    "sourceId": "SRC-CBS-BCA701-004",
+    "cbsId": "CBS-BCA701-004",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCA701-003",
+    "notes": "Linked gap GAP-BCA701-003",
+    "sourceRow": 60
+  },
+  {
+    "sourceId": "SRC-CBS-BCA701-005",
+    "cbsId": "CBS-BCA701-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Responsible AI",
+    "notes": "Enrichment analysis",
+    "sourceRow": 61
+  },
+  {
+    "sourceId": "SRC-CBS-BCS303-001",
+    "cbsId": "CBS-BCS303-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS303-001",
+    "notes": "Linked gap GAP-BCS303-001",
+    "sourceRow": 62
+  },
+  {
+    "sourceId": "SRC-CBS-BCS303-002",
+    "cbsId": "CBS-BCS303-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS303-002",
+    "notes": "Linked gap GAP-BCS303-002",
+    "sourceRow": 63
+  },
+  {
+    "sourceId": "SRC-CBS-BCS303-003",
+    "cbsId": "CBS-BCS303-003",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS303-003",
+    "notes": "Linked gap GAP-BCS303-003",
+    "sourceRow": 64
+  },
+  {
+    "sourceId": "SRC-CBS-BCS303-004",
+    "cbsId": "CBS-BCS303-004",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Containers briefing",
+    "notes": "Enrichment analysis",
+    "sourceRow": 65
+  },
+  {
+    "sourceId": "SRC-CBS-BCS303-005",
+    "cbsId": "CBS-BCS303-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Observability seminar",
+    "notes": "Enrichment analysis",
+    "sourceRow": 66
+  },
+  {
+    "sourceId": "SRC-CBS-BCS515B-001",
+    "cbsId": "CBS-BCS515B-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS515B-001",
+    "notes": "Linked gap GAP-BCS515B-001",
+    "sourceRow": 67
+  },
+  {
+    "sourceId": "SRC-CBS-BCS515B-002",
+    "cbsId": "CBS-BCS515B-002",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS515B-002",
+    "notes": "Linked gap GAP-BCS515B-002",
+    "sourceRow": 68
+  },
+  {
+    "sourceId": "SRC-CBS-BCS515B-003",
+    "cbsId": "CBS-BCS515B-003",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-BCS515B-003",
+    "notes": "Linked gap GAP-BCS515B-003",
+    "sourceRow": 69
+  },
+  {
+    "sourceId": "SRC-CBS-BCS515B-004",
+    "cbsId": "CBS-BCS515B-004",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "CSP scheduling",
+    "notes": "Enrichment analysis",
+    "sourceRow": 70
+  },
+  {
+    "sourceId": "SRC-CBS-BCS515B-005",
+    "cbsId": "CBS-BCS515B-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "AI eval workshop",
+    "notes": "Enrichment analysis",
+    "sourceRow": 71
+  },
+  {
+    "sourceId": "SRC-CBS-1BEC304-001",
+    "cbsId": "CBS-1BEC304-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-1BEC304-001",
+    "notes": "Linked gap GAP-1BEC304-001",
+    "sourceRow": 72
+  },
+  {
+    "sourceId": "SRC-CBS-1BEC304-002",
+    "cbsId": "CBS-1BEC304-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-1BEC304-002",
+    "notes": "Linked gap GAP-1BEC304-002",
+    "sourceRow": 73
+  },
+  {
+    "sourceId": "SRC-CBS-1BEC304-003",
+    "cbsId": "CBS-1BEC304-003",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-1BEC304-003",
+    "notes": "Linked gap GAP-1BEC304-003",
+    "sourceRow": 74
+  },
+  {
+    "sourceId": "SRC-CBS-1BEC304-004",
+    "cbsId": "CBS-1BEC304-004",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Advanced clinic",
+    "notes": "Enrichment analysis",
+    "sourceRow": 75
+  },
+  {
+    "sourceId": "SRC-CBS-1BEC304-005",
+    "cbsId": "CBS-1BEC304-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Faculty seminar",
+    "notes": "Enrichment analysis",
+    "sourceRow": 76
+  },
+  {
+    "sourceId": "SRC-CBS-1BEC304-006",
+    "cbsId": "CBS-1BEC304-006",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Interdisciplinary case",
+    "notes": "Enrichment analysis",
+    "sourceRow": 77
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS305-001",
+    "cbsId": "CBS-1BCS305-001",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-1BCS305-001",
+    "notes": "Linked gap GAP-1BCS305-001",
+    "sourceRow": 78
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS305-002",
+    "cbsId": "CBS-1BCS305-002",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-1BCS305-002",
+    "notes": "Linked gap GAP-1BCS305-002",
+    "sourceRow": 79
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS305-003",
+    "cbsId": "CBS-1BCS305-003",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "GAP-1BCS305-003",
+    "notes": "Linked gap GAP-1BCS305-003",
+    "sourceRow": 80
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS305-004",
+    "cbsId": "CBS-1BCS305-004",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Advanced clinic",
+    "notes": "Enrichment analysis",
+    "sourceRow": 81
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS305-005",
+    "cbsId": "CBS-1BCS305-005",
+    "sourceType": "FACULTY_ENRICHMENT",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Faculty seminar",
+    "notes": "Enrichment analysis",
+    "sourceRow": 82
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS305-006",
+    "cbsId": "CBS-1BCS305-006",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+    "sourceReference": "Interdisciplinary case",
+    "notes": "Enrichment analysis",
+    "sourceRow": 83
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS302-001",
+    "cbsId": "CBS-1BCS302-001",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "academic-master-seed",
+    "sourceReference": "Git/GitHub Java project workflow",
+    "notes": "Subject-specific enrichment for 1BCS302"
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS302-002",
+    "cbsId": "CBS-1BCS302-002",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "academic-master-seed",
+    "sourceReference": "GAP-1BCS302-003",
+    "notes": null
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS302-003",
+    "cbsId": "CBS-1BCS302-003",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "academic-master-seed",
+    "sourceReference": "Maven/Gradle Java project layout",
+    "notes": null
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS302-004",
+    "cbsId": "CBS-1BCS302-004",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "academic-master-seed",
+    "sourceReference": "Spring Boot REST introduction",
+    "notes": null
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS302-005",
+    "cbsId": "CBS-1BCS302-005",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "academic-master-seed",
+    "sourceReference": "GoF patterns on Java OOP outcomes",
+    "notes": null
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS302-006",
+    "cbsId": "CBS-1BCS302-006",
+    "sourceType": "ACADEMIC_ANALYSIS",
+    "sourceFile": "academic-master-seed",
+    "sourceReference": "Java collections complexity comparison",
+    "notes": null
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS302-007",
+    "cbsId": "CBS-1BCS302-007",
+    "sourceType": "GAP_MASTER",
+    "sourceFile": "academic-master-seed",
+    "sourceReference": "GAP-1BCS302-003",
+    "notes": null
+  },
+  {
+    "sourceId": "SRC-CBS-1BCS302-008",
+    "cbsId": "CBS-1BCS302-008",
+    "sourceType": "INDUSTRY_ANALYSIS",
+    "sourceFile": "academic-master-seed",
+    "sourceReference": "Java debugger and profiler workflow",
+    "notes": null
+  }
+]

@@ -1,0 +1,86 @@
+export declare const CBS_SHEETS: readonly ["BEYOND_SYLLABUS_MASTER", "BEYOND_SYLLABUS_CO_MAPPING", "BEYOND_SYLLABUS_ACTIONS", "BEYOND_SYLLABUS_SOURCES", "BEYOND_SYLLABUS_REVIEW", "BEYOND_SYLLABUS_SUMMARY"];
+export type ParsedCbsMaster = {
+    cbsId: string;
+    subjectKey: string | null;
+    subjectName: string;
+    courseCode: string;
+    scheme: string | null;
+    program: string | null;
+    semester: string | null;
+    moduleUnit: string | null;
+    relatedTopic: string | null;
+    title: string;
+    contentDescription: string | null;
+    originType: string;
+    relatedGapId: string | null;
+    rationale: string | null;
+    expectedBenefit: string | null;
+    suggestedCo: string | null;
+    suggestedDeliveryMethod: string | null;
+    suggestedHours: number | null;
+    suggestedAssessment: string | null;
+    priority: string | null;
+    sourceType: string | null;
+    sourceReference: string | null;
+    mappingOrigin: string | null;
+    verificationStatus: string | null;
+    active: boolean;
+    notes: string | null;
+    sourceRow: number;
+};
+export type ParsedCbsCoLink = {
+    cbsId: string;
+    courseCode: string;
+    coCode: string;
+    relationship: string | null;
+    basis: string | null;
+    verificationStatus: string | null;
+    sourceRow: number;
+};
+export type ParsedCbsAction = {
+    actionId: string;
+    cbsId: string;
+    actionType: string;
+    recommendedAction: string;
+    priority: string | null;
+    verificationStatus: string | null;
+    sourceRow: number;
+};
+export type ParsedCbsSource = {
+    sourceId: string;
+    cbsId: string;
+    sourceType: string | null;
+    sourceFile: string | null;
+    sourceReference: string | null;
+    notes: string | null;
+    sourceRow: number;
+};
+export type ParsedCbsReview = {
+    reviewId: string;
+    subjectName: string | null;
+    courseCode: string | null;
+    entityType: string | null;
+    entityId: string | null;
+    issue: string | null;
+    proposedValue: string | null;
+    reason: string | null;
+    source: string | null;
+    reviewStatus: string | null;
+    sourceRow: number;
+};
+export type ParsedCbsWorkbook = {
+    items: ParsedCbsMaster[];
+    coLinks: ParsedCbsCoLink[];
+    actions: ParsedCbsAction[];
+    sources: ParsedCbsSource[];
+    reviewQueue: ParsedCbsReview[];
+    sheets: string[];
+    errors: string[];
+    warnings: string[];
+};
+export declare function parseCbsWorkbook(buffer: Buffer | string): Promise<ParsedCbsWorkbook>;
+export declare function discoverCbsMasterFiles(roots?: string[]): Promise<{
+    filePath: string;
+    fileName: string;
+    sheets: string[];
+}[]>;

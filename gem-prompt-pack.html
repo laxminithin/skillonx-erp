@@ -1,0 +1,248 @@
+<title>The Secret Gem — Prompt Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,1,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#f6efe6;--surface:#fffaf3;--surface-2:#f0e6d8;
+    --ink:#2a2233;--ink-soft:#6b5f6e;--line:#e3d6c6;
+    --violet:#7c3aed;--violet-soft:#a982f0;--violet-glow:rgba(124,58,237,.16);
+    --amber:#c2632a;--dusk:#3f6079;--shadow:rgba(60,40,30,.10);--code:#f0e6d8;
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:#17121d;--surface:#211a2b;--surface-2:#2b2238;
+      --ink:#efe7f2;--ink-soft:#b3a4bd;--line:#392e48;
+      --violet:#b794f6;--violet-soft:#8b62d6;--violet-glow:rgba(167,130,240,.20);
+      --amber:#e8945a;--dusk:#7fa8c4;--shadow:rgba(0,0,0,.4);--code:#150f1d;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17121d;--surface:#211a2b;--surface-2:#2b2238;
+    --ink:#efe7f2;--ink-soft:#b3a4bd;--line:#392e48;
+    --violet:#b794f6;--violet-soft:#8b62d6;--violet-glow:rgba(167,130,240,.20);
+    --amber:#e8945a;--dusk:#7fa8c4;--shadow:rgba(0,0,0,.4);--code:#150f1d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:840px;margin:0 auto;padding:clamp(1.2rem,4vw,3rem) clamp(1rem,4vw,2rem) 5rem;}
+
+  .hero{padding:2.2rem 0 1.6rem;border-bottom:1px solid var(--line);margin-bottom:1.8rem;}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--violet);margin:0 0 1rem;}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.03;letter-spacing:-.02em;margin:0;text-wrap:balance;}
+  h1 em{font-style:italic;color:var(--violet);}
+  .lede{max-width:62ch;color:var(--ink-soft);margin:1rem 0 0;font-size:1.02rem;}
+
+  .legend{display:flex;flex-wrap:wrap;gap:1.2rem;margin-top:1.4rem;font-size:.82rem;color:var(--ink-soft);}
+  .legend span{display:flex;align-items:center;gap:.45rem;}
+  .dot{width:.7rem;height:.7rem;border-radius:3px;flex:none;}
+  .dot.p{background:var(--violet);}.dot.v{background:var(--dusk);}
+
+  /* global card */
+  .global{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.4rem 1.5rem;margin-bottom:2.2rem;box-shadow:0 1px 0 var(--shadow);}
+  .global h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.12rem;margin:0 0 .3rem;}
+  .global p.sub{margin:0 0 1rem;color:var(--ink-soft);font-size:.9rem;}
+  .kv{font-family:"JetBrains Mono",monospace;font-size:.78rem;line-height:1.9;}
+  .kv b{color:var(--violet);font-weight:500;}
+
+  .section-label{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin:2rem 0 1.3rem;display:flex;align-items:center;gap:.8rem;}
+  .section-label::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  .shots{display:flex;flex-direction:column;gap:1.3rem;}
+  .shot{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.3rem 1.4rem;box-shadow:0 1px 0 var(--shadow);}
+  .s-head{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-bottom:.9rem;}
+  .badge{flex:none;width:1.9rem;height:1.9rem;border-radius:50%;background:var(--violet);color:#fff;font-family:"JetBrains Mono",monospace;font-weight:500;font-size:.85rem;display:grid;place-items:center;box-shadow:0 0 0 4px var(--violet-glow);}
+  .s-title{font-family:"Fraunces",serif;font-weight:600;font-size:1.08rem;margin:0;flex:1;min-width:0;}
+  .s-tags{display:flex;gap:.4rem;flex-wrap:wrap;}
+  .tag{font-family:"JetBrains Mono",monospace;font-size:.68rem;background:var(--surface-2);color:var(--ink-soft);padding:.22rem .5rem;border-radius:20px;border:1px solid var(--line);}
+  .tag.frame{color:var(--amber);}
+
+  .plabel{font-family:"JetBrains Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin:0 0 .4rem;display:flex;justify-content:space-between;align-items:center;}
+  .copybtn{font-family:"JetBrains Mono",monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;background:transparent;color:var(--violet);border:1px solid var(--violet);border-radius:14px;padding:.2rem .6rem;cursor:pointer;transition:all .15s;}
+  .copybtn:hover{background:var(--violet);color:#fff;}
+  .copybtn.done{background:var(--dusk);border-color:var(--dusk);color:#fff;}
+  .prompt{font-family:"JetBrains Mono",monospace;font-size:.82rem;line-height:1.6;color:var(--ink);background:var(--code);border:1px solid var(--line);border-radius:10px;padding:.85rem 1rem;margin:0;white-space:pre-wrap;}
+
+  .vo{margin-top:.9rem;border-left:3px solid var(--dusk);background:var(--surface-2);border-radius:0 8px 8px 0;padding:.6rem .9rem;}
+  .vo .l{font-family:"JetBrains Mono",monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dusk);margin:0 0 .2rem;}
+  .vo p{margin:0;font-family:"Fraunces",serif;font-size:.98rem;font-style:italic;}
+
+  .foot{margin-top:2.4rem;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.5rem 1.6rem;}
+  .foot h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.15rem;margin:0 0 1rem;}
+  .foot ul{margin:0;padding-left:1.1rem;}
+  .foot li{margin-bottom:.55rem;font-size:.9rem;}
+  .foot li:last-child{margin-bottom:0;}
+  .foot b{font-weight:600;color:var(--violet);}
+  .foot code{font-family:"JetBrains Mono",monospace;font-size:.8rem;background:var(--surface-2);padding:.08em .4em;border-radius:5px;}
+  a{color:var(--violet);}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Copy-Paste Prompt Pack · Runway Gen-4 / Kling · Episode 01</p>
+    <h1>The Secret Gem — <em>Prompt Pack</em></h1>
+    <p class="lede">Everything merged: each panel's start frame, its ready-to-paste motion prompt (style already baked in), and the script line it plays under. Work top to bottom — one prompt, one shot.</p>
+    <div class="legend">
+      <span><span class="dot p"></span> Paste into the generator</span>
+      <span><span class="dot v"></span> For your edit — NOT the generator (AI video is silent)</span>
+    </div>
+  </header>
+
+  <section class="global">
+    <h2>Set once, before shot 1</h2>
+    <p class="sub">Same for every shot and every future episode — this is what keeps the girl consistent.</p>
+    <div class="kv">
+      <b>Aspect:</b> 16:9 &nbsp;·&nbsp; <b>Length:</b> 5s (10s for shots 1 &amp; 12) &nbsp;·&nbsp; <b>Motion:</b> low–medium<br>
+      <b>Character ref:</b> lock the girl's face from panel 3 or 12<br>
+      <b>Negative prompt</b> (paste in the tool's negative field, every shot):
+    </div>
+    <div style="margin-top:.7rem;">
+      <p class="plabel">Negative prompt <button class="copybtn" data-copy="neg">Copy</button></p>
+      <p class="prompt" id="neg">text, captions, subtitles, watermark, logo, extra fingers, deformed hands, distorted or morphing face, identity drift, flickering, warping, jitter, blurry, low quality, two girls, duplicated characters</p>
+    </div>
+  </section>
+
+  <p class="section-label">The twelve prompts</p>
+  <div class="shots">
+
+    <!-- 1 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">1</span><h3 class="s-title">The village by the sea</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_01</span><span class="tag">10s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p1">Copy</button></p>
+      <p class="prompt" id="p1">Slow aerial push-in over a coastal bay. Ocean waves roll gently toward the shore, palm fronds sway in the breeze, a sheep grazes on the green hillside, and a family stands together looking out at the sea. Pixar-style 3D animation, warm midday light, coastal Indian fishing village, volumetric light, gentle natural camera motion.</p>
+      <div class="vo"><p class="l">Plays under (VO)</p><p>"In a forest by the sea, there lived a little girl… with her parents, her grandmother, her cousins, and all their animals."</p></div>
+    </article>
+
+    <!-- 2 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">2</span><h3 class="s-title">The whole family</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_02</span><span class="tag">5s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p2">Copy</button></p>
+      <p class="prompt" id="p2">A warm family portrait comes gently to life: everyone breathes and shifts weight slightly, soft smiles widen, the grandmother tilts her head, a sheep flicks its ear. Very subtle camera drift forward. Pixar-style 3D animation, warm cinematic lighting, coastal Indian village, soft rounded features, shallow depth of field.</p>
+      <div class="vo"><p class="l">Plays under (VO)</p><p>"They lived happily together — caring for each other, and for all their animals."</p></div>
+    </article>
+
+    <!-- 3 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">3</span><h3 class="s-title">Playing in the sand</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_03</span><span class="tag">5s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p3">Copy</button></p>
+      <p class="prompt" id="p3">The little girl scoops and pats wet sand with both hands, delighted. Her hen pecks and struts beside her, waves lap at the shore behind, strands of her hair lift in the sea breeze. Gentle push-in. Pixar-style 3D animation, warm daylight, coastal beach, volumetric light, shallow depth of field, natural motion.</p>
+      <div class="vo"><p class="l">Plays under (VO)</p><p>"Every evening, she played in the wet sand by the shore, her little hen close behind."</p></div>
+    </article>
+
+    <!-- 4 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">4</span><h3 class="s-title">Sunset on the water</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_04</span><span class="tag">5s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p4">Copy</button></p>
+      <p class="prompt" id="p4">The sun lowers toward the horizon, warm orange light spreads across the sky, and sparkles shimmer and travel over the rolling waves. The girl pauses her play and looks up at the glowing sky; her hen stands nearby. Slow dolly. Pixar-style 3D animation, golden-hour cinematic lighting, coastal beach, volumetric light.</p>
+      <div class="vo"><p class="l">Plays under (VO)</p><p>"As the sun went down, the sky turned to gold, and the waves began to sparkle."</p></div>
+    </article>
+
+    <!-- 5 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">5</span><h3 class="s-title">Walking home at dusk</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_05</span><span class="tag">5s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p5">Copy</button></p>
+      <p class="prompt" id="p5">The girl walks away from camera down a path toward glowing lamplit houses. The sky deepens from violet to blue and the first stars twinkle into view. Camera follows slowly behind her. Pixar-style 3D animation, dusk lighting, coastal Indian village, warm window glow, volumetric light, gentle natural motion.</p>
+      <div class="vo"><p class="l">Plays under (VO)</p><p>"And when the first stars appeared, she made her way home."</p></div>
+    </article>
+
+    <!-- 6 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">6</span><h3 class="s-title">On grandmother's lap</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_06</span><span class="tag">5s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p6">Copy</button></p>
+      <p class="prompt" id="p6">The grandmother gently strokes the girl's hair. The girl's eyes slowly close, her chest rises and falls with soft breathing, and warm lantern light flickers across them. Slow, tender push-in. Pixar-style 3D animation, warm interior lamplight, cozy home, soft rounded features, shallow depth of field.</p>
+      <div class="vo"><p class="l">Plays under (VO)</p><p>"She curled up on her grandmother's lap — feeling safe, and warm, and loved."</p></div>
+    </article>
+
+    <!-- 7 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">7</span><h3 class="s-title">Something in the pouch</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_07</span><span class="tag">5s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p7">Copy</button></p>
+      <p class="prompt" id="p7">The grandmother smiles knowingly and reaches into a small cloth pouch at her waist. The girl looks up, eyes bright with curiosity. The lantern flame flickers. Slight push-in on the hands. Pixar-style 3D animation, warm interior lamplight, cozy home, volumetric light, shallow depth of field, natural motion.</p>
+      <div class="vo"><p class="l">Plays under (VO)</p><p>"Then her grandmother smiled… and drew something from her little pouch."</p></div>
+    </article>
+
+    <!-- 8 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">8</span><h3 class="s-title">The glowing gem</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_08</span><span class="tag">5s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p8">Copy</button></p>
+      <p class="prompt" id="p8">Extreme close-up of an open palm. A purple gem pulses and glows, violet light flickering across the skin and fingers, with faint magical sparkles drifting upward. Very slow macro push-in. Pixar-style 3D animation, magical rim light, dark warm background, volumetric glow, shallow depth of field.</p>
+      <div class="vo"><p class="l">Plays under (VO)</p><p>"A gem — purple, and glowing with a strange and gentle light."</p></div>
+    </article>
+
+    <!-- 9 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">9</span><h3 class="s-title">"This is a magical gem"</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_09</span><span class="tag">5s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p9">Copy</button></p>
+      <p class="prompt" id="p9">The grandmother raises one finger and speaks, her mouth moving naturally. The girl gazes up, holding the glowing gem in her cupped hands, and the violet light softly lights her face. Static shot, slight push-in. Pixar-style 3D animation, warm lamplight, cozy interior, shallow depth of field, subtle natural motion.</p>
+      <div class="vo"><p class="l">Plays under (Grandmother)</p><p>"This… is a magical gem."</p></div>
+    </article>
+
+    <!-- 10 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">10</span><h3 class="s-title">"Power with this stone"</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_10</span><span class="tag">5s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p10">Copy</button></p>
+      <p class="prompt" id="p10">The grandmother speaks with a gentle, emphatic gesture, mouth moving naturally. The gem's glow pulses a little brighter in the girl's cupped hands as she listens, wide-eyed. Warm lantern flicker, static shot. Pixar-style 3D animation, warm lamplight, cozy interior, volumetric glow, shallow depth of field.</p>
+      <div class="vo"><p class="l">Plays under (Grandmother)</p><p>"With this stone… you will have a power all your own."</p></div>
+    </article>
+
+    <!-- 11 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">11</span><h3 class="s-title">"Do not tell anyone"</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_11</span><span class="tag">5s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p11">Copy</button></p>
+      <p class="prompt" id="p11">The grandmother raises a finger to her lips in a hush and leans in close, conspiratorial. The girl's eyes widen as she nods faintly. Lantern light flickers; a beat of stillness. Slow push-in. Pixar-style 3D animation, warm intimate lamplight, cozy interior, shallow depth of field, subtle natural motion.</p>
+      <div class="vo"><p class="l">Plays under (Grandmother)</p><p>"Keep it close. But you must not tell anyone in the family."</p></div>
+    </article>
+
+    <!-- 12 -->
+    <article class="shot">
+      <div class="s-head"><span class="badge">12</span><h3 class="s-title">A secret held close</h3>
+        <div class="s-tags"><span class="tag frame">frame: panel_12</span><span class="tag">10s</span></div></div>
+      <p class="plabel">Motion prompt <button class="copybtn" data-copy="p12">Copy</button></p>
+      <p class="prompt" id="p12">The girl cups the glowing gem to her chest and looks down at it, then up with quiet wonder. Violet light glows across her face and faint sparkles rise around her hands. Slow push-in, holding on her expression. Pixar-style 3D animation, magical violet glow, warm interior, shallow depth of field, gentle natural motion.</p>
+      <div class="vo"><p class="l">Plays under (VO)</p><p>"The little girl nodded, and held the gem close to her heart — a secret, just for the two of them. And with that… her story had only begun."</p></div>
+    </article>
+
+  </div>
+
+  <section class="foot">
+    <h2>How to run each shot</h2>
+    <ul>
+      <li><b>Frame in, prompt in.</b> Upload the matching <code>panel_0X.png</code> as the start image, paste the motion prompt into the text field and the negative prompt into the negative field. The image carries the look; the prompt carries only the motion.</li>
+      <li><b>Runway Gen-4:</b> use the panel as the reference image, keep motion low. If it drifts, shorten the prompt to just the first sentence.</li>
+      <li><b>Kling:</b> use Image-to-Video, add the girl's face under "Elements" for shots 3–12 so she stays the same child throughout.</li>
+      <li><b>The dialogue shots (9–11)</b> only need the mouth to move — record the VO separately and sync in the edit. Don't expect the model to lip-sync your words.</li>
+      <li><b>Two takes minimum</b> per shot; keep the calmest. Over-animated is the usual failure mode for a gentle story like this.</li>
+    </ul>
+    <p style="margin-top:1.1rem;font-size:.86rem;color:var(--ink-soft);">Pairs with the <a href="https://claude.ai/code/artifact/20d8e649-2555-4b6d-8dd3-2bf16cdd89fa">Shot Sheet</a> and the <a href="https://claude.ai/code/artifact/67c0fa32-8d17-462b-9825-5efcaed3040d">Voice Script</a>.</p>
+  </section>
+
+</div>
+
+<script>
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById(btn.getAttribute('data-copy'));
+      if(!el) return;
+      var text = el.textContent;
+      var done = function(){ btn.textContent='Copied'; btn.classList.add('done'); setTimeout(function(){btn.textContent='Copy';btn.classList.remove('done');},1400); };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(text,done); });
+      } else { fallback(text,done); }
+    });
+  });
+  function fallback(text,done){
+    try{ var t=document.createElement('textarea'); t.value=text; t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); done(); }catch(e){}
+  }
+</script>

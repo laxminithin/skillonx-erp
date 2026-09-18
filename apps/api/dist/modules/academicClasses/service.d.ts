@@ -1,0 +1,488 @@
+import { z } from 'zod';
+import { type ClassActor } from './access.js';
+export type { ClassActor };
+export declare const createClassSchema: z.ZodObject<{
+    academicYearId: z.ZodNumber;
+    programId: z.ZodNumber;
+    departmentId: z.ZodNumber;
+    semesterId: z.ZodNumber;
+    schemeId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    classSectionId: z.ZodNumber;
+    coordinatorId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    name: z.ZodOptional<z.ZodString>;
+    code: z.ZodOptional<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    departmentId: number;
+    academicYearId: number;
+    semesterId: number;
+    classSectionId: number;
+    programId: number;
+    code?: string | undefined;
+    name?: string | undefined;
+    schemeId?: number | null | undefined;
+    coordinatorId?: number | null | undefined;
+}, {
+    departmentId: number;
+    academicYearId: number;
+    semesterId: number;
+    classSectionId: number;
+    programId: number;
+    code?: string | undefined;
+    name?: string | undefined;
+    schemeId?: number | null | undefined;
+    coordinatorId?: number | null | undefined;
+}>;
+export declare const assignFacultySchema: z.ZodObject<{
+    facultyId: z.ZodNumber;
+    isPrimary: z.ZodOptional<z.ZodBoolean>;
+    canManage: z.ZodOptional<z.ZodBoolean>;
+}, "strip", z.ZodTypeAny, {
+    facultyId: number;
+    isPrimary?: boolean | undefined;
+    canManage?: boolean | undefined;
+}, {
+    facultyId: number;
+    isPrimary?: boolean | undefined;
+    canManage?: boolean | undefined;
+}>;
+export declare const announcementSchema: z.ZodObject<{
+    title: z.ZodString;
+    body: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    courseId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    scope: z.ZodOptional<z.ZodEnum<["CLASS", "SUBJECT"]>>;
+}, "strip", z.ZodTypeAny, {
+    title: string;
+    courseId?: number | null | undefined;
+    body?: string | null | undefined;
+    scope?: "CLASS" | "SUBJECT" | undefined;
+}, {
+    title: string;
+    courseId?: number | null | undefined;
+    body?: string | null | undefined;
+    scope?: "CLASS" | "SUBJECT" | undefined;
+}>;
+export declare const electiveSchema: z.ZodObject<{
+    classSubjectId: z.ZodNumber;
+}, "strip", z.ZodTypeAny, {
+    classSubjectId: number;
+}, {
+    classSubjectId: number;
+}>;
+type Row = Record<string, any>;
+export declare function ensureClassLink(classId: number, createdBy?: number | null): Promise<any>;
+export declare function serializeClass(row: Row, extras?: Record<string, unknown>): {
+    id: number;
+    collegeId: number;
+    collegeName: any;
+    academicYearId: number;
+    academicYearLabel: any;
+    programId: number;
+    programName: any;
+    programCode: any;
+    departmentId: number;
+    departmentName: any;
+    departmentCode: any;
+    semesterId: number;
+    semesterLabel: any;
+    semesterNumber: number | null;
+    schemeId: number | null;
+    schemeName: any;
+    schemeCode: any;
+    classSectionId: number;
+    sectionLabel: any;
+    coordinatorId: number | null;
+    coordinatorName: any;
+    name: any;
+    displayName: string;
+    code: any;
+    status: any;
+    studentCount: number;
+    pendingCount: number;
+    subjectCount: number;
+    facultyCount: number;
+    createdAt: any;
+    updatedAt: any;
+};
+export declare function loadClassRow(classId: number, collegeId?: number): Promise<Row>;
+export declare function getClassAccess(actor: ClassActor, classRow: Row): Promise<import("./access.js").ClassAccess>;
+export declare function assertClassView(actor: ClassActor, classRow: Row): Promise<import("./access.js").ClassAccess>;
+export declare function assertClassManage(actor: ClassActor, classRow: Row): Promise<import("./access.js").ClassAccess>;
+export declare function assertClassApprove(actor: ClassActor, classRow: Row): Promise<import("./access.js").ClassAccess>;
+export declare function assertClassShare(actor: ClassActor, classRow: Row): Promise<import("./access.js").ClassAccess>;
+export declare function listClasses(actor: ClassActor): Promise<{
+    id: number;
+    collegeId: number;
+    collegeName: any;
+    academicYearId: number;
+    academicYearLabel: any;
+    programId: number;
+    programName: any;
+    programCode: any;
+    departmentId: number;
+    departmentName: any;
+    departmentCode: any;
+    semesterId: number;
+    semesterLabel: any;
+    semesterNumber: number | null;
+    schemeId: number | null;
+    schemeName: any;
+    schemeCode: any;
+    classSectionId: number;
+    sectionLabel: any;
+    coordinatorId: number | null;
+    coordinatorName: any;
+    name: any;
+    displayName: string;
+    code: any;
+    status: any;
+    studentCount: number;
+    pendingCount: number;
+    subjectCount: number;
+    facultyCount: number;
+    createdAt: any;
+    updatedAt: any;
+}[]>;
+export declare function createClass(actor: ClassActor, input: z.infer<typeof createClassSchema>): Promise<{
+    class: {
+        id: number;
+        collegeId: number;
+        collegeName: any;
+        academicYearId: number;
+        academicYearLabel: any;
+        programId: number;
+        programName: any;
+        programCode: any;
+        departmentId: number;
+        departmentName: any;
+        departmentCode: any;
+        semesterId: number;
+        semesterLabel: any;
+        semesterNumber: number | null;
+        schemeId: number | null;
+        schemeName: any;
+        schemeCode: any;
+        classSectionId: number;
+        sectionLabel: any;
+        coordinatorId: number | null;
+        coordinatorName: any;
+        name: any;
+        displayName: string;
+        code: any;
+        status: any;
+        studentCount: number;
+        pendingCount: number;
+        subjectCount: number;
+        facultyCount: number;
+        createdAt: any;
+        updatedAt: any;
+    };
+    access: import("./access.js").ClassAccess;
+    subjects: {
+        id: number;
+        courseId: number;
+        code: any;
+        name: any;
+        kind: any;
+        electiveGroup: any;
+        credits: number | null;
+        faculty: {
+            facultyId: number;
+            name: any;
+            designation: any;
+            isPrimary: boolean;
+            canManage: boolean;
+        }[];
+        facultyNames: any[];
+    }[];
+    share: {
+        code: any;
+        isActive: boolean;
+        url: string;
+    } | null;
+    announcements: {
+        id: number;
+        scope: any;
+        title: any;
+        body: any;
+        courseId: number | null;
+        courseCode: any;
+        courseName: any;
+        authorName: any;
+        publishedAt: any;
+    }[];
+}>;
+export declare function listClassSubjects(classId: number): Promise<{
+    id: number;
+    courseId: number;
+    code: any;
+    name: any;
+    kind: any;
+    electiveGroup: any;
+    credits: number | null;
+    faculty: {
+        facultyId: number;
+        name: any;
+        designation: any;
+        isPrimary: boolean;
+        canManage: boolean;
+    }[];
+    facultyNames: any[];
+}[]>;
+export declare function assignFacultyToSubject(actor: ClassActor, classId: number, classSubjectId: number, input: z.infer<typeof assignFacultySchema>): Promise<{
+    id: number;
+    courseId: number;
+    code: any;
+    name: any;
+    kind: any;
+    electiveGroup: any;
+    credits: number | null;
+    faculty: {
+        facultyId: number;
+        name: any;
+        designation: any;
+        isPrimary: boolean;
+        canManage: boolean;
+    }[];
+    facultyNames: any[];
+}[]>;
+export declare function removeFacultyFromSubject(actor: ClassActor, classId: number, classSubjectId: number, facultyId: number): Promise<{
+    id: number;
+    courseId: number;
+    code: any;
+    name: any;
+    kind: any;
+    electiveGroup: any;
+    credits: number | null;
+    faculty: {
+        facultyId: number;
+        name: any;
+        designation: any;
+        isPrimary: boolean;
+        canManage: boolean;
+    }[];
+    facultyNames: any[];
+}[]>;
+export declare function setCoordinator(actor: ClassActor, classId: number, facultyId: number): Promise<{
+    class: {
+        id: number;
+        collegeId: number;
+        collegeName: any;
+        academicYearId: number;
+        academicYearLabel: any;
+        programId: number;
+        programName: any;
+        programCode: any;
+        departmentId: number;
+        departmentName: any;
+        departmentCode: any;
+        semesterId: number;
+        semesterLabel: any;
+        semesterNumber: number | null;
+        schemeId: number | null;
+        schemeName: any;
+        schemeCode: any;
+        classSectionId: number;
+        sectionLabel: any;
+        coordinatorId: number | null;
+        coordinatorName: any;
+        name: any;
+        displayName: string;
+        code: any;
+        status: any;
+        studentCount: number;
+        pendingCount: number;
+        subjectCount: number;
+        facultyCount: number;
+        createdAt: any;
+        updatedAt: any;
+    };
+    access: import("./access.js").ClassAccess;
+    subjects: {
+        id: number;
+        courseId: number;
+        code: any;
+        name: any;
+        kind: any;
+        electiveGroup: any;
+        credits: number | null;
+        faculty: {
+            facultyId: number;
+            name: any;
+            designation: any;
+            isPrimary: boolean;
+            canManage: boolean;
+        }[];
+        facultyNames: any[];
+    }[];
+    share: {
+        code: any;
+        isActive: boolean;
+        url: string;
+    } | null;
+    announcements: {
+        id: number;
+        scope: any;
+        title: any;
+        body: any;
+        courseId: number | null;
+        courseCode: any;
+        courseName: any;
+        authorName: any;
+        publishedAt: any;
+    }[];
+}>;
+export declare function getShareLink(actor: ClassActor, classId: number): Promise<{
+    code: any;
+    isActive: boolean;
+    url: string;
+}>;
+export declare function disableShareLink(actor: ClassActor, classId: number): Promise<{
+    ok: boolean;
+}>;
+export declare function regenerateShareLink(actor: ClassActor, classId: number): Promise<{
+    code: any;
+    isActive: boolean;
+    url: string;
+}>;
+export declare function listAnnouncements(classId: number, courseId?: number | null): Promise<{
+    id: number;
+    scope: any;
+    title: any;
+    body: any;
+    courseId: number | null;
+    courseCode: any;
+    courseName: any;
+    authorName: any;
+    publishedAt: any;
+}[]>;
+export declare function createAnnouncement(actor: ClassActor, classId: number, input: z.infer<typeof announcementSchema>): Promise<{
+    id: number;
+    scope: any;
+    title: any;
+    body: any;
+    courseId: number | null;
+    courseCode: any;
+    courseName: any;
+    authorName: any;
+    publishedAt: any;
+}>;
+export declare function getPublicClassByCode(code: string): Promise<{
+    code: any;
+    url: string;
+    class: {
+        id: number;
+        collegeId: number;
+        collegeName: any;
+        academicYearId: number;
+        academicYearLabel: any;
+        programId: number;
+        programName: any;
+        programCode: any;
+        departmentId: number;
+        departmentName: any;
+        departmentCode: any;
+        semesterId: number;
+        semesterLabel: any;
+        semesterNumber: number | null;
+        schemeId: number | null;
+        schemeName: any;
+        schemeCode: any;
+        classSectionId: number;
+        sectionLabel: any;
+        coordinatorId: number | null;
+        coordinatorName: any;
+        name: any;
+        displayName: string;
+        code: any;
+        status: any;
+        studentCount: number;
+        pendingCount: number;
+        subjectCount: number;
+        facultyCount: number;
+        createdAt: any;
+        updatedAt: any;
+    };
+    subjects: {
+        code: any;
+        name: any;
+        kind: any;
+    }[];
+}>;
+export declare function getClass(actor: ClassActor, classId: number): Promise<{
+    class: {
+        id: number;
+        collegeId: number;
+        collegeName: any;
+        academicYearId: number;
+        academicYearLabel: any;
+        programId: number;
+        programName: any;
+        programCode: any;
+        departmentId: number;
+        departmentName: any;
+        departmentCode: any;
+        semesterId: number;
+        semesterLabel: any;
+        semesterNumber: number | null;
+        schemeId: number | null;
+        schemeName: any;
+        schemeCode: any;
+        classSectionId: number;
+        sectionLabel: any;
+        coordinatorId: number | null;
+        coordinatorName: any;
+        name: any;
+        displayName: string;
+        code: any;
+        status: any;
+        studentCount: number;
+        pendingCount: number;
+        subjectCount: number;
+        facultyCount: number;
+        createdAt: any;
+        updatedAt: any;
+    };
+    access: import("./access.js").ClassAccess;
+    subjects: {
+        id: number;
+        courseId: number;
+        code: any;
+        name: any;
+        kind: any;
+        electiveGroup: any;
+        credits: number | null;
+        faculty: {
+            facultyId: number;
+            name: any;
+            designation: any;
+            isPrimary: boolean;
+            canManage: boolean;
+        }[];
+        facultyNames: any[];
+    }[];
+    share: {
+        code: any;
+        isActive: boolean;
+        url: string;
+    } | null;
+    announcements: {
+        id: number;
+        scope: any;
+        title: any;
+        body: any;
+        courseId: number | null;
+        courseCode: any;
+        courseName: any;
+        authorName: any;
+        publishedAt: any;
+    }[];
+}>;
+export declare function studentsForFacultyCourse(actor: ClassActor, courseId: number): Promise<{
+    id: number;
+    name: any;
+    usn: any;
+    email: any;
+    classId: number;
+    className: any;
+    sectionLabel: any;
+}[]>;

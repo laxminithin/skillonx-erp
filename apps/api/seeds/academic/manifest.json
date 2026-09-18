@@ -1,0 +1,49 @@
+{
+  "sourceFile": "SkillonX_Academic_Mapping_Master.xlsx",
+  "generatedAt": "2026-08-29T18:50:29.866Z",
+  "counts": {
+    "schemes": 3,
+    "programs": 6,
+    "subjects": 15,
+    "modules": 79,
+    "cos": 71,
+    "pos": 24,
+    "psos": 13,
+    "sdgs": 17,
+    "copo": 140,
+    "copso": 71,
+    "cosdg": 37,
+    "gaps": 45,
+    "recommendedActions": 45,
+    "beyondSyllabus": 84
+  },
+  "subjects": [
+    "BIS701",
+    "BIS703",
+    "BCS403",
+    "10CS55",
+    "BCS503",
+    "BCS702",
+    "1BCS302",
+    "22MBA401",
+    "BRMK557",
+    "1BCHES102/202",
+    "BCA701",
+    "BCS303",
+    "BCS515B",
+    "1BEC304",
+    "1BCS305"
+  ],
+  "warnings": [
+    "CO_PSO_MAPPING 1BCS305 CO1→PSO1: unknown MAPPING_ORIGIN ACADEMIC_ANALYSIS",
+    "CO_PSO_MAPPING 1BCS305 CO1→PSO2: unknown MAPPING_ORIGIN ACADEMIC_ANALYSIS",
+    "CO_PSO_MAPPING 1BCS305 CO2→PSO1: unknown MAPPING_ORIGIN ACADEMIC_ANALYSIS",
+    "CO_PSO_MAPPING 1BCS305 CO2→PSO2: unknown MAPPING_ORIGIN ACADEMIC_ANALYSIS",
+    "CO_PSO_MAPPING 1BCS305 CO3→PSO1: unknown MAPPING_ORIGIN ACADEMIC_ANALYSIS",
+    "CO_PSO_MAPPING 1BCS305 CO3→PSO2: unknown MAPPING_ORIGIN ACADEMIC_ANALYSIS",
+    "CO_PSO_MAPPING 1BCS305 CO4→PSO1: unknown MAPPING_ORIGIN ACADEMIC_ANALYSIS",
+    "CO_PSO_MAPPING 1BCS305 CO4→PSO2: unknown MAPPING_ORIGIN ACADEMIC_ANALYSIS",
+    "CO_PSO_MAPPING 1BCS305 CO5→PSO1: unknown MAPPING_ORIGIN ACADEMIC_ANALYSIS",
+    "CO_PSO_MAPPING 1BCS305 CO5→PSO2: unknown MAPPING_ORIGIN ACADEMIC_ANALYSIS"
+  ]
+}

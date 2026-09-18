@@ -1,0 +1,775 @@
+{
+  "generatedAt": "2026-08-22T09:16:21.048Z",
+  "colleges": [
+    {
+      "collegeCode": "VVIET",
+      "totals": {
+        "total": 2560,
+        "hasPrimaryCo": "1909",
+        "academicAnalysis": "1201",
+        "needsReview": "1039",
+        "blocked": "320"
+      },
+      "perSubject": [
+        {
+          "subject": "Big Data Analytics",
+          "questions": 200,
+          "hasPrimaryCo": "200",
+          "academicAnalysis": "91",
+          "needsReview": "109",
+          "blocked": "0"
+        },
+        {
+          "subject": "Chemistry",
+          "questions": 200,
+          "hasPrimaryCo": "200",
+          "academicAnalysis": "158",
+          "needsReview": "42",
+          "blocked": "0"
+        },
+        {
+          "subject": "Computer Networks-I",
+          "questions": 320,
+          "hasPrimaryCo": "0",
+          "academicAnalysis": "0",
+          "needsReview": "0",
+          "blocked": "320"
+        },
+        {
+          "subject": "Database Management Systems",
+          "questions": 200,
+          "hasPrimaryCo": "144",
+          "academicAnalysis": "60",
+          "needsReview": "140",
+          "blocked": "0"
+        },
+        {
+          "subject": "Deep Learning",
+          "questions": 200,
+          "hasPrimaryCo": "145",
+          "academicAnalysis": "88",
+          "needsReview": "112",
+          "blocked": "0"
+        },
+        {
+          "subject": "Information and Network Security",
+          "questions": 200,
+          "hasPrimaryCo": "144",
+          "academicAnalysis": "96",
+          "needsReview": "104",
+          "blocked": "0"
+        },
+        {
+          "subject": "International Business",
+          "questions": 240,
+          "hasPrimaryCo": "179",
+          "academicAnalysis": "120",
+          "needsReview": "120",
+          "blocked": "0"
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "questions": 200,
+          "hasPrimaryCo": "200",
+          "academicAnalysis": "136",
+          "needsReview": "64",
+          "blocked": "0"
+        },
+        {
+          "subject": "Operating Systems",
+          "questions": 200,
+          "hasPrimaryCo": "140",
+          "academicAnalysis": "103",
+          "needsReview": "97",
+          "blocked": "0"
+        },
+        {
+          "subject": "Parallel Computing",
+          "questions": 200,
+          "hasPrimaryCo": "187",
+          "academicAnalysis": "115",
+          "needsReview": "85",
+          "blocked": "0"
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "questions": 200,
+          "hasPrimaryCo": "170",
+          "academicAnalysis": "129",
+          "needsReview": "71",
+          "blocked": "0"
+        },
+        {
+          "subject": "Theory of Computation",
+          "questions": 200,
+          "hasPrimaryCo": "200",
+          "academicAnalysis": "105",
+          "needsReview": "95",
+          "blocked": "0"
+        }
+      ],
+      "coCounts": [
+        {
+          "subject": "Big Data Analytics",
+          "co": "CO1",
+          "n": 85
+        },
+        {
+          "subject": "Big Data Analytics",
+          "co": "CO2",
+          "n": 21
+        },
+        {
+          "subject": "Big Data Analytics",
+          "co": "CO3",
+          "n": 79
+        },
+        {
+          "subject": "Big Data Analytics",
+          "co": "CO4",
+          "n": 15
+        },
+        {
+          "subject": "Chemistry",
+          "co": "CO1",
+          "n": 53
+        },
+        {
+          "subject": "Chemistry",
+          "co": "CO2",
+          "n": 46
+        },
+        {
+          "subject": "Chemistry",
+          "co": "CO3",
+          "n": 32
+        },
+        {
+          "subject": "Chemistry",
+          "co": "CO4",
+          "n": 69
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO1",
+          "n": 42
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO2",
+          "n": 17
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO3",
+          "n": 48
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO4",
+          "n": 3
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO5",
+          "n": 5
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO6",
+          "n": 29
+        },
+        {
+          "subject": "Deep Learning",
+          "co": "CO1",
+          "n": 75
+        },
+        {
+          "subject": "Deep Learning",
+          "co": "CO2",
+          "n": 4
+        },
+        {
+          "subject": "Deep Learning",
+          "co": "CO3",
+          "n": 56
+        },
+        {
+          "subject": "Deep Learning",
+          "co": "CO4",
+          "n": 10
+        },
+        {
+          "subject": "Information and Network Security",
+          "co": "CO1",
+          "n": 10
+        },
+        {
+          "subject": "Information and Network Security",
+          "co": "CO2",
+          "n": 42
+        },
+        {
+          "subject": "Information and Network Security",
+          "co": "CO3",
+          "n": 40
+        },
+        {
+          "subject": "Information and Network Security",
+          "co": "CO4",
+          "n": 49
+        },
+        {
+          "subject": "Information and Network Security",
+          "co": "CO5",
+          "n": 3
+        },
+        {
+          "subject": "International Business",
+          "co": "CO1",
+          "n": 131
+        },
+        {
+          "subject": "International Business",
+          "co": "CO2",
+          "n": 18
+        },
+        {
+          "subject": "International Business",
+          "co": "CO3",
+          "n": 16
+        },
+        {
+          "subject": "International Business",
+          "co": "CO4",
+          "n": 1
+        },
+        {
+          "subject": "International Business",
+          "co": "CO5",
+          "n": 13
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO1",
+          "n": 8
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO2",
+          "n": 69
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO3",
+          "n": 34
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO4",
+          "n": 29
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO5",
+          "n": 29
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO6",
+          "n": 31
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO1",
+          "n": 44
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO2",
+          "n": 36
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO3",
+          "n": 13
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO4",
+          "n": 31
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO5",
+          "n": 8
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO6",
+          "n": 8
+        },
+        {
+          "subject": "Parallel Computing",
+          "co": "CO1",
+          "n": 138
+        },
+        {
+          "subject": "Parallel Computing",
+          "co": "CO2",
+          "n": 4
+        },
+        {
+          "subject": "Parallel Computing",
+          "co": "CO3",
+          "n": 12
+        },
+        {
+          "subject": "Parallel Computing",
+          "co": "CO4",
+          "n": 25
+        },
+        {
+          "subject": "Parallel Computing",
+          "co": "CO5",
+          "n": 8
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "co": "CO1",
+          "n": 9
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "co": "CO2",
+          "n": 42
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "co": "CO3",
+          "n": 39
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "co": "CO4",
+          "n": 74
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "co": "CO5",
+          "n": 6
+        },
+        {
+          "subject": "Theory of Computation",
+          "co": "CO1",
+          "n": 50
+        },
+        {
+          "subject": "Theory of Computation",
+          "co": "CO2",
+          "n": 69
+        },
+        {
+          "subject": "Theory of Computation",
+          "co": "CO3",
+          "n": 50
+        },
+        {
+          "subject": "Theory of Computation",
+          "co": "CO4",
+          "n": 30
+        },
+        {
+          "subject": "Theory of Computation",
+          "co": "CO5",
+          "n": 1
+        }
+      ]
+    },
+    {
+      "collegeCode": "GSSS",
+      "totals": {
+        "total": 2560,
+        "hasPrimaryCo": "1909",
+        "academicAnalysis": "1201",
+        "needsReview": "1039",
+        "blocked": "320"
+      },
+      "perSubject": [
+        {
+          "subject": "Big Data Analytics",
+          "questions": 200,
+          "hasPrimaryCo": "200",
+          "academicAnalysis": "91",
+          "needsReview": "109",
+          "blocked": "0"
+        },
+        {
+          "subject": "Chemistry",
+          "questions": 200,
+          "hasPrimaryCo": "200",
+          "academicAnalysis": "158",
+          "needsReview": "42",
+          "blocked": "0"
+        },
+        {
+          "subject": "Computer Networks-I",
+          "questions": 320,
+          "hasPrimaryCo": "0",
+          "academicAnalysis": "0",
+          "needsReview": "0",
+          "blocked": "320"
+        },
+        {
+          "subject": "Database Management Systems",
+          "questions": 200,
+          "hasPrimaryCo": "144",
+          "academicAnalysis": "60",
+          "needsReview": "140",
+          "blocked": "0"
+        },
+        {
+          "subject": "Deep Learning",
+          "questions": 200,
+          "hasPrimaryCo": "145",
+          "academicAnalysis": "88",
+          "needsReview": "112",
+          "blocked": "0"
+        },
+        {
+          "subject": "Information and Network Security",
+          "questions": 200,
+          "hasPrimaryCo": "144",
+          "academicAnalysis": "96",
+          "needsReview": "104",
+          "blocked": "0"
+        },
+        {
+          "subject": "International Business",
+          "questions": 240,
+          "hasPrimaryCo": "179",
+          "academicAnalysis": "120",
+          "needsReview": "120",
+          "blocked": "0"
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "questions": 200,
+          "hasPrimaryCo": "200",
+          "academicAnalysis": "136",
+          "needsReview": "64",
+          "blocked": "0"
+        },
+        {
+          "subject": "Operating Systems",
+          "questions": 200,
+          "hasPrimaryCo": "140",
+          "academicAnalysis": "103",
+          "needsReview": "97",
+          "blocked": "0"
+        },
+        {
+          "subject": "Parallel Computing",
+          "questions": 200,
+          "hasPrimaryCo": "187",
+          "academicAnalysis": "115",
+          "needsReview": "85",
+          "blocked": "0"
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "questions": 200,
+          "hasPrimaryCo": "170",
+          "academicAnalysis": "129",
+          "needsReview": "71",
+          "blocked": "0"
+        },
+        {
+          "subject": "Theory of Computation",
+          "questions": 200,
+          "hasPrimaryCo": "200",
+          "academicAnalysis": "105",
+          "needsReview": "95",
+          "blocked": "0"
+        }
+      ],
+      "coCounts": [
+        {
+          "subject": "Big Data Analytics",
+          "co": "CO1",
+          "n": 85
+        },
+        {
+          "subject": "Big Data Analytics",
+          "co": "CO2",
+          "n": 21
+        },
+        {
+          "subject": "Big Data Analytics",
+          "co": "CO3",
+          "n": 79
+        },
+        {
+          "subject": "Big Data Analytics",
+          "co": "CO4",
+          "n": 15
+        },
+        {
+          "subject": "Chemistry",
+          "co": "CO1",
+          "n": 53
+        },
+        {
+          "subject": "Chemistry",
+          "co": "CO2",
+          "n": 46
+        },
+        {
+          "subject": "Chemistry",
+          "co": "CO3",
+          "n": 32
+        },
+        {
+          "subject": "Chemistry",
+          "co": "CO4",
+          "n": 69
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO1",
+          "n": 42
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO2",
+          "n": 17
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO3",
+          "n": 48
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO4",
+          "n": 3
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO5",
+          "n": 5
+        },
+        {
+          "subject": "Database Management Systems",
+          "co": "CO6",
+          "n": 29
+        },
+        {
+          "subject": "Deep Learning",
+          "co": "CO1",
+          "n": 75
+        },
+        {
+          "subject": "Deep Learning",
+          "co": "CO2",
+          "n": 4
+        },
+        {
+          "subject": "Deep Learning",
+          "co": "CO3",
+          "n": 56
+        },
+        {
+          "subject": "Deep Learning",
+          "co": "CO4",
+          "n": 10
+        },
+        {
+          "subject": "Information and Network Security",
+          "co": "CO1",
+          "n": 10
+        },
+        {
+          "subject": "Information and Network Security",
+          "co": "CO2",
+          "n": 42
+        },
+        {
+          "subject": "Information and Network Security",
+          "co": "CO3",
+          "n": 40
+        },
+        {
+          "subject": "Information and Network Security",
+          "co": "CO4",
+          "n": 49
+        },
+        {
+          "subject": "Information and Network Security",
+          "co": "CO5",
+          "n": 3
+        },
+        {
+          "subject": "International Business",
+          "co": "CO1",
+          "n": 131
+        },
+        {
+          "subject": "International Business",
+          "co": "CO2",
+          "n": 18
+        },
+        {
+          "subject": "International Business",
+          "co": "CO3",
+          "n": 16
+        },
+        {
+          "subject": "International Business",
+          "co": "CO4",
+          "n": 1
+        },
+        {
+          "subject": "International Business",
+          "co": "CO5",
+          "n": 13
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO1",
+          "n": 8
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO2",
+          "n": 69
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO3",
+          "n": 34
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO4",
+          "n": 29
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO5",
+          "n": 29
+        },
+        {
+          "subject": "Object Oriented Programming with Java",
+          "co": "CO6",
+          "n": 31
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO1",
+          "n": 44
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO2",
+          "n": 36
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO3",
+          "n": 13
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO4",
+          "n": 31
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO5",
+          "n": 8
+        },
+        {
+          "subject": "Operating Systems",
+          "co": "CO6",
+          "n": 8
+        },
+        {
+          "subject": "Parallel Computing",
+          "co": "CO1",
+          "n": 138
+        },
+        {
+          "subject": "Parallel Computing",
+          "co": "CO2",
+          "n": 4
+        },
+        {
+          "subject": "Parallel Computing",
+          "co": "CO3",
+          "n": 12
+        },
+        {
+          "subject": "Parallel Computing",
+          "co": "CO4",
+          "n": 25
+        },
+        {
+          "subject": "Parallel Computing",
+          "co": "CO5",
+          "n": 8
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "co": "CO1",
+          "n": 9
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "co": "CO2",
+          "n": 42
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "co": "CO3",
+          "n": 39
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "co": "CO4",
+          "n": 74
+        },
+        {
+          "subject": "Research Methodology & IPR",
+          "co": "CO5",
+          "n": 6
+        },
+        {
+          "subject": "Theory of Computation",
+          "co": "CO1",
+          "n": 50
+        },
+        {
+          "subject": "Theory of Computation",
+          "co": "CO2",
+          "n": 69
+        },
+        {
+          "subject": "Theory of Computation",
+          "co": "CO3",
+          "n": 50
+        },
+        {
+          "subject": "Theory of Computation",
+          "co": "CO4",
+          "n": 30
+        },
+        {
+          "subject": "Theory of Computation",
+          "co": "CO5",
+          "n": 1
+        }
+      ]
+    }
+  ]
+}

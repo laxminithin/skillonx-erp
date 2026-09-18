@@ -1,0 +1,23 @@
+[
+  {
+    "schemeCode": "VTU-2022",
+    "name": "VTU 2022 Scheme",
+    "university": "VTU",
+    "startYear": 2022,
+    "effectiveAcademicYear": "2022"
+  },
+  {
+    "schemeCode": "VTU-2010",
+    "name": "VTU 2010 Scheme",
+    "university": "VTU",
+    "startYear": 2010,
+    "effectiveAcademicYear": "2010"
+  },
+  {
+    "schemeCode": "VTU-2025",
+    "name": "VTU 2025 Scheme",
+    "university": "VTU",
+    "startYear": 2025,
+    "effectiveAcademicYear": "2025"
+  }
+]

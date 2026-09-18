@@ -1,0 +1,199 @@
+{
+  "generatedAt": "2026-08-22T09:15:28.639Z",
+  "dryRun": false,
+  "colleges": [
+    {
+      "collegeCode": "VVIET",
+      "quiz_bank_questions": {
+        "total": 4674,
+        "mapped": 1472,
+        "needsReview": 2680,
+        "blocked": 522,
+        "unchanged": 658
+      },
+      "quiz_questions": {
+        "total": 110,
+        "mapped": 32,
+        "needsReview": 68,
+        "blocked": 10,
+        "unchanged": 27
+      },
+      "perSubjectBank": {
+        "Big Data Analytics": {
+          "CO3": 77,
+          "CO4": 52,
+          "CO1": 2
+        },
+        "Chemistry": {
+          "CO1": 34,
+          "CO4": 57,
+          "CO3": 51,
+          "CO2": 26
+        },
+        "Computer Networks-I": {},
+        "Database Management Systems": {
+          "CO5": 2,
+          "CO2": 31,
+          "CO1": 9,
+          "CO3": 85,
+          "CO6": 1
+        },
+        "Deep Learning": {
+          "CO1": 12,
+          "CO4": 26,
+          "CO3": 25,
+          "CO5": 2
+        },
+        "Information and Network Security": {
+          "CO5": 3,
+          "CO4": 71,
+          "CO3": 34,
+          "CO2": 19
+        },
+        "International Business": {
+          "CO1": 52,
+          "CO2": 29,
+          "CO5": 5,
+          "CO3": 3
+        },
+        "Object Oriented Programming with Java": {
+          "CO6": 29,
+          "CO2": 64,
+          "CO1": 4,
+          "CO3": 21,
+          "CO4": 24,
+          "CO5": 13
+        },
+        "Operating Systems": {
+          "CO1": 10,
+          "CO4": 23,
+          "CO2": 40,
+          "CO3": 53,
+          "CO5": 22,
+          "CO6": 12
+        },
+        "Parallel Computing": {
+          "CO2": 15,
+          "CO4": 22,
+          "CO3": 54,
+          "CO1": 30,
+          "CO5": 18
+        },
+        "Research Methodology & IPR": {
+          "CO4": 49,
+          "CO1": 8,
+          "CO2": 26,
+          "CO3": 48,
+          "CO5": 10
+        },
+        "Theory of Computation": {
+          "CO1": 58,
+          "CO2": 76,
+          "CO4": 8,
+          "CO3": 27
+        }
+      },
+      "perSubjectInstance": {
+        "Big Data Analytics": {
+          "CO1": 3,
+          "CO3": 15,
+          "CO4": 14
+        },
+        "Computer Networks-I": {}
+      }
+    },
+    {
+      "collegeCode": "GSSS",
+      "quiz_bank_questions": {
+        "total": 4674,
+        "mapped": 1472,
+        "needsReview": 2680,
+        "blocked": 522,
+        "unchanged": 658
+      },
+      "quiz_questions": {
+        "total": 0,
+        "mapped": 0,
+        "needsReview": 0,
+        "blocked": 0,
+        "unchanged": 0
+      },
+      "perSubjectBank": {
+        "Big Data Analytics": {
+          "CO3": 77,
+          "CO4": 52,
+          "CO1": 2
+        },
+        "Chemistry": {
+          "CO1": 34,
+          "CO4": 57,
+          "CO3": 51,
+          "CO2": 26
+        },
+        "Computer Networks-I": {},
+        "Database Management Systems": {
+          "CO5": 2,
+          "CO2": 31,
+          "CO1": 9,
+          "CO3": 85,
+          "CO6": 1
+        },
+        "Deep Learning": {
+          "CO1": 12,
+          "CO4": 26,
+          "CO3": 25,
+          "CO5": 2
+        },
+        "Information and Network Security": {
+          "CO5": 3,
+          "CO4": 71,
+          "CO3": 34,
+          "CO2": 19
+        },
+        "International Business": {
+          "CO1": 52,
+          "CO2": 29,
+          "CO5": 5,
+          "CO3": 3
+        },
+        "Object Oriented Programming with Java": {
+          "CO6": 29,
+          "CO2": 64,
+          "CO1": 4,
+          "CO3": 21,
+          "CO4": 24,
+          "CO5": 13
+        },
+        "Operating Systems": {
+          "CO1": 10,
+          "CO4": 23,
+          "CO2": 40,
+          "CO3": 53,
+          "CO5": 22,
+          "CO6": 12
+        },
+        "Parallel Computing": {
+          "CO2": 15,
+          "CO4": 22,
+          "CO3": 54,
+          "CO1": 30,
+          "CO5": 18
+        },
+        "Research Methodology & IPR": {
+          "CO4": 49,
+          "CO1": 8,
+          "CO2": 26,
+          "CO3": 48,
+          "CO5": 10
+        },
+        "Theory of Computation": {
+          "CO1": 58,
+          "CO2": 76,
+          "CO4": 8,
+          "CO3": 27
+        }
+      },
+      "perSubjectInstance": {}
+    }
+  ]
+}

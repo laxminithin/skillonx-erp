@@ -1,0 +1,407 @@
+[
+  {
+    "sourceId": "SRC-BIS701-001",
+    "gapId": "GAP-BIS701-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 2
+  },
+  {
+    "sourceId": "SRC-BIS701-002",
+    "gapId": "GAP-BIS701-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 3
+  },
+  {
+    "sourceId": "SRC-BIS701-003",
+    "gapId": "GAP-BIS701-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 4
+  },
+  {
+    "sourceId": "SRC-BIS703-001",
+    "gapId": "GAP-BIS703-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 5
+  },
+  {
+    "sourceId": "SRC-BIS703-002",
+    "gapId": "GAP-BIS703-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 6
+  },
+  {
+    "sourceId": "SRC-BIS703-003",
+    "gapId": "GAP-BIS703-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 7
+  },
+  {
+    "sourceId": "SRC-BCS403-001",
+    "gapId": "GAP-BCS403-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 8
+  },
+  {
+    "sourceId": "SRC-BCS403-002",
+    "gapId": "GAP-BCS403-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 9
+  },
+  {
+    "sourceId": "SRC-BCS403-003",
+    "gapId": "GAP-BCS403-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 10
+  },
+  {
+    "sourceId": "SRC-10CS55-001",
+    "gapId": "GAP-10CS55-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Unit 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 11
+  },
+  {
+    "sourceId": "SRC-10CS55-002",
+    "gapId": "GAP-10CS55-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Unit 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 12
+  },
+  {
+    "sourceId": "SRC-10CS55-003",
+    "gapId": "GAP-10CS55-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Unit 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 13
+  },
+  {
+    "sourceId": "SRC-BCS503-001",
+    "gapId": "GAP-BCS503-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 14
+  },
+  {
+    "sourceId": "SRC-BCS503-002",
+    "gapId": "GAP-BCS503-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 15
+  },
+  {
+    "sourceId": "SRC-BCS503-003",
+    "gapId": "GAP-BCS503-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 16
+  },
+  {
+    "sourceId": "SRC-BCS702-001",
+    "gapId": "GAP-BCS702-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 17
+  },
+  {
+    "sourceId": "SRC-BCS702-002",
+    "gapId": "GAP-BCS702-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 18
+  },
+  {
+    "sourceId": "SRC-BCS702-003",
+    "gapId": "GAP-BCS702-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 19
+  },
+  {
+    "sourceId": "SRC-1BCS302-001",
+    "gapId": "GAP-1BCS302-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 20
+  },
+  {
+    "sourceId": "SRC-1BCS302-002",
+    "gapId": "GAP-1BCS302-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 21
+  },
+  {
+    "sourceId": "SRC-1BCS302-003",
+    "gapId": "GAP-1BCS302-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 22
+  },
+  {
+    "sourceId": "SRC-22MBA401-001",
+    "gapId": "GAP-22MBA401-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 23
+  },
+  {
+    "sourceId": "SRC-22MBA401-002",
+    "gapId": "GAP-22MBA401-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 24
+  },
+  {
+    "sourceId": "SRC-22MBA401-003",
+    "gapId": "GAP-22MBA401-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 25
+  },
+  {
+    "sourceId": "SRC-BRMK557-001",
+    "gapId": "GAP-BRMK557-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 26
+  },
+  {
+    "sourceId": "SRC-BRMK557-002",
+    "gapId": "GAP-BRMK557-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 27
+  },
+  {
+    "sourceId": "SRC-BRMK557-003",
+    "gapId": "GAP-BRMK557-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 28
+  },
+  {
+    "sourceId": "SRC-1BCHES102202-001",
+    "gapId": "GAP-1BCHES102202-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 29
+  },
+  {
+    "sourceId": "SRC-1BCHES102202-002",
+    "gapId": "GAP-1BCHES102202-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 30
+  },
+  {
+    "sourceId": "SRC-1BCHES102202-003",
+    "gapId": "GAP-1BCHES102202-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 31
+  },
+  {
+    "sourceId": "SRC-BCA701-001",
+    "gapId": "GAP-BCA701-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 32
+  },
+  {
+    "sourceId": "SRC-BCA701-002",
+    "gapId": "GAP-BCA701-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 33
+  },
+  {
+    "sourceId": "SRC-BCA701-003",
+    "gapId": "GAP-BCA701-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 34
+  },
+  {
+    "sourceId": "SRC-BCS303-001",
+    "gapId": "GAP-BCS303-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 35
+  },
+  {
+    "sourceId": "SRC-BCS303-002",
+    "gapId": "GAP-BCS303-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 36
+  },
+  {
+    "sourceId": "SRC-BCS303-003",
+    "gapId": "GAP-BCS303-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 37
+  },
+  {
+    "sourceId": "SRC-BCS515B-001",
+    "gapId": "GAP-BCS515B-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 38
+  },
+  {
+    "sourceId": "SRC-BCS515B-002",
+    "gapId": "GAP-BCS515B-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 39
+  },
+  {
+    "sourceId": "SRC-BCS515B-003",
+    "gapId": "GAP-BCS515B-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 40
+  },
+  {
+    "sourceId": "SRC-1BEC304-001",
+    "gapId": "GAP-1BEC304-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 41
+  },
+  {
+    "sourceId": "SRC-1BEC304-002",
+    "gapId": "GAP-1BEC304-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 42
+  },
+  {
+    "sourceId": "SRC-1BEC304-003",
+    "gapId": "GAP-1BEC304-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 43
+  },
+  {
+    "sourceId": "SRC-1BCS305-001",
+    "gapId": "GAP-1BCS305-001",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 1",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 44
+  },
+  {
+    "sourceId": "SRC-1BCS305-002",
+    "gapId": "GAP-1BCS305-002",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 2",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 45
+  },
+  {
+    "sourceId": "SRC-1BCS305-003",
+    "gapId": "GAP-1BCS305-003",
+    "sourceType": "SLIDES_AND_ACADEMIC_ANALYSIS",
+    "sourceFile": "src/data/subjects.jsx",
+    "sourceReference": "Module 3",
+    "notes": "Source-backed teaching structure with enrichment recommendation.",
+    "sourceRow": 46
+  }
+]

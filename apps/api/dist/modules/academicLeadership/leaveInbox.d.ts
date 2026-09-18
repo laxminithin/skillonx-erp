@@ -1,0 +1,74 @@
+import type { HrActor } from '../hr/types.js';
+export declare function listLeadershipLeaveInbox(actor: HrActor, tab?: 'pending' | 'approved' | 'rejected' | 'calendar' | 'history', departmentId?: number | null): Promise<{
+    tab: "approved" | "pending" | "history" | "rejected" | "calendar";
+    items: {
+        id: number;
+        requestNumber: any;
+        employeeId: number;
+        employeeName: any;
+        employeeNumber: any;
+        designation: any;
+        departmentId: number | null;
+        departmentName: any;
+        leaveTypeName: any;
+        leaveTypeCode: any;
+        fromDate: string;
+        toDate: string;
+        requestedDays: number;
+        reason: any;
+        status: any;
+        submittedAt: any;
+        academicCoverageStatus: any;
+    }[];
+    actorEmployeeId: number | null;
+    leadership: {
+        isHod: boolean;
+        isPrincipal: boolean;
+    };
+}>;
+export declare function getLeadershipLeaveDetail(actor: HrActor, leaveRequestId: number): Promise<{
+    overlappingAbsences: {
+        id: number;
+        employeeName: unknown;
+        fromDate: string;
+        toDate: string;
+        status: unknown;
+    }[];
+    coverages: {
+        id: number;
+        affectedDate: unknown;
+        coverageType: unknown;
+        status: unknown;
+        substituteName: unknown;
+        subjectName: unknown;
+        className: unknown;
+        startTime: unknown;
+        endTime: unknown;
+    }[];
+    availableBalance: number | null;
+    id: number;
+    collegeId: number;
+    employeeId: number;
+    requestNumber: unknown;
+    leaveTypeId: number;
+    fromDate: unknown;
+    toDate: unknown;
+    fromSession: unknown;
+    toSession: unknown;
+    requestedDays: number;
+    reason: unknown;
+    isEmergency: boolean;
+    status: unknown;
+    submittedAt: unknown;
+    currentApprovalStep: unknown;
+    academicCoverageStatus: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+    leaveTypeName: unknown;
+    leaveTypeCode: unknown;
+    employeeName: unknown;
+    academicApproverEmployeeId: number | null;
+    academicApprovedByEmployeeId: number | null;
+    academicApprovedAt: {} | null;
+    approvalStage: string | null;
+}>;

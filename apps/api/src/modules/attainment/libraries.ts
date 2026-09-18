@@ -1,0 +1,151 @@
+export type RootCauseDef = {
+  code: string;
+  category: 'CONCEPTUAL' | 'ASSESSMENT' | 'DELIVERY' | 'STUDENT' | 'RESOURCE' | 'OTHER';
+  label: string;
+  description: string;
+};
+
+export type ActionDef = {
+  code: string;
+  label: string;
+  category: string;
+  description: string;
+  evidenceProfile: 'REMEDIAL' | 'WORKSHOP' | 'MINI_PROJECT' | 'TOOL' | 'SELF_LEARNING' | 'REASSESSMENT';
+};
+
+export type EvidenceTemplateDef = {
+  actionProfile: ActionDef['evidenceProfile'];
+  code: string;
+  label: string;
+  required: boolean;
+  autoLinkSource?: string | null;
+};
+
+export const ROOT_CAUSES: RootCauseDef[] = [
+  { code: 'CONCEPTUAL_PREREQUISITE', category: 'CONCEPTUAL', label: 'Weak prerequisite knowledge', description: 'Students lack earlier concepts needed for this CO.' },
+  { code: 'CONCEPTUAL_CORE', category: 'CONCEPTUAL', label: 'Difficulty understanding core concepts', description: 'Core idea of the CO is not yet clear.' },
+  { code: 'CONCEPTUAL_REINFORCEMENT', category: 'CONCEPTUAL', label: 'Insufficient conceptual reinforcement', description: 'Concept was introduced but not revisited enough.' },
+  { code: 'ASSESSMENT_PRACTICE', category: 'ASSESSMENT', label: 'Insufficient practice', description: 'Students have not practised enough questions of this type.' },
+  { code: 'ASSESSMENT_HIGHER_ORDER', category: 'ASSESSMENT', label: 'Poor performance in higher-order questions', description: 'Weakness concentrated in Analyse/Evaluate/Create items.' },
+  { code: 'ASSESSMENT_APPLICATION', category: 'ASSESSMENT', label: 'Difficulty applying concepts', description: 'Recall is stronger than application.' },
+  { code: 'ASSESSMENT_PROBLEM_SOLVING', category: 'ASSESSMENT', label: 'Weak problem-solving ability', description: 'Students struggle to formulate a solution path.' },
+  { code: 'DELIVERY_HOURS', category: 'DELIVERY', label: 'Insufficient teaching hours', description: 'Allocated contact hours were not enough for this CO.' },
+  { code: 'DELIVERY_EXAMPLES', category: 'DELIVERY', label: 'Insufficient examples/case studies', description: 'Too few worked examples or cases.' },
+  { code: 'DELIVERY_PRACTICAL', category: 'DELIVERY', label: 'Limited practical exposure', description: 'Concept was taught mainly theoretically.' },
+  { code: 'DELIVERY_LAB', category: 'DELIVERY', label: 'Limited laboratory exposure', description: 'Lab practice related to this CO was limited.' },
+  { code: 'STUDENT_ATTENDANCE', category: 'STUDENT', label: 'Low attendance', description: 'Identified students had low class attendance.' },
+  { code: 'STUDENT_PARTICIPATION', category: 'STUDENT', label: 'Low participation', description: 'Low engagement during teaching/tutorials.' },
+  { code: 'STUDENT_ASSIGNMENT', category: 'STUDENT', label: 'Assignment non-completion', description: 'Required assignments were not completed.' },
+  { code: 'STUDENT_SELF_LEARNING', category: 'STUDENT', label: 'Insufficient self-learning', description: 'Students did not practise independently.' },
+  { code: 'RESOURCE_TOOLS', category: 'RESOURCE', label: 'Insufficient tool exposure', description: 'Required tools/software were not practised enough.' },
+  { code: 'RESOURCE_INDUSTRY', category: 'RESOURCE', label: 'Limited industry exposure', description: 'Few authentic/industry problem contexts.' },
+  { code: 'RESOURCE_PROJECT', category: 'RESOURCE', label: 'Insufficient project/design exposure', description: 'Limited design or project work mapped to this outcome.' },
+  { code: 'OTHER', category: 'OTHER', label: 'Other', description: 'Faculty must record a written justification.' },
+];
+
+export const ACTIONS: ActionDef[] = [
+  { code: 'BRIDGE_SESSION', label: 'Bridge session', category: 'Conceptual', description: 'Short session covering prerequisite concepts.', evidenceProfile: 'REMEDIAL' },
+  { code: 'REMEDIAL_CLASS', label: 'Remedial class', category: 'Conceptual', description: 'Additional class for the identified cohort.', evidenceProfile: 'REMEDIAL' },
+  { code: 'PREREQUISITE_WORKSHEET', label: 'Prerequisite worksheet', category: 'Conceptual', description: 'Structured worksheet on prior topics.', evidenceProfile: 'REMEDIAL' },
+  { code: 'DIAGNOSTIC_REVISION', label: 'Diagnostic + revision session', category: 'Conceptual', description: 'Diagnose gaps then revise.', evidenceProfile: 'REMEDIAL' },
+  { code: 'TUTORIAL', label: 'Tutorial session', category: 'Practice', description: 'Guided problem-solving tutorial.', evidenceProfile: 'REMEDIAL' },
+  { code: 'ADDITIONAL_PROBLEM_SET', label: 'Additional problem set', category: 'Practice', description: 'Extra application problems mapped to the CO.', evidenceProfile: 'REMEDIAL' },
+  { code: 'PRACTICE_QUIZ', label: 'Practice quiz', category: 'Practice', description: 'CO-mapped quiz for reinforcement.', evidenceProfile: 'REMEDIAL' },
+  { code: 'PEER_ASSISTED_LEARNING', label: 'Peer-assisted learning', category: 'Practice', description: 'Structured peer tutoring for weak students.', evidenceProfile: 'REMEDIAL' },
+  { code: 'ADDITIONAL_LAB', label: 'Additional laboratory', category: 'Practical', description: 'Extra lab session for the CO.', evidenceProfile: 'WORKSHOP' },
+  { code: 'DEMONSTRATION', label: 'Demonstration', category: 'Practical', description: 'Faculty demonstration of the skill.', evidenceProfile: 'WORKSHOP' },
+  { code: 'SIMULATION', label: 'Simulation exercise', category: 'Practical', description: 'Tool-based simulation activity.', evidenceProfile: 'TOOL' },
+  { code: 'MINI_PROJECT', label: 'Mini-project', category: 'Design', description: 'Short design/implementation project.', evidenceProfile: 'MINI_PROJECT' },
+  { code: 'DESIGN_PROBLEM', label: 'Design problem', category: 'Design', description: 'Open-ended design task.', evidenceProfile: 'MINI_PROJECT' },
+  { code: 'PROTOTYPE', label: 'Prototype development', category: 'Design', description: 'Build a working prototype.', evidenceProfile: 'MINI_PROJECT' },
+  { code: 'INDUSTRY_PROBLEM', label: 'Industry problem statement', category: 'Design', description: 'Problem sourced from industry/practice.', evidenceProfile: 'MINI_PROJECT' },
+  { code: 'TOOL_TRAINING', label: 'Tool training', category: 'Tools', description: 'Hands-on software/tool training.', evidenceProfile: 'TOOL' },
+  { code: 'SOFTWARE_WORKSHOP', label: 'Software workshop', category: 'Tools', description: 'Workshop with resource person/schedule.', evidenceProfile: 'WORKSHOP' },
+  { code: 'TOOL_ASSIGNMENT', label: 'Tool-based assignment', category: 'Tools', description: 'Assignment requiring the tool.', evidenceProfile: 'REMEDIAL' },
+  { code: 'GUIDED_MOOC', label: 'Guided NPTEL/SWAYAM/MOOC', category: 'Self-learning', description: 'Structured MOOC activity.', evidenceProfile: 'SELF_LEARNING' },
+  { code: 'CERTIFICATION', label: 'Certification', category: 'Self-learning', description: 'Relevant certification attempt.', evidenceProfile: 'SELF_LEARNING' },
+  { code: 'STRUCTURED_SELF_LEARNING', label: 'Structured self-learning activity', category: 'Self-learning', description: 'Guided independent study with evidence.', evidenceProfile: 'SELF_LEARNING' },
+  { code: 'TARGETED_MENTORING', label: 'Targeted mentoring', category: 'Student', description: 'Mentoring for identified students.', evidenceProfile: 'REMEDIAL' },
+  { code: 'CO_REASSESSMENT', label: 'CO reassessment', category: 'Reassessment', description: 'CO-mapped reassessment after intervention.', evidenceProfile: 'REASSESSMENT' },
+];
+
+export const CAUSE_ACTION_LINKS: Array<{ cause: string; actions: string[] }> = [
+  { cause: 'CONCEPTUAL_PREREQUISITE', actions: ['BRIDGE_SESSION', 'REMEDIAL_CLASS', 'PREREQUISITE_WORKSHEET', 'DIAGNOSTIC_REVISION', 'CO_REASSESSMENT'] },
+  { cause: 'CONCEPTUAL_CORE', actions: ['REMEDIAL_CLASS', 'TUTORIAL', 'DIAGNOSTIC_REVISION', 'CO_REASSESSMENT'] },
+  { cause: 'CONCEPTUAL_REINFORCEMENT', actions: ['TUTORIAL', 'PRACTICE_QUIZ', 'ADDITIONAL_PROBLEM_SET', 'CO_REASSESSMENT'] },
+  { cause: 'ASSESSMENT_PRACTICE', actions: ['ADDITIONAL_PROBLEM_SET', 'PRACTICE_QUIZ', 'TUTORIAL', 'CO_REASSESSMENT'] },
+  { cause: 'ASSESSMENT_HIGHER_ORDER', actions: ['TUTORIAL', 'ADDITIONAL_PROBLEM_SET', 'PEER_ASSISTED_LEARNING', 'CO_REASSESSMENT'] },
+  { cause: 'ASSESSMENT_APPLICATION', actions: ['TUTORIAL', 'ADDITIONAL_PROBLEM_SET', 'PRACTICE_QUIZ', 'TARGETED_MENTORING', 'CO_REASSESSMENT'] },
+  { cause: 'ASSESSMENT_PROBLEM_SOLVING', actions: ['TUTORIAL', 'ADDITIONAL_PROBLEM_SET', 'PRACTICE_QUIZ', 'PEER_ASSISTED_LEARNING', 'CO_REASSESSMENT'] },
+  { cause: 'DELIVERY_HOURS', actions: ['REMEDIAL_CLASS', 'TUTORIAL', 'CO_REASSESSMENT'] },
+  { cause: 'DELIVERY_EXAMPLES', actions: ['TUTORIAL', 'DEMONSTRATION', 'ADDITIONAL_PROBLEM_SET', 'CO_REASSESSMENT'] },
+  { cause: 'DELIVERY_PRACTICAL', actions: ['ADDITIONAL_LAB', 'DEMONSTRATION', 'SIMULATION', 'MINI_PROJECT', 'CO_REASSESSMENT'] },
+  { cause: 'DELIVERY_LAB', actions: ['ADDITIONAL_LAB', 'DEMONSTRATION', 'CO_REASSESSMENT'] },
+  { cause: 'STUDENT_ATTENDANCE', actions: ['TARGETED_MENTORING', 'REMEDIAL_CLASS', 'CO_REASSESSMENT'] },
+  { cause: 'STUDENT_PARTICIPATION', actions: ['PEER_ASSISTED_LEARNING', 'TARGETED_MENTORING', 'CO_REASSESSMENT'] },
+  { cause: 'STUDENT_ASSIGNMENT', actions: ['TOOL_ASSIGNMENT', 'ADDITIONAL_PROBLEM_SET', 'TARGETED_MENTORING', 'CO_REASSESSMENT'] },
+  { cause: 'STUDENT_SELF_LEARNING', actions: ['GUIDED_MOOC', 'STRUCTURED_SELF_LEARNING', 'CERTIFICATION', 'CO_REASSESSMENT'] },
+  { cause: 'RESOURCE_TOOLS', actions: ['TOOL_TRAINING', 'SOFTWARE_WORKSHOP', 'SIMULATION', 'TOOL_ASSIGNMENT', 'CO_REASSESSMENT'] },
+  { cause: 'RESOURCE_INDUSTRY', actions: ['INDUSTRY_PROBLEM', 'MINI_PROJECT', 'CO_REASSESSMENT'] },
+  { cause: 'RESOURCE_PROJECT', actions: ['MINI_PROJECT', 'DESIGN_PROBLEM', 'PROTOTYPE', 'CO_REASSESSMENT'] },
+  { cause: 'OTHER', actions: ['REMEDIAL_CLASS', 'CO_REASSESSMENT'] },
+];
+
+export const EVIDENCE_TEMPLATES: EvidenceTemplateDef[] = [
+  { actionProfile: 'REMEDIAL', code: 'DATE', label: 'Date', required: true },
+  { actionProfile: 'REMEDIAL', code: 'TOPIC', label: 'Topic', required: true },
+  { actionProfile: 'REMEDIAL', code: 'FACULTY', label: 'Faculty', required: true, autoLinkSource: 'CYCLE_OWNER' },
+  { actionProfile: 'REMEDIAL', code: 'STUDENT_LIST', label: 'Student list', required: true, autoLinkSource: 'WEAK_STUDENTS' },
+  { actionProfile: 'REMEDIAL', code: 'ATTENDANCE', label: 'Attendance', required: true },
+  { actionProfile: 'REMEDIAL', code: 'SESSION_REPORT', label: 'Session/activity report', required: true },
+  { actionProfile: 'REMEDIAL', code: 'LEARNING_MATERIAL', label: 'Learning material', required: true, autoLinkSource: 'LESSON_PLAN' },
+  { actionProfile: 'REMEDIAL', code: 'REASSESSMENT_RESULT', label: 'Reassessment result', required: true, autoLinkSource: 'REASSESSMENT' },
+  { actionProfile: 'REMEDIAL', code: 'PHOTOS', label: 'Photos', required: false },
+  { actionProfile: 'REMEDIAL', code: 'WORKSHEETS', label: 'Additional worksheets', required: false },
+  { actionProfile: 'WORKSHOP', code: 'BROCHURE', label: 'Brochure', required: true },
+  { actionProfile: 'WORKSHOP', code: 'SCHEDULE', label: 'Schedule', required: true },
+  { actionProfile: 'WORKSHOP', code: 'RESOURCE_PERSON', label: 'Resource person', required: true },
+  { actionProfile: 'WORKSHOP', code: 'ATTENDANCE', label: 'Attendance', required: true },
+  { actionProfile: 'WORKSHOP', code: 'ACTIVITY_REPORT', label: 'Activity report', required: true },
+  { actionProfile: 'WORKSHOP', code: 'FEEDBACK', label: 'Feedback', required: true, autoLinkSource: 'SURVEY' },
+  { actionProfile: 'WORKSHOP', code: 'PHOTOS', label: 'Photos', required: false },
+  { actionProfile: 'WORKSHOP', code: 'CERTIFICATES', label: 'Certificates', required: false },
+  { actionProfile: 'MINI_PROJECT', code: 'PROBLEM_STATEMENT', label: 'Problem statement', required: true },
+  { actionProfile: 'MINI_PROJECT', code: 'TEAM_DETAILS', label: 'Student/team details', required: true, autoLinkSource: 'WEAK_STUDENTS' },
+  { actionProfile: 'MINI_PROJECT', code: 'PROJECT_REPORT', label: 'Project report', required: true },
+  { actionProfile: 'MINI_PROJECT', code: 'RUBRIC', label: 'Rubric', required: true, autoLinkSource: 'ASSIGNMENT_SCHEME' },
+  { actionProfile: 'MINI_PROJECT', code: 'EVALUATION', label: 'Evaluation', required: true, autoLinkSource: 'ASSIGNMENT' },
+  { actionProfile: 'MINI_PROJECT', code: 'RESULT', label: 'Result', required: true, autoLinkSource: 'ASSIGNMENT' },
+  { actionProfile: 'MINI_PROJECT', code: 'PROTOTYPE_PHOTOS', label: 'Prototype photos', required: false },
+  { actionProfile: 'MINI_PROJECT', code: 'DEMO', label: 'Demo evidence', required: false },
+  { actionProfile: 'TOOL', code: 'SCHEDULE', label: 'Schedule', required: true },
+  { actionProfile: 'TOOL', code: 'TOOL_NAME', label: 'Tool/software', required: true },
+  { actionProfile: 'TOOL', code: 'ATTENDANCE', label: 'Attendance', required: true },
+  { actionProfile: 'TOOL', code: 'ACTIVITY_REPORT', label: 'Activity report', required: true },
+  { actionProfile: 'TOOL', code: 'ASSIGNMENT', label: 'Tool-based assignment', required: true, autoLinkSource: 'ASSIGNMENT' },
+  { actionProfile: 'TOOL', code: 'PHOTOS', label: 'Photos', required: false },
+  { actionProfile: 'SELF_LEARNING', code: 'ACTIVITY_PLAN', label: 'Activity plan', required: true },
+  { actionProfile: 'SELF_LEARNING', code: 'PLATFORM', label: 'Platform (NPTEL/SWAYAM/MOOC)', required: true },
+  { actionProfile: 'SELF_LEARNING', code: 'STUDENT_LIST', label: 'Student list', required: true, autoLinkSource: 'WEAK_STUDENTS' },
+  { actionProfile: 'SELF_LEARNING', code: 'COMPLETION_PROOF', label: 'Completion proof', required: true },
+  { actionProfile: 'SELF_LEARNING', code: 'REFLECTION', label: 'Learning reflection/report', required: true },
+  { actionProfile: 'REASSESSMENT', code: 'INSTRUMENT', label: 'Reassessment instrument', required: true, autoLinkSource: 'QUIZ' },
+  { actionProfile: 'REASSESSMENT', code: 'CO_MAPPING', label: 'CO mapping', required: true, autoLinkSource: 'QUIZ' },
+  { actionProfile: 'REASSESSMENT', code: 'MARKS', label: 'Reassessment marks', required: true, autoLinkSource: 'QUIZ' },
+  { actionProfile: 'REASSESSMENT', code: 'RESULT', label: 'Result comparison', required: true, autoLinkSource: 'ATTAINMENT_RUN' },
+];
+
+export const PO_ACTIONS: Array<{ poCode: string; label: string; actionCodes: string[] }> = [
+  { poCode: 'PO1', label: 'Advanced/application-oriented learning and engineering problem practice', actionCodes: ['ADDITIONAL_PROBLEM_SET', 'TUTORIAL'] },
+  { poCode: 'PO2', label: 'Case studies, structured problem solving, analytical exercises', actionCodes: ['TUTORIAL', 'ADDITIONAL_PROBLEM_SET'] },
+  { poCode: 'PO3', label: 'Design problems, mini-projects, prototypes, industry problem statements', actionCodes: ['DESIGN_PROBLEM', 'MINI_PROJECT', 'PROTOTYPE', 'INDUSTRY_PROBLEM'] },
+  { poCode: 'PO4', label: 'Investigation activities, research exercises, data analysis', actionCodes: ['ADDITIONAL_PROBLEM_SET', 'MINI_PROJECT'] },
+  { poCode: 'PO5', label: 'Software/tool training, simulation, tool-based assignments', actionCodes: ['TOOL_TRAINING', 'SOFTWARE_WORKSHOP', 'SIMULATION', 'TOOL_ASSIGNMENT'] },
+  { poCode: 'PO6', label: 'Community/social projects', actionCodes: ['MINI_PROJECT', 'INDUSTRY_PROBLEM'] },
+  { poCode: 'PO7', label: 'Sustainability/SDG-linked activities', actionCodes: ['MINI_PROJECT', 'STRUCTURED_SELF_LEARNING'] },
+  { poCode: 'PO8', label: 'Ethics activities and professional ethics case studies', actionCodes: ['TUTORIAL', 'ADDITIONAL_PROBLEM_SET'] },
+  { poCode: 'PO9', label: 'Teamwork and collaborative projects', actionCodes: ['MINI_PROJECT', 'PEER_ASSISTED_LEARNING'] },
+  { poCode: 'PO10', label: 'Technical presentations, report writing, communication exercises', actionCodes: ['MINI_PROJECT', 'STRUCTURED_SELF_LEARNING'] },
+  { poCode: 'PO11', label: 'Project management and finance/cost estimation exercises', actionCodes: ['MINI_PROJECT', 'DESIGN_PROBLEM'] },
+  { poCode: 'PO12', label: 'NPTEL, SWAYAM, MOOC, certifications, self-learning', actionCodes: ['GUIDED_MOOC', 'CERTIFICATION', 'STRUCTURED_SELF_LEARNING'] },
+];

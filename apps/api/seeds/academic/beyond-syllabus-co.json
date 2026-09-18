@@ -1,0 +1,750 @@
+[
+  {
+    "cbsId": "CBS-BIS701-001",
+    "courseCode": "BIS701",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Managed Cloud Data Processing Platforms",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 2
+  },
+  {
+    "cbsId": "CBS-BIS701-002",
+    "courseCode": "BIS701",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Hands-on Big Data Pipeline Mini-Lab",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 3
+  },
+  {
+    "cbsId": "CBS-BIS701-003",
+    "courseCode": "BIS701",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Introduction to Vector Databases",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 4
+  },
+  {
+    "cbsId": "CBS-BIS701-004",
+    "courseCode": "BIS701",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Lakehouse Architecture and Open Table Formats",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 5
+  },
+  {
+    "cbsId": "CBS-BIS701-005",
+    "courseCode": "BIS701",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Real-time Stream Processing with Kafka + Spark Structured Streaming",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 6
+  },
+  {
+    "cbsId": "CBS-BIS701-006",
+    "courseCode": "BIS701",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for NoSQL Data Modeling Clinic for Analytics Workloads",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 7
+  },
+  {
+    "cbsId": "CBS-BIS703-001",
+    "courseCode": "BIS703",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for TLS 1.3 Handshake Deep Dive and Certificate Lifecycle",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 8
+  },
+  {
+    "cbsId": "CBS-BIS703-002",
+    "courseCode": "BIS703",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Password Hashing: Argon2, bcrypt, and Breach Case Studies",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 9
+  },
+  {
+    "cbsId": "CBS-BIS703-003",
+    "courseCode": "BIS703",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for OAuth 2.1 / OpenID Connect for API Security",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 10
+  },
+  {
+    "cbsId": "CBS-BIS703-004",
+    "courseCode": "BIS703",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Zero-Trust Network Access Concepts",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 11
+  },
+  {
+    "cbsId": "CBS-BIS703-005",
+    "courseCode": "BIS703",
+    "coCode": "CO5",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Hands-on Packet Capture Threat Hunt Mini-Lab",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 12
+  },
+  {
+    "cbsId": "CBS-BCS403-001",
+    "courseCode": "BCS403",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Conceptual Modeling Workshop with Real Domain Case",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 13
+  },
+  {
+    "cbsId": "CBS-BCS403-002",
+    "courseCode": "BCS403",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Query Optimization and EXPLAIN Plans in Practice",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 14
+  },
+  {
+    "cbsId": "CBS-BCS403-003",
+    "courseCode": "BCS403",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Transactional Integrity and Isolation Levels Mini-Lab",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 15
+  },
+  {
+    "cbsId": "CBS-BCS403-004",
+    "courseCode": "BCS403",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Introduction to Cloud Managed Relational Databases",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 16
+  },
+  {
+    "cbsId": "CBS-BCS403-005",
+    "courseCode": "BCS403",
+    "coCode": "CO5",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Polyglot Persistence Decision Framework",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 17
+  },
+  {
+    "cbsId": "CBS-10CS55-001",
+    "courseCode": "10CS55",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Wireshark Protocol Analysis Lab Beyond OSI Charts",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 18
+  },
+  {
+    "cbsId": "CBS-10CS55-002",
+    "courseCode": "10CS55",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Modern Access Media: Fiber, 5G RAN, and Campus Wi-Fi 6",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 19
+  },
+  {
+    "cbsId": "CBS-10CS55-003",
+    "courseCode": "10CS55",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Software-Defined Networking Concepts",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 20
+  },
+  {
+    "cbsId": "CBS-10CS55-004",
+    "courseCode": "10CS55",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Campus Network Design Mini-Case",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 21
+  },
+  {
+    "cbsId": "CBS-10CS55-005",
+    "courseCode": "10CS55",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Network Security Hardening Checklist Seminar",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 22
+  },
+  {
+    "cbsId": "CBS-BCS503-001",
+    "courseCode": "BCS503",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Regex Engine Internals: NFA Construction Demo",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 23
+  },
+  {
+    "cbsId": "CBS-BCS503-002",
+    "courseCode": "BCS503",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Industrial Regex Safety and ReDoS Case Study",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 24
+  },
+  {
+    "cbsId": "CBS-BCS503-003",
+    "courseCode": "BCS503",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Parser Generators Briefing (ANTLR / yacc concepts)",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 25
+  },
+  {
+    "cbsId": "CBS-BCS503-004",
+    "courseCode": "BCS503",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Computability Frontiers: Undecidability in Practice",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 26
+  },
+  {
+    "cbsId": "CBS-BCS503-005",
+    "courseCode": "BCS503",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Guided PDA Construction Studio",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 27
+  },
+  {
+    "cbsId": "CBS-BCS702-001",
+    "courseCode": "BCS702",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Parallel Profiling with Hardware Performance Counters",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 28
+  },
+  {
+    "cbsId": "CBS-BCS702-002",
+    "courseCode": "BCS702",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for GPU Computing Primer with CUDA/OpenCL Concepts",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 29
+  },
+  {
+    "cbsId": "CBS-BCS702-003",
+    "courseCode": "BCS702",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Cloud HPC Job Submission Mini-Lab",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 30
+  },
+  {
+    "cbsId": "CBS-BCS702-004",
+    "courseCode": "BCS702",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for OpenMP Tasking and NUMA Awareness Clinic",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 31
+  },
+  {
+    "cbsId": "CBS-BCS702-005",
+    "courseCode": "BCS702",
+    "coCode": "CO5",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Parallel Computing in Data Centers: Guest Perspective",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 32
+  },
+  {
+    "cbsId": "CBS-22MBA401-001",
+    "courseCode": "22MBA401",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for International Business: Industry Toolchain Walkthrough",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 39
+  },
+  {
+    "cbsId": "CBS-22MBA401-002",
+    "courseCode": "22MBA401",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for International Business: Emerging Technology Briefing",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 40
+  },
+  {
+    "cbsId": "CBS-22MBA401-003",
+    "courseCode": "22MBA401",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for International Business: Guided Practical Enrichment Studio",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 41
+  },
+  {
+    "cbsId": "CBS-22MBA401-004",
+    "courseCode": "22MBA401",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for International Business: Advanced Problem-Solving Clinic",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 42
+  },
+  {
+    "cbsId": "CBS-22MBA401-005",
+    "courseCode": "22MBA401",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for International Business: Faculty Enrichment Seminar",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 43
+  },
+  {
+    "cbsId": "CBS-22MBA401-006",
+    "courseCode": "22MBA401",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for International Business: Interdisciplinary Application Case",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 44
+  },
+  {
+    "cbsId": "CBS-BRMK557-001",
+    "courseCode": "BRMK557",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Research Methodology & IPR: Industry Toolchain Walkthrough",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 45
+  },
+  {
+    "cbsId": "CBS-BRMK557-002",
+    "courseCode": "BRMK557",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Research Methodology & IPR: Emerging Technology Briefing",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 46
+  },
+  {
+    "cbsId": "CBS-BRMK557-003",
+    "courseCode": "BRMK557",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Research Methodology & IPR: Guided Practical Enrichment Studio",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 47
+  },
+  {
+    "cbsId": "CBS-BRMK557-004",
+    "courseCode": "BRMK557",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Research Methodology & IPR: Advanced Problem-Solving Clinic",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 48
+  },
+  {
+    "cbsId": "CBS-BRMK557-005",
+    "courseCode": "BRMK557",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Research Methodology & IPR: Faculty Enrichment Seminar",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 49
+  },
+  {
+    "cbsId": "CBS-BRMK557-006",
+    "courseCode": "BRMK557",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Research Methodology & IPR: Interdisciplinary Application Case",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 50
+  },
+  {
+    "cbsId": "CBS-1BCHES102202-001",
+    "courseCode": "1BCHES102/202",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Applied Chemistry for Smart Systems: Industry Toolchain Walkthrough",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 51
+  },
+  {
+    "cbsId": "CBS-1BCHES102202-002",
+    "courseCode": "1BCHES102/202",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Applied Chemistry for Smart Systems: Emerging Technology Briefing",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 52
+  },
+  {
+    "cbsId": "CBS-1BCHES102202-003",
+    "courseCode": "1BCHES102/202",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Applied Chemistry for Smart Systems: Guided Practical Enrichment Studio",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 53
+  },
+  {
+    "cbsId": "CBS-1BCHES102202-004",
+    "courseCode": "1BCHES102/202",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Applied Chemistry for Smart Systems: Advanced Problem-Solving Clinic",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 54
+  },
+  {
+    "cbsId": "CBS-1BCHES102202-005",
+    "courseCode": "1BCHES102/202",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Applied Chemistry for Smart Systems: Faculty Enrichment Seminar",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 55
+  },
+  {
+    "cbsId": "CBS-1BCHES102202-006",
+    "courseCode": "1BCHES102/202",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Applied Chemistry for Smart Systems: Interdisciplinary Application Case",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 56
+  },
+  {
+    "cbsId": "CBS-BCA701-001",
+    "courseCode": "BCA701",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Autograd and Computational Graphs Hands-on",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 57
+  },
+  {
+    "cbsId": "CBS-BCA701-002",
+    "courseCode": "BCA701",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Transfer Learning with Pretrained Vision Models",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 58
+  },
+  {
+    "cbsId": "CBS-BCA701-003",
+    "courseCode": "BCA701",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for LLM Fine-Tuning Concepts (LoRA/QLoRA Overview)",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 59
+  },
+  {
+    "cbsId": "CBS-BCA701-004",
+    "courseCode": "BCA701",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for MLOps Experiment Tracking Mini-Project",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 60
+  },
+  {
+    "cbsId": "CBS-BCA701-005",
+    "courseCode": "BCA701",
+    "coCode": "CO5",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Responsible AI Failure Modes Seminar",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 61
+  },
+  {
+    "cbsId": "CBS-BCS303-001",
+    "courseCode": "BCS303",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Linux Process Anatomy with /proc Exploration",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 62
+  },
+  {
+    "cbsId": "CBS-BCS303-002",
+    "courseCode": "BCS303",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Scheduler Behavior under Load: Live Experiment",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 63
+  },
+  {
+    "cbsId": "CBS-BCS303-003",
+    "courseCode": "BCS303",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Concurrency Bug Clinic (Deadlock/Race Case Studies)",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 64
+  },
+  {
+    "cbsId": "CBS-BCS303-004",
+    "courseCode": "BCS303",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Containers vs VMs: Isolation Models Briefing",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 65
+  },
+  {
+    "cbsId": "CBS-BCS303-005",
+    "courseCode": "BCS303",
+    "coCode": "CO5",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Observability Stack Overview (logs/metrics/traces)",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 66
+  },
+  {
+    "cbsId": "CBS-BCS515B-001",
+    "courseCode": "BCS515B",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Agent Architectures in Modern Assistants",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 67
+  },
+  {
+    "cbsId": "CBS-BCS515B-002",
+    "courseCode": "BCS515B",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Search Visualizer Lab (BFS/DFS/UCS Traces)",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 68
+  },
+  {
+    "cbsId": "CBS-BCS515B-003",
+    "courseCode": "BCS515B",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for A* Heuristic Design Clinic",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 69
+  },
+  {
+    "cbsId": "CBS-BCS515B-004",
+    "courseCode": "BCS515B",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Constraint Satisfaction in Scheduling Case",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 70
+  },
+  {
+    "cbsId": "CBS-BCS515B-005",
+    "courseCode": "BCS515B",
+    "coCode": "CO5",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for AI Product Evaluation Rubric Workshop",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 71
+  },
+  {
+    "cbsId": "CBS-1BEC304-001",
+    "courseCode": "1BEC304",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Analog Electronics and Linear Integrated Circuits: Industry Toolchain Walkthrough",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 72
+  },
+  {
+    "cbsId": "CBS-1BEC304-002",
+    "courseCode": "1BEC304",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Analog Electronics and Linear Integrated Circuits: Emerging Technology Briefing",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 73
+  },
+  {
+    "cbsId": "CBS-1BEC304-003",
+    "courseCode": "1BEC304",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Analog Electronics and Linear Integrated Circuits: Guided Practical Enrichment Studio",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 74
+  },
+  {
+    "cbsId": "CBS-1BEC304-004",
+    "courseCode": "1BEC304",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Analog Electronics and Linear Integrated Circuits: Advanced Problem-Solving Clinic",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 75
+  },
+  {
+    "cbsId": "CBS-1BEC304-005",
+    "courseCode": "1BEC304",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Analog Electronics and Linear Integrated Circuits: Faculty Enrichment Seminar",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 76
+  },
+  {
+    "cbsId": "CBS-1BEC304-006",
+    "courseCode": "1BEC304",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Analog Electronics and Linear Integrated Circuits: Interdisciplinary Application Case",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 77
+  },
+  {
+    "cbsId": "CBS-1BCS305-001",
+    "courseCode": "1BCS305",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Data Structures and Applications: Industry Toolchain Walkthrough",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 78
+  },
+  {
+    "cbsId": "CBS-1BCS305-002",
+    "courseCode": "1BCS305",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Data Structures and Applications: Emerging Technology Briefing",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 79
+  },
+  {
+    "cbsId": "CBS-1BCS305-003",
+    "courseCode": "1BCS305",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Data Structures and Applications: Guided Practical Enrichment Studio",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 80
+  },
+  {
+    "cbsId": "CBS-1BCS305-004",
+    "courseCode": "1BCS305",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Data Structures and Applications: Advanced Problem-Solving Clinic",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 81
+  },
+  {
+    "cbsId": "CBS-1BCS305-005",
+    "courseCode": "1BCS305",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Data Structures and Applications: Faculty Enrichment Seminar",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 82
+  },
+  {
+    "cbsId": "CBS-1BCS305-006",
+    "courseCode": "1BCS305",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Primary enrichment mapping for Data Structures and Applications: Interdisciplinary Application Case",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 83
+  },
+  {
+    "cbsId": "CBS-1BCS302-001",
+    "courseCode": "1BCS302",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "The prescribed OOP-with-Java syllabus does not include professional source-control workflow used on every industry Java team.",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "cbsId": "CBS-1BCS302-002",
+    "courseCode": "1BCS302",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Prescribed Java labs rarely require automated tests; industry Java code is validated with JUnit.",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "cbsId": "CBS-1BCS302-003",
+    "courseCode": "1BCS302",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Syllabus compiles isolated programs; industry Java work is organized around Maven/Gradle builds.",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "cbsId": "CBS-1BCS302-004",
+    "courseCode": "1BCS302",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Industry Java roles expect familiarity with Spring Boot APIs; the syllabus stops at core OOP.",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "cbsId": "CBS-1BCS302-005",
+    "courseCode": "1BCS302",
+    "coCode": "CO3",
+    "relationship": "PRIMARY",
+    "basis": "Syllabus covers interfaces and inheritance but not named design patterns used in Java interviews and codebases.",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "cbsId": "CBS-1BCS302-006",
+    "courseCode": "1BCS302",
+    "coCode": "CO5",
+    "relationship": "PRIMARY",
+    "basis": "Collections APIs are used in labs without comparing performance characteristics needed for real systems.",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "cbsId": "CBS-1BCS302-007",
+    "courseCode": "1BCS302",
+    "coCode": "CO2",
+    "relationship": "PRIMARY",
+    "basis": "Core Java OOP does not include database access; JDBC is the standard next professional skill.",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "cbsId": "CBS-1BCS302-008",
+    "courseCode": "1BCS302",
+    "coCode": "CO4",
+    "relationship": "PRIMARY",
+    "basis": "Students often debug with print statements; professional Java work uses debugger and profiler workflows.",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  }
+]

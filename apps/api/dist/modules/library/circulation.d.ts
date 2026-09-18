@@ -1,0 +1,147 @@
+import type { LibraryActor } from './types.js';
+export declare function refreshOverdueStatuses(collegeId: number): Promise<{
+    refreshedAt: string;
+}>;
+export declare function issueBook(actor: LibraryActor, params: {
+    memberId: number;
+    barcode: string;
+}): Promise<{
+    id: number;
+    memberId: number;
+    copyId: number;
+    catalogItemId: number;
+    title: any;
+    authors: any;
+    accessionNumber: any;
+    barcode: any;
+    issuedAt: any;
+    dueAt: any;
+    returnedAt: any;
+    renewalCount: number;
+    renewalsLeft: number;
+    status: any;
+    rawStatus: any;
+}>;
+export declare function returnBook(actor: LibraryActor, barcode: string): Promise<{
+    id: number;
+    memberId: number;
+    copyId: number;
+    catalogItemId: number;
+    title: any;
+    authors: any;
+    accessionNumber: any;
+    barcode: any;
+    issuedAt: any;
+    dueAt: any;
+    returnedAt: any;
+    renewalCount: number;
+    renewalsLeft: number;
+    status: any;
+    rawStatus: any;
+}>;
+export declare function renewLoan(actorOrMember: LibraryActor | {
+    memberId: number;
+    collegeId: number;
+}, loanId: number): Promise<{
+    id: number;
+    memberId: number;
+    copyId: number;
+    catalogItemId: number;
+    title: any;
+    authors: any;
+    accessionNumber: any;
+    barcode: any;
+    issuedAt: any;
+    dueAt: any;
+    returnedAt: any;
+    renewalCount: number;
+    renewalsLeft: number;
+    status: any;
+    rawStatus: any;
+}>;
+export declare function markLoanLost(actor: LibraryActor, loanId: number, chargeAmount: number, remarks?: string): Promise<{
+    loan: {
+        id: number;
+        memberId: number;
+        copyId: number;
+        catalogItemId: number;
+        title: any;
+        authors: any;
+        accessionNumber: any;
+        barcode: any;
+        issuedAt: any;
+        dueAt: any;
+        returnedAt: any;
+        renewalCount: number;
+        renewalsLeft: number;
+        status: any;
+        rawStatus: any;
+    };
+    fine: {
+        id: number;
+        memberId: number;
+        loanId: number | null;
+        fineType: unknown;
+        amount: string;
+        waivedAmount: string;
+        paidAmount: string;
+        outstandingAmount: string;
+        status: unknown;
+        remarks: unknown;
+        financeDemandId: number | null;
+    };
+}>;
+export declare function getLoan(loanId: number, collegeId: number): Promise<{
+    id: number;
+    memberId: number;
+    copyId: number;
+    catalogItemId: number;
+    title: any;
+    authors: any;
+    accessionNumber: any;
+    barcode: any;
+    issuedAt: any;
+    dueAt: any;
+    returnedAt: any;
+    renewalCount: number;
+    renewalsLeft: number;
+    status: any;
+    rawStatus: any;
+}>;
+export declare function listMemberLoans(memberId: number, collegeId: number, activeOnly?: boolean): Promise<{
+    id: number;
+    memberId: number;
+    copyId: number;
+    catalogItemId: number;
+    title: any;
+    authors: any;
+    accessionNumber: any;
+    barcode: any;
+    issuedAt: any;
+    dueAt: any;
+    returnedAt: any;
+    renewalCount: number;
+    renewalsLeft: number;
+    status: any;
+    rawStatus: any;
+}[]>;
+export declare function listMemberHistory(memberId: number, collegeId: number): Promise<{
+    id: number;
+    memberId: number;
+    copyId: number;
+    catalogItemId: number;
+    title: any;
+    authors: any;
+    accessionNumber: any;
+    barcode: any;
+    issuedAt: any;
+    dueAt: any;
+    returnedAt: any;
+    renewalCount: number;
+    renewalsLeft: number;
+    status: any;
+    rawStatus: any;
+}[]>;
+export declare function sendDueReminders(collegeId: number): Promise<{
+    sent: number;
+}>;

@@ -1,0 +1,38 @@
+[
+  {
+    "programCode": "INFORMATION_SCIENCE_AND_ENGINEER",
+    "name": "Information Science and Engineering",
+    "scheme": "2022",
+    "degree": "B.E."
+  },
+  {
+    "programCode": "COMPUTER_SCIENCE_AND_ENGINEERING",
+    "name": "Computer Science and Engineering",
+    "scheme": "2022",
+    "degree": "B.E."
+  },
+  {
+    "programCode": "COMPUTER_SCIENCE_AND_ENGINEERING",
+    "name": "Computer Science and Engineering",
+    "scheme": "2010",
+    "degree": "B.E."
+  },
+  {
+    "programCode": "COMPUTER_SCIENCE_AND_ENGINEERING",
+    "name": "Computer Science and Engineering",
+    "scheme": "2025",
+    "degree": "B.E."
+  },
+  {
+    "programCode": "MASTER_OF_BUSINESS_ADMINISTRATIO",
+    "name": "Master of Business Administration",
+    "scheme": "2022",
+    "degree": "MBA"
+  },
+  {
+    "programCode": "ELECTRONICS_AND_COMMUNICATION_EN",
+    "name": "Electronics and Communication Engineering",
+    "scheme": "2025",
+    "degree": "B.E."
+  }
+]

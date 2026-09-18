@@ -1,0 +1,95 @@
+import type { HrActor } from './types.js';
+import { type Row } from './recruitmentTypes.js';
+export declare function serializeCandidate(row: Row): {
+    id: number;
+    collegeId: number;
+    fullName: unknown;
+    email: unknown;
+    phone: unknown;
+    location: unknown;
+    qualificationSummary: unknown;
+    experienceSummary: unknown;
+    source: unknown;
+    referrerEmployeeId: number | null;
+    linkedEmployeeId: number | null;
+    consentAt: unknown;
+    status: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+};
+export declare function findCandidateByEmail(collegeId: number, email: string): Promise<any>;
+export declare function findCandidateByPhone(collegeId: number, phone: string | null | undefined): Promise<any>;
+export declare function upsertCandidate(collegeId: number, input: {
+    fullName: string;
+    email: string;
+    phone?: string | null;
+    location?: string | null;
+    qualificationSummary?: string | null;
+    experienceSummary?: string | null;
+    source?: string;
+    referrerEmployeeId?: number | null;
+    linkedEmployeeId?: number | null;
+    consent?: boolean;
+}, trx?: import('knex').Knex | import('knex').Knex.Transaction): Promise<any>;
+export declare function createCandidate(actor: HrActor, raw: unknown): Promise<{
+    id: number;
+    collegeId: number;
+    fullName: unknown;
+    email: unknown;
+    phone: unknown;
+    location: unknown;
+    qualificationSummary: unknown;
+    experienceSummary: unknown;
+    source: unknown;
+    referrerEmployeeId: number | null;
+    linkedEmployeeId: number | null;
+    consentAt: unknown;
+    status: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}>;
+export declare function getCandidate(actor: HrActor, id: number): Promise<{
+    id: number;
+    collegeId: number;
+    fullName: unknown;
+    email: unknown;
+    phone: unknown;
+    location: unknown;
+    qualificationSummary: unknown;
+    experienceSummary: unknown;
+    source: unknown;
+    referrerEmployeeId: number | null;
+    linkedEmployeeId: number | null;
+    consentAt: unknown;
+    status: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}>;
+export declare function listCandidates(actor: HrActor, q?: string): Promise<{
+    id: number;
+    collegeId: number;
+    fullName: unknown;
+    email: unknown;
+    phone: unknown;
+    location: unknown;
+    qualificationSummary: unknown;
+    experienceSummary: unknown;
+    source: unknown;
+    referrerEmployeeId: number | null;
+    linkedEmployeeId: number | null;
+    consentAt: unknown;
+    status: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}[]>;
+export declare function issueCandidatePortalToken(actor: HrActor, candidateId: number, opts?: {
+    purpose?: string;
+    expiresInDays?: number;
+}): Promise<{
+    tokenId: number;
+    token: string;
+    expiresAt: string;
+}>;
+export declare function revokeCandidateToken(actor: HrActor, tokenId: number): Promise<{
+    ok: boolean;
+}>;

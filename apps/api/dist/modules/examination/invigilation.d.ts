@@ -1,0 +1,71 @@
+import { z } from 'zod';
+import type { ExamActor } from './access.js';
+export declare const invigilationSchema: z.ZodObject<{
+    facultyId: z.ZodNumber;
+    roomId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    role: z.ZodDefault<z.ZodEnum<["CHIEF", "INVIGILATOR", "RELIEVER", "SQUAD", "OTHER"]>>;
+    dutyDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    startTime: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    endTime: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, "strip", z.ZodTypeAny, {
+    role: "OTHER" | "CHIEF" | "INVIGILATOR" | "RELIEVER" | "SQUAD";
+    facultyId: number;
+    startTime?: string | null | undefined;
+    endTime?: string | null | undefined;
+    roomId?: number | null | undefined;
+    dutyDate?: string | null | undefined;
+}, {
+    facultyId: number;
+    startTime?: string | null | undefined;
+    endTime?: string | null | undefined;
+    roomId?: number | null | undefined;
+    role?: "OTHER" | "CHIEF" | "INVIGILATOR" | "RELIEVER" | "SQUAD" | undefined;
+    dutyDate?: string | null | undefined;
+}>;
+export declare function assignInvigilation(actor: ExamActor, examSubjectId: number, body: z.infer<typeof invigilationSchema>): Promise<{
+    id: number;
+    examSubjectId: number;
+    facultyId: number;
+    facultyName: any;
+    roomId: number | null;
+    roomName: any;
+    roomCode: any;
+    role: any;
+    dutyDate: any;
+    startTime: any;
+    endTime: any;
+    courseName: any;
+    calendarEventId: number | null;
+}>;
+export declare function listInvigilationDuties(actor: ExamActor, examSubjectId?: number): Promise<{
+    id: number;
+    examSubjectId: number;
+    facultyId: number;
+    facultyName: any;
+    roomId: number | null;
+    roomName: any;
+    roomCode: any;
+    role: any;
+    dutyDate: any;
+    startTime: any;
+    endTime: any;
+    courseName: any;
+    calendarEventId: number | null;
+}[]>;
+export declare function facultyDuties(facultyId: number, collegeId: number): Promise<{
+    examName: any;
+    courseCode: any;
+    id: number;
+    examSubjectId: number;
+    facultyId: number;
+    facultyName: any;
+    roomId: number | null;
+    roomName: any;
+    roomCode: any;
+    role: any;
+    dutyDate: any;
+    startTime: any;
+    endTime: any;
+    courseName: any;
+    calendarEventId: number | null;
+}[]>;

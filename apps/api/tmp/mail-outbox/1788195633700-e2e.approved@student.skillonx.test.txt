@@ -1,0 +1,12 @@
+To: e2e.approved@student.skillonx.test
+Subject: Reset your SkillonX Student LMS password
+
+Hi Aarav Approved,
+
+We received a request to reset your Student LMS password.
+Open this link within 60 minutes:
+http://localhost:5173/lms/reset-password?token=a7c296544c7481e6f4a57a760eef5f482bc2929a7861b41fb426831e419e902c
+
+If you did not request this, you can ignore this email.
+
+— SkillonX Student LMS

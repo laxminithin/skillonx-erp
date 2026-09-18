@@ -1,0 +1,74 @@
+import type { HrActor } from './types.js';
+declare const ADJUSTMENT_TYPES: readonly ["EARNING_ADJUSTMENT", "DEDUCTION_ADJUSTMENT", "ARREAR", "RECOVERY"];
+export declare function listAdjustments(actor: HrActor, filters?: {
+    employeeId?: number;
+    payrollRunId?: number;
+}): Promise<{
+    id: number;
+    employeeId: number;
+    employeeNumber: unknown;
+    employeeName: unknown;
+    payrollRunId: number | null;
+    componentId: number | null;
+    amount: number;
+    reason: unknown;
+    status: unknown;
+    adjustmentType: {};
+    sourcePeriodId: number | null;
+    sourceComponentId: number | null;
+    sourcePayrollRunId: number | null;
+    createdBy: number | null;
+    approvedBy: number | null;
+    createdAt: unknown;
+}[]>;
+export declare function createAdjustment(actor: HrActor, input: {
+    employeeId: number;
+    amount: number;
+    reason: string;
+    adjustmentType: (typeof ADJUSTMENT_TYPES)[number];
+    componentId?: number | null;
+    payrollRunId?: number | null;
+    sourcePeriodId?: number | null;
+    sourceComponentId?: number | null;
+    sourcePayrollRunId?: number | null;
+    autoApprove?: boolean;
+}): Promise<{
+    id: number;
+    employeeId: number;
+    employeeNumber: unknown;
+    employeeName: unknown;
+    payrollRunId: number | null;
+    componentId: number | null;
+    amount: number;
+    reason: unknown;
+    status: unknown;
+    adjustmentType: {};
+    sourcePeriodId: number | null;
+    sourceComponentId: number | null;
+    sourcePayrollRunId: number | null;
+    createdBy: number | null;
+    approvedBy: number | null;
+    createdAt: unknown;
+} | undefined>;
+export declare function approveAdjustment(actor: HrActor, adjustmentId: number): Promise<{
+    id: number;
+    employeeId: number;
+    employeeNumber: unknown;
+    employeeName: unknown;
+    payrollRunId: number | null;
+    componentId: number | null;
+    amount: number;
+    reason: unknown;
+    status: unknown;
+    adjustmentType: {};
+    sourcePeriodId: number | null;
+    sourceComponentId: number | null;
+    sourcePayrollRunId: number | null;
+    createdBy: number | null;
+    approvedBy: number | null;
+    createdAt: unknown;
+}>;
+export declare function deleteAdjustment(actor: HrActor, adjustmentId: number): Promise<{
+    deleted: boolean;
+}>;
+export {};

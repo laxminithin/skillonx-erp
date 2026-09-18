@@ -1,0 +1,15 @@
+export declare const LESSON_PLAN_STATUSES: readonly ["DRAFT", "ACTIVE", "ARCHIVED"];
+export type LessonPlanStatus = (typeof LESSON_PLAN_STATUSES)[number];
+export declare const LESSON_ENTRY_STATUSES: readonly ["PLANNED", "COMPLETED", "RESCHEDULED", "SKIPPED"];
+export type LessonEntryStatus = (typeof LESSON_ENTRY_STATUSES)[number];
+export declare const LESSON_CLASSIFICATIONS: readonly ["CORE", "SUPPLEMENTARY"];
+export type LessonClassification = (typeof LESSON_CLASSIFICATIONS)[number];
+export declare const HOURS_SOURCES: readonly ["SOURCE", "ESTIMATED"];
+export type HoursSource = (typeof HOURS_SOURCES)[number];
+export declare const CALENDAR_EXCEPTION_TYPES: readonly ["HOLIDAY", "EXAM", "BLOCKED", "NON_TEACHING"];
+export type CalendarExceptionType = (typeof CALENDAR_EXCEPTION_TYPES)[number];
+export declare const UNIT_KINDS: readonly ["MODULE", "UNIT"];
+export type UnitKind = (typeof UNIT_KINDS)[number];
+export declare const WEEKDAY_LABELS: readonly ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+export declare function normalizeLessonText(value: string): string;
+export declare function fingerprintParts(...parts: Array<string | number | null | undefined>): string;

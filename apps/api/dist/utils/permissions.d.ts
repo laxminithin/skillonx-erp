@@ -1,0 +1,11 @@
+import type { FacultyRole } from '../types/domain.js';
+export declare const FACULTY_PERMISSION_KEYS: readonly ["createSurvey", "publishSurvey", "viewResponses", "exportReports", "manageQuestionBank", "viewStudentInformation"];
+export type FacultyPermissionKey = (typeof FACULTY_PERMISSION_KEYS)[number];
+export type FacultyPermissions = Record<FacultyPermissionKey, boolean>;
+export declare const DEFAULT_FACULTY_PERMISSIONS: FacultyPermissions;
+export declare const ADMIN_ROLES: FacultyRole[];
+export declare const ROLE_LABELS: Record<string, string>;
+export declare function isAdminRole(role: string): boolean;
+export declare function isSuperAdmin(role: string): boolean;
+export declare function parsePermissions(raw: unknown): FacultyPermissions;
+export declare function mergePermissions(overrides?: Partial<FacultyPermissions> | null): FacultyPermissions;

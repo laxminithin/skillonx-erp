@@ -1,0 +1,13 @@
+import type { HostelActor, HostelPermission } from './types.js';
+export declare function hostelPermissionsForRole(role: string): HostelPermission[];
+export declare function hasHostelPermission(actor: HostelActor, permission: HostelPermission): boolean;
+export declare function assertHostelPermission(actor: HostelActor, permission: HostelPermission): void;
+export declare function assertManagementReadOnly(actor: HostelActor): void;
+export declare function hasInstitutionWideHostelRead(actor: HostelActor): boolean;
+export declare function assertHostelCollege(table: string, id: number, collegeId: number): Promise<any>;
+export declare function assertStudentCollege(studentId: number, collegeId: number): Promise<any>;
+export declare function getWardenHostelIds(actor: HostelActor): Promise<number[]>;
+export declare function assertWardenHostelAccess(actor: HostelActor, hostelId: number): Promise<void>;
+export declare function assertStudentOwnsApplication(studentId: number, applicationId: number, collegeId: number): Promise<any>;
+export declare function assertActiveResident(studentId: number, collegeId: number): Promise<any>;
+export declare function assertStudentOwnsResident(studentId: number, residentId: number, collegeId: number): Promise<any>;

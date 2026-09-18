@@ -1,0 +1,204 @@
+<title>The Secret Gem — Voice Script</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,500;9..144,0,600;9..144,1,400;9..144,1,500&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#f6efe6;--surface:#fffaf3;--surface-2:#f0e6d8;
+    --ink:#2a2233;--ink-soft:#6b5f6e;--line:#e3d6c6;
+    --violet:#7c3aed;--violet-soft:#a982f0;--violet-glow:rgba(124,58,237,.16);
+    --amber:#c2632a;--dusk:#3f6079;--shadow:rgba(60,40,30,.10);
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:#17121d;--surface:#211a2b;--surface-2:#2b2238;
+      --ink:#efe7f2;--ink-soft:#b3a4bd;--line:#392e48;
+      --violet:#b794f6;--violet-soft:#8b62d6;--violet-glow:rgba(167,130,240,.20);
+      --amber:#e8945a;--dusk:#7fa8c4;--shadow:rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17121d;--surface:#211a2b;--surface-2:#2b2238;
+    --ink:#efe7f2;--ink-soft:#b3a4bd;--line:#392e48;
+    --violet:#b794f6;--violet-soft:#8b62d6;--violet-glow:rgba(167,130,240,.20);
+    --amber:#e8945a;--dusk:#7fa8c4;--shadow:rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:820px;margin:0 auto;padding:clamp(1.2rem,4vw,3rem) clamp(1rem,4vw,2rem) 5rem;}
+
+  .hero{padding:2.2rem 0 1.8rem;border-bottom:1px solid var(--line);margin-bottom:2.2rem;}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--violet);margin:0 0 1rem;}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.03;letter-spacing:-.02em;margin:0;text-wrap:balance;}
+  h1 em{font-style:italic;color:var(--violet);}
+  .lede{max-width:60ch;color:var(--ink-soft);margin:1rem 0 0;font-size:1.02rem;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.3rem;}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:.72rem;background:var(--surface-2);color:var(--ink-soft);padding:.3rem .65rem;border-radius:20px;border:1px solid var(--line);}
+  .chip b{color:var(--ink);font-weight:500;}
+
+  /* cast */
+  .cast{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.4rem;}
+  .voice{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;box-shadow:0 1px 0 var(--shadow);}
+  .voice .tag{font-family:"JetBrains Mono",monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 .4rem;}
+  .voice.narr .tag{color:var(--dusk);}
+  .voice.gran .tag{color:var(--violet);}
+  .voice h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.1rem;margin:0 0 .35rem;}
+  .voice p{margin:0;font-size:.88rem;color:var(--ink-soft);}
+  @media (max-width:560px){.cast{grid-template-columns:1fr;}}
+
+  .section-label{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 1.3rem;display:flex;align-items:center;gap:.8rem;}
+  .section-label::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  /* script cues */
+  .script{display:flex;flex-direction:column;gap:.7rem;}
+  .cue{display:grid;grid-template-columns:5.2rem 1fr;gap:1rem;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1rem 1.15rem;box-shadow:0 1px 0 var(--shadow);}
+  .cue.gr{border-left:3px solid var(--violet);}
+  .tc{font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--ink-soft);line-height:1.4;}
+  .tc .n{display:block;color:var(--violet);font-size:.68rem;letter-spacing:.1em;margin-bottom:.15rem;}
+  .tc .dur{display:block;font-size:.68rem;margin-top:.15rem;opacity:.7;}
+  .speaker{font-family:"JetBrains Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 .35rem;}
+  .speaker.narr{color:var(--dusk);}
+  .speaker.gran{color:var(--violet);}
+  .line{font-family:"Fraunces",Georgia,serif;font-size:1.12rem;line-height:1.4;margin:0;}
+  .line.dlg{font-style:italic;}
+  .dir{margin:.5rem 0 0;font-size:.82rem;color:var(--ink-soft);}
+  .dir b{color:var(--amber);font-weight:500;}
+
+  .foot{margin-top:2.6rem;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.5rem 1.6rem;}
+  .foot h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.2rem;margin:0 0 1rem;}
+  .foot ul{margin:0;padding-left:1.1rem;}
+  .foot li{margin-bottom:.55rem;font-size:.92rem;}
+  .foot li:last-child{margin-bottom:0;}
+  .foot b{font-weight:600;}
+  .foot code{font-family:"JetBrains Mono",monospace;font-size:.82rem;background:var(--surface-2);padding:.08em .4em;border-radius:5px;}
+  .total{font-family:"JetBrains Mono",monospace;font-size:.8rem;color:var(--violet);}
+  a{color:var(--violet);}
+  @media (max-width:520px){.cue{grid-template-columns:1fr;gap:.5rem;}.tc{display:flex;gap:.8rem;align-items:baseline;}.tc .n,.tc .dur{display:inline;margin:0;}}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Voiceover Script · Episode 01 · runtime 1:10</p>
+    <h1>The Secret Gem — <em>Voice Script</em></h1>
+    <p class="lede">Two voices, twelve cues, timed to the exact length of each generated shot. Record against these timecodes and the words drop straight onto your edit. Every line is written to be <em>spoken</em>, not read — pauses marked with "…", stresses left for the reader to feel.</p>
+    <div class="meta-row">
+      <span class="chip"><b>Words:</b> ~185</span>
+      <span class="chip"><b>Pace:</b> ~2.6 words/sec, unhurried</span>
+      <span class="chip"><b>Runtime:</b> 1 min 10 sec</span>
+    </div>
+  </header>
+
+  <section class="cast">
+    <div class="voice narr">
+      <p class="tag">Voice 1</p>
+      <h3>The Narrator</h3>
+      <p>Warm, gentle, storybook — like reading to a child at bedtime. Unhurried. Smiles through the happy lines; softens to near-whisper by the secret.</p>
+    </div>
+    <div class="voice gran">
+      <p class="tag">Voice 2</p>
+      <h3>Grandmother</h3>
+      <p>Aged, loving, a little playful. Speaks slowly and deliberately. The last line is tender but serious — a real secret being handed over.</p>
+    </div>
+  </section>
+
+  <p class="section-label">The script</p>
+
+  <div class="script">
+
+    <div class="cue">
+      <div class="tc"><span class="n">SH 01</span>0:00–0:10<span class="dur">10s</span></div>
+      <div><p class="speaker narr">Narrator</p>
+        <p class="line">In a forest by the sea, there lived a little girl… with her parents, her grandmother, her cousins, and all their animals.</p>
+        <p class="dir"><b>Tone:</b> open bright and inviting; the "once upon a time" feeling.</p></div>
+    </div>
+
+    <div class="cue">
+      <div class="tc"><span class="n">SH 02</span>0:10–0:15<span class="dur">5s</span></div>
+      <div><p class="speaker narr">Narrator</p>
+        <p class="line">They lived happily together — caring for each other, and for all their animals.</p></div>
+    </div>
+
+    <div class="cue">
+      <div class="tc"><span class="n">SH 03</span>0:15–0:20<span class="dur">5s</span></div>
+      <div><p class="speaker narr">Narrator</p>
+        <p class="line">Every evening, she played in the wet sand by the shore, her little hen close behind.</p></div>
+    </div>
+
+    <div class="cue">
+      <div class="tc"><span class="n">SH 04</span>0:20–0:25<span class="dur">5s</span></div>
+      <div><p class="speaker narr">Narrator</p>
+        <p class="line">As the sun went down, the sky turned to gold, and the waves began to sparkle.</p>
+        <p class="dir"><b>Tone:</b> let the music breathe here — slow the read.</p></div>
+    </div>
+
+    <div class="cue">
+      <div class="tc"><span class="n">SH 05</span>0:25–0:30<span class="dur">5s</span></div>
+      <div><p class="speaker narr">Narrator</p>
+        <p class="line">And when the first stars appeared, she made her way home.</p></div>
+    </div>
+
+    <div class="cue">
+      <div class="tc"><span class="n">SH 06</span>0:30–0:35<span class="dur">5s</span></div>
+      <div><p class="speaker narr">Narrator</p>
+        <p class="line">She curled up on her grandmother's lap — feeling safe, and warm, and loved.</p>
+        <p class="dir"><b>Tone:</b> soften; this is the turn toward the secret.</p></div>
+    </div>
+
+    <div class="cue">
+      <div class="tc"><span class="n">SH 07</span>0:35–0:40<span class="dur">5s</span></div>
+      <div><p class="speaker narr">Narrator</p>
+        <p class="line">Then her grandmother smiled… and drew something from her little pouch.</p>
+        <p class="dir"><b>Pace:</b> hold the "…" — let the pouch open on the pause.</p></div>
+    </div>
+
+    <div class="cue">
+      <div class="tc"><span class="n">SH 08</span>0:40–0:45<span class="dur">5s</span></div>
+      <div><p class="speaker narr">Narrator</p>
+        <p class="line">A gem — purple, and glowing with a strange and gentle light.</p>
+        <p class="dir"><b>Sound:</b> magic shimmer lands under "glowing".</p></div>
+    </div>
+
+    <div class="cue gr">
+      <div class="tc"><span class="n">SH 09</span>0:45–0:50<span class="dur">5s</span></div>
+      <div><p class="speaker gran">Grandmother</p>
+        <p class="line dlg">"This… is a magical gem."</p>
+        <p class="dir"><b>Delivery:</b> slow, a twinkle in the eye. First words she speaks — let them land.</p></div>
+    </div>
+
+    <div class="cue gr">
+      <div class="tc"><span class="n">SH 10</span>0:50–0:55<span class="dur">5s</span></div>
+      <div><p class="speaker gran">Grandmother</p>
+        <p class="line dlg">"With this stone… you will have a power all your own."</p>
+        <p class="dir"><b>Delivery:</b> warm wonder, drawing the child in.</p></div>
+    </div>
+
+    <div class="cue gr">
+      <div class="tc"><span class="n">SH 11</span>0:55–1:00<span class="dur">5s</span></div>
+      <div><p class="speaker gran">Grandmother</p>
+        <p class="line dlg">"Keep it close. But you must not tell anyone in the family."</p>
+        <p class="dir"><b>Delivery:</b> near-whisper on the second line. <b>Music drops out</b> — silence around the "shhh".</p></div>
+    </div>
+
+    <div class="cue">
+      <div class="tc"><span class="n">SH 12</span>1:00–1:10<span class="dur">10s</span></div>
+      <div><p class="speaker narr">Narrator</p>
+        <p class="line">The little girl nodded, and held the gem close to her heart — a secret, just for the two of them. And with that… her story had only begun.</p>
+        <p class="dir"><b>Tone:</b> tender, then lift on the last line — the cliffhanger. Theme swells under "only begun."</p></div>
+    </div>
+
+  </div>
+
+  <section class="foot">
+    <h2>Recording notes</h2>
+    <ul>
+      <li><b>Lip-sync (panels 9–11):</b> the grandmother's clip only moves her mouth — record her three lines first, then nudge each clip so the mouth opens on the first word. If sync drifts, cut to the girl's reaction and let the line finish over her face.</li>
+      <li><b>Room for breath:</b> every cue is written a touch short of its shot length on purpose — leave ~0.5s of silence at each cut so lines never collide across the edit.</li>
+      <li><b>If you use an AI voice:</b> two distinct voices — a mid-warm narrator and an older grandmother. Keep the "…" as commas or ellipses in the input; most engines honour them as pauses. Render each cue as its own file named <code>vo_01.wav … vo_12.wav</code>.</li>
+      <li><b>Subtitles = free translation:</b> burn these exact lines in as captions. When you dub the series into another language later, you swap only the audio and captions — never a single rendered shot.</li>
+      <li><b>Series hook:</b> "her story had only begun" is your recurring sign-off. Reuse the phrasing every episode so young viewers learn to expect it.</li>
+    </ul>
+    <p class="dir" style="margin-top:1.2rem;"><span class="total">Total runtime 1:10</span> — pairs one-to-one with <a href="https://claude.ai/code/artifact/20d8e649-2555-4b6d-8dd3-2bf16cdd89fa">the Shot Sheet</a>.</p>
+  </section>
+
+</div>

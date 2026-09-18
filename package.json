@@ -1,0 +1,38 @@
+{
+  "name": "skillonx-survey",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:api": "npm run dev -w @skillonx/survey-api",
+    "dev:web": "npm run dev -w @skillonx/survey-web",
+    "build": "npm run build --workspaces --if-present",
+    "migrate": "npm run migrate -w @skillonx/survey-api",
+    "seed": "npm run seed -w @skillonx/survey-api",
+    "seed:student-lms-e2e": "npm run seed:student-lms-e2e -w @skillonx/survey-api",
+    "seed:e2e-mobile-users": "npm run seed:e2e-mobile-users -w @skillonx/survey-api",
+    "seed:live-qa": "npm run seed:live-qa -w @skillonx/survey-api",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:migrate": "npm run migrate -w @skillonx/survey-api",
+    "db:seed": "npm run seed -w @skillonx/survey-api",
+    "import:quiz-bank": "npm run import:quiz-bank -w @skillonx/survey-api",
+    "import:lesson-plan": "npm run import:lesson-plan -w @skillonx/survey-api",
+    "import:academic-content": "npm run import:academic-content -w @skillonx/survey-api",
+    "import:co-po": "npm run import:co-po -w @skillonx/survey-api",
+    "import:academic-mappings": "npm run import:academic-mappings -w @skillonx/survey-api",
+    "import:gap-master": "npm run import:gap-master -w @skillonx/survey-api",
+    "import:cbs-master": "npm run import:cbs-master -w @skillonx/survey-api",
+    "import:academic-master": "npm run import:academic-master -w @skillonx/survey-api",
+    "import:co-evaluation": "npm run import:co-evaluation -w @skillonx/survey-api",
+    "import:previous-year-qps": "npm run import:previous-year-qps -w @skillonx/survey-api",
+    "export:seed-snapshot": "npm run export:seed-snapshot -w @skillonx/survey-api",
+    "export:academic-master-json": "npm run export:academic-master-json -w @skillonx/survey-api",
+    "seed:academic-master": "npm run seed:academic-master -w @skillonx/survey-api",
+    "seed:academic-master:validate": "npm run seed:academic-master:validate -w @skillonx/survey-api",
+    "seed:academic-master:dry-run": "npm run seed:academic-master:dry-run -w @skillonx/survey-api"
+  }
+}

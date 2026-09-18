@@ -1,0 +1,10 @@
+import type { HrActor, HrPermission } from './types.js';
+export declare function hrPermissionsForRole(role: string): HrPermission[];
+export declare function hasHrPermission(actor: HrActor, permission: HrPermission): boolean;
+export declare function assertHrPermission(actor: HrActor, permission: HrPermission): void;
+export declare function assertHrCollege(table: string, id: number, collegeId: number): Promise<any>;
+export declare function resolveEmployeeForActor(actor: HrActor): Promise<any>;
+export declare function requireEmployeeForActor(actor: HrActor): Promise<any>;
+export declare function assertEmployeeSelfOrPermission(actor: HrActor, targetEmployeeId: number, permission: HrPermission): Promise<void>;
+export declare function assertManagerScope(actor: HrActor, targetEmployeeId: number): Promise<void>;
+export declare function getEmployeeReportingChain(employeeId: number): Promise<number[]>;

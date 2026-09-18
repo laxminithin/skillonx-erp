@@ -1,0 +1,380 @@
+[
+  {
+    "gapId": "GAP-BIS701-001",
+    "courseCode": "BIS701",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 2
+  },
+  {
+    "gapId": "GAP-BIS701-002",
+    "courseCode": "BIS701",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 3
+  },
+  {
+    "gapId": "GAP-BIS701-003",
+    "courseCode": "BIS701",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 4
+  },
+  {
+    "gapId": "GAP-BIS703-001",
+    "courseCode": "BIS703",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 5
+  },
+  {
+    "gapId": "GAP-BIS703-002",
+    "courseCode": "BIS703",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 6
+  },
+  {
+    "gapId": "GAP-BIS703-003",
+    "courseCode": "BIS703",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 7
+  },
+  {
+    "gapId": "GAP-BCS403-001",
+    "courseCode": "BCS403",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 8
+  },
+  {
+    "gapId": "GAP-BCS403-002",
+    "courseCode": "BCS403",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 9
+  },
+  {
+    "gapId": "GAP-BCS403-003",
+    "courseCode": "BCS403",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 10
+  },
+  {
+    "gapId": "GAP-BCS503-001",
+    "courseCode": "BCS503",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 11
+  },
+  {
+    "gapId": "GAP-BCS503-002",
+    "courseCode": "BCS503",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 12
+  },
+  {
+    "gapId": "GAP-BCS503-003",
+    "courseCode": "BCS503",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 13
+  },
+  {
+    "gapId": "GAP-BCS702-001",
+    "courseCode": "BCS702",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 14
+  },
+  {
+    "gapId": "GAP-BCS702-002",
+    "courseCode": "BCS702",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 15
+  },
+  {
+    "gapId": "GAP-BCS702-003",
+    "courseCode": "BCS702",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 16
+  },
+  {
+    "gapId": "GAP-1BCS302-001",
+    "courseCode": "1BCS302",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 17
+  },
+  {
+    "gapId": "GAP-1BCS302-002",
+    "courseCode": "1BCS302",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 18
+  },
+  {
+    "gapId": "GAP-1BCS302-003",
+    "courseCode": "1BCS302",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 19
+  },
+  {
+    "gapId": "GAP-22MBA401-001",
+    "courseCode": "22MBA401",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 20
+  },
+  {
+    "gapId": "GAP-22MBA401-002",
+    "courseCode": "22MBA401",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 21
+  },
+  {
+    "gapId": "GAP-22MBA401-003",
+    "courseCode": "22MBA401",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 22
+  },
+  {
+    "gapId": "GAP-BRMK557-001",
+    "courseCode": "BRMK557",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 23
+  },
+  {
+    "gapId": "GAP-BRMK557-002",
+    "courseCode": "BRMK557",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 24
+  },
+  {
+    "gapId": "GAP-BRMK557-003",
+    "courseCode": "BRMK557",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 25
+  },
+  {
+    "gapId": "GAP-1BCHES102202-001",
+    "courseCode": "1BCHES102/202",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 26
+  },
+  {
+    "gapId": "GAP-1BCHES102202-002",
+    "courseCode": "1BCHES102/202",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 27
+  },
+  {
+    "gapId": "GAP-1BCHES102202-003",
+    "courseCode": "1BCHES102/202",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 28
+  },
+  {
+    "gapId": "GAP-BCA701-001",
+    "courseCode": "BCA701",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 29
+  },
+  {
+    "gapId": "GAP-BCA701-002",
+    "courseCode": "BCA701",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 30
+  },
+  {
+    "gapId": "GAP-BCA701-003",
+    "courseCode": "BCA701",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 31
+  },
+  {
+    "gapId": "GAP-BCS303-001",
+    "courseCode": "BCS303",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 32
+  },
+  {
+    "gapId": "GAP-BCS303-002",
+    "courseCode": "BCS303",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 33
+  },
+  {
+    "gapId": "GAP-BCS303-003",
+    "courseCode": "BCS303",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 34
+  },
+  {
+    "gapId": "GAP-BCS515B-001",
+    "courseCode": "BCS515B",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 35
+  },
+  {
+    "gapId": "GAP-BCS515B-002",
+    "courseCode": "BCS515B",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 36
+  },
+  {
+    "gapId": "GAP-BCS515B-003",
+    "courseCode": "BCS515B",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 37
+  },
+  {
+    "gapId": "GAP-1BEC304-001",
+    "courseCode": "1BEC304",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 38
+  },
+  {
+    "gapId": "GAP-1BEC304-002",
+    "courseCode": "1BEC304",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 39
+  },
+  {
+    "gapId": "GAP-1BEC304-003",
+    "courseCode": "1BEC304",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 40
+  },
+  {
+    "gapId": "GAP-1BCS305-001",
+    "courseCode": "1BCS305",
+    "coCode": "CO1",
+    "relationship": "PRIMARY",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 41
+  },
+  {
+    "gapId": "GAP-1BCS305-002",
+    "courseCode": "1BCS305",
+    "coCode": "CO2",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 42
+  },
+  {
+    "gapId": "GAP-1BCS305-003",
+    "courseCode": "1BCS305",
+    "coCode": "CO3",
+    "relationship": "SUPPORTING",
+    "basis": "Gap topic aligns with CO scope.",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 43
+  }
+]

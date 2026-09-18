@@ -1,0 +1,750 @@
+[
+  {
+    "actionId": "ACT-CBS-BIS701-001",
+    "cbsId": "CBS-BIS701-001",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Managed Cloud Data Processing Platforms\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 2
+  },
+  {
+    "actionId": "ACT-CBS-BIS701-002",
+    "cbsId": "CBS-BIS701-002",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Hands-on Big Data Pipeline Mini-Lab\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 3
+  },
+  {
+    "actionId": "ACT-CBS-BIS701-003",
+    "cbsId": "CBS-BIS701-003",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"Introduction to Vector Databases\" via additional lecture (2h); assess with ASSIGNMENT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 4
+  },
+  {
+    "actionId": "ACT-CBS-BIS701-004",
+    "cbsId": "CBS-BIS701-004",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Lakehouse Architecture and Open Table Formats\" via case study (2h); assess with CASE_ANALYSIS.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 5
+  },
+  {
+    "actionId": "ACT-CBS-BIS701-005",
+    "cbsId": "CBS-BIS701-005",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Real-time Stream Processing with Kafka + Spark Structured Streaming\" via demonstration (2h); assess with QUIZ.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 6
+  },
+  {
+    "actionId": "ACT-CBS-BIS701-006",
+    "cbsId": "CBS-BIS701-006",
+    "actionType": "TUTORIAL",
+    "recommendedAction": "Deliver \"NoSQL Data Modeling Clinic for Analytics Workloads\" via tutorial (2h); assess with ASSIGNMENT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 7
+  },
+  {
+    "actionId": "ACT-CBS-BIS703-001",
+    "cbsId": "CBS-BIS703-001",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"TLS 1.3 Handshake Deep Dive and Certificate Lifecycle\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 8
+  },
+  {
+    "actionId": "ACT-CBS-BIS703-002",
+    "cbsId": "CBS-BIS703-002",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Password Hashing: Argon2, bcrypt, and Breach Case Studies\" via case study (2h); assess with CASE_ANALYSIS.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 9
+  },
+  {
+    "actionId": "ACT-CBS-BIS703-003",
+    "cbsId": "CBS-BIS703-003",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"OAuth 2.1 / OpenID Connect for API Security\" via additional lecture (2h); assess with ASSIGNMENT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 10
+  },
+  {
+    "actionId": "ACT-CBS-BIS703-004",
+    "cbsId": "CBS-BIS703-004",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"Zero-Trust Network Access Concepts\" via seminar (1h); assess with REFLECTION.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 11
+  },
+  {
+    "actionId": "ACT-CBS-BIS703-005",
+    "cbsId": "CBS-BIS703-005",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Hands-on Packet Capture Threat Hunt Mini-Lab\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 12
+  },
+  {
+    "actionId": "ACT-CBS-BCS403-001",
+    "cbsId": "CBS-BCS403-001",
+    "actionType": "GROUP_DISCUSSION",
+    "recommendedAction": "Deliver \"Conceptual Modeling Workshop with Real Domain Case\" via group discussion (2h); assess with ACTIVITY.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 13
+  },
+  {
+    "actionId": "ACT-CBS-BCS403-002",
+    "cbsId": "CBS-BCS403-002",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Query Optimization and EXPLAIN Plans in Practice\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 14
+  },
+  {
+    "actionId": "ACT-CBS-BCS403-003",
+    "cbsId": "CBS-BCS403-003",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Transactional Integrity and Isolation Levels Mini-Lab\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 15
+  },
+  {
+    "actionId": "ACT-CBS-BCS403-004",
+    "cbsId": "CBS-BCS403-004",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Introduction to Cloud Managed Relational Databases\" via case study (1h); assess with NONE.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 16
+  },
+  {
+    "actionId": "ACT-CBS-BCS403-005",
+    "cbsId": "CBS-BCS403-005",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"Polyglot Persistence Decision Framework\" via seminar (2h); assess with PRESENTATION.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 17
+  },
+  {
+    "actionId": "ACT-CBS-10CS55-001",
+    "cbsId": "CBS-10CS55-001",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Wireshark Protocol Analysis Lab Beyond OSI Charts\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 18
+  },
+  {
+    "actionId": "ACT-CBS-10CS55-002",
+    "cbsId": "CBS-10CS55-002",
+    "actionType": "GUEST_LECTURE",
+    "recommendedAction": "Deliver \"Modern Access Media: Fiber, 5G RAN, and Campus Wi-Fi 6\" via guest lecture (1h); assess with NONE.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 19
+  },
+  {
+    "actionId": "ACT-CBS-10CS55-003",
+    "cbsId": "CBS-10CS55-003",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"Software-Defined Networking Concepts\" via additional lecture (2h); assess with QUIZ.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 20
+  },
+  {
+    "actionId": "ACT-CBS-10CS55-004",
+    "cbsId": "CBS-10CS55-004",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Campus Network Design Mini-Case\" via case study (2h); assess with CASE_ANALYSIS.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 21
+  },
+  {
+    "actionId": "ACT-CBS-10CS55-005",
+    "cbsId": "CBS-10CS55-005",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"Network Security Hardening Checklist Seminar\" via seminar (1h); assess with REFLECTION.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 22
+  },
+  {
+    "actionId": "ACT-CBS-BCS503-001",
+    "cbsId": "CBS-BCS503-001",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Regex Engine Internals: NFA Construction Demo\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 23
+  },
+  {
+    "actionId": "ACT-CBS-BCS503-002",
+    "cbsId": "CBS-BCS503-002",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Industrial Regex Safety and ReDoS Case Study\" via case study (1h); assess with CASE_ANALYSIS.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 24
+  },
+  {
+    "actionId": "ACT-CBS-BCS503-003",
+    "cbsId": "CBS-BCS503-003",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"Parser Generators Briefing (ANTLR / yacc concepts)\" via additional lecture (2h); assess with NONE.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 25
+  },
+  {
+    "actionId": "ACT-CBS-BCS503-004",
+    "cbsId": "CBS-BCS503-004",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"Computability Frontiers: Undecidability in Practice\" via seminar (1h); assess with REFLECTION.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 26
+  },
+  {
+    "actionId": "ACT-CBS-BCS503-005",
+    "cbsId": "CBS-BCS503-005",
+    "actionType": "TUTORIAL",
+    "recommendedAction": "Deliver \"Guided PDA Construction Studio\" via tutorial (2h); assess with ACTIVITY.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 27
+  },
+  {
+    "actionId": "ACT-CBS-BCS702-001",
+    "cbsId": "CBS-BCS702-001",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Parallel Profiling with Hardware Performance Counters\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 28
+  },
+  {
+    "actionId": "ACT-CBS-BCS702-002",
+    "cbsId": "CBS-BCS702-002",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"GPU Computing Primer with CUDA/OpenCL Concepts\" via additional lecture (2h); assess with ASSIGNMENT.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 29
+  },
+  {
+    "actionId": "ACT-CBS-BCS702-003",
+    "cbsId": "CBS-BCS702-003",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Cloud HPC Job Submission Mini-Lab\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 30
+  },
+  {
+    "actionId": "ACT-CBS-BCS702-004",
+    "cbsId": "CBS-BCS702-004",
+    "actionType": "TUTORIAL",
+    "recommendedAction": "Deliver \"OpenMP Tasking and NUMA Awareness Clinic\" via tutorial (2h); assess with ASSIGNMENT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 31
+  },
+  {
+    "actionId": "ACT-CBS-BCS702-005",
+    "cbsId": "CBS-BCS702-005",
+    "actionType": "INDUSTRY_EXPERT_SESSION",
+    "recommendedAction": "Deliver \"Parallel Computing in Data Centers: Guest Perspective\" via industry expert session (1h); assess with NONE.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 32
+  },
+  {
+    "actionId": "ACT-CBS-22MBA401-001",
+    "cbsId": "CBS-22MBA401-001",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"International Business: Industry Toolchain Walkthrough\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 39
+  },
+  {
+    "actionId": "ACT-CBS-22MBA401-002",
+    "cbsId": "CBS-22MBA401-002",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"International Business: Emerging Technology Briefing\" via additional lecture (1h); assess with REFLECTION.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 40
+  },
+  {
+    "actionId": "ACT-CBS-22MBA401-003",
+    "cbsId": "CBS-22MBA401-003",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"International Business: Guided Practical Enrichment Studio\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 41
+  },
+  {
+    "actionId": "ACT-CBS-22MBA401-004",
+    "cbsId": "CBS-22MBA401-004",
+    "actionType": "TUTORIAL",
+    "recommendedAction": "Deliver \"International Business: Advanced Problem-Solving Clinic\" via tutorial (2h); assess with ASSIGNMENT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 42
+  },
+  {
+    "actionId": "ACT-CBS-22MBA401-005",
+    "cbsId": "CBS-22MBA401-005",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"International Business: Faculty Enrichment Seminar\" via seminar (1h); assess with NONE.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 43
+  },
+  {
+    "actionId": "ACT-CBS-22MBA401-006",
+    "cbsId": "CBS-22MBA401-006",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"International Business: Interdisciplinary Application Case\" via case study (2h); assess with CASE_ANALYSIS.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 44
+  },
+  {
+    "actionId": "ACT-CBS-BRMK557-001",
+    "cbsId": "CBS-BRMK557-001",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Research Methodology & IPR: Industry Toolchain Walkthrough\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 45
+  },
+  {
+    "actionId": "ACT-CBS-BRMK557-002",
+    "cbsId": "CBS-BRMK557-002",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"Research Methodology & IPR: Emerging Technology Briefing\" via additional lecture (1h); assess with REFLECTION.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 46
+  },
+  {
+    "actionId": "ACT-CBS-BRMK557-003",
+    "cbsId": "CBS-BRMK557-003",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Research Methodology & IPR: Guided Practical Enrichment Studio\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 47
+  },
+  {
+    "actionId": "ACT-CBS-BRMK557-004",
+    "cbsId": "CBS-BRMK557-004",
+    "actionType": "TUTORIAL",
+    "recommendedAction": "Deliver \"Research Methodology & IPR: Advanced Problem-Solving Clinic\" via tutorial (2h); assess with ASSIGNMENT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 48
+  },
+  {
+    "actionId": "ACT-CBS-BRMK557-005",
+    "cbsId": "CBS-BRMK557-005",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"Research Methodology & IPR: Faculty Enrichment Seminar\" via seminar (1h); assess with NONE.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 49
+  },
+  {
+    "actionId": "ACT-CBS-BRMK557-006",
+    "cbsId": "CBS-BRMK557-006",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Research Methodology & IPR: Interdisciplinary Application Case\" via case study (2h); assess with CASE_ANALYSIS.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 50
+  },
+  {
+    "actionId": "ACT-CBS-1BCHES102202-001",
+    "cbsId": "CBS-1BCHES102202-001",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Applied Chemistry for Smart Systems: Industry Toolchain Walkthrough\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 51
+  },
+  {
+    "actionId": "ACT-CBS-1BCHES102202-002",
+    "cbsId": "CBS-1BCHES102202-002",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"Applied Chemistry for Smart Systems: Emerging Technology Briefing\" via additional lecture (1h); assess with REFLECTION.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 52
+  },
+  {
+    "actionId": "ACT-CBS-1BCHES102202-003",
+    "cbsId": "CBS-1BCHES102202-003",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Applied Chemistry for Smart Systems: Guided Practical Enrichment Studio\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 53
+  },
+  {
+    "actionId": "ACT-CBS-1BCHES102202-004",
+    "cbsId": "CBS-1BCHES102202-004",
+    "actionType": "TUTORIAL",
+    "recommendedAction": "Deliver \"Applied Chemistry for Smart Systems: Advanced Problem-Solving Clinic\" via tutorial (2h); assess with ASSIGNMENT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 54
+  },
+  {
+    "actionId": "ACT-CBS-1BCHES102202-005",
+    "cbsId": "CBS-1BCHES102202-005",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"Applied Chemistry for Smart Systems: Faculty Enrichment Seminar\" via seminar (1h); assess with NONE.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 55
+  },
+  {
+    "actionId": "ACT-CBS-1BCHES102202-006",
+    "cbsId": "CBS-1BCHES102202-006",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Applied Chemistry for Smart Systems: Interdisciplinary Application Case\" via case study (2h); assess with CASE_ANALYSIS.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 56
+  },
+  {
+    "actionId": "ACT-CBS-BCA701-001",
+    "cbsId": "CBS-BCA701-001",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Autograd and Computational Graphs Hands-on\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 57
+  },
+  {
+    "actionId": "ACT-CBS-BCA701-002",
+    "cbsId": "CBS-BCA701-002",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Transfer Learning with Pretrained Vision Models\" via demonstration (2h); assess with ASSIGNMENT.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 58
+  },
+  {
+    "actionId": "ACT-CBS-BCA701-003",
+    "cbsId": "CBS-BCA701-003",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"LLM Fine-Tuning Concepts (LoRA/QLoRA Overview)\" via additional lecture (2h); assess with QUIZ.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 59
+  },
+  {
+    "actionId": "ACT-CBS-BCA701-004",
+    "cbsId": "CBS-BCA701-004",
+    "actionType": "MINI_PROJECT",
+    "recommendedAction": "Deliver \"MLOps Experiment Tracking Mini-Project\" via mini project (3h); assess with MINI_PROJECT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 60
+  },
+  {
+    "actionId": "ACT-CBS-BCA701-005",
+    "cbsId": "CBS-BCA701-005",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"Responsible AI Failure Modes Seminar\" via seminar (1h); assess with REFLECTION.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 61
+  },
+  {
+    "actionId": "ACT-CBS-BCS303-001",
+    "cbsId": "CBS-BCS303-001",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Linux Process Anatomy with /proc Exploration\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 62
+  },
+  {
+    "actionId": "ACT-CBS-BCS303-002",
+    "cbsId": "CBS-BCS303-002",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Scheduler Behavior under Load: Live Experiment\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 63
+  },
+  {
+    "actionId": "ACT-CBS-BCS303-003",
+    "cbsId": "CBS-BCS303-003",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Concurrency Bug Clinic (Deadlock/Race Case Studies)\" via case study (2h); assess with CASE_ANALYSIS.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 64
+  },
+  {
+    "actionId": "ACT-CBS-BCS303-004",
+    "cbsId": "CBS-BCS303-004",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"Containers vs VMs: Isolation Models Briefing\" via additional lecture (1h); assess with NONE.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 65
+  },
+  {
+    "actionId": "ACT-CBS-BCS303-005",
+    "cbsId": "CBS-BCS303-005",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"Observability Stack Overview (logs/metrics/traces)\" via seminar (1h); assess with REFLECTION.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 66
+  },
+  {
+    "actionId": "ACT-CBS-BCS515B-001",
+    "cbsId": "CBS-BCS515B-001",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"Agent Architectures in Modern Assistants\" via additional lecture (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 67
+  },
+  {
+    "actionId": "ACT-CBS-BCS515B-002",
+    "cbsId": "CBS-BCS515B-002",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Search Visualizer Lab (BFS/DFS/UCS Traces)\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 68
+  },
+  {
+    "actionId": "ACT-CBS-BCS515B-003",
+    "cbsId": "CBS-BCS515B-003",
+    "actionType": "TUTORIAL",
+    "recommendedAction": "Deliver \"A* Heuristic Design Clinic\" via tutorial (2h); assess with ASSIGNMENT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 69
+  },
+  {
+    "actionId": "ACT-CBS-BCS515B-004",
+    "cbsId": "CBS-BCS515B-004",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Constraint Satisfaction in Scheduling Case\" via case study (2h); assess with CASE_ANALYSIS.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 70
+  },
+  {
+    "actionId": "ACT-CBS-BCS515B-005",
+    "cbsId": "CBS-BCS515B-005",
+    "actionType": "WORKSHOP",
+    "recommendedAction": "Deliver \"AI Product Evaluation Rubric Workshop\" via workshop (2h); assess with ACTIVITY.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 71
+  },
+  {
+    "actionId": "ACT-CBS-1BEC304-001",
+    "cbsId": "CBS-1BEC304-001",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Analog Electronics and Linear Integrated Circuits: Industry Toolchain Walkthrough\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 72
+  },
+  {
+    "actionId": "ACT-CBS-1BEC304-002",
+    "cbsId": "CBS-1BEC304-002",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"Analog Electronics and Linear Integrated Circuits: Emerging Technology Briefing\" via additional lecture (1h); assess with REFLECTION.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 73
+  },
+  {
+    "actionId": "ACT-CBS-1BEC304-003",
+    "cbsId": "CBS-1BEC304-003",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Analog Electronics and Linear Integrated Circuits: Guided Practical Enrichment Studio\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 74
+  },
+  {
+    "actionId": "ACT-CBS-1BEC304-004",
+    "cbsId": "CBS-1BEC304-004",
+    "actionType": "TUTORIAL",
+    "recommendedAction": "Deliver \"Analog Electronics and Linear Integrated Circuits: Advanced Problem-Solving Clinic\" via tutorial (2h); assess with ASSIGNMENT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 75
+  },
+  {
+    "actionId": "ACT-CBS-1BEC304-005",
+    "cbsId": "CBS-1BEC304-005",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"Analog Electronics and Linear Integrated Circuits: Faculty Enrichment Seminar\" via seminar (1h); assess with NONE.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 76
+  },
+  {
+    "actionId": "ACT-CBS-1BEC304-006",
+    "cbsId": "CBS-1BEC304-006",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Analog Electronics and Linear Integrated Circuits: Interdisciplinary Application Case\" via case study (2h); assess with CASE_ANALYSIS.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 77
+  },
+  {
+    "actionId": "ACT-CBS-1BCS305-001",
+    "cbsId": "CBS-1BCS305-001",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Deliver \"Data Structures and Applications: Industry Toolchain Walkthrough\" via demonstration (2h); assess with QUIZ.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 78
+  },
+  {
+    "actionId": "ACT-CBS-1BCS305-002",
+    "cbsId": "CBS-1BCS305-002",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "Deliver \"Data Structures and Applications: Emerging Technology Briefing\" via additional lecture (1h); assess with REFLECTION.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 79
+  },
+  {
+    "actionId": "ACT-CBS-1BCS305-003",
+    "cbsId": "CBS-1BCS305-003",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Deliver \"Data Structures and Applications: Guided Practical Enrichment Studio\" via hands on session (2h); assess with LAB_EXERCISE.",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 80
+  },
+  {
+    "actionId": "ACT-CBS-1BCS305-004",
+    "cbsId": "CBS-1BCS305-004",
+    "actionType": "TUTORIAL",
+    "recommendedAction": "Deliver \"Data Structures and Applications: Advanced Problem-Solving Clinic\" via tutorial (2h); assess with ASSIGNMENT.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 81
+  },
+  {
+    "actionId": "ACT-CBS-1BCS305-005",
+    "cbsId": "CBS-1BCS305-005",
+    "actionType": "SEMINAR",
+    "recommendedAction": "Deliver \"Data Structures and Applications: Faculty Enrichment Seminar\" via seminar (1h); assess with NONE.",
+    "priority": "LOW",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 82
+  },
+  {
+    "actionId": "ACT-CBS-1BCS305-006",
+    "cbsId": "CBS-1BCS305-006",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Deliver \"Data Structures and Applications: Interdisciplinary Application Case\" via case study (2h); assess with CASE_ANALYSIS.",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS",
+    "sourceRow": 83
+  },
+  {
+    "actionId": "ACT-CBS-1BCS302-001",
+    "cbsId": "CBS-1BCS302-001",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Git and GitHub workflow for Java projects",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "actionId": "ACT-CBS-1BCS302-002",
+    "cbsId": "CBS-1BCS302-002",
+    "actionType": "HANDS_ON_SESSION",
+    "recommendedAction": "Unit testing with JUnit",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "actionId": "ACT-CBS-1BCS302-003",
+    "cbsId": "CBS-1BCS302-003",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Maven / Gradle basics",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "actionId": "ACT-CBS-1BCS302-004",
+    "cbsId": "CBS-1BCS302-004",
+    "actionType": "ADDITIONAL_LECTURE",
+    "recommendedAction": "REST API development with Spring Boot introduction",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "actionId": "ACT-CBS-1BCS302-005",
+    "cbsId": "CBS-1BCS302-005",
+    "actionType": "TUTORIAL",
+    "recommendedAction": "Design patterns (Strategy, Factory, Observer)",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "actionId": "ACT-CBS-1BCS302-006",
+    "cbsId": "CBS-1BCS302-006",
+    "actionType": "CASE_STUDY",
+    "recommendedAction": "Java collections performance comparison",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "actionId": "ACT-CBS-1BCS302-007",
+    "cbsId": "CBS-1BCS302-007",
+    "actionType": "MINI_PROJECT",
+    "recommendedAction": "JDBC mini-project",
+    "priority": "HIGH",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "actionId": "ACT-CBS-1BCS302-008",
+    "cbsId": "CBS-1BCS302-008",
+    "actionType": "DEMONSTRATION",
+    "recommendedAction": "Debugging and profiling Java applications",
+    "priority": "MEDIUM",
+    "verificationStatus": "ACADEMIC_ANALYSIS"
+  }
+]

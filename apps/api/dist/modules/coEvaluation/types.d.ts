@@ -1,0 +1,10 @@
+export declare const EVALUATION_STATUSES: readonly ["DRAFT", "FINALIZED", "ARCHIVED"];
+export type EvaluationStatus = (typeof EVALUATION_STATUSES)[number];
+export declare const REVIEW_MARKED_STATUSES: Set<string>;
+export declare function isReviewMarked(status: string | null | undefined): boolean;
+export declare function isYes(value: unknown): boolean;
+export declare function parseCoOrder(coCode: string): number;
+export declare function numOrNull(value: unknown): number | null;
+export declare function nearlyEqual(a: number, b: number, tol?: number): boolean;
+export declare function normalizeCode(code: string): string;
+export declare function schemeKey(scheme: string | null | undefined): string;

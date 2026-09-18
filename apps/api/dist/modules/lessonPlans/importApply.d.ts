@@ -1,0 +1,57 @@
+import { type SubjectMatch } from './match.js';
+import { type ParsedSubjectIndex } from './parser.js';
+export type ImportApplyOptions = {
+    collegeId: number;
+    createdBy: number;
+    createMissingSubjects?: boolean;
+    dryRun?: boolean;
+};
+export type ModuleImportSummary = {
+    label: string;
+    name: string;
+    topics: number;
+    subtopics: number;
+    hours: number;
+    imported: number;
+    duplicates: number;
+};
+export type SubjectImportSummary = {
+    subject: string;
+    sourceFile: string;
+    sourceCode: string | null;
+    mapping: SubjectMatch['mapping'];
+    matchedSubject: string | null;
+    courseId: number | null;
+    modules: number;
+    topics: number;
+    subtopics: number;
+    hours: number;
+    imported: number;
+    duplicates: number;
+    needsReview: number;
+    malformed: number;
+    missingHours: number;
+    moduleRows: ModuleImportSummary[];
+};
+export type LessonImportReport = {
+    batchId: string;
+    dryRun: boolean;
+    filesInspected: number;
+    subjectsDiscovered: number;
+    matchedExistingSubjects: number;
+    newSubjects: number;
+    ambiguous: number;
+    unmatchedSubjects: string[];
+    createdSubjects: string[];
+    totalTopics: number;
+    totalSubtopics: number;
+    imported: number;
+    duplicates: number;
+    needsReview: number;
+    malformed: number;
+    missingHours: number;
+    subjects: SubjectImportSummary[];
+};
+export declare function applyLessonPlanImport(opts: ImportApplyOptions): Promise<LessonImportReport>;
+export declare function formatImportReport(report: LessonImportReport): string;
+export type { ParsedSubjectIndex };

@@ -1,0 +1,172 @@
+[
+  {
+    "externalId": "SDG-01",
+    "sdgCode": "SDG1",
+    "sdgNumber": 1,
+    "title": "No Poverty",
+    "description": "End poverty in all its forms everywhere.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 2
+  },
+  {
+    "externalId": "SDG-02",
+    "sdgCode": "SDG2",
+    "sdgNumber": 2,
+    "title": "Zero Hunger",
+    "description": "End hunger, achieve food security and improved nutrition and promote sustainable agriculture.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 3
+  },
+  {
+    "externalId": "SDG-03",
+    "sdgCode": "SDG3",
+    "sdgNumber": 3,
+    "title": "Good Health and Well-being",
+    "description": "Ensure healthy lives and promote well-being for all at all ages.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 4
+  },
+  {
+    "externalId": "SDG-04",
+    "sdgCode": "SDG4",
+    "sdgNumber": 4,
+    "title": "Quality Education",
+    "description": "Ensure inclusive and equitable quality education and promote lifelong learning opportunities for all.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 5
+  },
+  {
+    "externalId": "SDG-05",
+    "sdgCode": "SDG5",
+    "sdgNumber": 5,
+    "title": "Gender Equality",
+    "description": "Achieve gender equality and empower all women and girls.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 6
+  },
+  {
+    "externalId": "SDG-06",
+    "sdgCode": "SDG6",
+    "sdgNumber": 6,
+    "title": "Clean Water and Sanitation",
+    "description": "Ensure availability and sustainable management of water and sanitation for all.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 7
+  },
+  {
+    "externalId": "SDG-07",
+    "sdgCode": "SDG7",
+    "sdgNumber": 7,
+    "title": "Affordable and Clean Energy",
+    "description": "Ensure access to affordable, reliable, sustainable and modern energy for all.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 8
+  },
+  {
+    "externalId": "SDG-08",
+    "sdgCode": "SDG8",
+    "sdgNumber": 8,
+    "title": "Decent Work and Economic Growth",
+    "description": "Promote sustained, inclusive and sustainable economic growth, full and productive employment and decent work for all.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 9
+  },
+  {
+    "externalId": "SDG-09",
+    "sdgCode": "SDG9",
+    "sdgNumber": 9,
+    "title": "Industry, Innovation and Infrastructure",
+    "description": "Build resilient infrastructure, promote inclusive and sustainable industrialization and foster innovation.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 10
+  },
+  {
+    "externalId": "SDG-10",
+    "sdgCode": "SDG10",
+    "sdgNumber": 10,
+    "title": "Reduced Inequalities",
+    "description": "Reduce inequality within and among countries.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 11
+  },
+  {
+    "externalId": "SDG-11",
+    "sdgCode": "SDG11",
+    "sdgNumber": 11,
+    "title": "Sustainable Cities and Communities",
+    "description": "Make cities and human settlements inclusive, safe, resilient and sustainable.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 12
+  },
+  {
+    "externalId": "SDG-12",
+    "sdgCode": "SDG12",
+    "sdgNumber": 12,
+    "title": "Responsible Consumption and Production",
+    "description": "Ensure sustainable consumption and production patterns.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 13
+  },
+  {
+    "externalId": "SDG-13",
+    "sdgCode": "SDG13",
+    "sdgNumber": 13,
+    "title": "Climate Action",
+    "description": "Take urgent action to combat climate change and its impacts.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 14
+  },
+  {
+    "externalId": "SDG-14",
+    "sdgCode": "SDG14",
+    "sdgNumber": 14,
+    "title": "Life Below Water",
+    "description": "Conserve and sustainably use the oceans, seas and marine resources for sustainable development.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 15
+  },
+  {
+    "externalId": "SDG-15",
+    "sdgCode": "SDG15",
+    "sdgNumber": 15,
+    "title": "Life on Land",
+    "description": "Protect, restore and promote sustainable use of terrestrial ecosystems, sustainably manage forests, combat desertification, and halt and reverse land degradation and halt biodiversity loss.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 16
+  },
+  {
+    "externalId": "SDG-16",
+    "sdgCode": "SDG16",
+    "sdgNumber": 16,
+    "title": "Peace, Justice and Strong Institutions",
+    "description": "Promote peaceful and inclusive societies for sustainable development, provide access to justice for all and build effective, accountable and inclusive institutions at all levels.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 17
+  },
+  {
+    "externalId": "SDG-17",
+    "sdgCode": "SDG17",
+    "sdgNumber": 17,
+    "title": "Partnerships for the Goals",
+    "description": "Strengthen the means of implementation and revitalize the Global Partnership for Sustainable Development.",
+    "officialReference": "https://sdgs.un.org/goals",
+    "active": true,
+    "sourceRow": 18
+  }
+]

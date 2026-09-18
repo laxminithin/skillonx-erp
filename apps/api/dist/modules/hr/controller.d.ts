@@ -1,0 +1,10 @@
+export declare const hrSelfRouter: import("express-serve-static-core").Router;
+export declare const hrManagerRouter: import("express-serve-static-core").Router;
+export declare const hrAdminRouter: import("express-serve-static-core").Router;
+export declare const hrPayrollRouter: import("express-serve-static-core").Router;
+export declare const hrManagementRouter: import("express-serve-static-core").Router;
+export declare const hrFnfRouter: import("express-serve-static-core").Router;
+export declare const hrPerformanceRouter: import("express-serve-static-core").Router;
+export declare const hrRecruitmentRouter: import("express-serve-static-core").Router;
+export declare const hrAnalyticsRouter: import("express-serve-static-core").Router;
+export declare const hrRouter: import("express-serve-static-core").Router;

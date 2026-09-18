@@ -1,0 +1,273 @@
+<title>The Secret Gem — Shot Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#f6efe6;
+    --surface:#fffaf3;
+    --surface-2:#f0e6d8;
+    --ink:#2a2233;
+    --ink-soft:#6b5f6e;
+    --line:#e3d6c6;
+    --violet:#7c3aed;
+    --violet-soft:#a982f0;
+    --violet-glow:rgba(124,58,237,.16);
+    --amber:#c2632a;
+    --dusk:#3f6079;
+    --shadow:rgba(60,40,30,.10);
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:#17121d;
+      --surface:#211a2b;
+      --surface-2:#2b2238;
+      --ink:#efe7f2;
+      --ink-soft:#b3a4bd;
+      --line:#392e48;
+      --violet:#b794f6;
+      --violet-soft:#8b62d6;
+      --violet-glow:rgba(167,130,240,.20);
+      --amber:#e8945a;
+      --dusk:#7fa8c4;
+      --shadow:rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17121d;
+    --surface:#211a2b;
+    --surface-2:#2b2238;
+    --ink:#efe7f2;
+    --ink-soft:#b3a4bd;
+    --line:#392e48;
+    --violet:#b794f6;
+    --violet-soft:#8b62d6;
+    --violet-glow:rgba(167,130,240,.20);
+    --amber:#e8945a;
+    --dusk:#7fa8c4;
+    --shadow:rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Instrument Sans",system-ui,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:clamp(1.2rem,4vw,3rem) clamp(1rem,4vw,2rem) 5rem;}
+
+  /* hero */
+  .hero{position:relative;padding:2.4rem 0 2rem;border-bottom:1px solid var(--line);margin-bottom:2.4rem;}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--violet);margin:0 0 1.1rem;}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(2.3rem,6.5vw,4rem);line-height:1.02;letter-spacing:-.02em;margin:0;text-wrap:balance;}
+  h1 em{font-style:italic;color:var(--violet);}
+  .lede{max-width:60ch;font-size:1.06rem;color:var(--ink-soft);margin:1.1rem 0 0;}
+  .gem{display:inline-block;width:.62em;height:.62em;margin-left:.1em;transform:rotate(45deg);border-radius:3px;
+    background:linear-gradient(135deg,var(--violet-soft),var(--violet));
+    box-shadow:0 0 14px 2px var(--violet-glow);vertical-align:baseline;}
+
+  /* setup strip */
+  .setup{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.4rem 1.5rem;margin-bottom:2.6rem;box-shadow:0 1px 0 var(--shadow);}
+  .setup h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.15rem;margin:0 0 .3rem;}
+  .setup p.sub{margin:0 0 1.1rem;color:var(--ink-soft);font-size:.92rem;}
+  .grid-set{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;}
+  .set-item .k{font-family:"JetBrains Mono",monospace;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 .25rem;}
+  .set-item .v{font-size:.92rem;margin:0;}
+  .set-item .v code{font-family:"JetBrains Mono",monospace;font-size:.82rem;background:var(--surface-2);padding:.08em .4em;border-radius:5px;}
+
+  .styleblock{margin-top:1.2rem;border-top:1px dashed var(--line);padding-top:1.1rem;}
+  .styleblock .k{font-family:"JetBrains Mono",monospace;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--violet);margin:0 0 .5rem;}
+  .prompt{font-family:"JetBrains Mono",monospace;font-size:.85rem;line-height:1.55;color:var(--ink);background:var(--surface-2);border-left:3px solid var(--violet);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:0;white-space:pre-wrap;}
+
+  .section-label{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 1.4rem;display:flex;align-items:center;gap:.8rem;}
+  .section-label::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  /* panels */
+  .panels{display:flex;flex-direction:column;gap:1.2rem;}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.4rem 1.5rem;box-shadow:0 1px 0 var(--shadow);}
+  .p-head{display:flex;align-items:baseline;gap:.9rem;margin-bottom:.9rem;flex-wrap:wrap;}
+  .badge{flex:none;width:2rem;height:2rem;border-radius:50%;background:var(--violet);color:#fff;
+    font-family:"JetBrains Mono",monospace;font-weight:500;font-size:.9rem;display:grid;place-items:center;
+    box-shadow:0 0 0 4px var(--violet-glow);}
+  .p-title{font-family:"Fraunces",serif;font-weight:600;font-size:1.18rem;margin:0;line-height:1.15;}
+  .p-narr{font-style:italic;color:var(--ink-soft);font-size:.92rem;margin:.15rem 0 0;flex-basis:100%;}
+  .p-motion .k{font-family:"JetBrains Mono",monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin:0 0 .4rem;}
+  .p-motion .prompt{font-size:.83rem;}
+  .p-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem;}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:.72rem;background:var(--surface-2);color:var(--ink-soft);
+    padding:.28rem .6rem;border-radius:20px;border:1px solid var(--line);}
+  .chip b{color:var(--ink);font-weight:500;}
+  .chip.cam{color:var(--dusk);}
+  .chip.snd{color:var(--amber);}
+
+  /* workflow */
+  .flow{margin-top:2.8rem;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.6rem 1.6rem 1.3rem;}
+  .flow h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.3rem;margin:0 0 1.2rem;}
+  ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;}
+  ol.steps li{counter-increment:s;position:relative;padding:0 0 1.1rem 2.6rem;}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:-.1rem;width:1.7rem;height:1.7rem;border-radius:50%;
+    border:1.5px solid var(--violet);color:var(--violet);font-family:"JetBrains Mono",monospace;font-size:.8rem;display:grid;place-items:center;}
+  ol.steps li:last-child{padding-bottom:0;}
+  ol.steps b{font-weight:600;}
+  ol.steps code{font-family:"JetBrains Mono",monospace;font-size:.82rem;background:var(--surface-2);padding:.08em .4em;border-radius:5px;}
+
+  .note{margin-top:1.4rem;font-size:.86rem;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:1rem;}
+  .note b{color:var(--amber);}
+  a{color:var(--violet);}
+  @media (max-width:520px){.wrap{padding-left:1rem;padding-right:1rem;}.panel,.setup,.flow{padding-left:1.1rem;padding-right:1.1rem;}}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Image-to-Video Shot Sheet · Episode 01</p>
+    <h1>The Secret <em>Gem</em><span class="gem"></span></h1>
+    <p class="lede">A twelve-shot pilot cut from your storyboard — one motion prompt per panel, tuned for Runway Gen-4 and Kling. Each panel is a <strong>start frame</strong>; the prompt describes only what should <em>move</em>. Generate, pick the best take, stitch, then add narration and score.</p>
+  </header>
+
+  <!-- GLOBAL SETUP -->
+  <section class="setup">
+    <h2>Lock these before you generate anything</h2>
+    <p class="sub">Consistency across shots is the whole game for a series. Set these once and keep them identical for every panel and every future episode.</p>
+    <div class="grid-set">
+      <div class="set-item"><p class="k">Aspect / Res</p><p class="v"><code>16:9</code> · 1080p (upscale after)</p></div>
+      <div class="set-item"><p class="k">Clip length</p><p class="v">5s per panel (extend hero shots to 10s)</p></div>
+      <div class="set-item"><p class="k">Character ref</p><p class="v">Lock panel 3 or 12 as the girl's face reference</p></div>
+      <div class="set-item"><p class="k">Motion strength</p><p class="v">Low–medium — keep it gentle & storybook</p></div>
+      <div class="set-item"><p class="k">Takes per shot</p><p class="v">Render 2–3, keep the calmest one</p></div>
+      <div class="set-item"><p class="k">Seed</p><p class="v">Fix a seed where the tool allows, for retries</p></div>
+    </div>
+    <div class="styleblock">
+      <p class="k">Style suffix — paste at the end of every motion prompt</p>
+      <p class="prompt">Pixar-style 3D animation, warm cinematic lighting, coastal Indian fishing village, little girl in a purple dress with a pink flower hairclip, soft rounded features, volumetric light, shallow depth of field, gentle natural motion, no text, no captions.</p>
+    </div>
+  </section>
+
+  <p class="section-label">The twelve shots</p>
+
+  <div class="panels">
+
+    <!-- 1 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">1</span><h3 class="p-title">The village by the sea</h3>
+        <p class="p-narr">"In a forest near the sea, a little girl lived with her parents, grandmother, relatives and animals."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">Slow aerial push-in over the bay. Ocean waves roll gently toward shore, palm fronds sway in the breeze, a sheep grazes, the family stands looking out at the water.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> aerial push-in</span><span class="chip"><b>Role</b> establishing</span><span class="chip snd"><b>Sound</b> surf, wind, birds</span><span class="chip">10s</span></div>
+    </article>
+
+    <!-- 2 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">2</span><h3 class="p-title">The whole family</h3>
+        <p class="p-narr">"They all lived happily together, taking care of each other and the animals."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">A warm family portrait comes alive: everyone breathes and shifts weight slightly, soft smiles widen, the grandmother tilts her head, a sheep flicks its ear. Very subtle camera drift forward.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> slow drift-in</span><span class="chip"><b>Role</b> character intro</span><span class="chip snd"><b>Sound</b> warm ambience</span><span class="chip">5s</span></div>
+    </article>
+
+    <!-- 3 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">3</span><h3 class="p-title">Playing in the sand</h3>
+        <p class="p-narr">"Every evening, the little girl loved to play with the mud near the sea with her hen."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">The girl scoops and pats wet sand with both hands, delighted. Her hen pecks and struts beside her, waves lap at the shore behind, strands of her hair lift in the sea breeze. Gentle push-in.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> push-in</span><span class="chip"><b>Role</b> playful beat</span><span class="chip snd"><b>Sound</b> waves, hen cluck</span><span class="chip">5s</span></div>
+    </article>
+
+    <!-- 4 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">4</span><h3 class="p-title">Sunset on the water</h3>
+        <p class="p-narr">"As the sun began to set, the sky turned orange and the waves sparkled beautifully."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">The sun lowers toward the horizon, warm orange light spreads across the sky, sparkles shimmer and travel over the rolling waves. The girl pauses her play and looks up at the glowing sky; her hen stands nearby.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> slow dolly</span><span class="chip"><b>Role</b> mood / golden hour</span><span class="chip snd"><b>Sound</b> soft swell of music</span><span class="chip">5s</span></div>
+    </article>
+
+    <!-- 5 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">5</span><h3 class="p-title">Walking home at dusk</h3>
+        <p class="p-narr">"After sunset, she returned home as the stars began to appear in the sky."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">The girl walks away from camera down the path toward the glowing lamplit houses. The sky deepens from violet to blue and the first stars twinkle into view. Camera follows slowly behind her.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> follow / trailing</span><span class="chip"><b>Role</b> transition</span><span class="chip snd"><b>Sound</b> crickets, footsteps</span><span class="chip">5s</span></div>
+    </article>
+
+    <!-- 6 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">6</span><h3 class="p-title">On grandmother's lap</h3>
+        <p class="p-narr">"She went to her grandmother and lay down on her lap, feeling safe and loved."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">The grandmother gently strokes the girl's hair. The girl's eyes slowly close, her chest rises and falls with soft breathing. Lantern light flickers warmly across them. Slow, tender push-in.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> tender push-in</span><span class="chip"><b>Role</b> intimacy</span><span class="chip snd"><b>Sound</b> quiet, faint lullaby</span><span class="chip">5s</span></div>
+    </article>
+
+    <!-- 7 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">7</span><h3 class="p-title">Something in the pouch</h3>
+        <p class="p-narr">"After a few moments, her grandmother smiled and took something out from her small pouch."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">The grandmother smiles knowingly and reaches into a small cloth pouch at her waist. The girl looks up, eyes bright with curiosity. Lantern flame flickers. Slight push-in on the hands.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> push-in on hands</span><span class="chip"><b>Role</b> anticipation</span><span class="chip snd"><b>Sound</b> soft cloth, a chime</span><span class="chip">5s</span></div>
+    </article>
+
+    <!-- 8 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">8</span><h3 class="p-title">The glowing gem</h3>
+        <p class="p-narr">"She gave her a purple shining gem that glowed with a magical light."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">Extreme close-up of an open palm. The purple gem pulses and glows, violet light flickering across the skin and fingers, faint magical sparkles drifting upward. Very slow macro push-in.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> macro push-in</span><span class="chip"><b>Role</b> the reveal</span><span class="chip snd"><b>Sound</b> shimmer / magic sting</span><span class="chip">5s</span></div>
+    </article>
+
+    <!-- 9 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">9</span><h3 class="p-title">"This is a magical gem"</h3>
+        <p class="p-narr">Grandmother: "This is a magical gem."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">The grandmother raises one finger and speaks, mouth moving naturally. The girl gazes up, holding the glowing gem in her cupped hands; the violet light softly lights her face.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> static / slight push</span><span class="chip"><b>Role</b> dialogue</span><span class="chip snd"><b>Sound</b> add VO in edit</span><span class="chip">5s</span></div>
+    </article>
+
+    <!-- 10 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">10</span><h3 class="p-title">"You can have power with this stone"</h3>
+        <p class="p-narr">Grandmother: "You can have power with this stone."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">The grandmother speaks with a gentle, emphatic gesture. The gem's glow pulses a little brighter in the girl's hands as she listens, wide-eyed. Warm lantern flicker.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> static</span><span class="chip"><b>Role</b> dialogue</span><span class="chip snd"><b>Sound</b> add VO in edit</span><span class="chip">5s</span></div>
+    </article>
+
+    <!-- 11 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">11</span><h3 class="p-title">"Do not tell anyone"</h3>
+        <p class="p-narr">Grandmother: "Keep it with you, but do not tell anyone in the family."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">The grandmother raises a finger to her lips in a hush and leans in close, conspiratorial. The girl's eyes widen as she nods faintly. Lantern light flickers; a beat of stillness.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> slow push-in</span><span class="chip"><b>Role</b> the hook</span><span class="chip snd"><b>Sound</b> "shhh", low tension note</span><span class="chip">5s</span></div>
+    </article>
+
+    <!-- 12 -->
+    <article class="panel">
+      <div class="p-head"><span class="badge">12</span><h3 class="p-title">A secret held close</h3>
+        <p class="p-narr">"The little girl nodded and kept the gem close to her heart — a special secret between her and her grandmother."</p></div>
+      <div class="p-motion"><p class="k">Motion prompt</p>
+        <p class="prompt">The girl cups the glowing gem to her chest and looks down at it, then up with quiet wonder. Violet light glows across her face and faint sparkles rise around her hands. Slow push-in, hold on her expression.</p></div>
+      <div class="p-meta"><span class="chip cam"><b>Cam</b> push-in, hold</span><span class="chip"><b>Role</b> closing / cliffhanger</span><span class="chip snd"><b>Sound</b> theme swells, then hush</span><span class="chip">10s</span></div>
+    </article>
+
+  </div>
+
+  <!-- WORKFLOW -->
+  <section class="flow">
+    <h2>From panels to a finished clip</h2>
+    <ol class="steps">
+      <li><b>Split the grid.</b> Run <code>python3 slice_storyboard.py storyboard.png</code> (in your Survey folder) to export <code>panels/panel_01…12.png</code>. Regenerate any panel at higher resolution if it looks soft — start frames should be crisp.</li>
+      <li><b>Set the character reference.</b> In Kling use "Elements" / face reference; in Runway Gen-4 use a reference image. Feed the same girl's face every shot so she never drifts.</li>
+      <li><b>Generate shot by shot.</b> Upload each panel as the start frame, paste its motion prompt + the style suffix, render 2–3 takes at low motion strength, keep the calmest.</li>
+      <li><b>Assemble in CapCut or DaVinci Resolve</b> (both free). Order 1→12, trim to the beat, add gentle cross-dissolves between shots 4–5 and 8–9.</li>
+      <li><b>Voice &amp; music.</b> Record or AI-generate a soft narrator for panels 1–8 and the grandmother's three lines (9–11). Lay a warm score under it; drop the music out on the "shhh" in shot 11.</li>
+      <li><b>Title &amp; end card.</b> Open on the series title, close on shot 12 with a "To be continued…" — the untold secret is your season-long hook.</li>
+    </ol>
+    <p class="note"><b>One thing to watch:</b> AI video can't render your speech-bubble text, and on-frame text usually comes out garbled — so keep panels 9–11 text-free and add every word as narration/subtitles in the edit. That also lets you dub the series into other languages later without regenerating a single shot.</p>
+  </section>
+
+</div>

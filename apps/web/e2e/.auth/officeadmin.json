@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://127.0.0.1:5173",
+      "localStorage": [
+        {
+          "name": "survey_token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJraW5kIjoiZmFjdWx0eSIsImZhY3VsdHlVc2VySWQiOjY3MTYsImNvbGxlZ2VJZCI6NCwiZGVwYXJ0bWVudElkIjpudWxsLCJyb2xlIjoiT0ZGSUNFX0FETUlOIiwiZW1haWwiOiJvZmZpY2UuYWRtaW4ucWFAdnZpZXQuZWR1LmluIiwibmFtZSI6Ik9mZmljZSBBZG1pbiBRQSIsImlhdCI6MTc4OTQwMDc5MCwiZXhwIjoxNzkwMDA1NTkwfQ.Rcf4nOXl3dd6-BbWO5kefMm73frADMFmjxAkN5zDGrQ"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+import { type QuizDifficulty, type QuizQuestionType } from '../../types/quiz.js';
+export type ImportCandidate = {
+    key: string;
+    file: string;
+    relativePath: string;
+    subjectHint: string | null;
+    moduleHint: string | null;
+    sourceReference: string | null;
+    questionText: string;
+    questionType: QuizQuestionType;
+    options: Array<{
+        label: string;
+        isCorrect: boolean;
+    }>;
+    numericAnswer: number | null;
+    numericTolerance: number | null;
+    marks: number;
+    explanation: string | null;
+    difficulty: QuizDifficulty | null;
+    originalDifficulty: string | null;
+    reviewStatus: 'APPROVED' | 'NEEDS_REVIEW';
+    reviewNotes: string[];
+    duplicateOfKey?: string;
+    /** Optional CO metadata (new quiz.md format; old files omit these). */
+    primaryCoCode?: string | null;
+    mappingBasis?: string | null;
+    mappingSource?: string | null;
+    verificationStatus?: string | null;
+    secondaryCoCodes?: string[];
+};
+export type ImportScanReport = {
+    rootsInspected: string[];
+    filesDiscovered: string[];
+    subjectsDetected: string[];
+    modulesDetected: string[];
+    questionsFound: number;
+    validQuestions: number;
+    needsReview: number;
+    missingAnswerKeys: number;
+    duplicates: number;
+    skippedFiles: string[];
+    candidates: ImportCandidate[];
+};
+export declare function importSearchRoots(): string[];
+export declare function prettyFolderTitle(raw: string): string;
+export declare function hintsFromAssessmentPath(file: string): {
+    subjectHint: string;
+    moduleHint: string | null;
+};
+export declare function parseQuizMarkdown(content: string, file: string, subjectHint: string | null, moduleHint: string | null): ImportCandidate[];
+declare function optionLetter(index: number): string;
+declare function toCandidate(file: string, partial: {
+    subjectHint?: string | null;
+    moduleHint?: string | null;
+    sourceReference?: string | null;
+    questionText: string;
+    options?: Array<{
+        label: string;
+        isCorrect: boolean;
+    }>;
+    answer?: string | null;
+    numericAnswer?: number | null;
+    numericTolerance?: number | null;
+    marks?: number;
+    explanation?: string | null;
+    difficulty?: string | null;
+    originalDifficulty?: string | null;
+    questionType?: QuizQuestionType;
+    multi?: boolean;
+    primaryCoCode?: string | null;
+    mappingBasis?: string | null;
+    mappingSource?: string | null;
+    verificationStatus?: string | null;
+    secondaryCoCodes?: string[];
+}, index: number): ImportCandidate;
+declare function parseMcqText(content: string, file: string, subjectHint: string | null, moduleHint: string | null): ImportCandidate[];
+declare function parseCsv(content: string, file: string): ImportCandidate[];
+declare function parseJsonQuestions(content: string, file: string): ImportCandidate[];
+export declare function scanQuestionFiles(): Promise<ImportScanReport>;
+export { parseMcqText, parseCsv, parseJsonQuestions, toCandidate, optionLetter };

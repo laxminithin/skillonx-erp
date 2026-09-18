@@ -1,0 +1,96 @@
+export declare const GAP_SHEETS: readonly ["GAP_MASTER", "GAP_CO_MAPPING", "GAP_OUTCOME_MAPPING", "GAP_ACTION_MASTER", "GAP_SOURCES", "GAP_REVIEW_QUEUE", "GAP_SUMMARY"];
+export type ParsedGapMaster = {
+    gapId: string;
+    subjectKey: string | null;
+    subjectName: string;
+    courseCode: string;
+    scheme: string | null;
+    program: string | null;
+    semester: string | null;
+    moduleUnit: string | null;
+    relatedTopic: string | null;
+    gapType: string;
+    gapStatement: string;
+    gapJustification: string | null;
+    officialSyllabusCoverage: string | null;
+    currentTeachingCoverage: string | null;
+    expectedCoverageLevel: number | null;
+    priority: string | null;
+    relatedCosRaw: string | null;
+    suggestedActionType: string | null;
+    sourceBasis: string | null;
+    mappingOrigin: string | null;
+    verificationStatus: string | null;
+    sourceRow: number;
+};
+export type ParsedGapCoLink = {
+    gapId: string;
+    courseCode: string;
+    coCode: string;
+    relationship: string | null;
+    basis: string | null;
+    verificationStatus: string | null;
+    sourceRow: number;
+};
+export type ParsedGapOutcomeLink = {
+    gapId: string;
+    courseCode: string;
+    coCode: string | null;
+    outcomeType: string;
+    outcomeCode: string;
+    strength: number | null;
+    derivedFrom: string | null;
+    verificationStatus: string | null;
+    sourceRow: number;
+};
+export type ParsedGapAction = {
+    actionId: string;
+    gapId: string;
+    actionType: string;
+    recommendedAction: string;
+    expectedCoverageLevel: number | null;
+    priority: string | null;
+    sourceBasis: string | null;
+    verificationStatus: string | null;
+    sourceRow: number;
+};
+export type ParsedGapSource = {
+    sourceId: string;
+    gapId: string;
+    sourceType: string | null;
+    sourceFile: string | null;
+    sourceReference: string | null;
+    notes: string | null;
+    sourceRow: number;
+};
+export type ParsedGapReview = {
+    reviewId: string;
+    subjectName: string | null;
+    courseCode: string | null;
+    entityType: string | null;
+    entityId: string | null;
+    issue: string | null;
+    proposedValue: string | null;
+    reason: string | null;
+    source: string | null;
+    reviewStatus: string | null;
+    sourceRow: number;
+};
+export type ParsedGapWorkbook = {
+    gaps: ParsedGapMaster[];
+    coLinks: ParsedGapCoLink[];
+    outcomeLinks: ParsedGapOutcomeLink[];
+    actions: ParsedGapAction[];
+    sources: ParsedGapSource[];
+    reviewQueue: ParsedGapReview[];
+    sheets: string[];
+    errors: string[];
+    warnings: string[];
+};
+export declare function parseGapWorkbookBuffer(buffer: Buffer): ParsedGapWorkbook;
+export declare function parseGapWorkbook(buffer: Buffer | string): Promise<ParsedGapWorkbook>;
+export declare function discoverGapMasterFiles(roots?: string[]): Promise<{
+    filePath: string;
+    fileName: string;
+    sheets: string[];
+}[]>;

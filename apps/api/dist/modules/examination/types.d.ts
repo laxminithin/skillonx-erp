@@ -1,0 +1,38 @@
+export declare const EXAM_TYPES: readonly ["CIE", "SEE", "SUPPLEMENTARY", "MAKEUP", "IMPROVEMENT", "PRACTICAL", "VIVA", "PROJECT"];
+export type ExamType = (typeof EXAM_TYPES)[number];
+export declare const EXAM_STATUSES: readonly ["DRAFT", "SCHEDULED", "ONGOING", "COMPLETED", "RESULT_PROCESSING", "RESULT_PUBLISHED", "CANCELLED"];
+export type ExamStatus = (typeof EXAM_STATUSES)[number];
+export declare const ELIGIBILITY_STATUSES: readonly ["ELIGIBLE", "NOT_ELIGIBLE", "CONDONED", "WITHHELD"];
+export type EligibilityStatus = (typeof ELIGIBILITY_STATUSES)[number];
+export declare const MARK_STATUSES: readonly ["PRESENT", "ABSENT", "MALPRACTICE", "WITHHELD"];
+export type MarkStatus = (typeof MARK_STATUSES)[number];
+export declare const MARKS_SHEET_STATUSES: readonly ["DRAFT", "SUBMITTED", "VERIFIED", "LOCKED", "RELEASED"];
+export type MarksSheetStatus = (typeof MARKS_SHEET_STATUSES)[number];
+export declare const INVIGILATION_ROLES: readonly ["CHIEF", "INVIGILATOR", "RELIEVER", "SQUAD", "OTHER"];
+export type InvigilationRole = (typeof INVIGILATION_ROLES)[number];
+export declare const RESULT_STATUSES: readonly ["PASS", "FAIL", "WITHHELD", "INCOMPLETE"];
+export type ResultStatus = (typeof RESULT_STATUSES)[number];
+export declare const SUBJECT_RESULT_STATUSES: readonly ["PASS", "FAIL", "ABSENT", "WITHHELD", "MALPRACTICE", "INCOMPLETE"];
+export type SubjectResultStatus = (typeof SUBJECT_RESULT_STATUSES)[number];
+export declare const REVALUATION_TYPES: readonly ["RETOTALING", "REVALUATION", "PHOTOCOPY"];
+export type RevaluationType = (typeof REVALUATION_TYPES)[number];
+export declare const REVALUATION_STATUSES: readonly ["REQUESTED", "APPROVED", "PROCESSING", "COMPLETED", "REJECTED"];
+export type RevaluationStatus = (typeof REVALUATION_STATUSES)[number];
+export declare const MARKS_SOURCES: readonly ["INSTITUTION", "UNIVERSITY_IMPORT", "MANUAL_VERIFIED"];
+export type MarksSource = (typeof MARKS_SOURCES)[number];
+export type CieComponent = {
+    kind: 'IA' | 'ASSIGNMENT' | 'QUIZ' | 'INTERNAL_ASSESSMENT';
+    label: string;
+    weight: number;
+    aggregation?: 'SUM' | 'BEST_OF' | 'AVERAGE';
+    sourceIds?: number[];
+};
+export type GradeBand = {
+    min: number;
+    max: number;
+    grade: string;
+    gradePoints: number;
+};
+export declare const DEFAULT_GRADE_BANDS: GradeBand[];
+export declare const EXAM_PERMISSIONS: readonly ["exam.create", "exam.schedule", "exam.eligibility", "exam.rooms", "exam.invigilation", "exam.marks.verify", "exam.result.process", "exam.result.publish"];
+export type ExamPermission = (typeof EXAM_PERMISSIONS)[number];

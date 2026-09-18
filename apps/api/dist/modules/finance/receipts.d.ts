@@ -1,0 +1,125 @@
+import type { Knex } from 'knex';
+import type { FinanceActor } from './types.js';
+export declare function generateReceipt(trx: Knex.Transaction, params: {
+    collegeId: number;
+    studentId: number;
+    paymentId: number;
+    actorId?: number;
+}): Promise<{
+    id: number;
+    receiptNumber: string;
+    studentId: number;
+    paymentId: number;
+    receiptDate: unknown;
+    amount: string;
+    paymentMethod: unknown;
+    transactionReference: unknown;
+    outstandingBalance: string;
+    status: unknown;
+    snapshot: unknown;
+    voidedAt: unknown;
+    voidReason: unknown;
+}>;
+export declare function serializeReceipt(row: Record<string, unknown>, snapshot?: unknown): {
+    id: number;
+    receiptNumber: string;
+    studentId: number;
+    paymentId: number;
+    receiptDate: unknown;
+    amount: string;
+    paymentMethod: unknown;
+    transactionReference: unknown;
+    outstandingBalance: string;
+    status: unknown;
+    snapshot: unknown;
+    voidedAt: unknown;
+    voidReason: unknown;
+};
+export declare function listReceipts(actor: FinanceActor, filters?: {
+    studentId?: number;
+    fromDate?: string;
+    toDate?: string;
+    receiptNumber?: string;
+}): Promise<{
+    id: number;
+    receiptNumber: string;
+    studentId: number;
+    paymentId: number;
+    receiptDate: unknown;
+    amount: string;
+    paymentMethod: unknown;
+    transactionReference: unknown;
+    outstandingBalance: string;
+    status: unknown;
+    snapshot: unknown;
+    voidedAt: unknown;
+    voidReason: unknown;
+}[]>;
+export declare function listStudentReceipts(studentId: number, collegeId: number): Promise<{
+    id: number;
+    receiptNumber: string;
+    studentId: number;
+    paymentId: number;
+    receiptDate: unknown;
+    amount: string;
+    paymentMethod: unknown;
+    transactionReference: unknown;
+    outstandingBalance: string;
+    status: unknown;
+    snapshot: unknown;
+    voidedAt: unknown;
+    voidReason: unknown;
+}[]>;
+export declare function getReceipt(actor: FinanceActor, receiptId: number): Promise<{
+    items: {
+        description: any;
+        amount: string;
+    }[];
+    id: number;
+    receiptNumber: string;
+    studentId: number;
+    paymentId: number;
+    receiptDate: unknown;
+    amount: string;
+    paymentMethod: unknown;
+    transactionReference: unknown;
+    outstandingBalance: string;
+    status: unknown;
+    snapshot: unknown;
+    voidedAt: unknown;
+    voidReason: unknown;
+}>;
+export declare function getStudentReceipt(studentId: number, collegeId: number, receiptId: number): Promise<{
+    items: {
+        description: any;
+        amount: string;
+    }[];
+    id: number;
+    receiptNumber: string;
+    studentId: number;
+    paymentId: number;
+    receiptDate: unknown;
+    amount: string;
+    paymentMethod: unknown;
+    transactionReference: unknown;
+    outstandingBalance: string;
+    status: unknown;
+    snapshot: unknown;
+    voidedAt: unknown;
+    voidReason: unknown;
+}>;
+export declare function voidReceipt(actor: FinanceActor, receiptId: number, reason: string): Promise<{
+    id: number;
+    receiptNumber: string;
+    studentId: number;
+    paymentId: number;
+    receiptDate: unknown;
+    amount: string;
+    paymentMethod: unknown;
+    transactionReference: unknown;
+    outstandingBalance: string;
+    status: unknown;
+    snapshot: unknown;
+    voidedAt: unknown;
+    voidReason: unknown;
+}>;

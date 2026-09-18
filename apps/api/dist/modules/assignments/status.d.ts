@@ -1,0 +1,4 @@
+import { getSurveyAvailabilityStatus as getAssignmentAvailabilityStatus, isStudentAccessible, isValidSchedule, deriveStoredStatusAfterSchedule, type AvailabilityStatus } from '../../utils/surveyStatus.js';
+export { getAssignmentAvailabilityStatus, isStudentAccessible, isValidSchedule, deriveStoredStatusAfterSchedule, type AvailabilityStatus, };
+export declare function assignmentAvailabilityReason(effective: AvailabilityStatus): "ASSIGNMENT_DRAFT" | "ASSIGNMENT_NOT_STARTED" | "ASSIGNMENT_ACTIVE" | "ASSIGNMENT_ENDED" | "ASSIGNMENT_CLOSED" | "ASSIGNMENT_ARCHIVED";
+export declare function assignmentAvailabilityMessage(effective: AvailabilityStatus): "This assignment is not open yet." | "The submission window for this assignment has ended." | "This assignment is no longer accepting submissions." | "This assignment is no longer available." | "This assignment is not published." | "This assignment is open for submissions.";

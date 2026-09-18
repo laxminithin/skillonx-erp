@@ -1,0 +1,527 @@
+import { z } from 'zod';
+import type { CopoActor } from './access.js';
+export declare const schemeSchema: z.ZodObject<{
+    name: z.ZodString;
+    code: z.ZodString;
+    university: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    effectiveAcademicYear: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    startYear: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    endYear: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    status: z.ZodOptional<z.ZodEnum<["ACTIVE", "ARCHIVED"]>>;
+    notes: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+}, "strip", z.ZodTypeAny, {
+    code: string;
+    name: string;
+    status?: "ACTIVE" | "ARCHIVED" | undefined;
+    notes?: string | null | undefined;
+    university?: string | null | undefined;
+    effectiveAcademicYear?: string | null | undefined;
+    startYear?: number | null | undefined;
+    endYear?: number | null | undefined;
+}, {
+    code: string;
+    name: string;
+    status?: "ACTIVE" | "ARCHIVED" | undefined;
+    notes?: string | null | undefined;
+    university?: string | null | undefined;
+    effectiveAcademicYear?: string | null | undefined;
+    startYear?: number | null | undefined;
+    endYear?: number | null | undefined;
+}>;
+export declare const programSchema: z.ZodObject<{
+    name: z.ZodString;
+    code: z.ZodString;
+    departmentId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    schemeId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    degree: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    durationYears: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    status: z.ZodOptional<z.ZodEnum<["ACTIVE", "INACTIVE"]>>;
+}, "strip", z.ZodTypeAny, {
+    code: string;
+    name: string;
+    status?: "ACTIVE" | "INACTIVE" | undefined;
+    departmentId?: number | null | undefined;
+    schemeId?: number | null | undefined;
+    degree?: string | null | undefined;
+    durationYears?: number | null | undefined;
+}, {
+    code: string;
+    name: string;
+    status?: "ACTIVE" | "INACTIVE" | undefined;
+    departmentId?: number | null | undefined;
+    schemeId?: number | null | undefined;
+    degree?: string | null | undefined;
+    durationYears?: number | null | undefined;
+}>;
+export declare const subjectSchema: z.ZodObject<{
+    name: z.ZodString;
+    code: z.ZodString;
+    departmentId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    schemeId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    semesterId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    courseType: z.ZodNullable<z.ZodOptional<z.ZodEnum<["PCC", "PEC", "OEC", "IPCC", "LABORATORY", "PROJECT", "INTERNSHIP", "AEC", "HSMC", "BSC", "ESC", "NCMC", "OTHER"]>>>;
+    lectureHours: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    tutorialHours: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    practicalHours: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    credits: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    cieMarks: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    seeMarks: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    totalMarks: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    status: z.ZodOptional<z.ZodEnum<["ACTIVE", "INACTIVE", "ARCHIVED"]>>;
+    programIds: z.ZodOptional<z.ZodArray<z.ZodNumber, "many">>;
+}, "strip", z.ZodTypeAny, {
+    code: string;
+    name: string;
+    status?: "ACTIVE" | "ARCHIVED" | "INACTIVE" | undefined;
+    departmentId?: number | null | undefined;
+    semesterId?: number | null | undefined;
+    schemeId?: number | null | undefined;
+    totalMarks?: number | null | undefined;
+    credits?: number | null | undefined;
+    courseType?: "LABORATORY" | "OTHER" | "INTERNSHIP" | "AEC" | "PROJECT" | "PCC" | "PEC" | "OEC" | "IPCC" | "HSMC" | "BSC" | "ESC" | "NCMC" | null | undefined;
+    lectureHours?: number | null | undefined;
+    tutorialHours?: number | null | undefined;
+    practicalHours?: number | null | undefined;
+    cieMarks?: number | null | undefined;
+    seeMarks?: number | null | undefined;
+    programIds?: number[] | undefined;
+}, {
+    code: string;
+    name: string;
+    status?: "ACTIVE" | "ARCHIVED" | "INACTIVE" | undefined;
+    departmentId?: number | null | undefined;
+    semesterId?: number | null | undefined;
+    schemeId?: number | null | undefined;
+    totalMarks?: number | null | undefined;
+    credits?: number | null | undefined;
+    courseType?: "LABORATORY" | "OTHER" | "INTERNSHIP" | "AEC" | "PROJECT" | "PCC" | "PEC" | "OEC" | "IPCC" | "HSMC" | "BSC" | "ESC" | "NCMC" | null | undefined;
+    lectureHours?: number | null | undefined;
+    tutorialHours?: number | null | undefined;
+    practicalHours?: number | null | undefined;
+    cieMarks?: number | null | undefined;
+    seeMarks?: number | null | undefined;
+    programIds?: number[] | undefined;
+}>;
+export declare const courseOutcomeSchema: z.ZodObject<{
+    courseId: z.ZodNumber;
+    number: z.ZodNumber;
+    code: z.ZodOptional<z.ZodString>;
+    statement: z.ZodString;
+    bloomsLevel: z.ZodNullable<z.ZodOptional<z.ZodEnum<["L1", "L2", "L3", "L4", "L5", "L6"]>>>;
+    knowledgeLevel: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    source: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    sourcePage: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    sourceDocumentId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    officialTextPending: z.ZodOptional<z.ZodBoolean>;
+}, "strip", z.ZodTypeAny, {
+    number: number;
+    courseId: number;
+    statement: string;
+    code?: string | undefined;
+    source?: string | null | undefined;
+    bloomsLevel?: "L1" | "L2" | "L3" | "L4" | "L5" | "L6" | null | undefined;
+    knowledgeLevel?: string | null | undefined;
+    sourcePage?: string | null | undefined;
+    sourceDocumentId?: number | null | undefined;
+    officialTextPending?: boolean | undefined;
+}, {
+    number: number;
+    courseId: number;
+    statement: string;
+    code?: string | undefined;
+    source?: string | null | undefined;
+    bloomsLevel?: "L1" | "L2" | "L3" | "L4" | "L5" | "L6" | null | undefined;
+    knowledgeLevel?: string | null | undefined;
+    sourcePage?: string | null | undefined;
+    sourceDocumentId?: number | null | undefined;
+    officialTextPending?: boolean | undefined;
+}>;
+export declare const programOutcomeSchema: z.ZodObject<{
+    schemeId: z.ZodNumber;
+    programId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    number: z.ZodNumber;
+    code: z.ZodOptional<z.ZodString>;
+    shortTitle: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    officialStatement: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    source: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    programIds: z.ZodOptional<z.ZodArray<z.ZodNumber, "many">>;
+}, "strip", z.ZodTypeAny, {
+    number: number;
+    schemeId: number;
+    code?: string | undefined;
+    source?: string | null | undefined;
+    programId?: number | null | undefined;
+    programIds?: number[] | undefined;
+    shortTitle?: string | null | undefined;
+    officialStatement?: string | null | undefined;
+}, {
+    number: number;
+    schemeId: number;
+    code?: string | undefined;
+    source?: string | null | undefined;
+    programId?: number | null | undefined;
+    programIds?: number[] | undefined;
+    shortTitle?: string | null | undefined;
+    officialStatement?: string | null | undefined;
+}>;
+export declare const assignmentSchema: z.ZodObject<{
+    facultyId: z.ZodNumber;
+    courseId: z.ZodNumber;
+    academicYearId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    programId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    semesterId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+}, "strip", z.ZodTypeAny, {
+    facultyId: number;
+    courseId: number;
+    academicYearId?: number | null | undefined;
+    semesterId?: number | null | undefined;
+    programId?: number | null | undefined;
+}, {
+    facultyId: number;
+    courseId: number;
+    academicYearId?: number | null | undefined;
+    semesterId?: number | null | undefined;
+    programId?: number | null | undefined;
+}>;
+export declare const psoSchema: z.ZodObject<{
+    schemeId: z.ZodNumber;
+    programId: z.ZodNumber;
+    number: z.ZodOptional<z.ZodNumber>;
+    code: z.ZodOptional<z.ZodString>;
+    shortTitle: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    officialStatement: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    effectiveAcademicYear: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    source: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    approvalReference: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+}, "strip", z.ZodTypeAny, {
+    programId: number;
+    schemeId: number;
+    number?: number | undefined;
+    code?: string | undefined;
+    approvalReference?: string | null | undefined;
+    source?: string | null | undefined;
+    effectiveAcademicYear?: string | null | undefined;
+    shortTitle?: string | null | undefined;
+    officialStatement?: string | null | undefined;
+}, {
+    programId: number;
+    schemeId: number;
+    number?: number | undefined;
+    code?: string | undefined;
+    approvalReference?: string | null | undefined;
+    source?: string | null | undefined;
+    effectiveAcademicYear?: string | null | undefined;
+    shortTitle?: string | null | undefined;
+    officialStatement?: string | null | undefined;
+}>;
+export declare function listSchemes(collegeId: number): Promise<{
+    id: number;
+    name: unknown;
+    code: unknown;
+    university: {} | null;
+    effectiveAcademicYear: {} | null;
+    startYear: {} | null;
+    endYear: {} | null;
+    status: unknown;
+    notes: {} | null;
+}[]>;
+export declare function createScheme(collegeId: number, actor: CopoActor, input: z.infer<typeof schemeSchema>): Promise<{
+    id: number;
+    name: unknown;
+    code: unknown;
+    university: {} | null;
+    effectiveAcademicYear: {} | null;
+    startYear: {} | null;
+    endYear: {} | null;
+    status: unknown;
+    notes: {} | null;
+}>;
+export declare function updateScheme(collegeId: number, id: number, actor: CopoActor, input: Partial<z.infer<typeof schemeSchema>>): Promise<{
+    id: number;
+    name: unknown;
+    code: unknown;
+    university: {} | null;
+    effectiveAcademicYear: {} | null;
+    startYear: {} | null;
+    endYear: {} | null;
+    status: unknown;
+    notes: {} | null;
+}>;
+export declare function listPrograms(collegeId: number, schemeId?: number): Promise<{
+    id: number;
+    name: unknown;
+    code: unknown;
+    departmentId: {} | null;
+    departmentName: {} | null;
+    schemeId: {} | null;
+    schemeName: {} | null;
+    degree: {} | null;
+    durationYears: {} | null;
+    status: {};
+}[]>;
+export declare function createProgram(collegeId: number, actor: CopoActor, input: z.infer<typeof programSchema>): Promise<{
+    id: number;
+    name: unknown;
+    code: unknown;
+    departmentId: {} | null;
+    departmentName: {} | null;
+    schemeId: {} | null;
+    schemeName: {} | null;
+    degree: {} | null;
+    durationYears: {} | null;
+    status: {};
+}>;
+export declare function updateProgram(collegeId: number, id: number, actor: CopoActor, input: Partial<z.infer<typeof programSchema>>): Promise<{
+    id: number;
+    name: unknown;
+    code: unknown;
+    departmentId: {} | null;
+    departmentName: {} | null;
+    schemeId: {} | null;
+    schemeName: {} | null;
+    degree: {} | null;
+    durationYears: {} | null;
+    status: {};
+}>;
+export declare function listSubjects(collegeId: number, filters?: {
+    schemeId?: number;
+    programId?: number;
+    semesterId?: number;
+}): Promise<{
+    id: number;
+    code: unknown;
+    name: unknown;
+    departmentId: {} | null;
+    departmentName: {} | null;
+    schemeId: {} | null;
+    schemeName: {} | null;
+    schemeCode: {} | null;
+    semesterId: {} | null;
+    semesterLabel: {} | null;
+    courseType: {} | null;
+    lectureHours: {} | null;
+    tutorialHours: {} | null;
+    practicalHours: {} | null;
+    credits: {} | null;
+    cieMarks: {} | null;
+    seeMarks: {} | null;
+    totalMarks: {} | null;
+    status: {};
+}[]>;
+export declare function createSubject(collegeId: number, actor: CopoActor, input: z.infer<typeof subjectSchema>): Promise<{
+    id: number;
+    code: unknown;
+    name: unknown;
+    departmentId: {} | null;
+    departmentName: {} | null;
+    schemeId: {} | null;
+    schemeName: {} | null;
+    schemeCode: {} | null;
+    semesterId: {} | null;
+    semesterLabel: {} | null;
+    courseType: {} | null;
+    lectureHours: {} | null;
+    tutorialHours: {} | null;
+    practicalHours: {} | null;
+    credits: {} | null;
+    cieMarks: {} | null;
+    seeMarks: {} | null;
+    totalMarks: {} | null;
+    status: {};
+}>;
+export declare function updateSubject(collegeId: number, id: number, actor: CopoActor, input: Partial<z.infer<typeof subjectSchema>>): Promise<{
+    id: number;
+    code: unknown;
+    name: unknown;
+    departmentId: {} | null;
+    departmentName: {} | null;
+    schemeId: {} | null;
+    schemeName: {} | null;
+    schemeCode: {} | null;
+    semesterId: {} | null;
+    semesterLabel: {} | null;
+    courseType: {} | null;
+    lectureHours: {} | null;
+    tutorialHours: {} | null;
+    practicalHours: {} | null;
+    credits: {} | null;
+    cieMarks: {} | null;
+    seeMarks: {} | null;
+    totalMarks: {} | null;
+    status: {};
+}>;
+export declare function listCourseOutcomes(collegeId: number, courseId: number, includeHistory?: boolean): Promise<import("./helpers.js").CourseOutcomeRecord[]>;
+export declare function createCourseOutcome(collegeId: number, actor: CopoActor, input: z.infer<typeof courseOutcomeSchema>): Promise<import("./helpers.js").CourseOutcomeRecord>;
+export declare function updateCourseOutcome(collegeId: number, id: number, actor: CopoActor, input: {
+    statement?: string;
+    bloomsLevel?: string | null;
+    knowledgeLevel?: string | null;
+    source?: string | null;
+    sourcePage?: string | null;
+    mode?: 'IN_PLACE' | 'NEW_VERSION';
+}): Promise<import("./helpers.js").CourseOutcomeRecord>;
+export declare function listPoFrameworks(collegeId: number, schemeId?: number): Promise<{
+    id: number;
+    schemeId: number;
+    schemeName: any;
+    schemeCode: any;
+    programId: any;
+    programName: any;
+    versionNumber: number;
+    label: any;
+    source: any;
+    status: any;
+    outcomes: import("./helpers.js").ProgramOutcomeRecord[];
+}[]>;
+export declare function ensurePoFramework(collegeId: number, schemeId: number, actor: CopoActor, programId?: number | null): Promise<any>;
+export declare function createProgramOutcome(collegeId: number, actor: CopoActor, input: z.infer<typeof programOutcomeSchema>): Promise<import("./helpers.js").ProgramOutcomeRecord>;
+export declare function updateProgramOutcome(collegeId: number, id: number, actor: CopoActor, input: Partial<z.infer<typeof programOutcomeSchema>> & {
+    officialStatement?: string | null;
+}): Promise<import("./helpers.js").ProgramOutcomeRecord>;
+export declare function listAssignments(collegeId: number, filters?: {
+    facultyId?: number;
+    courseId?: number;
+}): Promise<{
+    id: number;
+    facultyId: number;
+    facultyName: any;
+    courseId: number;
+    courseCode: any;
+    courseName: any;
+    academicYearId: any;
+    academicYearLabel: any;
+    programId: any;
+    programName: any;
+    semesterId: any;
+    status: any;
+}[]>;
+export declare function createAssignment(collegeId: number, actor: CopoActor, input: z.infer<typeof assignmentSchema>): Promise<{
+    id: number;
+    facultyId: number;
+    facultyName: any;
+    courseId: number;
+    courseCode: any;
+    courseName: any;
+    academicYearId: any;
+    academicYearLabel: any;
+    programId: any;
+    programName: any;
+    semesterId: any;
+    status: any;
+} | undefined>;
+export declare function deleteAssignment(collegeId: number, id: number, actor: CopoActor): Promise<{
+    ok: boolean;
+}>;
+export declare function listProgramSpecificOutcomes(collegeId: number, filters?: {
+    schemeId?: number;
+    programId?: number;
+    history?: boolean;
+}): Promise<{
+    schemeName: any;
+    schemeCode: any;
+    programName: any;
+    programCode: any;
+    departmentName: any;
+    displayStatement: any;
+    id: number;
+    schemeId: number;
+    programId: number;
+    departmentId: number | null;
+    number: number;
+    code: string;
+    shortTitle: string | null;
+    officialStatement: string | null;
+    effectiveAcademicYear: string | null;
+    versionNumber: number;
+    isCurrent: boolean;
+    source: string | null;
+    approvalReference: string | null;
+    verificationStatus: string | null;
+    status: string;
+    officialTextPending: boolean;
+    supersedesId: number | null;
+}[]>;
+export declare function psoHistory(collegeId: number, schemeId: number, programId: number, code: string): Promise<import("./helpers.js").ProgramSpecificOutcomeRecord[]>;
+export declare function psoMappingUsage(collegeId: number, psoId: number): Promise<{
+    pso: import("./helpers.js").ProgramSpecificOutcomeRecord;
+    referencedByApproved: boolean;
+    usage: {
+        mappingVersionId: number;
+        mappingStatus: any;
+        mappingVersionNumber: number;
+        subjectCode: any;
+        subjectName: any;
+        coCode: any;
+        strength: number | null;
+    }[];
+}>;
+export declare function createProgramSpecificOutcome(collegeId: number, actor: CopoActor, input: z.infer<typeof psoSchema>): Promise<import("./helpers.js").ProgramSpecificOutcomeRecord>;
+export declare function updateProgramSpecificOutcome(collegeId: number, id: number, actor: CopoActor, input: Partial<z.infer<typeof psoSchema>> & {
+    mode?: 'IN_PLACE' | 'NEW_VERSION';
+}): Promise<import("./helpers.js").ProgramSpecificOutcomeRecord>;
+export declare function archiveProgramSpecificOutcome(collegeId: number, id: number, actor: CopoActor): Promise<import("./helpers.js").ProgramSpecificOutcomeRecord>;
+export declare function deleteProgramSpecificOutcome(collegeId: number, id: number, actor: CopoActor): Promise<{
+    ok: boolean;
+}>;
+export declare function listSdgs(): Promise<import("./helpers.js").SdgRecord[]>;
+export declare function catalog(collegeId: number): Promise<{
+    schemes: {
+        id: number;
+        name: unknown;
+        code: unknown;
+        university: {} | null;
+        effectiveAcademicYear: {} | null;
+        startYear: {} | null;
+        endYear: {} | null;
+        status: unknown;
+        notes: {} | null;
+    }[];
+    programs: {
+        id: number;
+        name: unknown;
+        code: unknown;
+        departmentId: {} | null;
+        departmentName: {} | null;
+        schemeId: {} | null;
+        schemeName: {} | null;
+        degree: {} | null;
+        durationYears: {} | null;
+        status: {};
+    }[];
+    semesters: {
+        id: number;
+        label: any;
+        number: any;
+    }[];
+    academicYears: {
+        id: number;
+        label: any;
+        isCurrent: boolean;
+    }[];
+    subjects: {
+        id: number;
+        code: unknown;
+        name: unknown;
+        departmentId: {} | null;
+        departmentName: {} | null;
+        schemeId: {} | null;
+        schemeName: {} | null;
+        schemeCode: {} | null;
+        semesterId: {} | null;
+        semesterLabel: {} | null;
+        courseType: {} | null;
+        lectureHours: {} | null;
+        tutorialHours: {} | null;
+        practicalHours: {} | null;
+        credits: {} | null;
+        cieMarks: {} | null;
+        seeMarks: {} | null;
+        totalMarks: {} | null;
+        status: {};
+    }[];
+    departments: {
+        id: number;
+        name: any;
+        code: any;
+    }[];
+}>;

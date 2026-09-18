@@ -1,0 +1,555 @@
+[
+  {
+    "subjectCode": "BIS701",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Introduction to Big Data Analytics",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "BIS701",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Introduction to Hadoop",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "BIS701",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "MongoDB for Big Data",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "BIS701",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Hive and Pig on Hadoop",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "BIS701",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Spark, Text and Web Analytics",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "BIS703",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Crypto Basics",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "BIS703",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Hash Functions and Related Applications",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "BIS703",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Entity Authentication",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "BIS703",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Key Management and Public-Key Management",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "BIS703",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Cryptographic Applications",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "BCS403",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Fundamentals and ER Model",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "BCS403",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Relational Model and Algebra",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "BCS403",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Normalization and SQL",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "BCS403",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Transactions, Recovery and Serializability",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "BCS403",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Concurrency Control and NoSQL",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "10CS55",
+    "moduleNumber": 1,
+    "moduleCode": "U1",
+    "title": "Introduction & Network Models",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "10CS55",
+    "moduleNumber": 2,
+    "moduleCode": "U2",
+    "title": "Physical Layer-I",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "10CS55",
+    "moduleNumber": 3,
+    "moduleCode": "U3",
+    "title": "Physical Layer-II & Switching",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "10CS55",
+    "moduleNumber": 4,
+    "moduleCode": "U4",
+    "title": "Error Detection & Correction",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "10CS55",
+    "moduleNumber": 5,
+    "moduleCode": "U5",
+    "title": "Data Link Control",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "10CS55",
+    "moduleNumber": 6,
+    "moduleCode": "U6",
+    "title": "Multiple Access & Ethernet",
+    "sortOrder": 6
+  },
+  {
+    "subjectCode": "10CS55",
+    "moduleNumber": 7,
+    "moduleCode": "U7",
+    "title": "Wireless LANs & Cellular Networks",
+    "sortOrder": 7
+  },
+  {
+    "subjectCode": "10CS55",
+    "moduleNumber": 8,
+    "moduleCode": "U8",
+    "title": "Network Layer",
+    "sortOrder": 8
+  },
+  {
+    "subjectCode": "BCS503",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Introduction to Automata Theory and Finite Automata",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "BCS503",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Regular Expressions and Finite Automata",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "BCS503",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Context-Free Grammars and Pushdown Automata",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "BCS503",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Properties of Context-Free Languages",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "BCS503",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Turing Machines and Undecidability",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "BCS702",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Foundations of Parallel Computing",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "BCS702",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Massive Parallel Power",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "BCS702",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Distributed Memory Programming with MPI",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "BCS702",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Shared Memory, Shared Risk",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "BCS702",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Thousands of Workers, One Result",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "1BCS302",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Java Fundamentals",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "1BCS302",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Classes and Methods",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "1BCS302",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Inheritance, Packages and Interfaces",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "1BCS302",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Exceptions and Threads",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "1BCS302",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Enums, Wrappers and Generics",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "22MBA401",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "The Birth of Global Commerce",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "22MBA401",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Understanding the World’s Business Climate",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "22MBA401",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "The Hall of Business Thinkers",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "22MBA401",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Who Runs Global Trade?",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "22MBA401",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Building a Global Company",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "22MBA401",
+    "moduleNumber": 6,
+    "moduleCode": "M6",
+    "title": "Running the World Business Machine",
+    "sortOrder": 6
+  },
+  {
+    "subjectCode": "BRMK557",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Research Foundations & Ethics",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "BRMK557",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Literature Review, Technical Reading & Citations",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "BRMK557",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Intellectual Property & Patents",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "BRMK557",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Copyright & Trademarks",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "BRMK557",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Industrial Designs, Geographical Indications & IP Case Studies",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "1BCHES102/202",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Functional Materials for Memory and Display Systems",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "1BCHES102/202",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Quantum Materials and Polymers",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "1BCHES102/202",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Sustainable Energy Systems",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "1BCHES102/202",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Sensors and Corrosion Science",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "1BCHES102/202",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Green Materials and E-Waste Management",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "BCA701",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Foundations of Neural Networks & Perceptron",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "BCA701",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Multilayer Perceptrons & Backpropagation",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "BCA701",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Regularization & Optimization",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "BCA701",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Convolutional Neural Networks",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "BCA701",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Sequence Modeling, RNNs & LSTM",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "BCS303",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Inside the Machine",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "BCS303",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "The Battle for the CPU",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "BCS303",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "When Processes Collide",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "BCS303",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Memory Is an Illusion",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "BCS303",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Where Data Lives",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "BCS515B",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Introduction and Intelligent Agents",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "BCS515B",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Problem Solving and Uninformed Search",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "BCS515B",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Informed Search and Propositional Logic",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "BCS515B",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "First-Order Logic and Forward Inference",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "BCS515B",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Backward Inference, Resolution, and Classical Planning",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "1BEC304",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "BJT AC Models and Voltage Amplifiers",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "1BEC304",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "MOSFET Biasing, Small Signal Models, and Amplifier Configurations",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "1BEC304",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Negative Feedback, Oscillators, and 555 Timer",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "1BEC304",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Power Amplifiers and Active Filters",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "1BEC304",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Linear and Nonlinear Op-Amp Applications and DC Regulators",
+    "sortOrder": 5
+  },
+  {
+    "subjectCode": "1BCS305",
+    "moduleNumber": 1,
+    "moduleCode": "M1",
+    "title": "Introduction, Arrays, Pointers, Structures, Polynomials, and Sparse Matrices",
+    "sortOrder": 1
+  },
+  {
+    "subjectCode": "1BCS305",
+    "moduleNumber": 2,
+    "moduleCode": "M2",
+    "title": "Stacks, Stack Applications, and Queues",
+    "sortOrder": 2
+  },
+  {
+    "subjectCode": "1BCS305",
+    "moduleNumber": 3,
+    "moduleCode": "M3",
+    "title": "Circular Queues, Multiple Stacks and Queues, and Linked Lists",
+    "sortOrder": 3
+  },
+  {
+    "subjectCode": "1BCS305",
+    "moduleNumber": 4,
+    "moduleCode": "M4",
+    "title": "Trees, Binary Trees, Traversals, Threaded Trees, and BST",
+    "sortOrder": 4
+  },
+  {
+    "subjectCode": "1BCS305",
+    "moduleNumber": 5,
+    "moduleCode": "M5",
+    "title": "Graphs, Hashing, Priority Queues, and Leftist Trees",
+    "sortOrder": 5
+  }
+]

@@ -1,0 +1,2234 @@
+[
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS701",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "CO1 requires students to identify Big Data concepts, tools and applications, which is a direct application of specialized engineering knowledge represented by PO1.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS701",
+    "coCode": "CO1",
+    "targetCode": "PO5",
+    "strength": 2,
+    "justification": "CO1 includes recognition of analytical tools used in Big Data environments, contributing moderately to modern-tool awareness in PO5.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS701",
+    "coCode": "CO1",
+    "targetCode": "PO12",
+    "strength": 1,
+    "justification": "Listing evolving Big Data tools and applications supports continued independent updating of technical knowledge (PO12) at a supporting level.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS701",
+    "coCode": "CO2",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "Developing Hadoop programs applies the specialized computing knowledge required by PO1.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS701",
+    "coCode": "CO2",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO2 requires students to develop working MapReduce-style programs, which is design and implementation of a computational solution (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS701",
+    "coCode": "CO2",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "CO2 is executed through the Hadoop framework, a modern distributed-processing tool aligned with PO5.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS701",
+    "coCode": "CO3",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "Deploying MapReduce, Pig, Hive and Spark jobs requires students to assemble processing pipelines, contributing to solution development (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS701",
+    "coCode": "CO3",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "CO3 requires operational use of a Hadoop cluster and associated ecosystem tools, which is high correlation with modern tool usage (PO5).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS701",
+    "coCode": "CO4",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "CO4 requires analysis of a given dataset to identify insights, matching the problem-analysis competency of PO2.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS701",
+    "coCode": "CO4",
+    "targetCode": "PO4",
+    "strength": 3,
+    "justification": "Interpreting data to extract valid insights is an investigation activity aligned with PO4.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "Describing DBMS elements requires specialized computing knowledge represented by PO1.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO2",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "Producing an ER design for a given scenario requires identifying entities and relationships (PO2).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO2",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO2 is an explicit design task for a data model, which maps strongly to PO3.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO3",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "Writing SQL to manipulate data implements a designed schema, contributing to solution development (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO3",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "CO3 requires use of SQL as the standard database tool, aligning strongly with PO5.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO4",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "Analysing normal forms for an application is structured problem analysis (PO2).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO4",
+    "targetCode": "PO4",
+    "strength": 2,
+    "justification": "Evaluating schema quality through normal forms uses analytical investigation methods (PO4).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO5",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "Developing a database application for a real-world problem is design and implementation of a system (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO5",
+    "targetCode": "PO5",
+    "strength": 2,
+    "justification": "Application development uses DBMS tooling, supporting PO5.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO6",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "Understanding NoSQL concepts extends specialized database knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS403",
+    "coCode": "CO6",
+    "targetCode": "PO5",
+    "strength": 1,
+    "justification": "Awareness of NoSQL systems provides supporting exposure to contemporary data tools (PO5).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS702",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "Explaining why parallel programming is needed applies specialized computer-architecture knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS702",
+    "coCode": "CO1",
+    "targetCode": "PO2",
+    "strength": 1,
+    "justification": "Recognizing sequential limits that motivate parallelism is a supporting contribution to problem identification (PO2).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS702",
+    "coCode": "CO2",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "Demonstrating MIMD parallelism requires understanding of parallel hardware/software models (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS702",
+    "coCode": "CO2",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "Showing how a MIMD system is parallelized contributes to constructing a parallel solution (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS702",
+    "coCode": "CO3",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "Applying MPI to a given problem is implementation of a distributed-memory solution (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS702",
+    "coCode": "CO3",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "MPI is a modern parallel-programming library; CO3 maps strongly to PO5.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS702",
+    "coCode": "CO4",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "Applying OpenMP to parallelize code designs a shared-memory solution (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS702",
+    "coCode": "CO4",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "OpenMP pragmas are modern shared-memory tools aligned with PO5.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS702",
+    "coCode": "CO5",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "Designing a CUDA program for a given problem is explicit solution design (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS702",
+    "coCode": "CO5",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "CUDA/GPU programming is modern tool usage at a high correlation (PO5).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "Writing control-flow programs applies fundamental programming knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO1",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO1 requires students to write working programs, which is solution construction (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO2",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "Constructing object-oriented solutions using classes and methods maps directly to PO3.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO2",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "Class/object design applies OOP engineering knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO3",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "Developing programs with inheritance, packages and interfaces is structured software design (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO3",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "Inheritance and interfaces are core specialized programming knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO4",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "Using exceptions and threads for complex problems requires analysis of failure and concurrency issues (PO2).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO4",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO4 requires students to apply exception handling and multithreading in solutions (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO5",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "Applying generics, enumerations and autoboxing improves type-safe program design (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO5",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "These language features are specialized Java knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO6",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "Choosing an IDE to design, develop and debug is explicit modern tool usage (PO5).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "Knowing the meaning of engineering research supports the knowledge base required by PO1.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO1",
+    "targetCode": "PO4",
+    "strength": 2,
+    "justification": "Engineering research literacy is a prerequisite for investigation methods in PO4.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO2",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "Literature review and technical reading are the research-literature steps named in PO2.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO2",
+    "targetCode": "PO4",
+    "strength": 3,
+    "justification": "Structured review of prior art is a research method under PO4.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO2",
+    "targetCode": "PO10",
+    "strength": 1,
+    "justification": "Technical reading and citation practice support scholarly communication (PO10) at a supporting level.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO3",
+    "targetCode": "PO6",
+    "strength": 2,
+    "justification": "Patent law and drafting sit in the legal/societal context of professional practice (PO6).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO3",
+    "targetCode": "PO8",
+    "strength": 2,
+    "justification": "Respecting patent rights is a professional-ethics obligation (PO8).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO4",
+    "targetCode": "PO6",
+    "strength": 2,
+    "justification": "Copyright law is a legal responsibility relevant to engineering practice (PO6).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO4",
+    "targetCode": "PO8",
+    "strength": 3,
+    "justification": "Understanding copyright subject matter directly supports ethical professional conduct (PO8).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO5",
+    "targetCode": "PO6",
+    "strength": 2,
+    "justification": "Design rights are legal/societal constraints on professional outputs (PO6).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO5",
+    "targetCode": "PO8",
+    "strength": 2,
+    "justification": "Observing design rights is an ethics-and-norms requirement (PO8).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "Understanding structure and synthesis of functional materials applies science and engineering fundamentals (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO2",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "Analysing quantum materials and conducting polymers is specialized scientific knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO2",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "Analysis of roles in energy and electronic systems requires problem analysis (PO2).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO3",
+    "targetCode": "PO7",
+    "strength": 3,
+    "justification": "Evaluating fuel cells and green hydrogen is explicit sustainability competence (PO7).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO3",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "Evaluation still requires scientific knowledge of energy systems (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO4",
+    "targetCode": "PO7",
+    "strength": 3,
+    "justification": "Applying green materials and e-waste management maps strongly to environment and sustainability (PO7).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO4",
+    "targetCode": "PO6",
+    "strength": 2,
+    "justification": "Sensors, corrosion control and e-waste have societal and safety implications (PO6).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO4",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "Applying these concepts in electronics systems contributes to solution design (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS303",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "Explaining OS structure and functionality is core specialized systems knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS303",
+    "coCode": "CO2",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "Selecting a scheduling algorithm for a given problem requires analysis of process behaviour (PO2).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS303",
+    "coCode": "CO2",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "Applying a scheduling algorithm is constructing a resource-management solution (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS303",
+    "coCode": "CO3",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "Analysing synchronization and deadlock techniques is problem analysis (PO2).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS303",
+    "coCode": "CO3",
+    "targetCode": "PO4",
+    "strength": 2,
+    "justification": "Comparing concurrency-control techniques uses investigative reasoning (PO4).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS303",
+    "coCode": "CO4",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "Applying memory-management techniques implements system solutions (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS303",
+    "coCode": "CO4",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "Paging and allocation methods are specialized OS knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS303",
+    "coCode": "CO5",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "File and storage strategies are core OS knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS303",
+    "coCode": "CO6",
+    "targetCode": "PO6",
+    "strength": 2,
+    "justification": "Information protection relates to safety and societal responsibility of systems (PO6).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS303",
+    "coCode": "CO6",
+    "targetCode": "PO8",
+    "strength": 2,
+    "justification": "Protection mechanisms support professional responsibility for secure practice (PO8).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "Explaining agent architecture is specialized AI knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO2",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "Applying search strategies to a given problem is structured problem analysis and solution search (PO2).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO2",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "Selecting and applying a search agent constructs an algorithmic solution (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO3",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "Propositional and first-order logic are core AI knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO3",
+    "targetCode": "PO2",
+    "strength": 1,
+    "justification": "Logical representation supports later problem analysis (PO2) at a supporting level.",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO4",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "Solving problems with first-order logic requires formulation and inference (PO2).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO4",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "Demonstrating FOL problem-solving implements a knowledge-based solution (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO5",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "Describing classical planning extends specialized AI knowledge (PO1).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO5",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "Planning goals, constraints and applications relate to designing action sequences (PO3).",
+    "status": "PROPOSED_STANDARD"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS703",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "CO1 in Information and Network Security requires core disciplinary knowledge; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS703",
+    "coCode": "CO1",
+    "targetCode": "PO8",
+    "strength": 2,
+    "justification": "CO1 in Information and Network Security requires ethical responsibility; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS703",
+    "coCode": "CO2",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "CO2 in Information and Network Security requires core disciplinary knowledge; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS703",
+    "coCode": "CO2",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "CO2 in Information and Network Security requires modern tool usage; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS703",
+    "coCode": "CO3",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "CO3 in Information and Network Security requires problem analysis; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS703",
+    "coCode": "CO3",
+    "targetCode": "PO4",
+    "strength": 2,
+    "justification": "CO3 in Information and Network Security requires investigation and interpretation; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS703",
+    "coCode": "CO4",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "CO4 in Information and Network Security requires design and implementation of solutions; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS703",
+    "coCode": "CO4",
+    "targetCode": "PO8",
+    "strength": 2,
+    "justification": "CO4 in Information and Network Security requires ethical responsibility; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS703",
+    "coCode": "CO5",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "CO5 in Information and Network Security requires modern tool usage; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BIS703",
+    "coCode": "CO5",
+    "targetCode": "PO12",
+    "strength": 1,
+    "justification": "CO5 in Information and Network Security requires lifelong learning; the relationship is rated 1 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS503",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "CO1 in Theory of Computation requires core disciplinary knowledge; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS503",
+    "coCode": "CO1",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "CO1 in Theory of Computation requires problem analysis; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS503",
+    "coCode": "CO2",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "CO2 in Theory of Computation requires problem analysis; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS503",
+    "coCode": "CO2",
+    "targetCode": "PO4",
+    "strength": 2,
+    "justification": "CO2 in Theory of Computation requires investigation and interpretation; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS503",
+    "coCode": "CO3",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO3 in Theory of Computation requires design and implementation of solutions; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS503",
+    "coCode": "CO3",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "CO3 in Theory of Computation requires problem analysis; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS503",
+    "coCode": "CO4",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO4 in Theory of Computation requires design and implementation of solutions; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS503",
+    "coCode": "CO4",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "CO4 in Theory of Computation requires core disciplinary knowledge; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS503",
+    "coCode": "CO5",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "CO5 in Theory of Computation requires problem analysis; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCS503",
+    "coCode": "CO5",
+    "targetCode": "PO12",
+    "strength": 1,
+    "justification": "CO5 in Theory of Computation requires lifelong learning; the relationship is rated 1 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "CO1 in International Business requires core disciplinary knowledge; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO1",
+    "targetCode": "PO6",
+    "strength": 2,
+    "justification": "CO1 in International Business requires engineering and societal context; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO2",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "CO2 in International Business requires problem analysis; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO2",
+    "targetCode": "PO11",
+    "strength": 2,
+    "justification": "CO2 in International Business requires project and management thinking; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO3",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "CO3 in International Business requires design and implementation of solutions; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO3",
+    "targetCode": "PO11",
+    "strength": 2,
+    "justification": "CO3 in International Business requires project and management thinking; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO4",
+    "targetCode": "PO9",
+    "strength": 2,
+    "justification": "CO4 in International Business requires teamwork; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO4",
+    "targetCode": "PO10",
+    "strength": 3,
+    "justification": "CO4 in International Business requires communication; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO5",
+    "targetCode": "PO7",
+    "strength": 2,
+    "justification": "CO5 in International Business requires sustainability awareness; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO5",
+    "targetCode": "PO8",
+    "strength": 3,
+    "justification": "CO5 in International Business requires ethical responsibility; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCA701",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "CO1 in Deep Learning requires core disciplinary knowledge; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCA701",
+    "coCode": "CO1",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "CO1 in Deep Learning requires problem analysis; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCA701",
+    "coCode": "CO2",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "CO2 in Deep Learning requires problem analysis; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCA701",
+    "coCode": "CO2",
+    "targetCode": "PO4",
+    "strength": 2,
+    "justification": "CO2 in Deep Learning requires investigation and interpretation; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCA701",
+    "coCode": "CO3",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO3 in Deep Learning requires design and implementation of solutions; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCA701",
+    "coCode": "CO3",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "CO3 in Deep Learning requires modern tool usage; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCA701",
+    "coCode": "CO4",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "CO4 in Deep Learning requires problem analysis; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCA701",
+    "coCode": "CO4",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "CO4 in Deep Learning requires design and implementation of solutions; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCA701",
+    "coCode": "CO5",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "CO5 in Deep Learning requires modern tool usage; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "BCA701",
+    "coCode": "CO5",
+    "targetCode": "PO4",
+    "strength": 2,
+    "justification": "CO5 in Deep Learning requires investigation and interpretation; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BEC304",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "CO1 in Analog Electronics and Linear Integrated Circuits requires core disciplinary knowledge; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BEC304",
+    "coCode": "CO1",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "CO1 in Analog Electronics and Linear Integrated Circuits requires problem analysis; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BEC304",
+    "coCode": "CO2",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO2 in Analog Electronics and Linear Integrated Circuits requires design and implementation of solutions; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BEC304",
+    "coCode": "CO2",
+    "targetCode": "PO5",
+    "strength": 2,
+    "justification": "CO2 in Analog Electronics and Linear Integrated Circuits requires modern tool usage; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BEC304",
+    "coCode": "CO3",
+    "targetCode": "PO1",
+    "strength": 2,
+    "justification": "CO3 in Analog Electronics and Linear Integrated Circuits requires core disciplinary knowledge; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BEC304",
+    "coCode": "CO3",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "CO3 in Analog Electronics and Linear Integrated Circuits requires problem analysis; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BEC304",
+    "coCode": "CO4",
+    "targetCode": "PO4",
+    "strength": 2,
+    "justification": "CO4 in Analog Electronics and Linear Integrated Circuits requires investigation and interpretation; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BEC304",
+    "coCode": "CO4",
+    "targetCode": "PO5",
+    "strength": 2,
+    "justification": "CO4 in Analog Electronics and Linear Integrated Circuits requires modern tool usage; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BEC304",
+    "coCode": "CO5",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO5 in Analog Electronics and Linear Integrated Circuits requires design and implementation of solutions; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BEC304",
+    "coCode": "CO5",
+    "targetCode": "PO5",
+    "strength": 3,
+    "justification": "CO5 in Analog Electronics and Linear Integrated Circuits requires modern tool usage; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO1",
+    "targetCode": "PO1",
+    "strength": 3,
+    "justification": "CO1 in Data Structures and Applications requires core disciplinary knowledge; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO1",
+    "targetCode": "PO5",
+    "strength": 2,
+    "justification": "CO1 in Data Structures and Applications requires modern tool usage; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO2",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO2 in Data Structures and Applications requires design and implementation of solutions; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO2",
+    "targetCode": "PO2",
+    "strength": 2,
+    "justification": "CO2 in Data Structures and Applications requires problem analysis; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO3",
+    "targetCode": "PO3",
+    "strength": 3,
+    "justification": "CO3 in Data Structures and Applications requires design and implementation of solutions; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO3",
+    "targetCode": "PO5",
+    "strength": 2,
+    "justification": "CO3 in Data Structures and Applications requires modern tool usage; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO4",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "CO4 in Data Structures and Applications requires problem analysis; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO4",
+    "targetCode": "PO3",
+    "strength": 2,
+    "justification": "CO4 in Data Structures and Applications requires design and implementation of solutions; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO5",
+    "targetCode": "PO2",
+    "strength": 3,
+    "justification": "CO5 in Data Structures and Applications requires problem analysis; the relationship is rated 3 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO5",
+    "targetCode": "PO5",
+    "strength": 2,
+    "justification": "CO5 in Data Structures and Applications requires modern tool usage; the relationship is rated 2 based on the outcome action and module scope.",
+    "status": "ACADEMIC_ANALYSIS_NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BIS701",
+    "coCode": "CO1",
+    "targetCode": "PSO3",
+    "strength": 2,
+    "justification": "Listing Hadoop-ecosystem and analytics tools directly supports modern-tool capability for software systems (ISE PSO3).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BIS701",
+    "coCode": "CO2",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Developing Hadoop programs is application of engineering practice to produce working, reliable data-processing software (ISE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BIS701",
+    "coCode": "CO2",
+    "targetCode": "PSO3",
+    "strength": 3,
+    "justification": "Hadoop is an explicit modern distributed-processing tool used to develop software systems (ISE PSO3).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BIS701",
+    "coCode": "CO3",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Deploying MapReduce/Pig/Hive/Spark jobs operationalises reliable data-processing pipelines (ISE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BIS701",
+    "coCode": "CO3",
+    "targetCode": "PSO3",
+    "strength": 3,
+    "justification": "Cluster deployment of MapReduce, Pig, Hive and Spark is direct use of modern tools to build software systems (ISE PSO3).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BIS701",
+    "coCode": "CO4",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Analytical insight extraction supports evidence-based, reliable software and data solutions (ISE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BIS703",
+    "coCode": "CO1",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Security and cryptography fundamentals are engineering practices required for reliable software solutions (ISE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BIS703",
+    "coCode": "CO2",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Applying hash functions implements integrity mechanisms used in reliable software (ISE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BIS703",
+    "coCode": "CO2",
+    "targetCode": "PSO3",
+    "strength": 1,
+    "justification": "Hash-function tooling provides limited modern-tool exposure for secure software development (ISE PSO3).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BIS703",
+    "coCode": "CO5",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Applying cryptography across domains is direct delivery of reliable secure software solutions (ISE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS702",
+    "coCode": "CO2",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Demonstrating MIMD parallelism applies engineering practice to concurrent software behaviour (ISE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS702",
+    "coCode": "CO3",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "MPI parallelisation produces working distributed software solutions to a given problem (ISE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS702",
+    "coCode": "CO3",
+    "targetCode": "PSO3",
+    "strength": 3,
+    "justification": "MPI is a modern parallel-programming library used to develop software systems (ISE PSO3).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS702",
+    "coCode": "CO4",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "OpenMP parallelisation builds reliable shared-memory software solutions (ISE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS702",
+    "coCode": "CO4",
+    "targetCode": "PSO3",
+    "strength": 3,
+    "justification": "OpenMP pragmas are modern tools for developing parallel software systems (ISE PSO3).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS702",
+    "coCode": "CO5",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Designing a CUDA program is construction of a reliable GPU software solution (ISE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS702",
+    "coCode": "CO5",
+    "targetCode": "PSO3",
+    "strength": 3,
+    "justification": "CUDA/GPU programming is modern-tool usage to develop software systems (ISE PSO3).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS403",
+    "coCode": "CO2",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "ER design uses modelling skills that precede building maintainable software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS403",
+    "coCode": "CO2",
+    "targetCode": "PSO2",
+    "strength": 3,
+    "justification": "Designing an ER model for a scenario is system design that serves an application need (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS403",
+    "coCode": "CO3",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Writing SQL to manipulate data is core programming skill for building and maintaining software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS403",
+    "coCode": "CO4",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Normal-form analysis improves schema quality for maintainable software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS403",
+    "coCode": "CO5",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Developing a database application builds and tests a software system for a real problem (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS403",
+    "coCode": "CO5",
+    "targetCode": "PSO2",
+    "strength": 3,
+    "justification": "A real-world database application is a system designed for industry/society needs (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS503",
+    "coCode": "CO1",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Constructing automata applies algorithmic foundations used to build correct software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS503",
+    "coCode": "CO3",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Designing CFGs/PDAs is algorithmic design skill transferable to language processors and software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS503",
+    "coCode": "CO4",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Designing Turing machines exercises algorithmic problem-solving used in software construction (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO1",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Writing control-flow programs is foundational programming skill for building software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO2",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Constructing OOP solutions directly builds and structures software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO2",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Object-oriented solutions are system designs that can serve application needs (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO3",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Inheritance, packages and interfaces are programming skills for maintainable software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO3",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Structured OOP designs support building larger application systems (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO4",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Exception handling and multithreading are programming skills for robust software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO4",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Solving complex concurrent problems builds systems suitable for real application needs (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS302",
+    "coCode": "CO5",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Generics and related language features improve type-safe construction of software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO3",
+    "targetCode": "PSO2",
+    "strength": 1,
+    "justification": "Patent literacy supports designing systems that respect IP constraints of industry and society (CSE PSO2); weak but defensible. Common AEC — confirm program applicability.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BRMK557",
+    "coCode": "CO4",
+    "targetCode": "PSO2",
+    "strength": 1,
+    "justification": "Copyright awareness constrains how software systems may reuse creative works for society/industry (CSE PSO2); weak. Common AEC — confirm program applicability.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO3",
+    "targetCode": "PSO2",
+    "strength": 1,
+    "justification": "Evaluating energy systems for smart devices links chemistry outcomes to systems serving societal sustainability needs (CSE PSO2); first-year common course — confirm program PSO applicability.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO4",
+    "targetCode": "PSO2",
+    "strength": 1,
+    "justification": "Sustainable electronics and e-waste practices address societal needs in engineered systems (CSE PSO2); first-year common course — confirm program PSO applicability.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS303",
+    "coCode": "CO1",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "OS structure knowledge is foundational for building and maintaining systems software (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS303",
+    "coCode": "CO1",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Understanding OS functionality supports design of systems that industry and society rely on (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS303",
+    "coCode": "CO2",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Selecting and applying scheduling algorithms uses algorithmic skill to operate software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS303",
+    "coCode": "CO3",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Analysing synchronisation/deadlock techniques is algorithmic reasoning for correct concurrent software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS303",
+    "coCode": "CO4",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Applying memory-management techniques builds and maintains core system software behaviour (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS303",
+    "coCode": "CO4",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Memory management implements system mechanisms that underpin industry/society computing platforms (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS303",
+    "coCode": "CO5",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "File/storage strategies are system-software knowledge for maintaining reliable software platforms (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS303",
+    "coCode": "CO5",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Storage management designs systems that serve application and organisational needs (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS303",
+    "coCode": "CO6",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Information protection mechanisms address societal/security needs of computing systems (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO2",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Applying search strategies uses algorithmic skill to solve problems in software systems (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO2",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Problem-solving agents are systems designed to address application needs (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO4",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Solving problems with FOL applies algorithmic reasoning in knowledge-based software (CSE PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO4",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Knowledge-based problem solving builds systems usable for industry/society tasks (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "BCS515B",
+    "coCode": "CO5",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Planning applications describe systems oriented to real problem-solving needs (CSE PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO1",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "Defining IB versus domestic business with legal/tax differences develops comprehension of contemporary business-management features (MBA PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO2",
+    "targetCode": "PSO1",
+    "strength": 2,
+    "justification": "Identifying internationalisation factors builds management-science knowledge of how organisations administer expansion (MBA PSO1).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO2",
+    "targetCode": "PSO2",
+    "strength": 3,
+    "justification": "Analysing forces that drive internationalisation is strategic decision analysis at national/global level (MBA PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO3",
+    "targetCode": "PSO2",
+    "strength": 3,
+    "justification": "Comparing internationalisation strategies is direct strategic decision-making analysis (MBA PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO3",
+    "targetCode": "PSO4",
+    "strength": 2,
+    "justification": "Choosing an internationalisation strategy aligns actions with organisational goals (MBA PSO4).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO4",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "Cross-cultural negotiation analysis informs global business strategy and decisions (MBA PSO2).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO4",
+    "targetCode": "PSO3",
+    "strength": 2,
+    "justification": "Working across cultures requires ethical responsibility in managerial actions (MBA PSO3).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO5",
+    "targetCode": "PSO3",
+    "strength": 3,
+    "justification": "CSR discussion centres ethical responsibility for managerial actions in international practice (MBA PSO3).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "22MBA401",
+    "coCode": "CO5",
+    "targetCode": "PSO4",
+    "strength": 1,
+    "justification": "CSR can support organisational objectives when embedded in strategy (MBA PSO4) at a supporting level.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO1",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "CO1 supports the program-specific software-system capability described by PSO1.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO1",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "CO1 supports the program-specific software-system capability described by PSO2.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO2",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "CO2 supports the program-specific software-system capability described by PSO1.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO2",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "CO2 supports the program-specific software-system capability described by PSO2.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO3",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "CO3 supports the program-specific software-system capability described by PSO1.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO3",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "CO3 supports the program-specific software-system capability described by PSO2.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO4",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "CO4 supports the program-specific software-system capability described by PSO1.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO4",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "CO4 supports the program-specific software-system capability described by PSO2.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO5",
+    "targetCode": "PSO1",
+    "strength": 3,
+    "justification": "CO5 supports the program-specific software-system capability described by PSO1.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_PSO",
+    "subjectCode": "1BCS305",
+    "coCode": "CO5",
+    "targetCode": "PSO2",
+    "strength": 2,
+    "justification": "CO5 supports the program-specific software-system capability described by PSO2.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO2",
+    "targetCode": "SDG7",
+    "strength": 2,
+    "justification": "Syllabus links quantum materials and conducting polymers to energy and electronic systems, supporting affordable/clean energy technology literacy.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO2",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "Analysis of materials for energy/electronic systems contributes to innovation in industrial and infrastructure technologies.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO3",
+    "targetCode": "SDG7",
+    "strength": 3,
+    "justification": "Module outcomes explicitly evaluate fuel cells and green hydrogen — core clean-energy technologies under SDG7.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO3",
+    "targetCode": "SDG13",
+    "strength": 2,
+    "justification": "Green hydrogen and alternative energy systems are taught as responses to fossil-fuel dependence and climate-related energy transition.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO3",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "Evaluating next-generation energy devices builds innovation capacity for sustainable industrial energy infrastructure.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO4",
+    "targetCode": "SDG12",
+    "strength": 3,
+    "justification": "Green materials and e-waste management directly address sustainable consumption/production of electronics.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCHES102/202",
+    "coCode": "CO4",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "Sustainable electronics and recovery practices support resilient, responsible industrial materials infrastructure.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BIS701",
+    "coCode": "CO2",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "Building Hadoop programs develops capability for large-scale digital data-processing infrastructure used in industrial innovation.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BIS701",
+    "coCode": "CO3",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "Operating a Hadoop cluster to deploy analytics jobs is contribution to scalable digital infrastructure for industry.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BIS701",
+    "coCode": "CO4",
+    "targetCode": "SDG9",
+    "strength": 1,
+    "justification": "Extracting insights from datasets supports evidence-based industrial and organisational decision systems at a limited level.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BIS703",
+    "coCode": "CO1",
+    "targetCode": "SDG16",
+    "strength": 1,
+    "justification": "Security/cryptography literacy supports trustworthy digital systems that underpin accountable institutions (limited, foundational).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BIS703",
+    "coCode": "CO5",
+    "targetCode": "SDG16",
+    "strength": 2,
+    "justification": "Applying cryptography to protect information across fields strengthens secure, trustworthy digital systems relevant to strong institutions.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BCS702",
+    "coCode": "CO3",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "MPI-based distributed parallelisation builds high-performance computing infrastructure capability for complex engineering problems.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BCS702",
+    "coCode": "CO5",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "CUDA/GPU program design develops accelerated-computing infrastructure skills used in industrial innovation workloads.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BCS403",
+    "coCode": "CO5",
+    "targetCode": "SDG9",
+    "strength": 1,
+    "justification": "Developing a real-world database application contributes limitedly to digital systems that support organisational/industrial information infrastructure.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BRMK557",
+    "coCode": "CO3",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "Patent law and drafting literacy supports protection of technological innovation (industry, innovation).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BRMK557",
+    "coCode": "CO3",
+    "targetCode": "SDG16",
+    "strength": 1,
+    "justification": "Understanding patent procedure engages formal legal institutions that govern intellectual property rights.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BRMK557",
+    "coCode": "CO4",
+    "targetCode": "SDG16",
+    "strength": 2,
+    "justification": "Copyright law literacy engages justice and institutional frameworks that protect creative and design works.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "22MBA401",
+    "coCode": "CO2",
+    "targetCode": "SDG8",
+    "strength": 2,
+    "justification": "Internationalisation decisions shape employment, markets and economic growth pathways across borders.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "22MBA401",
+    "coCode": "CO3",
+    "targetCode": "SDG17",
+    "strength": 2,
+    "justification": "Internationalisation strategies rely on cross-border partnerships, trade frameworks and cooperative arrangements.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "22MBA401",
+    "coCode": "CO4",
+    "targetCode": "SDG10",
+    "strength": 2,
+    "justification": "Cross-cultural working/negotiation challenges address barriers that reproduce inequality among people and markets.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "22MBA401",
+    "coCode": "CO5",
+    "targetCode": "SDG8",
+    "strength": 2,
+    "justification": "CSR in international practice links business conduct to decent work and inclusive economic outcomes.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "22MBA401",
+    "coCode": "CO5",
+    "targetCode": "SDG12",
+    "strength": 2,
+    "justification": "CSR discourse includes responsible production/consumption commitments of multinational firms.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "22MBA401",
+    "coCode": "CO5",
+    "targetCode": "SDG17",
+    "strength": 2,
+    "justification": "CSR often operates through multi-stakeholder partnerships spanning firms, governments and civil society.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BCA701",
+    "coCode": "CO3",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "Designing CNN/regularised deep models develops AI innovation capacity for industrial and research systems.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BCA701",
+    "coCode": "CO5",
+    "targetCode": "SDG9",
+    "strength": 1,
+    "justification": "Autoencoder applications contribute limitedly to innovative data-representation systems used in industry/research.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BCS303",
+    "coCode": "CO6",
+    "targetCode": "SDG16",
+    "strength": 1,
+    "justification": "Information-protection mechanisms support trustworthy digital systems that institutions rely on (foundational, limited).",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BCS515B",
+    "coCode": "CO2",
+    "targetCode": "SDG9",
+    "strength": 1,
+    "justification": "Applied search agents contribute limitedly to algorithmic problem-solving infrastructure used in intelligent systems.",
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BEC304",
+    "coCode": "CO4",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "CO4 has a defensible relevance relationship with SDG9 through the course application area.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BEC304",
+    "coCode": "CO5",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "CO5 has a defensible relevance relationship with SDG9 through the course application area.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BEC304",
+    "coCode": "CO5",
+    "targetCode": "SDG7",
+    "strength": 1,
+    "justification": "CO5 has a defensible relevance relationship with SDG7 through the course application area.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCS305",
+    "coCode": "CO2",
+    "targetCode": "SDG4",
+    "strength": 1,
+    "justification": "CO2 has a defensible relevance relationship with SDG4 through the course application area.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCS305",
+    "coCode": "CO5",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "CO5 has a defensible relevance relationship with SDG9 through the course application area.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCS302",
+    "coCode": "CO2",
+    "targetCode": "SDG4",
+    "strength": 1,
+    "justification": "CO2 has a defensible relevance relationship with SDG4 through the course application area.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "1BCS302",
+    "coCode": "CO6",
+    "targetCode": "SDG9",
+    "strength": 2,
+    "justification": "CO6 has a defensible relevance relationship with SDG9 through the course application area.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BCS503",
+    "coCode": "CO1",
+    "targetCode": "SDG4",
+    "strength": 1,
+    "justification": "CO1 has a defensible relevance relationship with SDG4 through the course application area.",
+    "status": "ACADEMIC_ANALYSIS"
+  },
+  {
+    "kind": "CO_SDG",
+    "subjectCode": "BCS503",
+    "coCode": "CO4",
+    "targetCode": "SDG9",
+    "strength": 1,
+    "justification": "CO4 has a defensible relevance relationship with SDG9 through the course application area.",
+    "status": "ACADEMIC_ANALYSIS"
+  }
+]

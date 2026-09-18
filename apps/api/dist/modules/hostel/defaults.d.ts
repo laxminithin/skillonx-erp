@@ -1,0 +1,43 @@
+export declare function ensureCollegeHostelDefaults(collegeId: number): Promise<void>;
+export declare function getHostelPolicy(collegeId: number): Promise<{
+    applicationRequired: boolean;
+    approvalRequired: boolean;
+    roomAllocationMode: any;
+    allowStudentRoomPreference: boolean;
+    allowRoomTransfer: boolean;
+    transferApprovalRequired: boolean;
+    securityDepositRequired: boolean;
+    messMandatory: boolean;
+    allowOutpass: boolean;
+    outpassApprovalMode: any;
+    guardianApprovalRequired: boolean;
+    visitorAllowed: boolean;
+    nightReturnCutoff: any;
+    lateEntryPolicy: any;
+    clearanceRequired: boolean;
+    feeClearanceRequired: boolean;
+    allocationPaymentPolicy: any;
+    reapplicationPolicy: any;
+}>;
+export declare function listHostels(collegeId: number, activeOnly?: boolean): Promise<{
+    id: number;
+    collegeId: number;
+    code: unknown;
+    name: unknown;
+    hostelType: unknown;
+    genderPolicy: unknown;
+    address: unknown;
+    capacity: number | null;
+    status: unknown;
+}[]>;
+export declare function serializeHostel(row: Record<string, unknown>): {
+    id: number;
+    collegeId: number;
+    code: unknown;
+    name: unknown;
+    hostelType: unknown;
+    genderPolicy: unknown;
+    address: unknown;
+    capacity: number | null;
+    status: unknown;
+};
