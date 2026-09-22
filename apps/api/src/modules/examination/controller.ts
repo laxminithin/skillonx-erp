@@ -13,6 +13,7 @@ import * as result from './result.js';
 import * as studentExam from './studentExam.js';
 import * as revaluation from './revaluation.js';
 import * as remuneration from './remuneration.js';
+import * as reports from './reports.js';
 import { capabilityMatrix } from './capabilities.js';
 import * as closure from './closure.js';
 import * as operations from './operations.js';
@@ -470,6 +471,17 @@ examinationRouter.get(
   '/:examId/results/overview',
   asyncHandler(async (req: AuthedRequest, res) => {
     res.json(await result.coeResultsOverview(actor(req), Number(req.params.examId)));
+  }),
+);
+
+examinationRouter.get(
+  '/:examId/reports/results.xlsx',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const { workbook, filename } = await reports.buildResultsWorkbook(actor(req), Number(req.params.examId));
+    const buf = await workbook.xlsx.writeBuffer();
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.send(Buffer.from(buf));
   }),
 );
 

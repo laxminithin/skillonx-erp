@@ -239,6 +239,8 @@ import {
   ExaminerRevaluationPage,
   CoeDocumentsPage,
   DocumentVerificationPage,
+  CoeVtuImportPage,
+  CoeReportsPage,
 } from './pages/examinations/ExamWorkspaces';
 import {
   StudentAcademicRecordPage,
@@ -879,6 +881,7 @@ export default function App() {
                 <Route path="/coe/invigilation" element={<CoeStatusPage title="Invigilation" subtitle="Faculty duty assignment, conflict checks, and exam-day staffing readiness" />} />
                 <Route path="/coe/hall-tickets" element={<CoeStatusPage title="Hall Tickets" subtitle="Eligible-student hall-ticket readiness and withheld controls" />} />
                 <Route path="/coe/operations" element={<CoeOperationsPage />} />
+                <Route path="/coe/vtu-import" element={<CoeVtuImportPage />} />
                 <Route path="/coe/strong-room" element={<CoeStrongRoomPage />} />
                 <Route path="/coe/form-a" element={<CoeFormAPage />} />
                 <Route path="/coe/mpc" element={<CoeMpcPage />} />
@@ -893,7 +896,7 @@ export default function App() {
                 <Route path="/coe/backlogs" element={<CoeStatusPage title="Backlogs" subtitle="Fail, incomplete, withheld, and supplementary readiness signals" />} />
                 <Route path="/coe/revaluation" element={<CoeRevaluationPage />} />
                 <Route path="/coe/corrections" element={<CoeStatusPage title="Corrections" subtitle="Marks unlock reasons, corrections, withheld states, and audit trail review" />} />
-                <Route path="/coe/reports" element={<CoeStatusPage title="Reports" subtitle="Exam, eligibility, marks, results, revaluation, and question-paper readiness reports" />} />
+                <Route path="/coe/reports" element={<CoeReportsPage />} />
               </Route>
               <Route element={<LabLayout />}>
                 <Route path="/lab" element={<LabDashboardPage />} />

@@ -1210,3 +1210,163 @@ export function DocumentVerificationPage() {
     </div>
   );
 }
+
+/* ------------------------------------------------------------------ VTU Import */
+
+type VtuBatch = { id: number; artifactType: string; fileName: string; fileHash: string; authority: string; validationState: string; reconciliationState: string; version: number; importedAt: string };
+type VtuProjection = { id: number; naturalKey: string; authority: string; source: string; version: number; changeType: string; isCurrent: boolean; supersedesId: number | null; createdAt: string };
+const VTU_ARTIFACTS = ['VTU_TIMETABLE', 'VTU_REGISTRATION', 'VTU_RESULT', 'VTU_REVALUATION'];
+
+export function CoeVtuImportPage() {
+  useDocumentTitle('VTU Import & Reconciliation');
+  const [artifactType, setArtifactType] = useState('VTU_TIMETABLE');
+  const [examCycle, setExamCycle] = useState('');
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<{ summary: Record<string, number>; rows: Array<{ status: string; issues: string[]; normalized: Record<string, unknown> }> } | null>(null);
+  const [batches, setBatches] = useState<VtuBatch[]>([]);
+  const [projections, setProjections] = useState<VtuProjection[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+
+  const load = useCallback((type: string, history: boolean) => {
+    setLoading(true);
+    return Promise.all([
+      api<{ batches: VtuBatch[] }>(`/api/examinations/imports/vtu/batches?artifactType=${type}`).then((d) => setBatches(d.batches)),
+      api<{ records: VtuProjection[] }>(`/api/examinations/imports/vtu/projections?artifactType=${type}&current=${history ? 'false' : 'true'}`).then((d) => setProjections(d.records)),
+    ]).catch((e) => setMessage(errText(e))).finally(() => setLoading(false));
+  }, []);
+  useEffect(() => { void load(artifactType, showHistory); }, [load, artifactType, showHistory]);
+
+  const encode = async () => {
+    const bytes = new Uint8Array(await file!.arrayBuffer());
+    let binary = '';
+    bytes.forEach((b) => { binary += String.fromCharCode(b); });
+    return btoa(binary);
+  };
+  const upload = async (commit: boolean) => {
+    if (!file) { setMessage('Choose a CSV or XLSX file.'); return; }
+    if (commit && !window.confirm('Commit as VTU / EXTERNAL UNIVERSITY authoritative data?')) return;
+    try {
+      const fileBase64 = await encode();
+      const result = await api<{ summary: Record<string, number>; rows: VtuProjection[] & Array<{ status: string; issues: string[]; normalized: Record<string, unknown> }> }>(`/api/examinations/imports/vtu/file/${commit ? 'commit' : 'preview'}`, { method: 'POST', body: JSON.stringify({ artifactType, fileName: file.name, fileBase64, examCycle: examCycle || undefined }) });
+      setPreview(result as { summary: Record<string, number>; rows: Array<{ status: string; issues: string[]; normalized: Record<string, unknown> }> });
+      setMessage(commit ? 'Committed. Server readback refreshed — V1 retained, current version updated.' : 'Preview generated. No data committed.');
+      if (commit) await load(artifactType, showHistory);
+    } catch (e) { setMessage(errText(e)); }
+  };
+
+  const changeTone = (t: string) => (t === 'NEW' ? 'CURRENT' : t === 'CHANGED' ? 'WARNING' : t === 'UNCHANGED' ? 'NEUTRAL' : 'INVALID');
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="VTU Import & Reconciliation" subtitle="VTU is the external authority: import → validate → reconcile → commit → versioned readback" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+
+      <Surface>
+        <h2 className="font-semibold">Import authoritative VTU artifact</h2>
+        <p className="mt-1 text-sm text-ink-muted">Authority: VTU / External University. SkillonX stores reconciled reference copies only.</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <Select value={artifactType} onChange={(e) => { setArtifactType(e.target.value); setPreview(null); }}>
+            {VTU_ARTIFACTS.map((x) => <option key={x}>{x}</option>)}
+          </Select>
+          <Input placeholder="Exam cycle" value={examCycle} onChange={(e) => setExamCycle(e.target.value)} />
+          <input type="file" accept=".csv,.xlsx" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="text-sm" />
+          <Button size="sm" variant="secondary" onClick={() => upload(false)}>Preview</Button>
+          <Button size="sm" onClick={() => upload(true)}>Commit</Button>
+        </div>
+        {preview ? (
+          <div className="mt-4">
+            <div className="flex flex-wrap gap-3 text-sm">{Object.entries(preview.summary ?? {}).map(([k, v]) => <span key={k}>{k}: <strong>{v}</strong></span>)}</div>
+            <div className="mt-3 max-h-56 overflow-auto">
+              <table className="min-w-[640px] w-full text-sm">
+                <thead><tr>{['State', 'Normalized row', 'Issues'].map((h) => <th key={h} className="text-left text-ink-muted">{h}</th>)}</tr></thead>
+                <tbody>{preview.rows.map((r, i) => <tr key={i} className="border-t border-border"><td className="py-2">{r.status}</td><td className="py-2 text-xs">{JSON.stringify(r.normalized)}</td><td className="py-2 text-danger">{r.issues.join(', ') || 'None'}</td></tr>)}</tbody>
+              </table>
+            </div>
+          </div>
+        ) : null}
+      </Surface>
+
+      <Surface>
+        <h2 className="font-semibold">Import batch history</h2>
+        {loading ? <Skeleton className="mt-3 h-24 w-full" /> : batches.length === 0 ? <EmptyState title="No import batches" body="Committed VTU imports appear here with provenance." /> : (
+          <div className="mt-3 overflow-x-auto">
+            <table className="min-w-[820px] w-full text-sm">
+              <thead><tr>{['Batch', 'File', 'Hash', 'Validation', 'Reconciliation', 'Version', 'Imported'].map((h) => <th key={h} className="pb-2 text-left text-ink-muted">{h}</th>)}</tr></thead>
+              <tbody>{batches.map((b) => <tr key={b.id} className="border-t border-border"><td className="py-2">{b.id}</td><td className="py-2">{b.fileName}</td><td className="py-2 font-mono text-xs">{b.fileHash.slice(0, 12)}…</td><td className="py-2">{b.validationState}</td><td className="py-2">{b.reconciliationState}</td><td className="py-2">v{b.version}</td><td className="py-2 text-ink-muted">{formatDate(b.importedAt)}</td></tr>)}</tbody>
+            </table>
+          </div>
+        )}
+      </Surface>
+
+      <Surface>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="font-semibold">Reconciled projection {showHistory ? '(all versions)' : '(current)'}</h2>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={showHistory} onChange={(e) => setShowHistory(e.target.checked)} /> Show version history</label>
+        </div>
+        {projections.length === 0 ? <EmptyState title="No projected records" body="Committed reconciliation produces the canonical projection here." /> : (
+          <div className="mt-3 overflow-x-auto">
+            <table className="min-w-[820px] w-full text-sm">
+              <thead><tr>{['Natural key', 'Authority', 'Version', 'Change', 'State', 'Supersedes'].map((h) => <th key={h} className="pb-2 text-left text-ink-muted">{h}</th>)}</tr></thead>
+              <tbody>{projections.map((p) => <tr key={p.id} className={`border-t border-border ${p.isCurrent ? '' : 'text-ink-muted'}`}><td className="py-2">{p.naturalKey}</td><td className="py-2">{p.authority}</td><td className="py-2">v{p.version}</td><td className="py-2"><StatusBadge status={changeTone(p.changeType)} />{' '}{p.changeType}</td><td className="py-2">{p.isCurrent ? 'CURRENT' : 'HISTORICAL'}</td><td className="py-2">{p.supersedesId ?? '—'}</td></tr>)}</tbody>
+            </table>
+          </div>
+        )}
+      </Surface>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ Reports */
+
+async function downloadAuthed(path: string, filename: string) {
+  const token = (() => { try { return localStorage.getItem('survey_token'); } catch { return null; } })();
+  const portalContext = (() => { try { return localStorage.getItem('portal_context'); } catch { return null; } })();
+  const base = (import.meta as { env?: { VITE_API_URL?: string } }).env?.VITE_API_URL ?? '';
+  const headers: Record<string, string> = {};
+  if (token) headers.Authorization = `Bearer ${token}`;
+  if (portalContext) headers['X-Portal-Context'] = portalContext;
+  const res = await fetch(`${base}${path}`, { headers });
+  if (!res.ok) throw new Error(`Report failed (${res.status})`);
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+export function CoeReportsPage() {
+  useDocumentTitle('Examination Reports');
+  const { exams } = useExams();
+  const [examId, setExamId] = useState('');
+  const [message, setMessage] = useState('');
+
+  const download = async () => {
+    if (!examId) return;
+    try {
+      await downloadAuthed(`/api/examinations/${Number(examId)}/reports/results.xlsx`, `exam-${examId}-results.xlsx`);
+      setMessage('Results report generated from authoritative published data.');
+    } catch (e) { setMessage(errText(e)); }
+  };
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="Examination Reports" subtitle="Validated exports generated from authoritative server data" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      <Surface>
+        <h2 className="font-semibold">Results report (XLSX)</h2>
+        <p className="mt-1 text-sm text-ink-muted">USNs are preserved as text; user-controlled cells are formula-injection safe.</p>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <Select value={examId} onChange={(e) => setExamId(e.target.value)}>
+            <option value="">Select examination…</option>
+            {exams.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
+          </Select>
+          <Button size="sm" onClick={download} disabled={!examId}>Download results.xlsx</Button>
+        </div>
+      </Surface>
+    </div>
+  );
+}
