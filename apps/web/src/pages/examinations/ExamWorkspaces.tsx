@@ -1271,7 +1271,7 @@ export function CoeVtuImportPage() {
             {VTU_ARTIFACTS.map((x) => <option key={x}>{x}</option>)}
           </Select>
           <Input placeholder="Exam cycle" value={examCycle} onChange={(e) => setExamCycle(e.target.value)} />
-          <input type="file" accept=".csv,.xlsx" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="text-sm" />
+          <input type="file" accept=".csv,.xlsx" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="w-full min-w-0 text-sm" />
           <Button size="sm" variant="secondary" onClick={() => upload(false)}>Preview</Button>
           <Button size="sm" onClick={() => upload(true)}>Commit</Button>
         </div>
