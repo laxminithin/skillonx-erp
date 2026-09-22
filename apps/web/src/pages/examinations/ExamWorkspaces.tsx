@@ -1091,3 +1091,122 @@ export function ExaminerRevaluationPage() {
     </div>
   );
 }
+
+/* ------------------------------------------------------------------ Documents & Verification */
+
+type ExamDocument = { id: number; documentType: string; certificateNumber: string; verificationCode: string; status: string; studentName: string; usn: string; issuedAt: string };
+
+export function CoeDocumentsPage() {
+  useDocumentTitle('Examination Documents');
+  const [docs, setDocs] = useState<ExamDocument[]>([]);
+  const [filter, setFilter] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+
+  const load = useCallback((type: string) => {
+    setLoading(true);
+    return api<{ documents: ExamDocument[] }>(`/api/examinations/documents${type ? `?type=${type}` : ''}`)
+      .then((d) => setDocs(d.documents))
+      .catch((e) => setMessage(errText(e)))
+      .finally(() => setLoading(false));
+  }, []);
+  useEffect(() => { void load(filter); }, [load, filter]);
+
+  const revoke = async (d: ExamDocument) => {
+    const reason = window.prompt(`Revoke ${d.certificateNumber}? Reason:`); if (!reason) return;
+    try { await api(`/api/student-services/documents/${d.id}/revoke`, { method: 'POST', body: JSON.stringify({ reason }) }); setMessage('Document revoked (retained in history).'); await load(filter); }
+    catch (e) { setMessage(errText(e)); }
+  };
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="Examination Documents" subtitle="Grade cards and transcripts issued from authoritative results, with verification and revocation" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      <Surface>
+        <div className="flex flex-wrap items-center gap-2">
+          <Select className="w-56" value={filter} onChange={(e) => setFilter(e.target.value)}>
+            <option value="">All document types</option>
+            {['GRADE_CARD', 'TRANSCRIPT', 'PROVISIONAL_RESULT'].map((x) => <option key={x}>{x}</option>)}
+          </Select>
+        </div>
+        {loading ? <Skeleton className="mt-3 h-32 w-full" /> : docs.length === 0 ? (
+          <EmptyState title="No documents" body="Grade cards and transcripts issued to students appear here. Issuance runs through the authoritative certificate workflow." />
+        ) : (
+          <div className="mt-3 overflow-x-auto">
+            <table className="min-w-[880px] w-full text-sm">
+              <thead><tr>{['Number', 'Type', 'Student', 'Status', 'Verify code', 'Issued', ''].map((h) => <th key={h} className="pb-2 text-left text-ink-muted">{h}</th>)}</tr></thead>
+              <tbody>
+                {docs.map((d) => (
+                  <tr key={d.id} className="border-t border-border">
+                    <td className="py-2 font-mono text-xs">{d.certificateNumber}</td>
+                    <td className="py-2">{d.documentType}</td>
+                    <td className="py-2">{d.studentName} · {d.usn}</td>
+                    <td className="py-2"><StatusBadge status={d.status} /></td>
+                    <td className="py-2 font-mono text-xs">{d.verificationCode}</td>
+                    <td className="py-2 text-ink-muted">{formatDate(d.issuedAt)}</td>
+                    <td className="py-2">{d.status === 'VALID' ? <button className="text-danger" onClick={() => revoke(d)}>Revoke</button> : null}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Surface>
+    </div>
+  );
+}
+
+type Verification = { valid: boolean; status: string; documentType: string; certificateNumber: string; title: string; studentName: string; usn: string; institution: string; issuedAt: string };
+
+export function DocumentVerificationPage() {
+  useDocumentTitle('Verify Document');
+  const [code, setCode] = useState('');
+  const [result, setResult] = useState<Verification | null>(null);
+  const [state, setState] = useState<'idle' | 'loading' | 'invalid' | 'found'>('idle');
+
+  const verify = async () => {
+    if (!code.trim()) return;
+    setState('loading');
+    try {
+      const r = await api<Verification>(`/api/verify/document/${encodeURIComponent(code.trim())}`, { auth: false });
+      setResult(r);
+      setState('found');
+    } catch {
+      setResult(null);
+      setState('invalid');
+    }
+  };
+
+  const tone = result?.status === 'VALID' ? 'text-success' : result?.status === 'SUPERSEDED' ? 'text-warning' : 'text-danger';
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="Verify Document" subtitle="Confirm the authenticity and current state of an issued academic document" />
+      <Surface>
+        <div className="flex flex-wrap items-end gap-3">
+          <label className="text-sm">
+            <span className="block text-ink-muted">Verification code</span>
+            <Input className="mt-1 w-72" value={code} onChange={(e) => setCode(e.target.value)} placeholder="Enter the code from the document / QR" />
+          </label>
+          <Button size="sm" onClick={verify}>Verify</Button>
+        </div>
+        {state === 'loading' ? <Skeleton className="mt-4 h-24 w-full" /> : null}
+        {state === 'invalid' ? <p className="mt-4 text-sm text-danger">INVALID — no document matches this verification code.</p> : null}
+        {state === 'found' && result ? (
+          <div className="mt-4 rounded border border-border p-4">
+            <p className={`text-lg font-semibold ${tone}`}>{result.status}{result.valid ? '' : result.status === 'VALID' ? '' : ''}</p>
+            <div className="mt-2 grid gap-1 text-sm">
+              <p>Document: <strong>{result.title}</strong> ({result.documentType})</p>
+              <p>Number: <strong>{result.certificateNumber}</strong></p>
+              <p>Issued to: <strong>{result.studentName}</strong> · {result.usn}</p>
+              <p>Institution: <strong>{result.institution}</strong></p>
+              <p>Issued: <strong>{formatDate(result.issuedAt)}</strong></p>
+            </div>
+            {result.status === 'SUPERSEDED' ? <p className="mt-2 text-sm text-warning">This document has been superseded by a newer version and is no longer current.</p> : null}
+            {result.status === 'REVOKED' ? <p className="mt-2 text-sm text-danger">This document has been revoked.</p> : null}
+          </div>
+        ) : null}
+      </Surface>
+    </div>
+  );
+}

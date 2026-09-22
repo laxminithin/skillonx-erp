@@ -237,6 +237,8 @@ import {
   CoeResultsPage,
   CoeRevaluationPage,
   ExaminerRevaluationPage,
+  CoeDocumentsPage,
+  DocumentVerificationPage,
 } from './pages/examinations/ExamWorkspaces';
 import {
   StudentAcademicRecordPage,
@@ -883,6 +885,8 @@ export default function App() {
                 <Route path="/coe/answer-books" element={<CoeAnswerBooksPage />} />
                 <Route path="/coe/script-transfers" element={<CoeScriptTransferPage />} />
                 <Route path="/coe/valuation" element={<CoeValuationPage />} />
+                <Route path="/coe/documents" element={<CoeDocumentsPage />} />
+                <Route path="/coe/verify" element={<DocumentVerificationPage />} />
                 <Route path="/coe/remuneration" element={<CoeRemunerationPage />} />
                 <Route path="/coe/marks" element={<CoeStatusPage title="Marks" subtitle="Marks submission, verification, lock, unlock, import, and audit status" />} />
                 <Route path="/coe/results" element={<CoeResultsPage />} />

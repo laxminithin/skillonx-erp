@@ -20,6 +20,8 @@ import {
   BookCheck,
   PackageCheck,
   PenLine,
+  FileBadge,
+  QrCode,
 } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { ProductShell } from './ProductShell';
@@ -44,6 +46,8 @@ const groups = [
       { to: '/coe/answer-books', label: 'Answer Books', icon: BookCheck, activePrefix: '/coe/answer-books' },
       { to: '/coe/script-transfers', label: 'Script Transfers', icon: PackageCheck, activePrefix: '/coe/script-transfers' },
       { to: '/coe/valuation', label: 'Valuation', icon: PenLine, activePrefix: '/coe/valuation' },
+      { to: '/coe/documents', label: 'Documents', icon: FileBadge, activePrefix: '/coe/documents' },
+      { to: '/coe/verify', label: 'Verify Document', icon: QrCode, activePrefix: '/coe/verify' },
       { to: '/coe/marks', label: 'Marks', icon: BadgeCheck, activePrefix: '/coe/marks' },
       { to: '/coe/results', label: 'Results', icon: Medal, activePrefix: '/coe/results' },
       { to: '/coe/backlogs', label: 'Backlogs', icon: ScrollText, activePrefix: '/coe/backlogs' },

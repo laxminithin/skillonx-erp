@@ -56,6 +56,33 @@ export async function formARoster(actor: ExamActor, examSubjectId: number, roomI
   };
 }
 
+// Read-only COE register of issued academic documents (grade cards / transcripts) from the
+// authoritative certificate engine — reuse, not rebuild. Issuance stays in student-services (§28-32).
+export async function listExaminationDocuments(actor: ExamActor, type?: string) {
+  assertExamPermission(actor, 'exam.documents');
+  let q = db('student_service_documents as d')
+    .join('students as s', 's.id', 'd.student_id')
+    .where('d.college_id', actor.collegeId)
+    .whereIn('d.document_type', ['GRADE_CARD', 'TRANSCRIPT', 'PROVISIONAL_RESULT']);
+  if (type) q = q.andWhere('d.document_type', type);
+  const rows = await q
+    .select('d.id', 'd.document_type', 'd.certificate_number', 'd.verification_code', 'd.status', 'd.issued_at', 's.name as student_name', 's.usn')
+    .orderBy('d.issued_at', 'desc')
+    .limit(500);
+  return {
+    documents: rows.map((r: any) => ({
+      id: Number(r.id),
+      documentType: r.document_type,
+      certificateNumber: r.certificate_number,
+      verificationCode: r.verification_code,
+      status: r.status,
+      studentName: r.student_name,
+      usn: r.usn,
+      issuedAt: r.issued_at,
+    })),
+  };
+}
+
 // MPC case queue with student/course context (read-only UI parity).
 export async function mpcQueue(actor: ExamActor, examId?: number) {
   assertExamPermission(actor, 'exam.malpractice');
