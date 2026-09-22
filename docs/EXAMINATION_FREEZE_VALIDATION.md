@@ -95,23 +95,46 @@ keeping the authority split intact:
   performance p50/p95, complete backend regression (~1,342 tests), Alumni C1–C8, Finance integration
   regression, and web TypeScript/ESLint/build.
 
-## Functional Closure Matrix (current state)
+## Implementation Closure Matrix
 
-| Workflow | Backend | Read | Write | UI | Security | Focused Tests | Auth QA | Status |
-|---|---|---|---|---|---|---|---|---|
-| VTU Import/Reconciliation | ✅ | ✅ | ✅ | partial | ✅ | ✅ | ❌ | Backend done; UI/auth QA pending |
-| Registration (+bulk/exception) | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend done; UI pending |
-| Strong Room | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend done; UI pending |
-| Form-A | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend done; UI pending |
-| MPC (+evidence/result link) | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend done; UI pending |
-| Answer Books | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend done; UI pending |
-| Script Custody | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend done; UI pending |
-| Valuation (question-wise) | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend done; UI pending |
-| Result Correction (versioned) | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend done; UI pending |
-| Autonomous Revaluation | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend done; UI pending |
-| Grade Card / Transcript | ✅ | ✅ | ✅ | partial | ✅ | ✅ | ❌ | Engine done (certificates) |
-| Document Verification | ✅ | ✅ | ✅ | partial | ✅ | ✅ | ❌ | Engine done (certificates) |
-| Remuneration → Finance | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend + receiver done (approved); UI pending |
-| Reports (PDF/XLSX) | partial | — | — | ❌ | — | ❌ | ❌ | Pending |
+| Area | Backend | UI | Security Wiring | Focused Tests | Status |
+|---|---|---|---|---|---|
+| VTU Import/Reconciliation | ✅ | ✅ `/coe/vtu-import` | ✅ | ✅ | COMPLETE |
+| Registration | ✅ | ✅ `/lms/exams/registration` + `/coe/operations` bulk | ✅ | ✅ | COMPLETE |
+| Strong Room | ✅ | ✅ `/coe/strong-room` | ✅ | ✅ | COMPLETE |
+| Form-A | ✅ | ✅ `/coe/form-a` | ✅ | ✅ | COMPLETE |
+| MPC | ✅ | ✅ `/coe/mpc` | ✅ | ✅ | COMPLETE |
+| Answer Books | ✅ | ✅ `/coe/answer-books` | ✅ | ✅ | COMPLETE |
+| Script Transfer | ✅ | ✅ `/coe/script-transfers` | ✅ | ✅ | COMPLETE |
+| Valuation | ✅ | ✅ `/coe/valuation` + `/exam-valuations` | ✅ | ✅ | COMPLETE |
+| Results | ✅ | ✅ `/coe/results` | ✅ | ✅ | COMPLETE |
+| Result Correction | ✅ | ✅ `/coe/results` | ✅ | ✅ | COMPLETE |
+| Autonomous Revaluation | ✅ | ✅ `/coe/revaluation` + `/exam-revaluations` + `/lms/exams/revaluation` | ✅ | ✅ | COMPLETE |
+| Grade Cards | ✅ (certificate engine) | ✅ `/coe/documents` (register/revoke; issuance via certificate workflow) | ✅ | ✅ | COMPLETE |
+| Transcripts | ✅ (certificate engine) | ✅ `/coe/documents` | ✅ | ✅ | COMPLETE |
+| Document Verification | ✅ | ✅ `/coe/verify` (+ public `/api/verify/document/:code`) | ✅ | ✅ | COMPLETE |
+| Remuneration | ✅ (+ approved Finance receiver) | ✅ `/coe/remuneration` | ✅ | ✅ | COMPLETE |
+| Reports | ✅ (XLSX; PDF via browser print — no server PDF lib) | ✅ `/coe/reports` | ✅ | ✅ | COMPLETE |
 
-## FINAL DECISION: EXAMINATION / COE PORTAL — NOT FROZEN
+### UI increments (each: web typecheck PASS, ESLint 0 errors, production build PASS)
+- Remuneration workspace + bulk registration decisions (`1e266c20`)
+- A: student registration, strong room, form-a, MPC (`03207315`)
+- B: answer books, script transfer, valuation (COE + examiner) (`1d4b8360`)
+- C: results + versioned corrections, revaluation (COE/examiner/student) (`e7c6939e`)
+- D: documents register + QR verification (`50b21746`)
+- E: VTU import workspace + validated XLSX reports (`f0ba7a75`)
+
+Focused examination suite after implementation: **37/37 across 14 suites.**
+
+## EXAMINATION IMPLEMENTATION CLOSURE: COMPLETE
+
+Implementation complete does **not** equal frozen. The final freeze validation matrix
+(QA tenants, authenticated VTU/Autonomous/Student lifecycles, RBAC/IDOR/tenant/audit sweeps,
+responsive Playwright + screenshots, performance p50/p95, complete Examination + Finance +
+Alumni + full backend regression, web validation) has **not** yet been run.
+
+Legitimate limitation: server-side PDF report generation is NOT CONFIGURED (no PDF generation
+library present); documents/reports use validated XLSX and browser print, consistent with the
+rest of the platform.
+
+## FINAL DECISION: EXAMINATION / COE PORTAL — NOT FROZEN (pending final validation matrix)
