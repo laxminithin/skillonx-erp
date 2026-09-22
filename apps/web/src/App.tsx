@@ -219,7 +219,9 @@ import {
   ExaminationDetailPage,
   CoeDashboardPage,
   CoeQuestionPapersPage,
+  CoeOperationsPage,
   CoeStatusPage,
+  CoeRemunerationPage,
   ExamMarksEntryPage,
   ExaminationsAdminPage,
   FacultyExamDutiesPage,
@@ -858,7 +860,8 @@ export default function App() {
                 <Route path="/coe/rooms-seating" element={<CoeStatusPage title="Rooms & Seating" subtitle="Room allocation, seating generation, and locked seating readiness" />} />
                 <Route path="/coe/invigilation" element={<CoeStatusPage title="Invigilation" subtitle="Faculty duty assignment, conflict checks, and exam-day staffing readiness" />} />
                 <Route path="/coe/hall-tickets" element={<CoeStatusPage title="Hall Tickets" subtitle="Eligible-student hall-ticket readiness and withheld controls" />} />
-                <Route path="/coe/operations" element={<CoeStatusPage title="Exam Operations" subtitle="Exam-day operations, eligibility exceptions, seating locks, and marks locks" />} />
+                <Route path="/coe/operations" element={<CoeOperationsPage />} />
+                <Route path="/coe/remuneration" element={<CoeRemunerationPage />} />
                 <Route path="/coe/marks" element={<CoeStatusPage title="Marks" subtitle="Marks submission, verification, lock, unlock, import, and audit status" />} />
                 <Route path="/coe/results" element={<CoeStatusPage title="Results" subtitle="Result processing, publication readiness, and student visibility controls" />} />
                 <Route path="/coe/backlogs" element={<CoeStatusPage title="Backlogs" subtitle="Fail, incomplete, withheld, and supplementary readiness signals" />} />

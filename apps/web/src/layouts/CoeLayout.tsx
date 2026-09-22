@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   TicketCheck,
   UserCheck,
+  Wallet,
 } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { ProductShell } from './ProductShell';
@@ -36,6 +37,7 @@ const groups = [
       { to: '/coe/backlogs', label: 'Backlogs', icon: ScrollText, activePrefix: '/coe/backlogs' },
       { to: '/coe/revaluation', label: 'Revaluation', icon: FileSearch, activePrefix: '/coe/revaluation' },
       { to: '/coe/corrections', label: 'Corrections', icon: FileCheck2, activePrefix: '/coe/corrections' },
+      { to: '/coe/remuneration', label: 'Remuneration', icon: Wallet, activePrefix: '/coe/remuneration' },
       { to: '/coe/reports', label: 'Reports', icon: FileSearch, activePrefix: '/coe/reports' },
     ],
   },
