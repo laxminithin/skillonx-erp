@@ -457,3 +457,32 @@ studentFinanceRouter.post(
     );
   }),
 );
+
+// APPROVED CROSS-MODULE RECEIVER: Examination remuneration -> Finance posting.
+// Finance-owned actions require Finance permissions (COE cannot post/reverse) (§10).
+import * as examRemun from './examRemunerationPosting.js';
+financeRouter.get(
+  '/exam-remuneration/:itemId',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    res.json(await examRemun.getExamRemunerationReadback(actor(req).collegeId, Number(req.params.itemId)));
+  }),
+);
+financeRouter.get(
+  '/exam-remuneration/:itemId/preview',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    res.json(await examRemun.previewExamRemunerationPosting(actor(req).collegeId, Number(req.params.itemId)));
+  }),
+);
+financeRouter.post(
+  '/exam-remuneration/:itemId/post',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    res.status(201).json(await examRemun.postExamRemuneration(actor(req), Number(req.params.itemId)));
+  }),
+);
+financeRouter.post(
+  '/exam-remuneration/:itemId/reverse',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const body = validate(z.object({ reason: z.string().trim().min(5).max(1000) }), req.body);
+    res.json(await examRemun.reverseExamRemuneration(actor(req), Number(req.params.itemId), body.reason));
+  }),
+);

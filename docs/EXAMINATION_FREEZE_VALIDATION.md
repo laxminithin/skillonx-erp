@@ -65,13 +65,26 @@ Migrations: batches 80–83 (`20261018100000`–`20261018130000`).
   invigilation, marks lifecycle, strong-room custody state machine, Form-A freeze/correction — backend present
   (per prior passes) and covered by the existing examination suite.
 
+## APPROVED CROSS-MODULE CHANGE: Examination remuneration → Finance receiver
+
+Finance / Accounts remains **FROZEN**; this is **not** a Finance reopen. Only the minimum governed receiver
+was added, following the existing `preview → post → reverse` posting pattern (mirrors `payrollPosting`) and
+keeping the authority split intact:
+
+- **Examination owns** (COE, `exam.finance`): duty, beneficiary, quantity, rate, server-computed amount,
+  COE approval — `examination/remuneration.ts`, table `exam_remuneration_items` (unique per duty).
+- **Finance owns** (ACCOUNTANT, `finance.payroll.post` / `finance.refund.approve`): the payable posting,
+  status, reversal, readback — `finance/examRemunerationPosting.ts`, tables
+  `finance_exam_remuneration_postings` (+ lines), reusing `finance_gl_accounts`.
+- **Amount is server-authoritative**: Finance reads the approved obligation, never a client-supplied amount (§6).
+- **Idempotent** on the obligation (unique `remuneration_item_id`): same approved remuneration posted once,
+  twice, or concurrently → exactly ONE posting (§7). Distinct duties stay distinct (§8). COE cannot post/reverse (§10).
+- **Tests** (`finance/examRemuneration.e2e.test.ts`, 10/10): valid handoff, duplicate replay, concurrent replay,
+  distinct duties, duplicate-duty rejection, invalid beneficiary, unapproved source, unauthorized actor,
+  cross-tenant denial, governed reversal (history retained). **Full Finance suite 21/21 — Finance stays green.**
+
 ## Remaining blockers (NOT FROZEN)
 
-- **Remuneration → Finance** (§37–38): **blocked**. No Finance receiver exists for examiner remuneration
-  (Finance only has the student-facing `EXAMINATION_FEE` demand). Finance is FROZEN (§62), so a receiver cannot
-  be added without an approved Finance change. The Examination producer side (duty→eligibility→calculation→
-  approval) can be built, but a real Finance handoff + readback + idempotency cannot be demonstrated without
-  that receiver. Requires a decision.
 - **Operational UI** for the closed backend (registration workspace + bulk, exceptions, strong-room packets,
   Form-A editor, MPC workspace, answer-book movement/reconciliation, script custody, valuation, result
   correction, revaluation, grade card/transcript views, document verification, remuneration, reports).
@@ -98,7 +111,7 @@ Migrations: batches 80–83 (`20261018100000`–`20261018130000`).
 | Autonomous Revaluation | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend done; UI pending |
 | Grade Card / Transcript | ✅ | ✅ | ✅ | partial | ✅ | ✅ | ❌ | Engine done (certificates) |
 | Document Verification | ✅ | ✅ | ✅ | partial | ✅ | ✅ | ❌ | Engine done (certificates) |
-| Remuneration → Finance | ❌ | ❌ | ❌ | ❌ | — | ❌ | ❌ | Blocked: no Finance receiver |
+| Remuneration → Finance | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | Backend + receiver done (approved); UI pending |
 | Reports (PDF/XLSX) | partial | — | — | ❌ | — | ❌ | ❌ | Pending |
 
 ## FINAL DECISION: EXAMINATION / COE PORTAL — NOT FROZEN

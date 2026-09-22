@@ -12,6 +12,7 @@ import * as marks from './marks.js';
 import * as result from './result.js';
 import * as studentExam from './studentExam.js';
 import * as revaluation from './revaluation.js';
+import * as remuneration from './remuneration.js';
 import { capabilityMatrix } from './capabilities.js';
 import * as closure from './closure.js';
 import * as operations from './operations.js';
@@ -96,6 +97,10 @@ examinationRouter.post('/script-transfers/:transferId/variance/resolve', asyncHa
 examinationRouter.post('/valuation/assignments', asyncHandler(async (req: AuthedRequest,res)=>{const b=validate(z.object({examSubjectId:z.number().int().positive(),scriptBatchId:z.number().int().positive(),examinerId:z.number().int().positive()}),req.body);res.status(201).json(await operations.assignValuation(actor(req),b))}));
 examinationRouter.put('/valuation/assignments/:id', asyncHandler(async (req: AuthedRequest,res)=>{const b=validate(z.object({marksPayload:z.unknown(),submit:z.boolean().default(false)}),req.body);res.json(await operations.saveValuation(actor(req),Number(req.params.id),b.marksPayload,b.submit))}));
 examinationRouter.post('/valuation/assignments/:id/correct', asyncHandler(async (req: AuthedRequest,res)=>{const b=validate(z.object({questionRef:z.string().min(1).max(64),newMarks:z.number().int().nonnegative(),reason:z.string().trim().min(1).max(1000)}),req.body);res.json(await operations.correctValuation(actor(req),Number(req.params.id),b))}));
+// Remuneration producer (COE-owned); Finance posting lives under the finance router (§10).
+examinationRouter.post('/remuneration', asyncHandler(async (req: AuthedRequest,res)=>res.status(201).json(await remuneration.createRemuneration(actor(req),validate(remuneration.remunerationSchema,req.body)))));
+examinationRouter.post('/remuneration/:id/approve', asyncHandler(async (req: AuthedRequest,res)=>res.json(await remuneration.approveRemuneration(actor(req),Number(req.params.id)))));
+examinationRouter.get('/remuneration', asyncHandler(async (req: AuthedRequest,res)=>res.json({ items: await remuneration.listRemuneration(actor(req), typeof req.query.status==='string'?req.query.status:undefined) })));
 
 examinationRouter.post(
   '/policies',
