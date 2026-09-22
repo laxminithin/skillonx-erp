@@ -47,6 +47,19 @@ test.describe('Exam Section / COE workspace responsive QA', () => {
   test('marks', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/marks', /Marks/i, 'marks'));
   test('results', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/results', /Results/i, 'results'));
   test('reports', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/reports', /Reports/i, 'reports'));
+
+  // Operational workspaces added during backend->UI parity closure.
+  test('vtu import', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/vtu-import', /VTU Import/i, 'vtu-import'));
+  test('strong room', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/strong-room', /Strong Room/i, 'strong-room'));
+  test('form-a', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/form-a', /Form-A/i, 'form-a'));
+  test('mpc', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/mpc', /Malpractice/i, 'mpc'));
+  test('answer books', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/answer-books', /Answer Books/i, 'answer-books'));
+  test('script transfers', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/script-transfers', /Script Transfers/i, 'script-transfers'));
+  test('valuation', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/valuation', /Valuation/i, 'valuation'));
+  test('revaluation', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/revaluation', /Revaluation/i, 'revaluation'));
+  test('documents', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/documents', /Documents/i, 'documents'));
+  test('verify document', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/verify', /Verify Document/i, 'verify'));
+  test('remuneration', async ({ page }, ti) => visitAndShoot(page, ti, '/coe/remuneration', /Remuneration/i, 'remuneration'));
 });
 
 test.describe('COE workspace RBAC boundary', () => {

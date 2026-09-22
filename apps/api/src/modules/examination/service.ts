@@ -193,7 +193,7 @@ export async function questionPaperStatus(actor: ExamActor) {
       'p.status',
       'p.exam_type',
       'p.exam_date',
-      'p.total_marks',
+      'p.max_marks as total_marks',
       'p.duration_minutes',
       'p.created_at',
       'c.code as course_code',
