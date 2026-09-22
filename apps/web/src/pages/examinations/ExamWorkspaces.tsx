@@ -527,3 +527,367 @@ export function CoeMpcPage() {
     </div>
   );
 }
+
+/* ------------------------------------------------------------------ Answer Books */
+
+type AnswerBook = {
+  id: number; series: string; received_quantity: number; issued_quantity: number; used_quantity: number;
+  unused_quantity: number; damaged_quantity: number; returned_quantity: number;
+  reconciliation: { expected: number; actual: number; variance: number };
+  reconciliationStatus: string; varianceStatus: string;
+  variance_reason?: string | null; investigation_note?: string | null; resolution?: string | null;
+};
+const AB_MOVES = ['RECEIVED', 'ISSUED', 'USED', 'UNUSED', 'DAMAGED', 'RETURNED'];
+
+export function CoeAnswerBooksPage() {
+  useDocumentTitle('Answer Books');
+  const { exams } = useExams();
+  const [books, setBooks] = useState<AnswerBook[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+  const [create, setCreate] = useState({ examId: '', series: '', receivedQuantity: '' });
+  const [move, setMove] = useState<Record<number, { type: string; qty: string }>>({});
+
+  const load = useCallback(() => {
+    setLoading(true);
+    return api<{ answerBooks: AnswerBook[] }>('/api/examinations/operations/readback')
+      .then((d) => setBooks(d.answerBooks ?? []))
+      .catch((e) => setMessage(errText(e)))
+      .finally(() => setLoading(false));
+  }, []);
+  useEffect(() => { void load(); }, [load]);
+
+  const addBatch = async () => {
+    try {
+      await api(`/api/examinations/${Number(create.examId)}/answer-books`, { method: 'POST', body: JSON.stringify({ series: create.series, receivedQuantity: Number(create.receivedQuantity) }) });
+      setMessage('Answer-book batch received.');
+      setCreate({ examId: '', series: '', receivedQuantity: '' });
+      await load();
+    } catch (e) { setMessage(errText(e)); }
+  };
+  const recordMove = async (b: AnswerBook) => {
+    const m = move[b.id];
+    if (!m?.type || !m.qty) return;
+    try {
+      await api(`/api/examinations/answer-books/${b.id}/movements`, { method: 'POST', body: JSON.stringify({ movementType: m.type, quantity: Number(m.qty) }) });
+      setMessage(`${m.type} movement recorded; server recomputed reconciliation.`);
+      setMove({ ...move, [b.id]: { type: m.type, qty: '' } });
+      await load();
+    } catch (e) { setMessage(errText(e)); }
+  };
+  const resolveVariance = async (b: AnswerBook) => {
+    const reason = window.prompt('Variance reason'); if (!reason) return;
+    const investigationNote = window.prompt('Investigation note'); if (!investigationNote) return;
+    const resolution = window.prompt('Resolution'); if (!resolution) return;
+    try {
+      await api(`/api/examinations/answer-books/${b.id}/variance/resolve`, { method: 'POST', body: JSON.stringify({ reason, investigationNote, resolution }) });
+      setMessage('Variance resolved.'); await load();
+    } catch (e) { setMessage(errText(e)); }
+  };
+  const closeRecon = async (b: AnswerBook) => {
+    try { await api(`/api/examinations/answer-books/${b.id}/reconciliation/close`, { method: 'POST' }); setMessage('Reconciliation closed.'); await load(); }
+    catch (e) { setMessage(errText(e)); }
+  };
+
+  if (loading) return <Skeleton className="h-48 w-full" />;
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="Answer Books" subtitle="Answer-book movements with server-authoritative reconciliation and variance investigation" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      <Surface>
+        <h2 className="font-semibold">Receive a batch</h2>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <Select value={create.examId} onChange={(e) => setCreate({ ...create, examId: e.target.value })}>
+            <option value="">Select examination…</option>
+            {exams.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
+          </Select>
+          <Input placeholder="Series" value={create.series} onChange={(e) => setCreate({ ...create, series: e.target.value })} />
+          <Input placeholder="Received quantity" type="number" value={create.receivedQuantity} onChange={(e) => setCreate({ ...create, receivedQuantity: e.target.value })} />
+          <Button size="sm" onClick={addBatch} disabled={!create.examId || !create.series || !create.receivedQuantity}>Receive</Button>
+        </div>
+      </Surface>
+      <Surface>
+        <h2 className="font-semibold">Batches & reconciliation</h2>
+        {books.length === 0 ? <EmptyState title="No answer-book batches" body="Received batches and their reconciliation appear here." /> : (
+          <div className="mt-3 space-y-3">
+            {books.map((b) => {
+              const reconciled = b.reconciliation.variance === 0;
+              return (
+                <div key={b.id} className="rounded border border-border p-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="font-medium">{b.series} <StatusBadge status={b.reconciliationStatus} /></p>
+                    <p className="text-sm">Recd {b.received_quantity} · Issued {b.issued_quantity} · Used {b.used_quantity} · Unused {b.unused_quantity} · Damaged {b.damaged_quantity} · Returned {b.returned_quantity}</p>
+                  </div>
+                  <div className={`mt-2 text-sm ${reconciled ? 'text-success' : 'text-danger'}`}>
+                    Expected {b.reconciliation.expected} · Actual {b.reconciliation.actual} · Variance {b.reconciliation.variance} {reconciled ? '· reconciled' : `· ${b.varianceStatus}`}
+                  </div>
+                  {b.varianceStatus === 'RESOLVED' ? <p className="mt-1 text-xs text-ink-muted">Resolution: {b.resolution}</p> : null}
+                  {b.reconciliationStatus !== 'CLOSED' ? (
+                    <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+                      <Select className="w-36" value={move[b.id]?.type ?? 'ISSUED'} onChange={(e) => setMove({ ...move, [b.id]: { type: e.target.value, qty: move[b.id]?.qty ?? '' } })}>
+                        {AB_MOVES.map((x) => <option key={x}>{x}</option>)}
+                      </Select>
+                      <Input className="w-28" placeholder="Qty" type="number" value={move[b.id]?.qty ?? ''} onChange={(e) => setMove({ ...move, [b.id]: { type: move[b.id]?.type ?? 'ISSUED', qty: e.target.value } })} />
+                      <Button size="sm" variant="secondary" onClick={() => recordMove(b)}>Record movement</Button>
+                      {!reconciled && b.varianceStatus !== 'RESOLVED' ? <Button size="sm" variant="danger" onClick={() => resolveVariance(b)}>Investigate variance</Button> : null}
+                      <Button size="sm" onClick={() => closeRecon(b)}>Close reconciliation</Button>
+                    </div>
+                  ) : <p className="mt-2 text-sm text-ink-muted">Reconciliation closed.</p>}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </Surface>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ Script Transfers */
+
+type ScriptTransfer = { id: number; from_holder: string; to_holder: string; expected_count: number; received_count: number | null; variance: number; status: string; variance_status: string; acknowledged_at: string | null };
+type ScriptBatch = { id: number; reference: string; expected_count: number; actual_count: number; stage: string; variance: number; transfers: ScriptTransfer[] };
+
+export function CoeScriptTransferPage() {
+  useDocumentTitle('Script Transfers');
+  const [scripts, setScripts] = useState<ScriptBatch[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+  const [xfer, setXfer] = useState<Record<number, { fromHolder: string; toHolder: string; expectedCount: string }>>({});
+
+  const load = useCallback(() => {
+    setLoading(true);
+    return api<{ scripts: ScriptBatch[] }>('/api/examinations/operations/readback')
+      .then((d) => setScripts(d.scripts ?? []))
+      .catch((e) => setMessage(errText(e)))
+      .finally(() => setLoading(false));
+  }, []);
+  useEffect(() => { void load(); }, [load]);
+
+  const createTransfer = async (batchId: number) => {
+    const t = xfer[batchId];
+    if (!t?.fromHolder || !t.toHolder || !t.expectedCount) return;
+    try {
+      await api('/api/examinations/script-transfers', { method: 'POST', body: JSON.stringify({ scriptBatchId: batchId, fromHolder: t.fromHolder, toHolder: t.toHolder, expectedCount: Number(t.expectedCount) }) });
+      setMessage('Transfer created (SENT).'); await load();
+    } catch (e) { setMessage(errText(e)); }
+  };
+  const acknowledge = async (transferId: number) => {
+    const received = window.prompt('Received script count'); if (received == null) return;
+    try { await api(`/api/examinations/script-transfers/${transferId}/acknowledge`, { method: 'POST', body: JSON.stringify({ receivedCount: Number(received) }) }); setMessage('Transfer acknowledged.'); await load(); }
+    catch (e) { setMessage(errText(e)); }
+  };
+  const resolve = async (transferId: number) => {
+    const reason = window.prompt('Variance reason'); if (!reason) return;
+    const resolution = window.prompt('Resolution'); if (!resolution) return;
+    try { await api(`/api/examinations/script-transfers/${transferId}/variance/resolve`, { method: 'POST', body: JSON.stringify({ reason, resolution }) }); setMessage('Variance resolved (original values preserved).'); await load(); }
+    catch (e) { setMessage(errText(e)); }
+  };
+
+  if (loading) return <Skeleton className="h-48 w-full" />;
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="Script Transfers" subtitle="Sender expected vs receiver actual, with unresolved-variance resolution that preserves history" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      {scripts.length === 0 ? <Surface><EmptyState title="No script batches" body="Collected script batches and their transfers appear here." /></Surface> : (
+        scripts.map((s) => (
+          <Surface key={s.id}>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 className="font-semibold">{s.reference} <span className="text-sm font-normal text-ink-muted">· {s.stage} · expected {s.expected_count} / actual {s.actual_count}</span></h2>
+            </div>
+            {s.transfers.length ? (
+              <div className="mt-3 overflow-x-auto">
+                <table className="min-w-[760px] w-full text-sm">
+                  <thead><tr>{['From', 'To', 'Expected', 'Received', 'Variance', 'Status', ''].map((h) => <th key={h} className="pb-2 text-left text-ink-muted">{h}</th>)}</tr></thead>
+                  <tbody>
+                    {s.transfers.map((t) => (
+                      <tr key={t.id} className="border-t border-border">
+                        <td className="py-2">{t.from_holder}</td>
+                        <td className="py-2">{t.to_holder}</td>
+                        <td className="py-2">{t.expected_count}</td>
+                        <td className="py-2">{t.received_count ?? '—'}</td>
+                        <td className={`py-2 ${t.variance === 0 ? '' : 'text-danger'}`}>{t.variance}</td>
+                        <td className="py-2"><StatusBadge status={t.status} />{t.variance_status === 'UNRESOLVED' ? <StatusBadge status="UNRESOLVED" /> : null}</td>
+                        <td className="py-2 space-x-2">
+                          {t.status === 'SENT' ? <button className="text-accent" onClick={() => acknowledge(t.id)}>Acknowledge</button> : null}
+                          {t.variance_status === 'UNRESOLVED' ? <button className="text-danger" onClick={() => resolve(t.id)}>Resolve variance</button> : null}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : <p className="mt-2 text-sm text-ink-muted">No transfers yet.</p>}
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+              <Input className="w-40" placeholder="From holder" value={xfer[s.id]?.fromHolder ?? ''} onChange={(e) => setXfer({ ...xfer, [s.id]: { ...(xfer[s.id] ?? { toHolder: '', expectedCount: '' }), fromHolder: e.target.value } })} />
+              <Input className="w-40" placeholder="To holder" value={xfer[s.id]?.toHolder ?? ''} onChange={(e) => setXfer({ ...xfer, [s.id]: { ...(xfer[s.id] ?? { fromHolder: '', expectedCount: '' }), toHolder: e.target.value } })} />
+              <Input className="w-32" placeholder="Expected" type="number" value={xfer[s.id]?.expectedCount ?? ''} onChange={(e) => setXfer({ ...xfer, [s.id]: { ...(xfer[s.id] ?? { fromHolder: '', toHolder: '' }), expectedCount: e.target.value } })} />
+              <Button size="sm" variant="secondary" onClick={() => createTransfer(s.id)}>Create transfer</Button>
+            </div>
+          </Surface>
+        ))
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ Valuation (COE) */
+
+type ValuationAssignment = { id: number; examSubjectId: number; scriptBatchId: number; examinerId: number; examinerName: string; courseCode: string; courseName: string; status: string; marksPayload: unknown; submittedAt: string | null; lockedAt: string | null };
+
+export function CoeValuationPage() {
+  useDocumentTitle('Digital Valuation');
+  const [rows, setRows] = useState<ValuationAssignment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+
+  const load = useCallback(() => {
+    setLoading(true);
+    return api<{ assignments: ValuationAssignment[] }>('/api/examinations/valuation/assignments')
+      .then((d) => setRows(d.assignments))
+      .catch((e) => setMessage(errText(e)))
+      .finally(() => setLoading(false));
+  }, []);
+  useEffect(() => { void load(); }, [load]);
+
+  const correct = async (a: ValuationAssignment) => {
+    const questionRef = window.prompt('Question reference to correct'); if (!questionRef) return;
+    const newMarks = window.prompt('New marks'); if (newMarks == null) return;
+    const reason = window.prompt('Correction reason'); if (!reason) return;
+    try { await api(`/api/examinations/valuation/assignments/${a.id}/correct`, { method: 'POST', body: JSON.stringify({ questionRef, newMarks: Number(newMarks), reason }) }); setMessage('Correction recorded (history preserved).'); await load(); }
+    catch (e) { setMessage(errText(e)); }
+  };
+
+  const byStatus = (status: string) => rows.filter((r) => r.status === status);
+
+  if (loading) return <Skeleton className="h-48 w-full" />;
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="Digital Valuation" subtitle="Valuation assignments across the COE workflow states" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        {['ASSIGNED', 'DRAFT', 'LOCKED'].map((s) => (
+          <Surface key={s}><p className="text-sm text-ink-muted">{s}</p><p className="text-2xl font-semibold">{byStatus(s).length}</p></Surface>
+        ))}
+      </div>
+      <Surface>
+        <h2 className="font-semibold">Assignments</h2>
+        {rows.length === 0 ? <EmptyState title="No valuation assignments" body="Assign script batches to examiners to begin valuation." /> : (
+          <div className="mt-3 overflow-x-auto">
+            <table className="min-w-[820px] w-full text-sm">
+              <thead><tr>{['Course', 'Examiner', 'Status', 'Total', 'Submitted', ''].map((h) => <th key={h} className="pb-2 text-left text-ink-muted">{h}</th>)}</tr></thead>
+              <tbody>
+                {rows.map((a) => {
+                  const total = (a.marksPayload as { total?: number } | null)?.total ?? (Array.isArray((a.marksPayload as { questions?: unknown[] })?.questions) ? '—' : '—');
+                  return (
+                    <tr key={a.id} className="border-t border-border">
+                      <td className="py-2">{a.courseCode}</td>
+                      <td className="py-2">{a.examinerName}</td>
+                      <td className="py-2"><StatusBadge status={a.status} /></td>
+                      <td className="py-2">{String(total)}</td>
+                      <td className="py-2 text-ink-muted">{a.submittedAt ? formatDate(a.submittedAt) : '—'}</td>
+                      <td className="py-2">{a.status === 'LOCKED' ? <button className="text-accent" onClick={() => correct(a)}>Correct</button> : null}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Surface>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ Valuation (Examiner) */
+
+type QuestionRow = { ref: string; max: string; awarded: string };
+
+export function ExaminerValuationPage() {
+  useDocumentTitle('My Valuations');
+  const [rows, setRows] = useState<ValuationAssignment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+  const [active, setActive] = useState<ValuationAssignment | null>(null);
+  const [questions, setQuestions] = useState<QuestionRow[]>([{ ref: 'Q1', max: '', awarded: '' }]);
+
+  const load = useCallback(() => {
+    setLoading(true);
+    return api<{ assignments: ValuationAssignment[] }>('/api/examinations/valuation/assignments')
+      .then((d) => setRows(d.assignments))
+      .catch((e) => setMessage(errText(e)))
+      .finally(() => setLoading(false));
+  }, []);
+  useEffect(() => { void load(); }, [load]);
+
+  const open = (a: ValuationAssignment) => {
+    setActive(a);
+    const existing = (a.marksPayload as { questions?: QuestionRow[] } | null)?.questions;
+    setQuestions(existing?.length ? existing.map((q) => ({ ref: String(q.ref), max: String(q.max), awarded: String(q.awarded) })) : [{ ref: 'Q1', max: '', awarded: '' }]);
+  };
+
+  const save = async (submit: boolean) => {
+    if (!active) return;
+    const payload = { questions: questions.map((q) => ({ ref: q.ref, max: Number(q.max), awarded: Number(q.awarded) })) };
+    if (submit && !window.confirm('Final submit locks this valuation. Continue?')) return;
+    try {
+      const res = await api<{ total: number | null }>(`/api/examinations/valuation/assignments/${active.id}`, { method: 'PUT', body: JSON.stringify({ marksPayload: payload, submit }) });
+      setMessage(submit ? `Submitted and locked. Server total: ${res.total}.` : `Draft saved. Server total: ${res.total}.`);
+      await load();
+      if (submit) setActive(null);
+    } catch (e) { setMessage(errText(e)); }
+  };
+
+  const total = questions.reduce((s, q) => s + (Number(q.awarded) || 0), 0);
+
+  if (loading) return <Skeleton className="h-48 w-full" />;
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="My Valuations" subtitle="Only your assigned scripts — enter question-wise marks; the server computes the authoritative total" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      <Surface>
+        <h2 className="font-semibold">My assignments</h2>
+        {rows.length === 0 ? <EmptyState title="No assignments" body="Scripts assigned to you for valuation appear here." /> : (
+          <div className="mt-3 space-y-2">
+            {rows.map((a) => (
+              <div key={a.id} className="flex flex-wrap items-center justify-between gap-2 border-t border-border py-2 first:border-t-0 text-sm">
+                <span>{a.courseCode} · {a.courseName} <StatusBadge status={a.status} /></span>
+                {a.status !== 'LOCKED' ? <Button size="sm" variant="secondary" onClick={() => open(a)}>Value</Button> : <span className="text-ink-muted">Locked</span>}
+              </div>
+            ))}
+          </div>
+        )}
+      </Surface>
+      {active ? (
+        <Surface>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="font-semibold">Valuation · {active.courseCode}</h2>
+            <button className="text-sm text-ink-muted" onClick={() => setActive(null)}>Close</button>
+          </div>
+          <div className="mt-3 space-y-2">
+            {questions.map((q, i) => (
+              <div key={i} className="flex flex-wrap items-center gap-2 text-sm">
+                <Input className="w-24" placeholder="Q ref" value={q.ref} onChange={(e) => setQuestions(questions.map((x, j) => (j === i ? { ...x, ref: e.target.value } : x)))} />
+                <Input className="w-24" placeholder="Max" type="number" value={q.max} onChange={(e) => setQuestions(questions.map((x, j) => (j === i ? { ...x, max: e.target.value } : x)))} />
+                <Input className="w-28" placeholder="Awarded" type="number" value={q.awarded} onChange={(e) => setQuestions(questions.map((x, j) => (j === i ? { ...x, awarded: e.target.value } : x)))} />
+                {Number(q.awarded) > Number(q.max) && q.max ? <span className="text-xs text-danger">exceeds max</span> : null}
+              </div>
+            ))}
+          </div>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <Button size="sm" variant="secondary" onClick={() => setQuestions([...questions, { ref: `Q${questions.length + 1}`, max: '', awarded: '' }])}>Add question</Button>
+            <span className="text-sm text-ink-muted">Provisional total: <strong>{total}</strong> (server is authoritative)</span>
+            <div className="ml-auto flex gap-2">
+              <Button size="sm" variant="secondary" onClick={() => save(false)}>Save draft</Button>
+              <Button size="sm" onClick={() => save(true)}>Final submit</Button>
+            </div>
+          </div>
+        </Surface>
+      ) : null}
+    </div>
+  );
+}

@@ -230,6 +230,10 @@ import {
   CoeStrongRoomPage,
   CoeFormAPage,
   CoeMpcPage,
+  CoeAnswerBooksPage,
+  CoeScriptTransferPage,
+  CoeValuationPage,
+  ExaminerValuationPage,
 } from './pages/examinations/ExamWorkspaces';
 import {
   StudentAcademicRecordPage,
@@ -871,6 +875,9 @@ export default function App() {
                 <Route path="/coe/strong-room" element={<CoeStrongRoomPage />} />
                 <Route path="/coe/form-a" element={<CoeFormAPage />} />
                 <Route path="/coe/mpc" element={<CoeMpcPage />} />
+                <Route path="/coe/answer-books" element={<CoeAnswerBooksPage />} />
+                <Route path="/coe/script-transfers" element={<CoeScriptTransferPage />} />
+                <Route path="/coe/valuation" element={<CoeValuationPage />} />
                 <Route path="/coe/remuneration" element={<CoeRemunerationPage />} />
                 <Route path="/coe/marks" element={<CoeStatusPage title="Marks" subtitle="Marks submission, verification, lock, unlock, import, and audit status" />} />
                 <Route path="/coe/results" element={<CoeStatusPage title="Results" subtitle="Result processing, publication readiness, and student visibility controls" />} />
@@ -973,6 +980,7 @@ export default function App() {
                 <Route path="/examinations/:examId" element={<ExaminationDetailPage />} />
                 <Route path="/examinations/subjects/:examSubjectId/marks" element={<ExamMarksEntryPage />} />
                 <Route path="/exam-duties" element={<FacultyExamDutiesPage />} />
+                <Route path="/exam-valuations" element={<ExaminerValuationPage />} />
                 <Route path="/courses" element={<CoursesPage />} />
                 <Route path="/courses/:courseId" element={<CourseWorkspacePage />} />
                 <Route path="/courses/:courseId/attendance" element={<CourseAttendancePage />} />

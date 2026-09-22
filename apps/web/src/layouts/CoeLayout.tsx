@@ -17,6 +17,9 @@ import {
   Lock,
   ClipboardCheck,
   AlertTriangle,
+  BookCheck,
+  PackageCheck,
+  PenLine,
 } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { ProductShell } from './ProductShell';
@@ -38,6 +41,9 @@ const groups = [
       { to: '/coe/strong-room', label: 'Strong Room', icon: Lock, activePrefix: '/coe/strong-room' },
       { to: '/coe/form-a', label: 'Form-A', icon: ClipboardCheck, activePrefix: '/coe/form-a' },
       { to: '/coe/mpc', label: 'Malpractice (MPC)', icon: AlertTriangle, activePrefix: '/coe/mpc' },
+      { to: '/coe/answer-books', label: 'Answer Books', icon: BookCheck, activePrefix: '/coe/answer-books' },
+      { to: '/coe/script-transfers', label: 'Script Transfers', icon: PackageCheck, activePrefix: '/coe/script-transfers' },
+      { to: '/coe/valuation', label: 'Valuation', icon: PenLine, activePrefix: '/coe/valuation' },
       { to: '/coe/marks', label: 'Marks', icon: BadgeCheck, activePrefix: '/coe/marks' },
       { to: '/coe/results', label: 'Results', icon: Medal, activePrefix: '/coe/results' },
       { to: '/coe/backlogs', label: 'Backlogs', icon: ScrollText, activePrefix: '/coe/backlogs' },
