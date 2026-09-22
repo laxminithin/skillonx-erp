@@ -399,6 +399,37 @@ export async function correctResult(
   };
 }
 
+// COE results overview: published semester results per exam with current/superseded versions and corrections (read-only UI parity).
+export async function coeResultsOverview(actor: ExamActor, examId: number) {
+  assertExamPermission(actor, 'exam.result.process');
+  await assertExamCollege(examId, actor.collegeId);
+  const rows = await db('semester_results as sr')
+    .join('students as s', 's.id', 'sr.student_id')
+    .where({ 'sr.exam_id': examId, 'sr.college_id': actor.collegeId })
+    .select('sr.id', 'sr.student_id', 'sr.result_version', 'sr.published', 'sr.superseded_at', 'sr.superseded_by_id', 'sr.sgpa', 'sr.status', 'sr.published_at', 's.name as student_name', 's.usn')
+    .orderBy([{ column: 's.usn', order: 'asc' }, { column: 'sr.result_version', order: 'desc' }]);
+  const corrections = await db('exam_result_corrections')
+    .where({ college_id: actor.collegeId, exam_id: examId })
+    .select('id', 'student_id', 'from_version', 'to_version', 'reason', 'created_at')
+    .orderBy('id', 'desc');
+  return {
+    examId,
+    results: rows.map((r: Row) => ({
+      id: Number(r.id),
+      studentId: Number(r.student_id),
+      studentName: r.student_name,
+      usn: r.usn,
+      version: Number(r.result_version),
+      published: Boolean(r.published),
+      current: !r.superseded_at,
+      sgpa: r.sgpa != null ? Number(r.sgpa) : null,
+      status: r.status,
+      publishedAt: r.published_at,
+    })),
+    corrections: corrections.map((c: Row) => ({ id: Number(c.id), studentId: Number(c.student_id), fromVersion: Number(c.from_version), toVersion: Number(c.to_version), reason: c.reason, createdAt: c.created_at })),
+  };
+}
+
 export async function studentResults(studentId: number, collegeId: number, semesterId?: number) {
   let q = db('semester_results as sr')
     .join('examinations as e', 'e.id', 'sr.exam_id')

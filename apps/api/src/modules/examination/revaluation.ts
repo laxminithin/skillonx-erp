@@ -124,6 +124,25 @@ export async function decideRevaluation(actor: ExamActor, id: number, decision: 
   return { id, status: 'COMPLETED', decision, newSemesterResultId };
 }
 
+// Examiner-scoped: only revaluations assigned to this examiner (isolation like valuation).
+export async function examinerRevaluations(actor: ExamActor) {
+  const rows = await db('exam_revaluation_requests as r')
+    .join('subject_results as sr', 'sr.id', 'r.subject_result_id')
+    .join('courses as c', 'c.id', 'sr.course_id')
+    .where({ 'r.college_id': actor.collegeId, 'r.examiner_id': actor.facultyUserId })
+    .whereIn('r.status', ['ASSIGNED', 'REVALUATED'])
+    .select('r.*', 'c.code as course_code', 'c.name as course_name')
+    .orderBy('r.assigned_at', 'desc');
+  return rows.map((r) => ({
+    id: Number(r.id),
+    courseCode: r.course_code,
+    courseName: r.course_name,
+    requestType: r.request_type,
+    status: r.status,
+    revisedMarks: r.revised_marks != null ? Number(r.revised_marks) : null,
+  }));
+}
+
 export async function studentRevaluationOutcomes(studentId: number, collegeId: number) {
   const rows = await db('exam_revaluation_requests as r')
     .join('subject_results as sr', 'sr.id', 'r.subject_result_id')
@@ -158,11 +177,16 @@ export async function listRevaluationRequests(collegeId: number, status?: string
     studentId: Number(r.student_id),
     studentName: r.student_name,
     usn: r.usn,
+    subjectResultId: Number(r.subject_result_id),
     courseCode: r.course_code,
     courseName: r.course_name,
     requestType: r.request_type,
     status: r.status,
     reason: r.reason,
+    examinerId: r.examiner_id != null ? Number(r.examiner_id) : null,
+    revisedMarks: r.revised_marks != null ? Number(r.revised_marks) : null,
+    decision: r.decision ?? null,
+    newSemesterResultId: r.new_semester_result_id != null ? Number(r.new_semester_result_id) : null,
     createdAt: r.created_at,
   }));
 }

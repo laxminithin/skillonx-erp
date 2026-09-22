@@ -891,3 +891,203 @@ export function ExaminerValuationPage() {
     </div>
   );
 }
+
+/* ------------------------------------------------------------------ Results (COE) */
+
+type ResultRow = { id: number; studentId: number; studentName: string; usn: string; version: number; published: boolean; current: boolean; sgpa: number | null; status: string; publishedAt: string | null };
+type ResultCorrection = { id: number; studentId: number; fromVersion: number; toVersion: number; reason: string; createdAt: string };
+
+export function CoeResultsPage() {
+  useDocumentTitle('Results');
+  const { exams } = useExams();
+  const [examId, setExamId] = useState('');
+  const [overview, setOverview] = useState<{ results: ResultRow[]; corrections: ResultCorrection[] } | null>(null);
+  const [message, setMessage] = useState('');
+
+  const load = async (id: string) => {
+    if (!id) return;
+    try {
+      setOverview(await api(`/api/examinations/${Number(id)}/results/overview`));
+    } catch (e) { setMessage(errText(e)); }
+  };
+
+  const process = async () => { try { await api(`/api/examinations/${Number(examId)}/results/process`, { method: 'POST' }); setMessage('Results processed.'); await load(examId); } catch (e) { setMessage(errText(e)); } };
+  const publish = async () => { try { await api(`/api/examinations/${Number(examId)}/results/publish`, { method: 'POST' }); setMessage('Results published.'); await load(examId); } catch (e) { setMessage(errText(e)); } };
+  const correct = async (r: ResultRow) => {
+    const courseId = window.prompt('Course ID to correct'); if (!courseId) return;
+    const totalMarks = window.prompt('Corrected total marks'); if (totalMarks == null) return;
+    const maxMarks = window.prompt('Course max marks', '100'); if (maxMarks == null) return;
+    const reason = window.prompt('Correction reason'); if (!reason) return;
+    try {
+      await api(`/api/examinations/results/${r.id}/correct`, { method: 'POST', body: JSON.stringify({ reason, subjectCorrections: [{ courseId: Number(courseId), totalMarks: Number(totalMarks), maxMarks: Number(maxMarks) }] }) });
+      setMessage('Result corrected — a new current version supersedes the prior one.'); await load(examId);
+    } catch (e) { setMessage(errText(e)); }
+  };
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="Results" subtitle="Process, publish, and versioned corrections — superseded versions remain as history" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      <Surface>
+        <div className="flex flex-wrap items-center gap-3">
+          <Select value={examId} onChange={(e) => { setExamId(e.target.value); void load(e.target.value); }}>
+            <option value="">Select examination…</option>
+            {exams.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
+          </Select>
+          {examId ? <><Button size="sm" variant="secondary" onClick={process}>Process</Button><Button size="sm" onClick={publish}>Publish</Button></> : null}
+        </div>
+      </Surface>
+      {overview ? (
+        <>
+          <Surface>
+            <h2 className="font-semibold">Result versions</h2>
+            {overview.results.length === 0 ? <EmptyState title="No results" body="Process results to populate this exam." /> : (
+              <div className="mt-3 overflow-x-auto">
+                <table className="min-w-[820px] w-full text-sm">
+                  <thead><tr>{['USN', 'Student', 'Version', 'SGPA', 'Status', 'State', ''].map((h) => <th key={h} className="pb-2 text-left text-ink-muted">{h}</th>)}</tr></thead>
+                  <tbody>
+                    {overview.results.map((r) => (
+                      <tr key={r.id} className={`border-t border-border ${r.current ? '' : 'text-ink-muted'}`}>
+                        <td className="py-2">{r.usn}</td>
+                        <td className="py-2">{r.studentName}</td>
+                        <td className="py-2">V{r.version}</td>
+                        <td className="py-2">{r.sgpa ?? '—'}</td>
+                        <td className="py-2">{r.status}</td>
+                        <td className="py-2">{r.current ? <StatusBadge status="CURRENT" /> : <StatusBadge status="SUPERSEDED" />}</td>
+                        <td className="py-2">{r.current && r.published ? <button className="text-accent" onClick={() => correct(r)}>Correct</button> : null}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </Surface>
+          {overview.corrections.length ? (
+            <Surface>
+              <h2 className="font-semibold">Correction history</h2>
+              <ul className="mt-2 space-y-1 text-sm text-ink-secondary">
+                {overview.corrections.map((c) => <li key={c.id}>Student {c.studentId}: V{c.fromVersion} → V{c.toVersion} · {c.reason} · {formatDate(c.createdAt)}</li>)}
+              </ul>
+            </Surface>
+          ) : null}
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ Revaluation (COE) */
+
+type RevalRow = { id: number; studentName: string; usn: string; courseCode: string; requestType: string; status: string; examinerId: number | null; revisedMarks: number | null; decision: string | null };
+
+export function CoeRevaluationPage() {
+  useDocumentTitle('Revaluation');
+  const [rows, setRows] = useState<RevalRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+
+  const load = useCallback(() => {
+    setLoading(true);
+    return api<{ requests: RevalRow[] }>('/api/examinations/revaluation')
+      .then((d) => setRows(d.requests))
+      .catch((e) => setMessage(errText(e)))
+      .finally(() => setLoading(false));
+  }, []);
+  useEffect(() => { void load(); }, [load]);
+
+  const review = async (id: number, accept: boolean) => {
+    const note = accept ? (window.prompt('Review note (optional)') ?? undefined) : (window.prompt('Rejection reason') || '');
+    if (!accept && !note) return;
+    try { await api(`/api/examinations/revaluation/${id}/review`, { method: 'POST', body: JSON.stringify({ accept, note }) }); setMessage(accept ? 'Accepted.' : 'Rejected.'); await load(); } catch (e) { setMessage(errText(e)); }
+  };
+  const assign = async (id: number) => {
+    const examinerId = window.prompt('Examiner (faculty user) ID'); if (!examinerId) return;
+    try { await api(`/api/examinations/revaluation/${id}/assign`, { method: 'POST', body: JSON.stringify({ examinerId: Number(examinerId) }) }); setMessage('Examiner assigned.'); await load(); } catch (e) { setMessage(errText(e)); }
+  };
+  const decide = async (id: number, decision: 'REVISED' | 'UNCHANGED') => {
+    const reason = window.prompt(`Reason for ${decision}`); if (!reason) return;
+    try { await api(`/api/examinations/revaluation/${id}/decision`, { method: 'POST', body: JSON.stringify({ decision, reason }) }); setMessage(decision === 'REVISED' ? 'Decided REVISED — versioned result consequence created.' : 'Decided UNCHANGED.'); await load(); } catch (e) { setMessage(errText(e)); }
+  };
+
+  if (loading) return <Skeleton className="h-48 w-full" />;
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="Revaluation" subtitle="Institution-owned revaluation lifecycle: review, assign, decide (REVISED yields a versioned result consequence)" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      <Surface>
+        {rows.length === 0 ? <EmptyState title="No revaluation requests" body="Student revaluation applications appear here." /> : (
+          <div className="overflow-x-auto">
+            <table className="min-w-[900px] w-full text-sm">
+              <thead><tr>{['Student', 'Course', 'Type', 'Status', 'Examiner', 'Revised', 'Actions'].map((h) => <th key={h} className="pb-2 text-left text-ink-muted">{h}</th>)}</tr></thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.id} className="border-t border-border">
+                    <td className="py-2">{r.studentName} · {r.usn}</td>
+                    <td className="py-2">{r.courseCode}</td>
+                    <td className="py-2">{r.requestType}</td>
+                    <td className="py-2"><StatusBadge status={r.status} /></td>
+                    <td className="py-2">{r.examinerId ?? '—'}</td>
+                    <td className="py-2">{r.revisedMarks ?? '—'}</td>
+                    <td className="py-2 space-x-2">
+                      {r.status === 'REQUESTED' ? <><button className="text-accent" onClick={() => review(r.id, true)}>Accept</button><button className="text-danger" onClick={() => review(r.id, false)}>Reject</button></> : null}
+                      {r.status === 'ACCEPTED' ? <button className="text-accent" onClick={() => assign(r.id)}>Assign examiner</button> : null}
+                      {r.status === 'REVALUATED' ? <><button className="text-accent" onClick={() => decide(r.id, 'REVISED')}>Revised</button><button className="text-ink-secondary" onClick={() => decide(r.id, 'UNCHANGED')}>Unchanged</button></> : null}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Surface>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ Revaluation (Examiner) */
+
+type MyReval = { id: number; courseCode: string; courseName: string; requestType: string; status: string; revisedMarks: number | null };
+
+export function ExaminerRevaluationPage() {
+  useDocumentTitle('My Revaluations');
+  const [rows, setRows] = useState<MyReval[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+
+  const load = useCallback(() => {
+    setLoading(true);
+    return api<{ revaluations: MyReval[] }>('/api/examinations/my-revaluations')
+      .then((d) => setRows(d.revaluations))
+      .catch((e) => setMessage(errText(e)))
+      .finally(() => setLoading(false));
+  }, []);
+  useEffect(() => { void load(); }, [load]);
+
+  const submit = async (id: number) => {
+    const revisedMarks = window.prompt('Revised marks'); if (revisedMarks == null) return;
+    const revisedMax = window.prompt('Out of (max)', '100'); if (revisedMax == null) return;
+    try { await api(`/api/examinations/revaluation/${id}/submit`, { method: 'POST', body: JSON.stringify({ revisedMarks: Number(revisedMarks), revisedMax: Number(revisedMax) }) }); setMessage('Revised marks submitted.'); await load(); } catch (e) { setMessage(errText(e)); }
+  };
+
+  if (loading) return <Skeleton className="h-40 w-full" />;
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="My Revaluations" subtitle="Revaluations assigned to you — submit revised marks" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      <Surface>
+        {rows.length === 0 ? <EmptyState title="No assigned revaluations" body="Revaluations the COE assigns to you appear here." /> : (
+          <div className="space-y-2">
+            {rows.map((r) => (
+              <div key={r.id} className="flex flex-wrap items-center justify-between gap-2 border-t border-border py-2 first:border-t-0 text-sm">
+                <span>{r.courseCode} · {r.courseName} <StatusBadge status={r.status} />{r.revisedMarks != null ? ` · revised ${r.revisedMarks}` : ''}</span>
+                {r.status === 'ASSIGNED' ? <Button size="sm" variant="secondary" onClick={() => submit(r.id)}>Submit revised marks</Button> : null}
+              </div>
+            ))}
+          </div>
+        )}
+      </Surface>
+    </div>
+  );
+}

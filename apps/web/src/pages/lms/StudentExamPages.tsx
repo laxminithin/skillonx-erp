@@ -506,3 +506,72 @@ export function StudentExamRegistrationPage() {
     </div>
   );
 }
+
+type RevalOutcome = { id: number; courseCode: string; courseName: string; requestType: string; status: string; decision: string | null; decisionReason: string | null; revisedMarks: number | null; completedAt: string | null };
+
+/** Student revaluation: apply against a published subject result and track the outcome (§26). */
+export function StudentRevaluationPage() {
+  useDocumentTitle('Revaluation');
+  const [outcomes, setOutcomes] = useState<RevalOutcome[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+  const [form, setForm] = useState({ subjectResultId: '', requestType: 'REVALUATION' });
+
+  const load = () =>
+    api<{ outcomes: RevalOutcome[] }>('/api/student/revaluation')
+      .then((d) => setOutcomes(d.outcomes))
+      .catch((e) => setMessage(e instanceof Error ? e.message : 'Failed to load revaluations'))
+      .finally(() => setLoading(false));
+  useEffect(() => { void load(); }, []);
+
+  const apply = async () => {
+    if (!form.subjectResultId) { setMessage('Enter a subject result to revaluate.'); return; }
+    try {
+      await api('/api/student/revaluation', { method: 'POST', body: JSON.stringify({ subjectResultId: Number(form.subjectResultId), requestType: form.requestType }) });
+      setMessage('Revaluation applied. Track the outcome below.');
+      setForm({ ...form, subjectResultId: '' });
+      await load();
+    } catch (e) { setMessage(e instanceof Error ? e.message : 'Application failed'); }
+  };
+
+  if (loading) return <Skeleton className="h-40 w-full" />;
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="Revaluation" subtitle="Apply for revaluation of a published result and track the outcome" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      <Surface>
+        <h2 className="font-semibold">Apply for revaluation</h2>
+        <div className="mt-3 flex flex-wrap items-end gap-3">
+          <label className="text-sm">
+            <span className="block text-ink-muted">Subject result ID</span>
+            <input className="mt-1 rounded border border-border bg-surface px-3 py-2" value={form.subjectResultId} onChange={(e) => setForm({ ...form, subjectResultId: e.target.value })} />
+          </label>
+          <label className="text-sm">
+            <span className="block text-ink-muted">Type</span>
+            <select className="mt-1 rounded border border-border bg-surface px-3 py-2" value={form.requestType} onChange={(e) => setForm({ ...form, requestType: e.target.value })}>
+              {['REVALUATION', 'RETOTALING', 'PHOTOCOPY'].map((x) => <option key={x}>{x}</option>)}
+            </select>
+          </label>
+          <Button size="sm" onClick={apply}>Apply</Button>
+        </div>
+      </Surface>
+      <Surface>
+        <h2 className="font-semibold">My revaluations</h2>
+        {outcomes.length === 0 ? <StudentEmpty title="No revaluations" body="Applications and their outcomes appear here." /> : (
+          <div className="mt-3 space-y-2">
+            {outcomes.map((o) => (
+              <div key={o.id} className="flex flex-wrap items-center justify-between gap-2 border-t border-border py-2 first:border-t-0 text-sm">
+                <span>{o.courseCode} · {o.courseName}</span>
+                <span className="flex items-center gap-2">
+                  <StatusPill tone={statusToneFor(o.status)}>{o.status}</StatusPill>
+                  {o.decision ? <StatusPill tone={o.decision === 'REVISED' ? 'success' : 'muted'}>{o.decision}{o.revisedMarks != null ? ` · ${o.revisedMarks}` : ''}</StatusPill> : null}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </Surface>
+    </div>
+  );
+}

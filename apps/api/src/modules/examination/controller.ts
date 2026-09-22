@@ -162,6 +162,9 @@ examinationRouter.get(
   }),
 );
 
+examinationRouter.get('/my-revaluations', asyncHandler(async (req: AuthedRequest, res) => {
+  res.json({ revaluations: await revaluation.examinerRevaluations(actor(req)) });
+}));
 examinationRouter.post('/revaluation/:id/review', asyncHandler(async (req: AuthedRequest, res) => {
   const b = validate(z.object({ accept: z.boolean(), note: z.string().max(1000).optional() }), req.body);
   res.json(await revaluation.reviewRevaluation(actor(req), Number(req.params.id), b.accept, b.note));
@@ -459,6 +462,13 @@ examinationRouter.post(
   asyncHandler(async (req: AuthedRequest, res) => {
     const b = validate(result.resultCorrectionSchema, req.body);
     res.status(201).json(await result.correctResult(actor(req), Number(req.params.semesterResultId), b));
+  }),
+);
+
+examinationRouter.get(
+  '/:examId/results/overview',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    res.json(await result.coeResultsOverview(actor(req), Number(req.params.examId)));
   }),
 );
 

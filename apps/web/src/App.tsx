@@ -234,6 +234,9 @@ import {
   CoeScriptTransferPage,
   CoeValuationPage,
   ExaminerValuationPage,
+  CoeResultsPage,
+  CoeRevaluationPage,
+  ExaminerRevaluationPage,
 } from './pages/examinations/ExamWorkspaces';
 import {
   StudentAcademicRecordPage,
@@ -241,6 +244,7 @@ import {
   StudentExamResultsPage,
   StudentExaminationsPage,
   StudentExamRegistrationPage,
+  StudentRevaluationPage,
   StudentHallTicketPage,
 } from './pages/lms/StudentExamPages';
 import {
@@ -636,6 +640,7 @@ export default function App() {
                 <Route path="/lms/timetable" element={<StudentTimetablePage />} />
                 <Route path="/lms/exams" element={<StudentExaminationsPage />} />
                 <Route path="/lms/exams/registration" element={<StudentExamRegistrationPage />} />
+                <Route path="/lms/exams/revaluation" element={<StudentRevaluationPage />} />
                 <Route path="/lms/exams/eligibility" element={<StudentExamEligibilityPage />} />
                 <Route path="/lms/exams/hall-ticket" element={<StudentHallTicketPage />} />
                 <Route path="/lms/exams/results" element={<StudentExamResultsPage />} />
@@ -880,9 +885,9 @@ export default function App() {
                 <Route path="/coe/valuation" element={<CoeValuationPage />} />
                 <Route path="/coe/remuneration" element={<CoeRemunerationPage />} />
                 <Route path="/coe/marks" element={<CoeStatusPage title="Marks" subtitle="Marks submission, verification, lock, unlock, import, and audit status" />} />
-                <Route path="/coe/results" element={<CoeStatusPage title="Results" subtitle="Result processing, publication readiness, and student visibility controls" />} />
+                <Route path="/coe/results" element={<CoeResultsPage />} />
                 <Route path="/coe/backlogs" element={<CoeStatusPage title="Backlogs" subtitle="Fail, incomplete, withheld, and supplementary readiness signals" />} />
-                <Route path="/coe/revaluation" element={<CoeStatusPage title="Revaluation" subtitle="Student revaluation requests and finance-linked demand readiness" />} />
+                <Route path="/coe/revaluation" element={<CoeRevaluationPage />} />
                 <Route path="/coe/corrections" element={<CoeStatusPage title="Corrections" subtitle="Marks unlock reasons, corrections, withheld states, and audit trail review" />} />
                 <Route path="/coe/reports" element={<CoeStatusPage title="Reports" subtitle="Exam, eligibility, marks, results, revaluation, and question-paper readiness reports" />} />
               </Route>
@@ -981,6 +986,7 @@ export default function App() {
                 <Route path="/examinations/subjects/:examSubjectId/marks" element={<ExamMarksEntryPage />} />
                 <Route path="/exam-duties" element={<FacultyExamDutiesPage />} />
                 <Route path="/exam-valuations" element={<ExaminerValuationPage />} />
+                <Route path="/exam-revaluations" element={<ExaminerRevaluationPage />} />
                 <Route path="/courses" element={<CoursesPage />} />
                 <Route path="/courses/:courseId" element={<CourseWorkspacePage />} />
                 <Route path="/courses/:courseId/attendance" element={<CourseAttendancePage />} />
