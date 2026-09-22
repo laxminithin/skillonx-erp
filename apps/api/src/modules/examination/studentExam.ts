@@ -1,5 +1,6 @@
 import { db } from '../../db/index.js';
 import { AppError } from '../../utils/errors.js';
+import { governanceForCollege } from './capabilities.js';
 import { studentEligibility } from './eligibility.js';
 
 export async function studentHallTicket(studentId: number, collegeId: number, examId: number) {
@@ -27,6 +28,7 @@ export async function studentHallTicket(studentId: number, collegeId: number, ex
     .whereNot({ status: 'CANCELLED' })
     .first();
   if (!exam) throw new AppError(404, 'Examination not found');
+  const governanceType = await governanceForCollege(collegeId);
 
   const eligibility = await studentEligibility(studentId, collegeId, examId);
   const eligible = eligibility.filter((e) => ['ELIGIBLE', 'CONDONED'].includes(e.status));
@@ -46,6 +48,12 @@ export async function studentHallTicket(studentId: number, collegeId: number, ex
 
   return {
     institution: student.college_name,
+    governanceType,
+    documentAuthority: governanceType === 'VTU_AFFILIATED' ? 'UNIVERSITY_REFERENCE' : 'INSTITUTIONAL',
+    documentDisclaimer:
+      governanceType === 'VTU_AFFILIATED'
+        ? 'University hall ticket remains authoritative; this is a SkillonX local readiness/reference view.'
+        : null,
     student: {
       id: Number(student.id),
       name: student.name,
