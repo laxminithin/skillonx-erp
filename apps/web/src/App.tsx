@@ -227,10 +227,16 @@ import {
   FacultyExamDutiesPage,
 } from './pages/examinations/ExaminationPages';
 import {
+  CoeStrongRoomPage,
+  CoeFormAPage,
+  CoeMpcPage,
+} from './pages/examinations/ExamWorkspaces';
+import {
   StudentAcademicRecordPage,
   StudentExamEligibilityPage,
   StudentExamResultsPage,
   StudentExaminationsPage,
+  StudentExamRegistrationPage,
   StudentHallTicketPage,
 } from './pages/lms/StudentExamPages';
 import {
@@ -625,6 +631,7 @@ export default function App() {
                 <Route path="/lms/calendar" element={<StudentCalendarPage />} />
                 <Route path="/lms/timetable" element={<StudentTimetablePage />} />
                 <Route path="/lms/exams" element={<StudentExaminationsPage />} />
+                <Route path="/lms/exams/registration" element={<StudentExamRegistrationPage />} />
                 <Route path="/lms/exams/eligibility" element={<StudentExamEligibilityPage />} />
                 <Route path="/lms/exams/hall-ticket" element={<StudentHallTicketPage />} />
                 <Route path="/lms/exams/results" element={<StudentExamResultsPage />} />
@@ -861,6 +868,9 @@ export default function App() {
                 <Route path="/coe/invigilation" element={<CoeStatusPage title="Invigilation" subtitle="Faculty duty assignment, conflict checks, and exam-day staffing readiness" />} />
                 <Route path="/coe/hall-tickets" element={<CoeStatusPage title="Hall Tickets" subtitle="Eligible-student hall-ticket readiness and withheld controls" />} />
                 <Route path="/coe/operations" element={<CoeOperationsPage />} />
+                <Route path="/coe/strong-room" element={<CoeStrongRoomPage />} />
+                <Route path="/coe/form-a" element={<CoeFormAPage />} />
+                <Route path="/coe/mpc" element={<CoeMpcPage />} />
                 <Route path="/coe/remuneration" element={<CoeRemunerationPage />} />
                 <Route path="/coe/marks" element={<CoeStatusPage title="Marks" subtitle="Marks submission, verification, lock, unlock, import, and audit status" />} />
                 <Route path="/coe/results" element={<CoeStatusPage title="Results" subtitle="Result processing, publication readiness, and student visibility controls" />} />

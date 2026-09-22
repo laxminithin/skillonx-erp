@@ -4,7 +4,7 @@ import { api } from '../../lib/api';
 import { Button, PageHeader, Skeleton, Surface } from '../../components/ui';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 import { formatDate } from '../../lib/utils';
-import { StatusPill, StudentEmpty } from './studentUi';
+import { StatusPill, statusToneFor, StudentEmpty } from './studentUi';
 
 type UpcomingExam = {
   examId: number;
@@ -403,6 +403,105 @@ export function StudentAcademicRecordPage() {
             ))}
           </ul>
         </Surface>
+      )}
+    </div>
+  );
+}
+
+type RegCourse = { exam_subject_id: number; code: string; name: string; eligibility_status: string; registration_status: string | null };
+type RegWindow = { windowId: number; examId: number; examName: string; examCode: string; closesAt: string | null; courses: RegCourse[] };
+
+/**
+ * Student examination registration (§2). Eligibility, windows and submission state are
+ * server-authoritative; the browser only selects among eligible courses and reads back
+ * the submitted registration. Manipulated course IDs remain server-denied.
+ */
+export function StudentExamRegistrationPage() {
+  useDocumentTitle('Exam Registration');
+  const [windows, setWindows] = useState<RegWindow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<Record<number, number[]>>({});
+  const [message, setMessage] = useState('');
+
+  const load = () =>
+    api<{ windows: RegWindow[] }>('/api/student/examination-registration')
+      .then((d) => setWindows(d.windows))
+      .catch((e) => setMessage(e instanceof Error ? e.message : 'Failed to load registration'))
+      .finally(() => setLoading(false));
+  useEffect(() => {
+    void load();
+  }, []);
+
+  const toggle = (windowId: number, subjectId: number) =>
+    setSelected((s) => {
+      const cur = s[windowId] ?? [];
+      return { ...s, [windowId]: cur.includes(subjectId) ? cur.filter((x) => x !== subjectId) : [...cur, subjectId] };
+    });
+
+  const submit = async (w: RegWindow) => {
+    const ids = selected[w.windowId] ?? [];
+    if (!ids.length) {
+      setMessage('Select at least one eligible course.');
+      return;
+    }
+    try {
+      await api(`/api/student/examination-registration/${w.windowId}`, {
+        method: 'POST',
+        body: JSON.stringify({ examSubjectIds: ids, attemptType: 'REGULAR' }),
+      });
+      setMessage('Registration submitted. Awaiting COE review.');
+      setSelected((s) => ({ ...s, [w.windowId]: [] }));
+      await load();
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : 'Submission failed');
+    }
+  };
+
+  if (loading) return <Skeleton className="h-40 w-full" />;
+
+  return (
+    <div className="animate-fade-in space-y-6">
+      <PageHeader title="Exam Registration" subtitle="Register for open examination windows in the courses you are eligible for" />
+      {message ? <p className="text-sm text-ink-secondary" role="status">{message}</p> : null}
+      {windows.length === 0 ? (
+        <StudentEmpty title="No open registration windows" body="Registration opens here when the COE opens an examination window you are eligible for." />
+      ) : (
+        windows.map((w) => (
+          <Surface key={w.windowId}>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h2 className="font-semibold">{w.examName}</h2>
+                <p className="text-sm text-ink-muted">{w.examCode}{w.closesAt ? ` · closes ${formatDate(w.closesAt)}` : ''}</p>
+              </div>
+              <Button size="sm" onClick={() => submit(w)}>Submit registration</Button>
+            </div>
+            <div className="mt-3 space-y-2">
+              {w.courses.map((c) => {
+                const submitted = c.registration_status != null;
+                const checked = (selected[w.windowId] ?? []).includes(c.exam_subject_id);
+                return (
+                  <label key={c.exam_subject_id} className="flex flex-wrap items-center justify-between gap-2 rounded border border-border px-3 py-2 text-sm">
+                    <span className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        disabled={submitted}
+                        checked={submitted || checked}
+                        onChange={() => toggle(w.windowId, c.exam_subject_id)}
+                        aria-label={`Select ${c.code}`}
+                      />
+                      <span className="font-medium">{c.code}</span> · {c.name}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <StatusPill tone={statusToneFor(c.eligibility_status)}>{c.eligibility_status}</StatusPill>
+                      {submitted ? <StatusPill tone={statusToneFor(c.registration_status!)}>{c.registration_status}</StatusPill> : null}
+                    </span>
+                  </label>
+                );
+              })}
+              {w.courses.length === 0 ? <p className="text-sm text-ink-muted">No eligible courses for this window.</p> : null}
+            </div>
+          </Surface>
+        ))
       )}
     </div>
   );

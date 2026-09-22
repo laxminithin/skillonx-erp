@@ -14,6 +14,9 @@ import {
   TicketCheck,
   UserCheck,
   Wallet,
+  Lock,
+  ClipboardCheck,
+  AlertTriangle,
 } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { ProductShell } from './ProductShell';
@@ -32,6 +35,9 @@ const groups = [
       { to: '/coe/invigilation', label: 'Invigilation', icon: ClipboardList, activePrefix: '/coe/invigilation' },
       { to: '/coe/hall-tickets', label: 'Hall Tickets', icon: TicketCheck, activePrefix: '/coe/hall-tickets' },
       { to: '/coe/operations', label: 'Exam Operations', icon: ListChecks, activePrefix: '/coe/operations' },
+      { to: '/coe/strong-room', label: 'Strong Room', icon: Lock, activePrefix: '/coe/strong-room' },
+      { to: '/coe/form-a', label: 'Form-A', icon: ClipboardCheck, activePrefix: '/coe/form-a' },
+      { to: '/coe/mpc', label: 'Malpractice (MPC)', icon: AlertTriangle, activePrefix: '/coe/mpc' },
       { to: '/coe/marks', label: 'Marks', icon: BadgeCheck, activePrefix: '/coe/marks' },
       { to: '/coe/results', label: 'Results', icon: Medal, activePrefix: '/coe/results' },
       { to: '/coe/backlogs', label: 'Backlogs', icon: ScrollText, activePrefix: '/coe/backlogs' },

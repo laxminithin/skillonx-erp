@@ -31,6 +31,44 @@ export async function saveFormA(actor: ExamActor, subjectId: number, b: z.infer<
 export async function freezeFormA(actor: ExamActor, sessionId: number) { assertExamPermission(actor, 'exam.attendance'); const row = await db('exam_form_a_sessions').where({ id: sessionId, college_id: actor.collegeId }).first(); if (!row) throw new AppError(404, 'Form-A session not found'); await db('exam_form_a_sessions').where({ id: row.id }).update({ status: 'FROZEN', frozen_by: actor.facultyUserId, frozen_at: db.fn.now() }); await recordExamAudit({ collegeId: actor.collegeId, actorId: actor.facultyUserId, action: 'FORM_A_FROZEN', entityType: 'exam_form_a_session', entityId: sessionId }); return { id: sessionId, status: 'FROZEN' }; }
 export async function correctFormA(actor: ExamActor, recordId: number, status: 'PRESENT'|'ABSENT'|'MPC', reason: string) { assertExamPermission(actor, 'exam.attendance'); const row = await db('exam_form_a_records as r').join('exam_form_a_sessions as s','s.id','r.session_id').where('r.id',recordId).where('r.college_id',actor.collegeId).select('r.*','s.status as session_status').first(); if (!row) throw new AppError(404,'Form-A record not found'); if (row.session_status !== 'FROZEN') throw new AppError(400,'Correction workflow applies only after freeze'); if (!reason.trim()) throw new AppError(400,'Correction reason is required'); await db.transaction(async trx => { await trx('exam_form_a_corrections').insert({ college_id: actor.collegeId, record_id: recordId, previous_status: row.status, new_status: status, reason, corrected_by: actor.facultyUserId }); await trx('exam_form_a_records').where({ id: recordId }).update({ status, updated_at: trx.fn.now() }); }); await recordExamAudit({ collegeId: actor.collegeId, actorId: actor.facultyUserId, action:'FORM_A_CORRECTED', entityType:'exam_form_a_record', entityId:recordId, beforeState:{status:row.status}, afterState:{status}, reason }); return { id:recordId,status } }
 
+// Authoritative Form-A roster: the eligible/registered population for a subject with current attendance state (read-only UI parity).
+export async function formARoster(actor: ExamActor, examSubjectId: number, roomId?: number | null) {
+  assertExamPermission(actor, 'exam.attendance');
+  const subject = await assertExamSubjectCollege(examSubjectId, actor.collegeId);
+  const session = await db('exam_form_a_sessions').where({ college_id: actor.collegeId, exam_subject_id: examSubjectId }).modify(q => { roomId ? q.andWhere({ room_id: roomId }) : q.whereNull('room_id'); }).first();
+  const records = session ? await db('exam_form_a_records').where({ session_id: session.id }) : [];
+  const recordByStudent = new Map(records.map((r: any) => [Number(r.student_id), r]));
+  const roster = await db('exam_eligibility as el')
+    .join('students as s', 's.id', 'el.student_id')
+    .leftJoin('exam_registrations as r', function () { this.on('r.exam_subject_id', 'el.exam_subject_id').andOn('r.student_id', 'el.student_id'); })
+    .where({ 'el.college_id': actor.collegeId, 'el.exam_subject_id': examSubjectId })
+    .whereIn('el.status', ['ELIGIBLE', 'CONDONED'])
+    .select('s.id as student_id', 's.name as student_name', 's.usn', 'el.status as eligibility_status', 'r.status as registration_status')
+    .orderBy('s.usn');
+  return {
+    examSubjectId,
+    courseId: Number(subject.course_id),
+    session: session ? { id: Number(session.id), status: session.status, roomId: session.room_id ?? null } : null,
+    candidates: roster.map((c: any) => {
+      const rec = recordByStudent.get(Number(c.student_id));
+      return { studentId: Number(c.student_id), studentName: c.student_name, usn: c.usn, eligibilityStatus: c.eligibility_status, registrationStatus: c.registration_status, recordId: rec ? Number(rec.id) : null, attendance: rec ? rec.status : null };
+    }),
+  };
+}
+
+// MPC case queue with student/course context (read-only UI parity).
+export async function mpcQueue(actor: ExamActor, examId?: number) {
+  assertExamPermission(actor, 'exam.malpractice');
+  let q = db('exam_mpc_cases as m')
+    .join('students as s', 's.id', 'm.student_id')
+    .join('examination_subjects as es', 'es.id', 'm.exam_subject_id')
+    .join('courses as c', 'c.id', 'es.course_id')
+    .where('m.college_id', actor.collegeId);
+  if (examId) q = q.andWhere('m.exam_id', examId);
+  const rows = await q.select('m.id', 'm.status', 'm.decision', 'm.exam_id', 's.name as student_name', 's.usn', 'c.code as course_code', 'c.name as course_name', 'm.created_at').orderBy('m.created_at', 'desc');
+  return { cases: rows.map((r: any) => ({ id: Number(r.id), status: r.status, decision: r.decision, examId: Number(r.exam_id), studentName: r.student_name, usn: r.usn, courseCode: r.course_code, courseName: r.course_name, createdAt: r.created_at })) };
+}
+
 export const mpcSchema = z.object({ examSubjectId:z.number().int().positive(), studentId:z.number().int().positive(), roomId:z.number().int().positive().optional(), invigilatorReport:z.string().min(1).max(5000) });
 export async function createMpcCase(actor:ExamActor, examId:number,b:z.infer<typeof mpcSchema>){assertExamPermission(actor,'exam.malpractice');await assertExamCollege(examId,actor.collegeId);const [id]=await db('exam_mpc_cases').insert({college_id:actor.collegeId,exam_id:examId,exam_subject_id:b.examSubjectId,student_id:b.studentId,room_id:b.roomId??null,invigilator_report:b.invigilatorReport});await db('exam_mpc_transitions').insert({college_id:actor.collegeId,case_id:Number(id),from_status:null,to_status:'REPORTED',note:'Case reported',actor_id:actor.facultyUserId});await recordExamAudit({collegeId:actor.collegeId,actorId:actor.facultyUserId,action:'MPC_CASE_CREATED',entityType:'exam_mpc_case',entityId:Number(id)});return{id:Number(id),status:'REPORTED'}}
 
