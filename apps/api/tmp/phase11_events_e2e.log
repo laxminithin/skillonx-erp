@@ -1,0 +1,33 @@
+[env] loaded /Users/nithinkswamy/Documents/GitHub/skillonx-erp/skillonx-erp/.env
+▶ Campus OS Phase 11: Events, venue & resource booking
+  ✔ runs the full lifecycle through HOD → Principal → Facilities and protects closed history (267.108333ms)
+  ✔ blocks self-approval, wrong-department HOD review, and routes a HOD-organised department event past the HOD step (142.783667ms)
+  ✔ same approval clicked concurrently transitions exactly once (116.179875ms)
+  ✔ concurrent approvals of overlapping events for the same venue confirm exactly one (Example A for the rest) (256.454959ms)
+  ✔ concurrent ad-hoc bookings of the same room and the same asset confirm exactly one each (98.279ms)
+  ✔ back-to-back slots are allowed, overlaps are rejected, and configurable buffers extend the blocked window (140.305209ms)
+  ✔ blocks a room occupied by the live academic timetable without writing timetable data (86.060334ms)
+  ✔ asset and room status block booking; inactive resources are not bookable (152.340125ms)
+  ✔ capacity is server-authoritative; override needs permission, a reason and leaves an audit record (65.332334ms)
+  ✔ the last registration slot goes to exactly one registrant and double registration is idempotent (225.322084ms)
+  ✔ duplicate submissions create exactly one workflow instance (76.491459ms)
+  ✔ concurrent reschedules into the same slot: exactly one wins; a conflicting reschedule leaves the original time (162.397375ms)
+  ✔ cancel releases the venue in the same transaction so it can be rebooked; cancel is idempotent (219.360666ms)
+  ✔ reservation retries with the same idempotency key never duplicate (Example B) (96.452666ms)
+  ✔ approval-required ad-hoc requests stay non-blocking until decided; requester cannot decide their own request (67.164875ms)
+[events] notification failed notification outage
+[events] notification failed notification outage
+  ✔ a failing notification never rolls back the booking state (Example C) (144.906791ms)
+  ✔ tenant isolation: another college can neither read nor mutate (148.600333ms)
+  ✔ same-tenant IDOR: other department and unrelated staff cannot read drafts, participants, or mutate (170.386167ms)
+  ✔ public, student and calendar views never leak internal notes, budgets or participant data (208.233167ms)
+  ✔ event documents cannot be read by guessing ids or through another event (87.705292ms)
+✔ Campus OS Phase 11: Events, venue & resource booking (2932.878292ms)
+ℹ tests 20
+ℹ suites 1
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 33247.715458

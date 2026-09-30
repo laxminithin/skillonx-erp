@@ -1,0 +1,210 @@
+diff --git a/apps/web/src/layouts/AppLayout.tsx b/apps/web/src/layouts/AppLayout.tsx
+index 8747dcef..4dc3034a 100644
+--- a/apps/web/src/layouts/AppLayout.tsx
++++ b/apps/web/src/layouts/AppLayout.tsx
+@@ -26,6 +26,8 @@ import {
+   UserCog,
+   Award,
+   Warehouse,
++  MapPinned,
++  BadgeCheck,
+ } from 'lucide-react';
+ import { useLocation } from 'react-router-dom';
+ import { ProductShell } from './ProductShell';
+@@ -159,6 +161,69 @@ const groups = [
+   },
+ ];
+ 
++const transportGroups = [
++  {
++    label: 'Transport',
++    items: [
++      { to: '/transport', label: 'Dashboard', icon: LayoutDashboard, end: true },
++      { to: '/transport/routes', label: 'Routes & Stops', icon: MapPinned, activePrefix: '/transport/routes' },
++      { to: '/transport/vehicles', label: 'Fleet', icon: Bus, activePrefix: '/transport/vehicles' },
++      { to: '/transport/personnel', label: 'Personnel', icon: UserCog, activePrefix: '/transport/personnel' },
++    ],
++  },
++  {
++    label: 'Passengers',
++    items: [
++      { to: '/transport/passengers', label: 'Members', icon: Users, activePrefix: '/transport/passengers' },
++      { to: '/transport/applications', label: 'Applications', icon: ClipboardList, activePrefix: '/transport/applications' },
++      { to: '/transport/passes', label: 'Passes', icon: BadgeCheck, activePrefix: '/transport/passes' },
++    ],
++  },
++  {
++    label: 'Operations',
++    items: [
++      { to: '/transport/trips', label: 'Trips', icon: CalendarDays, activePrefix: '/transport/trips' },
++      { to: '/transport/complaints', label: 'Complaints', icon: ClipboardCheck, activePrefix: '/transport/complaints' },
++      { to: '/transport/finance', label: 'Fee Status', icon: IndianRupee, activePrefix: '/transport/finance' },
++      { to: '/transport/clearance', label: 'No-Due', icon: Shield, activePrefix: '/transport/clearance' },
++      { to: '/transport/reports', label: 'Reports', icon: FileStack, activePrefix: '/transport/reports' },
++    ],
++  },
++  {
++    label: 'Account',
++    items: [
++      { to: '/profile', label: 'Profile', icon: UserRound },
++      { to: '/settings', label: 'Settings', icon: Settings },
++    ],
++  },
++];
++
++const libraryGroups = [
++  {
++    label: 'Library',
++    items: [
++      { to: '/library', label: 'Dashboard', icon: LayoutDashboard, end: true },
++      { to: '/library/circulation', label: 'Circulation Desk', icon: ScanSearch, activePrefix: '/library/circulation' },
++      { to: '/library/search', label: 'Catalogue', icon: Library, activePrefix: '/library/search' },
++      { to: '/library/reservations', label: 'Reservations', icon: ClipboardList, activePrefix: '/library/reservations' },
++      { to: '/library/fines', label: 'Fines', icon: IndianRupee, activePrefix: '/library/fines' },
++      { to: '/library/inventory', label: 'Inventory', icon: Warehouse, activePrefix: '/library/inventory' },
++      { to: '/library/reports', label: 'Reports', icon: FileStack, activePrefix: '/library/reports' },
++    ],
++  },
++  {
++    label: 'Account',
++    items: [
++      { to: '/profile', label: 'Profile', icon: UserRound },
++      { to: '/settings', label: 'Settings', icon: Settings },
++    ],
++  },
++];
++
++const HR_ADMIN_ROLES = ['SUPER_ADMIN', 'COLLEGE_ADMIN', 'HR_MANAGER', 'HR_EXECUTIVE'];
++const HR_PAYROLL_ROLES = ['SUPER_ADMIN', 'COLLEGE_ADMIN', 'HR_MANAGER', 'PAYROLL_OFFICER'];
++const HR_REPORT_ROLES = ['SUPER_ADMIN', 'COLLEGE_ADMIN', 'HR_MANAGER', 'HR_EXECUTIVE', 'PAYROLL_OFFICER', 'MANAGEMENT', 'CHAIRMAN'];
++
+ export function AppLayout() {
+   const { user } = useAuth();
+   const location = useLocation();
+@@ -170,6 +235,10 @@ export function AppLayout() {
+     user?.role === 'COLLEGE_ADMIN' ||
+     user?.role === 'SUPER_ADMIN' ||
+     isPrincipal;
++  const isHrAdmin = !!user?.role && HR_ADMIN_ROLES.includes(user.role);
++  const isHrPayroll = !!user?.role && HR_PAYROLL_ROLES.includes(user.role);
++  const isHrReports = !!user?.role && (HR_REPORT_ROLES.includes(user.role) || isPrincipal);
++  const isHrManagerContext = isHrAdmin || isHod || isPrincipal || user?.role === 'MANAGEMENT' || user?.role === 'CHAIRMAN';
+ 
+   const leadershipGroups = [
+     ...(isManagement
+@@ -250,7 +319,87 @@ export function AppLayout() {
+         ]
+       : []),
+   ];
+-  const nav = [...groups.slice(0, -1), ...leadershipGroups, groups[groups.length - 1]];
++  const isLibrarian = user?.role === 'LIBRARIAN';
++  const inTransport = location.pathname.startsWith('/transport');
++  const inHr = location.pathname.startsWith('/hr');
++  const hrGroups = [
++    {
++      label: 'Employee Self-Service',
++      items: [
++        { to: '/hr', label: 'My HR', icon: LayoutDashboard, end: true },
++        { to: '/hr/profile', label: 'My HR Profile', icon: UserRound },
++        { to: '/hr/attendance', label: 'My Attendance', icon: ClipboardCheck, activePrefix: '/hr/attendance' },
++        { to: '/hr/leave/apply', label: 'Apply Leave', icon: CalendarDays },
++        { to: '/hr/payslips', label: 'My Payslips', icon: IndianRupee },
++        { to: '/hr/me/performance', label: 'My Performance', icon: Activity },
++        { to: '/hr/learning', label: 'My Learning', icon: GraduationCap, activePrefix: '/hr/learning' },
++        { to: '/hr/succession/me', label: 'My Development', icon: Award },
++        { to: '/hr/separation', label: 'My Exit', icon: Shield },
++      ],
++    },
++    ...(isHrAdmin
++      ? [
++          {
++            label: 'HR Administration',
++            items: [
++              { to: '/hr/admin', label: 'HR Dashboard', icon: LayoutDashboard, end: true },
++              { to: '/hr/admin/employees', label: 'Employees', icon: Users, activePrefix: '/hr/admin/employees' },
++              { to: '/hr/admin/onboarding', label: 'Onboarding', icon: UserCog },
++              { to: '/hr/admin/attendance', label: 'Attendance Admin', icon: ClipboardCheck, activePrefix: '/hr/admin/attendance' },
++              { to: '/hr/admin/leave', label: 'Leave Queue', icon: CalendarDays },
++              { to: '/hr/fnf', label: 'Separation & F&F', icon: Shield, activePrefix: '/hr/fnf' },
++            ],
++          },
++        ]
++      : []),
++    ...(isHrManagerContext
++      ? [
++          {
++            label: 'Workflows',
++            items: [
++              { to: '/hr/manager', label: 'Manager Leave', icon: ClipboardList },
++              { to: '/hr/performance', label: 'Performance', icon: Activity, activePrefix: '/hr/performance' },
++              { to: '/hr/recruitment', label: 'Recruitment', icon: Briefcase, activePrefix: '/hr/recruitment' },
++              { to: '/hr/ld', label: 'L&D Admin', icon: GraduationCap, activePrefix: '/hr/ld' },
++              { to: '/hr/succession', label: 'Succession', icon: Award, activePrefix: '/hr/succession' },
++            ],
++          },
++        ]
++      : []),
++    ...(isHrPayroll
++      ? [
++          {
++            label: 'Payroll',
++            items: [
++              { to: '/hr/payroll', label: 'Payroll Dashboard', icon: IndianRupee, end: true },
++              { to: '/hr/payroll/runs', label: 'Payroll Runs', icon: ClipboardList },
++              { to: '/hr/payroll/structures', label: 'Salary Structures', icon: FileStack },
++              { to: '/hr/payroll/adjustments', label: 'Adjustments', icon: Settings },
++              { to: '/hr/payroll/reports', label: 'Payroll Reports', icon: FileStack },
++            ],
++          },
++        ]
++      : []),
++    ...(isHrReports
++      ? [
++          {
++            label: 'Analytics & Reports',
++            items: [
++              { to: '/hr/analytics', label: 'HR Analytics', icon: Activity, activePrefix: '/hr/analytics' },
++              { to: '/hr/management', label: 'Management View', icon: Building2 },
++            ],
++          },
++        ]
++      : []),
++    groups[groups.length - 1],
++  ];
++  const nav = isLibrarian
++    ? libraryGroups
++    : inTransport
++      ? transportGroups
++      : inHr
++        ? hrGroups
++        : [...groups.slice(0, -1), ...leadershipGroups, groups[groups.length - 1]];
+   const wide =
+     (location.pathname.includes('/surveys/') && !location.pathname.endsWith('/create')) ||
+     (location.pathname.includes('/quizzes/') &&
+@@ -273,6 +422,7 @@ export function AppLayout() {
+     location.pathname.startsWith('/management') ||
+     location.pathname.startsWith('/mentoring') ||
+     location.pathname.startsWith('/procurement') ||
++    location.pathname.startsWith('/hr') ||
+     location.pathname.includes('/copo/mapping') ||
+     (location.pathname.includes('/copo') && location.pathname.includes('/mappings/')) ||
+     location.pathname.includes('/copo/subjects');
+@@ -281,8 +431,17 @@ export function AppLayout() {
+     <ProductShell
+       groups={nav}
+       collapsible
++      brandProduct={isLibrarian ? 'Library Portal' : inTransport ? 'Transport Portal' : inHr ? 'HR Portal' : 'Lecturer LMS'}
+       headerRight={
+-        <span className="hidden text-xs sm:inline">{user?.collegeName || 'College workspace'}</span>
++        <div className="flex items-center gap-3 text-xs">
++          <span className="hidden sm:inline">{user?.collegeName || 'College workspace'}</span>
++          {inHr ? (
++            <a className="font-medium text-accent hover:underline" href="/dashboard">Faculty Workspace</a>
++          ) : null}
++          {user?.portalContexts?.includes('WARDEN') ? (
++            <a className="font-medium text-accent hover:underline" href="/hostel" onClick={() => localStorage.setItem('portal_context', 'WARDEN')}>Warden Portal</a>
++          ) : null}
++        </div>
+       }
+       contentClassName={cn(wide ? 'max-w-[1400px]' : 'max-w-[1200px]')}
+     />

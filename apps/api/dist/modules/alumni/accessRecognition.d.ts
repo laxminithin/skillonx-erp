@@ -1,0 +1,10 @@
+import type { AlumniAdminActor } from './service.js';
+export declare function canAccessRecognition(actor: AlumniAdminActor): boolean;
+export declare function canOperateRecognition(actor: AlumniAdminActor): boolean;
+export declare function canNominate(actor: AlumniAdminActor): boolean;
+export declare function canReviewNomination(actor: AlumniAdminActor): boolean;
+export declare function canApproveRecognition(actor: AlumniAdminActor): boolean;
+export declare function canPublishSpotlight(actor: AlumniAdminActor): boolean;
+export declare function canManageValueOfferings(actor: AlumniAdminActor): boolean;
+export declare function canManageCommunities(actor: AlumniAdminActor): boolean;
+export declare function isDepartmentScopedRecognition(actor: AlumniAdminActor): boolean;

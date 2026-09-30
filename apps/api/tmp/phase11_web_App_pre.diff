@@ -1,0 +1,221 @@
+diff --git a/apps/web/src/App.tsx b/apps/web/src/App.tsx
+index 2bd27961..fc823f81 100644
+--- a/apps/web/src/App.tsx
++++ b/apps/web/src/App.tsx
+@@ -4,6 +4,8 @@ import { HomeRedirect, ProtectedRoute } from './auth/ProtectedRoute';
+ import { AppLayout } from './layouts/AppLayout';
+ import { AdminLayout } from './layouts/AdminLayout';
+ import { AccountantLayout } from './layouts/AccountantLayout';
++import { IqacLayout } from './layouts/IqacLayout';
++import { IqacWorkspacePage } from './pages/iqac/IqacWorkspacePage';
+ import { AdmissionsLayout } from './layouts/AdmissionsLayout';
+ import { CoeLayout } from './layouts/CoeLayout';
+ import { LabLayout } from './layouts/LabLayout';
+@@ -19,6 +21,7 @@ import { LabRequirementsPage } from './pages/lab/LabRequirementsPage';
+ import { LabReportsPage } from './pages/lab/LabReportsPage';
+ import { LabOversightPage } from './pages/lab/LabOversightPage';
+ import { MaintenanceLayout } from './layouts/MaintenanceLayout';
++import { HostelLayout } from './layouts/HostelLayout';
+ import { MyTicketsPage } from './pages/maintenance/MyTicketsPage';
+ import { CreateTicketPage } from './pages/maintenance/CreateTicketPage';
+ import { TicketDetailPage } from './pages/maintenance/TicketDetailPage';
+@@ -70,6 +73,16 @@ import {
+   AlumniPortalLayout,
+   AlumniProfilePage,
+ } from './pages/alumni/AlumniPages';
++import { AlumniAdmin360Page, AlumniSelf360Page } from './pages/alumni/Alumni360Pages';
++import { AlumniCrmWorkspacePage } from './pages/alumni/AlumniCrmWorkspacePage';
++import { AlumniIntelligenceWorkspacePage } from './pages/alumni/AlumniIntelligenceWorkspacePage';
++import { AlumniEngagementWorkspacePage } from './pages/alumni/AlumniEngagementWorkspacePage';
++import { AlumniMatchingWorkspacePage } from './pages/alumni/AlumniMatchingWorkspacePage';
++import { AlumniRecognitionWorkspacePage } from './pages/alumni/AlumniRecognitionWorkspacePage';
++import { AlumniRecognitionSelfPage } from './pages/alumni/AlumniRecognitionSelfPage';
++import { AlumniImpactWorkspacePage } from './pages/alumni/AlumniImpactWorkspacePage';
++import { AlumniAssistantPage } from './pages/alumni/AlumniAssistantPage';
++import { AlumniEngageResponsePage, AlumniPreferenceCentrePage } from './pages/alumni/AlumniEngagePages';
+ import { CoursesPage, CourseWorkspacePage } from './pages/CoursesPage';
+ import { DashboardPage } from './pages/DashboardPage';
+ import { SurveysPage } from './pages/SurveysPage';
+@@ -289,6 +302,8 @@ import {
+   FinanceRefundsPage,
+   FinanceReportsPage,
+   FinanceScholarshipsPage,
++  FinanceScholarshipApplicationsPage,
++  FinanceScholarshipApplicationDetailPage,
+   FinanceStudentDetailPage,
+   FinanceStudentSearchPage,
+ } from './pages/finance/StaffFinancePages';
+@@ -299,6 +314,9 @@ import {
+   StudentPayNowPage,
+   StudentReceiptPage,
+   StudentScholarshipsPage,
++  StudentScholarshipSchemesPage,
++  StudentScholarshipApplicationsPage,
++  StudentScholarshipApplicationDetailPage,
+   StudentNoDuePage,
+ } from './pages/finance/StudentFinancePages';
+ import {
+@@ -361,13 +379,21 @@ import {
+ } from './pages/hostel/StudentHostelPages';
+ import {
+   HostelApplicationsPage,
++  HostelAttendancePage,
+   HostelComplaintsStaffPage,
++  HostelFeesPage,
+   HostelGateDashboardPage,
++  HostelGenericCapabilityPage,
++  HostelLeaveQueuePage,
+   HostelManagementDashboardPage,
++  HostelReportsPage,
++  HostelMaintenancePage,
+   HostelOperationsDashboardPage,
++  HostelOverdueReturnsPage,
+   HostelResidentsPage,
+   HostelRoomsPage,
+   HostelVacatingPage,
++  HostelVisitorsPage,
+   HostelWardenDashboardPage,
+ } from './pages/hostel/StaffHostelPages';
+ import {
+@@ -385,9 +411,15 @@ import {
+   DriverTripPage,
+   TransportAdminDashboardPage,
+   TransportApplicationsPage,
++  TransportClearancePage,
+   TransportComplaintsStaffPage,
++  TransportFinanceStatusPage,
+   TransportManagementDashboardPage,
+   TransportOperationsDashboardPage,
++  TransportPassengersPage,
++  TransportPassesPage,
++  TransportPersonnelPage,
++  TransportReportsPage,
+   TransportRoutesPage,
+   TransportTripsPage,
+   TransportVehiclesPage,
+@@ -579,6 +611,7 @@ export default function App() {
+             <Route path="/parent/login" element={<ParentLoginPage />} />
+             <Route path="/parent/forgot-password" element={<ParentForgotPasswordPage />} />
+             <Route path="/alumni/login" element={<AlumniLoginPage />} />
++            <Route path="/alumni/engage/:token" element={<AlumniEngageResponsePage />} />
+             <Route path="/verify/document/:code" element={<PublicVerifyPage />} />
+             <Route path="/careers" element={<PublicCareersPage />} />
+             <Route path="/careers/portal" element={<CandidatePortalPage />} />
+@@ -605,17 +638,28 @@ export default function App() {
+             <Route element={<ProtectedRoute alumniOnly />}>
+               <Route element={<AlumniPortalLayout />}>
+                 <Route path="/alumni" element={<AlumniDashboardPage />} />
++                <Route path="/alumni/360" element={<AlumniSelf360Page />} />
+                 <Route path="/alumni/profile" element={<AlumniProfilePage />} />
+                 <Route path="/alumni/network" element={<AlumniNetworkPage />} />
+                 <Route path="/alumni/events" element={<AlumniEventsPage />} />
+                 <Route path="/alumni/opportunities" element={<AlumniOpportunitiesPage />} />
+                 <Route path="/alumni/mentorship" element={<AlumniMentorshipPage />} />
+                 <Route path="/alumni/contributions" element={<AlumniContributionsPage />} />
++                <Route path="/alumni/recognition" element={<AlumniRecognitionSelfPage />} />
++                <Route path="/alumni/preferences" element={<AlumniPreferenceCentrePage />} />
+               </Route>
+             </Route>
+ 
+             <Route element={<ProtectedRoute />}>
+               <Route path="/alumni-admin" element={<AlumniAdminPage />} />
++              <Route path="/alumni-admin/crm" element={<AlumniCrmWorkspacePage />} />
++              <Route path="/alumni-admin/intelligence" element={<AlumniIntelligenceWorkspacePage />} />
++              <Route path="/alumni-admin/engagement" element={<AlumniEngagementWorkspacePage />} />
++              <Route path="/alumni-admin/matching" element={<AlumniMatchingWorkspacePage />} />
++              <Route path="/alumni-admin/recognition" element={<AlumniRecognitionWorkspacePage />} />
++              <Route path="/alumni-admin/impact" element={<AlumniImpactWorkspacePage />} />
++              <Route path="/alumni-admin/assistant" element={<AlumniAssistantPage />} />
++              <Route path="/alumni-admin/profiles/:id/360" element={<AlumniAdmin360Page />} />
+             </Route>
+ 
+             <Route element={<ProtectedRoute studentOnly />}>
+@@ -670,6 +714,9 @@ export default function App() {
+                 <Route path="/lms/fees/pay" element={<StudentPayNowPage />} />
+                 <Route path="/lms/fees/receipt/:id" element={<StudentReceiptPage />} />
+                 <Route path="/lms/fees/scholarships" element={<StudentScholarshipsPage />} />
++                <Route path="/lms/fees/scholarships/apply" element={<StudentScholarshipSchemesPage />} />
++                <Route path="/lms/fees/scholarships/applications" element={<StudentScholarshipApplicationsPage />} />
++                <Route path="/lms/fees/scholarships/applications/:id" element={<StudentScholarshipApplicationDetailPage />} />
+                 <Route path="/lms/fees/no-due" element={<StudentNoDuePage />} />
+                 <Route path="/lms/library" element={<StudentLibraryHomePage />} />
+                 <Route path="/lms/library/search" element={<StudentLibrarySearchPage />} />
+@@ -857,6 +904,9 @@ export default function App() {
+               <Route path="/admin/copo/pso/mappings/:id/print" element={<CopoReportPrintPage />} />
+               <Route path="/admin/copo/sdg/mappings/:id/print" element={<CopoReportPrintPage />} />
+               <Route path="/admin/copo/reports/:id/print" element={<CopoReportPrintPage />} />
++              <Route element={<IqacLayout />}>
++                <Route path="/iqac" element={<IqacWorkspacePage />} />
++              </Route>
+               <Route element={<AccountantLayout />}>
+                 <Route path="/accountant" element={<FinanceDashboardPage />} />
+                 <Route path="/accountant/fee-structures" element={<FinanceFeeStructuresPage />} />
+@@ -864,6 +914,8 @@ export default function App() {
+                 <Route path="/accountant/receipts" element={<FinanceReceiptsPage />} />
+                 <Route path="/accountant/refunds" element={<FinanceRefundsPage />} />
+                 <Route path="/accountant/scholarships" element={<FinanceScholarshipsPage />} />
++                <Route path="/accountant/scholarship-applications" element={<FinanceScholarshipApplicationsPage />} />
++                <Route path="/accountant/scholarship-applications/:id" element={<FinanceScholarshipApplicationDetailPage />} />
+                 <Route path="/accountant/reconciliation" element={<FinanceReconciliationPage />} />
+                 <Route path="/accountant/reports" element={<FinanceReportsPage />} />
+                 <Route path="/accountant/students" element={<FinanceStudentSearchPage />} />
+@@ -933,6 +985,31 @@ export default function App() {
+                 <Route path="/admissions/reports" element={<AdmissionsReportsPage />} />
+                 <Route path="/admissions/settings" element={<AdmissionsReportsPage />} />
+               </Route>
++              <Route element={<HostelLayout />}>
++                <Route path="/hostel" element={<HostelWardenDashboardPage />} />
++                <Route path="/hostel/applications" element={<HostelApplicationsPage />} />
++                <Route path="/hostel/waitlist" element={<HostelApplicationsPage mode="waitlist" />} />
++                <Route path="/hostel/transfers" element={<HostelRoomsPage mode="transfers" />} />
++                <Route path="/hostel/residents" element={<HostelResidentsPage />} />
++                <Route path="/hostel/residents/:id" element={<HostelResidentsPage />} />
++                <Route path="/hostel/rooms" element={<HostelRoomsPage />} />
++                <Route path="/hostel/vacancies" element={<HostelRoomsPage mode="vacancies" />} />
++                <Route path="/hostel/attendance" element={<HostelAttendancePage />} />
++                <Route path="/hostel/leaves" element={<HostelLeaveQueuePage />} />
++                <Route path="/hostel/overdue" element={<HostelOverdueReturnsPage />} />
++                <Route path="/hostel/gate" element={<HostelGateDashboardPage />} />
++                <Route path="/hostel/complaints" element={<HostelComplaintsStaffPage />} />
++                <Route path="/hostel/maintenance" element={<HostelMaintenancePage />} />
++                <Route path="/hostel/visitors" element={<HostelVisitorsPage />} />
++                <Route path="/hostel/incidents" element={<HostelGenericCapabilityPage capability="Incidents" status="Incident tables are present for late-return policy, but no safe warden incident workspace route is exposed yet." sensitive />} />
++                <Route path="/hostel/operations" element={<HostelOperationsDashboardPage />} />
++                <Route path="/hostel/fees" element={<HostelFeesPage />} />
++                <Route path="/hostel/vacating" element={<HostelVacatingPage />} />
++                <Route path="/hostel/notices" element={<HostelGenericCapabilityPage capability="Notices" status="No dedicated Hostel notice authoring API is currently exposed. Use the existing notification infrastructure only when a backend route is added." />} />
++                <Route path="/hostel/reports" element={<HostelReportsPage />} />
++                <Route path="/hostel/help" element={<HostelGenericCapabilityPage capability="Help" status="Use the queues in this portal for daily hostel operations. Unsupported items are intentionally marked instead of fabricated." />} />
++                <Route path="/hostel/management" element={<HostelManagementDashboardPage />} />
++              </Route>
+               <Route element={<AppLayout />}>
+                 <Route path="/" element={<HomeRedirect />} />
+                 <Route path="/dashboard" element={<DashboardPage />} />
+@@ -1096,21 +1173,18 @@ export default function App() {
+                 <Route path="/library/fines" element={<LibraryFinesPage />} />
+                 <Route path="/library/inventory" element={<LibraryInventoryPage />} />
+                 <Route path="/library/reports" element={<LibraryReportsPage />} />
+-                <Route path="/hostel" element={<HostelWardenDashboardPage />} />
+-                <Route path="/hostel/applications" element={<HostelApplicationsPage />} />
+-                <Route path="/hostel/residents" element={<HostelResidentsPage />} />
+-                <Route path="/hostel/rooms" element={<HostelRoomsPage />} />
+-                <Route path="/hostel/complaints" element={<HostelComplaintsStaffPage />} />
+-                <Route path="/hostel/vacating" element={<HostelVacatingPage />} />
+-                <Route path="/hostel/gate" element={<HostelGateDashboardPage />} />
+-                <Route path="/hostel/operations" element={<HostelOperationsDashboardPage />} />
+-                <Route path="/hostel/management" element={<HostelManagementDashboardPage />} />
+                 <Route path="/transport" element={<TransportAdminDashboardPage />} />
+                 <Route path="/transport/applications" element={<TransportApplicationsPage />} />
+                 <Route path="/transport/routes" element={<TransportRoutesPage />} />
+                 <Route path="/transport/vehicles" element={<TransportVehiclesPage />} />
++                <Route path="/transport/personnel" element={<TransportPersonnelPage />} />
++                <Route path="/transport/passengers" element={<TransportPassengersPage />} />
++                <Route path="/transport/passes" element={<TransportPassesPage />} />
+                 <Route path="/transport/trips" element={<TransportTripsPage />} />
+                 <Route path="/transport/complaints" element={<TransportComplaintsStaffPage />} />
++                <Route path="/transport/finance" element={<TransportFinanceStatusPage />} />
++                <Route path="/transport/clearance" element={<TransportClearancePage />} />
++                <Route path="/transport/reports" element={<TransportReportsPage />} />
+                 <Route path="/transport/operations" element={<TransportOperationsDashboardPage />} />
+                 <Route path="/transport/management" element={<TransportManagementDashboardPage />} />
+                 <Route path="/transport/trip" element={<DriverTripPage />} />

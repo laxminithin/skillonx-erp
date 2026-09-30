@@ -1,0 +1,12 @@
+import type { AlumniAdminActor } from './service.js';
+export declare function canAccessImpact(actor: AlumniAdminActor): boolean;
+export declare function canViewExecutiveImpact(actor: AlumniAdminActor): boolean;
+export declare function canViewDepartmentImpact(actor: AlumniAdminActor): boolean;
+export declare function canOperateImpact(actor: AlumniAdminActor): boolean;
+export declare function canManageAccreditationMappings(actor: AlumniAdminActor): boolean;
+export declare function canVerifyAccreditationMappings(actor: AlumniAdminActor): boolean;
+export declare function canExportImpact(actor: AlumniAdminActor): boolean;
+export declare function canCreateSnapshot(actor: AlumniAdminActor): boolean;
+export declare function canDrillPersonal(actor: AlumniAdminActor): boolean;
+export declare function isDepartmentScopedImpact(actor: AlumniAdminActor): boolean;
+export declare function isIqacScoped(actor: AlumniAdminActor): boolean;

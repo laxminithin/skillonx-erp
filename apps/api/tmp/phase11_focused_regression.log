@@ -1,0 +1,49 @@
+[env] loaded /Users/nithinkswamy/Documents/GitHub/skillonx-erp/skillonx-erp/.env
+▶ Campus OS Phase 0: shared Document / Evidence storage engine
+  ✔ accepts an allowed upload, computes checksum, and round-trips content + integrity (39.625208ms)
+  ✔ rejects a disallowed MIME type (10.219792ms)
+  ✔ rejects a file over the size limit (10.979708ms)
+  ✔ rejects an empty file (7.237833ms)
+  ✔ enforces tenant isolation on metadata, download, and listing (14.557916ms)
+  ✔ denies download to a non-owner, non-admin within the same college (10.998125ms)
+  ✔ supersedes an old version when a new version is uploaded, and only owner/admin may version (16.947792ms)
+  ✔ archives (soft-deletes) rather than destroying evidence (15.942542ms)
+  ✔ requires document.upload permission and rejects unauthenticated-style low-privilege actors (7.064958ms)
+✔ Campus OS Phase 0: shared Document / Evidence storage engine (134.3425ms)
+▶ timetable time helpers
+  ✔ detects overlapping clock times without treating adjacent periods as conflicts (0.456542ms)
+  ✔ computes hours for multi-period lab blocks (0.055291ms)
+  ✔ treats open-ended effective ranges as overlapping later versions (0.052459ms)
+  ✔ uses the institution timezone rather than the server local calendar (8.235875ms)
+✔ timetable time helpers (9.277458ms)
+[env] loaded /Users/nithinkswamy/Documents/GitHub/skillonx-erp/skillonx-erp/.env
+▶ timetable e2e
+  ✔ loads the seeded class weekly timetable for students and faculty (112.143417ms)
+  ✔ rejects a faculty teaching two classes in the same period (9.228167ms)
+  ✔ rejects two subjects in the same class period (9.285083ms)
+  ✔ shows holiday / no class without deleting the recurring slot (12.054208ms)
+  ✔ cancels one date, notifies students, and blocks attendance (11.117542ms)
+  ✔ adds an extra class without changing the recurring timetable (16.312375ms)
+  ✔ rejects two classes booking the same room in the same period (11.144333ms)
+  ✔ creates attendance from a timetable slot, loads the class roll, and finalizes (55.924375ms)
+✔ timetable e2e (237.957209ms)
+[env] loaded /Users/nithinkswamy/Documents/GitHub/skillonx-erp/skillonx-erp/.env
+▶ Campus OS Phase 0: shared Workflow / Approval engine
+  ✔ definitions version automatically and require exactly one initial step (57.290417ms)
+  ✔ an instance cannot start against an unpublished definition, and starts at the initial step once published (24.309291ms)
+  ✔ authorized transitions progress the instance to a terminal APPROVED state (32.070959ms)
+  ✔ rejects an unauthorized role acting on a step (role not in allowedRoles) (23.037458ms)
+  ✔ rejects an invalid action for the current step (21.327083ms)
+  ✔ RETURN sends the instance back a step without leaving IN_PROGRESS (31.0915ms)
+  ✔ terminal-state protection: no action is accepted once a terminal state is reached (22.538541ms)
+  ✔ double approval / stale-state transition is blocked under concurrency via row-locked instance (29.1095ms)
+  ✔ tenant isolation: cross-college actor cannot view or act on definitions/instances (20.308333ms)
+✔ Campus OS Phase 0: shared Workflow / Approval engine (261.82225ms)
+ℹ tests 30
+ℹ suites 4
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 93793.264

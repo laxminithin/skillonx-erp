@@ -1,0 +1,134 @@
+{
+  "n": 60,
+  "rows": [
+    {
+      "label": "GET /api/events (list, page 1)",
+      "status": 200,
+      "n": 60,
+      "p50": 2.2,
+      "p95": 3.6,
+      "max": 7.3
+    },
+    {
+      "label": "GET /api/events?q=&status= (filtered)",
+      "status": 200,
+      "n": 60,
+      "p50": 2.1,
+      "p95": 3.5,
+      "max": 17.5
+    },
+    {
+      "label": "GET /api/events/:id",
+      "status": 200,
+      "n": 60,
+      "p50": 5.5,
+      "p95": 7.9,
+      "max": 9
+    },
+    {
+      "label": "GET /api/events/meta",
+      "status": 200,
+      "n": 60,
+      "p50": 0.3,
+      "p95": 0.7,
+      "max": 14.8
+    },
+    {
+      "label": "GET /api/events/availability",
+      "status": 200,
+      "n": 60,
+      "p50": 7,
+      "p95": 8.5,
+      "max": 9.7
+    },
+    {
+      "label": "GET /api/events/calendar (month)",
+      "status": 200,
+      "n": 60,
+      "p50": 2,
+      "p95": 3.3,
+      "max": 8.9
+    },
+    {
+      "label": "GET /api/events/:id/registrations",
+      "status": 200,
+      "n": 60,
+      "p50": 1.7,
+      "p95": 2.5,
+      "max": 3.1
+    },
+    {
+      "label": "GET /api/events/reservations/mine",
+      "status": 200,
+      "n": 60,
+      "p50": 1.2,
+      "p95": 2.3,
+      "max": 2.6
+    },
+    {
+      "label": "GET /api/events/review-queue",
+      "status": 200,
+      "n": 60,
+      "p50": 1.1,
+      "p95": 1.8,
+      "max": 2.7
+    },
+    {
+      "label": "GET /api/events/reservations/queue",
+      "status": 200,
+      "n": 60,
+      "p50": 1.5,
+      "p95": 2,
+      "max": 2.2
+    },
+    {
+      "label": "GET /api/events/resources",
+      "status": 200,
+      "n": 60,
+      "p50": 1.1,
+      "p95": 1.8,
+      "max": 3.1
+    },
+    {
+      "label": "GET /api/events/reports/summary",
+      "status": 200,
+      "n": 60,
+      "p50": 1.1,
+      "p95": 2.4,
+      "max": 5.4
+    },
+    {
+      "label": "GET /api/student/events",
+      "status": 200,
+      "n": 60,
+      "p50": 3.6,
+      "p95": 5.2,
+      "max": 6.6
+    },
+    {
+      "label": "GET /api/student/events/:id",
+      "status": 200,
+      "n": 60,
+      "p50": 4.3,
+      "p95": 7.6,
+      "max": 16.4
+    },
+    {
+      "label": "POST /api/events/reservations (create, locked txn)",
+      "status": 201,
+      "n": 60,
+      "p50": 11.4,
+      "p95": 18.8,
+      "max": 20.9
+    },
+    {
+      "label": "POST /api/events/reservations (idempotent replay)",
+      "status": 201,
+      "n": 60,
+      "p50": 1.2,
+      "p95": 1.9,
+      "max": 2.7
+    }
+  ],
+  "cleanedUpReservations": 65
+}

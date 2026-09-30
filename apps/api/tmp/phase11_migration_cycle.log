@@ -1,0 +1,16 @@
+Batch 94 rolled back: 1 migrations
+DOWN_EXIT=0
+max(batch)
+93
+Batch 94 run: 1 migrations
+id	name	batch
+124	20261028100000_campus_os_phase11_events_resource_booking.cjs	94
+Tables_in_skillonx_survey (campus_%event%)
+campus_event_registrations
+campus_event_types
+campus_events
+campus_events_audit_log
+Tables_in_skillonx_survey (campus_bookable%)
+campus_bookable_resources
+Tables_in_skillonx_survey (campus_resource%)
+campus_resource_reservations
