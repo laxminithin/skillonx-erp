@@ -6,7 +6,7 @@ import { recordExamAudit } from './audit.js';
 export const markEntrySchema = z.object({
     studentId: z.number().int().positive(),
     marks: z.number().min(0).nullable().optional(),
-    status: z.enum(['PRESENT', 'ABSENT', 'MALPRACTICE', 'WITHHELD']).default('PRESENT'),
+    status: z.enum(['PRESENT', 'ABSENT', 'MALPRACTICE', 'MPC', 'WITHHELD', 'SPECIAL_PERMISSION']).default('PRESENT'),
 });
 export const unlockSchema = z.object({
     reason: z.string().trim().min(1).max(500),
@@ -257,7 +257,7 @@ export async function importMarksDryRun(actor, examSubjectId, rows) {
             continue;
         }
         const status = row.status ?? 'PRESENT';
-        if (!['PRESENT', 'ABSENT', 'MALPRACTICE', 'WITHHELD'].includes(status)) {
+        if (!['PRESENT', 'ABSENT', 'MALPRACTICE', 'MPC', 'WITHHELD', 'SPECIAL_PERMISSION'].includes(status)) {
             errors.push(`Row ${i + 1}: Invalid status ${status}`);
             continue;
         }

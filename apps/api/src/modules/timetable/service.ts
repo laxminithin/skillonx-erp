@@ -1217,6 +1217,63 @@ async function slotsForClasses(collegeId: number, classIds: number[]) {
   return rows.map((r) => serializeSlot(r, faculty.get(Number(r.id)) ?? []));
 }
 
+export type RoomOccupancy = {
+  roomId: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  state: OccurrenceState;
+  className: string;
+  courseName: string | null;
+};
+
+/**
+ * Read-only academic room occupancy for other modules (Campus OS Phase 11
+ * venue booking). Timetable stays authoritative: this only expands existing
+ * slots/overrides through `expandSlots` (holidays, cancellations, room changes
+ * and extra/makeup sessions applied) and never writes anything.
+ */
+export async function roomAcademicOccupancy(
+  collegeId: number,
+  roomIds: number[],
+  from: string,
+  to: string,
+): Promise<RoomOccupancy[]> {
+  const ids = [...new Set(roomIds.filter((id) => Number.isFinite(id) && id > 0))];
+  if (!ids.length || !(await hasTimetable())) return [];
+  const overrideRows = (await db.schema.hasTable('timetable_overrides'))
+    ? await db('timetable_overrides')
+        .where({ college_id: collegeId, status: 'ACTIVE' })
+        .whereIn('room_id', ids)
+        .andWhere('override_date', '>=', from)
+        .andWhere('override_date', '<=', to)
+        .select('timetable_slot_id', 'academic_class_id')
+    : [];
+  const movedInSlotIds = overrideRows.filter((r) => r.timetable_slot_id != null).map((r) => Number(r.timetable_slot_id));
+  const extraClassIds = overrideRows.filter((r) => r.timetable_slot_id == null).map((r) => Number(r.academic_class_id));
+  const rows = await slotsQuery(collegeId)
+    .andWhere('s.status', 'ACTIVE')
+    .andWhere((q) => {
+      q.whereIn('s.room_id', ids);
+      if (movedInSlotIds.length) q.orWhereIn('s.id', movedInSlotIds);
+    });
+  const faculty = await loadSlotFaculty(rows.map((r) => Number(r.id)));
+  const slots = rows.map((r) => serializeSlot(r, faculty.get(Number(r.id)) ?? []));
+  const occurrences = await expandSlots(collegeId, slots, from, to, null, [...new Set(extraClassIds)]);
+  const wanted = new Set(ids);
+  return occurrences
+    .filter((o) => o.roomId != null && wanted.has(o.roomId) && o.state !== 'CANCELLED' && o.state !== 'HOLIDAY')
+    .map((o) => ({
+      roomId: Number(o.roomId),
+      date: o.date,
+      startTime: o.startTime,
+      endTime: o.endTime,
+      state: o.state,
+      className: o.className,
+      courseName: o.courseName,
+    }));
+}
+
 export async function classWeek(actor: ClassActor, classId: number, from?: string, to?: string) {
   const { classRow } = await assertCanViewClassSchedule(actor, classId);
   const tz = await collegeTz(actor.collegeId);

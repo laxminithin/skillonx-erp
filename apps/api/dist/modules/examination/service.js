@@ -3,6 +3,7 @@ import { db } from '../../db/index.js';
 import { AppError } from '../../utils/errors.js';
 import { assertExamCollege, assertExamPermission, canManageExams } from './access.js';
 import { recordExamAudit } from './audit.js';
+import { assertInstitutionOwnsCapability, capabilityMatrix, governanceForCollege } from './capabilities.js';
 import { resolvePolicy } from './policy.js';
 export const createExamSchema = z.object({
     academicYearId: z.number().int().positive(),
@@ -10,7 +11,7 @@ export const createExamSchema = z.object({
     semesterId: z.number().int().positive(),
     schemeId: z.number().int().positive().nullable().optional(),
     examPolicyId: z.number().int().positive().nullable().optional(),
-    examType: z.enum(['CIE', 'SEE', 'SUPPLEMENTARY', 'MAKEUP', 'IMPROVEMENT', 'PRACTICAL', 'VIVA', 'PROJECT']),
+    examType: z.enum(['CIE', 'INTERNAL', 'LAB', 'SEE', 'SUPPLEMENTARY', 'MAKEUP', 'BACKLOG', 'IMPROVEMENT', 'PRACTICAL', 'VIVA', 'PROJECT']),
     name: z.string().trim().min(1).max(255),
     code: z.string().trim().min(1).max(64),
     startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
@@ -46,6 +47,11 @@ function serializeExam(row) {
         startDate: row.start_date,
         endDate: row.end_date,
         status: row.status,
+        governanceType: row.governance_type ?? null,
+        sourceOfTruth: row.source_of_truth ?? null,
+        externalReference: row.external_reference ?? null,
+        frozenAt: row.frozen_at ?? null,
+        frozenBy: row.frozen_by != null ? Number(row.frozen_by) : null,
         createdBy: row.created_by != null ? Number(row.created_by) : null,
         createdAt: row.created_at,
         updatedAt: row.updated_at,
@@ -103,6 +109,8 @@ async function countByStatus(table, collegeId, statusColumn = 'status') {
 }
 export async function coeDashboard(actor) {
     assertExamPermission(actor, 'exam.create');
+    const readiness = await examReadiness(actor);
+    const capabilities = await capabilityMatrix(actor.collegeId);
     const today = new Date().toISOString().slice(0, 10);
     const exams = await db('examinations')
         .where({ college_id: actor.collegeId })
@@ -143,6 +151,8 @@ export async function coeDashboard(actor) {
         eligibilityByStatus: await countByStatus('exam_eligibility', actor.collegeId),
         marksSheetsByStatus: await countByStatus('exam_marks_sheets', actor.collegeId),
         revaluationsByStatus: await countByStatus('exam_revaluation_requests', actor.collegeId),
+        readiness,
+        capabilities,
         recentExams: exams.map(serializeExam),
         upcomingSubjects: upcomingSubjects.map((row) => ({
             id: Number(row.id),
@@ -159,18 +169,22 @@ export async function coeDashboard(actor) {
 }
 export async function questionPaperStatus(actor) {
     assertExamPermission(actor, 'exam.schedule');
+    const matrix = await capabilityMatrix(actor.collegeId);
+    const qpSetting = matrix.capabilities.find((capability) => capability.capabilityKey === 'QUESTION_PAPER_SETTING');
     if (!(await db.schema.hasTable('internal_question_papers'))) {
-        return { papers: [], byStatus: {}, total: 0 };
+        return { papers: [], byStatus: {}, total: 0, governanceType: matrix.governanceType, ownership: qpSetting?.ownership ?? null };
     }
     const rows = await db('internal_question_papers as p')
         .leftJoin('courses as c', 'c.id', 'p.course_id')
         .where('p.college_id', actor.collegeId)
-        .select('p.id', 'p.title', 'p.status', 'p.exam_type', 'p.exam_date', 'p.total_marks', 'p.duration_minutes', 'p.created_at', 'c.code as course_code', 'c.name as course_name')
+        .select('p.id', 'p.title', 'p.status', 'p.exam_type', 'p.exam_date', 'p.max_marks as total_marks', 'p.duration_minutes', 'p.created_at', 'c.code as course_code', 'c.name as course_name')
         .orderBy('p.created_at', 'desc')
         .limit(50);
     const byStatus = await countByStatus('internal_question_papers', actor.collegeId);
     return {
         total: rows.length,
+        governanceType: matrix.governanceType,
+        ownership: qpSetting?.ownership ?? null,
         byStatus,
         papers: rows.map((row) => ({
             id: Number(row.id),
@@ -203,6 +217,11 @@ export async function listExamSubjects(actor, examId) {
 }
 export async function createExam(actor, body) {
     assertExamPermission(actor, 'exam.create');
+    if (body.examType === 'SEE') {
+        const governanceType = await governanceForCollege(actor.collegeId);
+        if (governanceType === 'AUTONOMOUS')
+            await assertInstitutionOwnsCapability(actor, 'SEE_TIMETABLE');
+    }
     const dup = await db('examinations').where({ college_id: actor.collegeId, code: body.code }).first();
     if (dup)
         throw new AppError(400, 'Exam code already exists');
@@ -219,6 +238,8 @@ export async function createExam(actor, body) {
         scheme_id: body.schemeId ?? null,
         exam_policy_id: policyId,
         exam_type: body.examType,
+        governance_type: await governanceForCollege(actor.collegeId),
+        source_of_truth: body.examType === 'SEE' && (await governanceForCollege(actor.collegeId)) === 'VTU_AFFILIATED' ? 'VTU' : 'INSTITUTION',
         name: body.name,
         code: body.code,
         start_date: body.startDate ?? null,
@@ -269,6 +290,7 @@ export async function addExamSubject(actor, examId, body) {
 }
 export async function scheduleExamSubject(actor, examSubjectId, body) {
     assertExamPermission(actor, 'exam.schedule');
+    await assertInstitutionOwnsCapability(actor, 'SEE_TIMETABLE');
     const subject = await db('examination_subjects as es')
         .join('examinations as e', 'e.id', 'es.exam_id')
         .where('es.id', examSubjectId)
@@ -352,9 +374,15 @@ export async function updateExamStatus(actor, examId, status) {
     if (!canManageExams(actor))
         throw new AppError(403, 'Not authorized');
     const exam = await assertExamCollege(examId, actor.collegeId);
-    const allowed = ['DRAFT', 'SCHEDULED', 'ONGOING', 'COMPLETED', 'RESULT_PROCESSING', 'RESULT_PUBLISHED', 'CANCELLED'];
+    const allowed = ['DRAFT', 'PLANNING', 'REGISTRATION', 'READY', 'SCHEDULED', 'IN_PROGRESS', 'ONGOING', 'VALUATION', 'COMPLETED', 'RESULT_PROCESSING', 'PUBLISHED', 'RESULT_PUBLISHED', 'CLOSED', 'ARCHIVED', 'CANCELLED'];
     if (!allowed.includes(status))
         throw new AppError(400, 'Invalid status');
+    const order = ['DRAFT', 'PLANNING', 'REGISTRATION', 'READY', 'SCHEDULED', 'IN_PROGRESS', 'ONGOING', 'VALUATION', 'COMPLETED', 'RESULT_PROCESSING', 'PUBLISHED', 'RESULT_PUBLISHED', 'CLOSED', 'ARCHIVED'];
+    const fromIdx = order.indexOf(exam.status);
+    const toIdx = order.indexOf(status);
+    if (fromIdx >= 0 && toIdx >= 0 && toIdx < fromIdx && actor.role !== 'COE') {
+        throw new AppError(403, 'Backward examination lifecycle transition requires COE authorization');
+    }
     if (status === 'RESULT_PUBLISHED')
         assertExamPermission(actor, 'exam.result.publish');
     await db('examinations').where({ id: examId }).update({ status, updated_at: db.fn.now() });
@@ -369,6 +397,79 @@ export async function updateExamStatus(actor, examId, status) {
     });
     const updated = await db('examinations').where({ id: examId }).first();
     return serializeExam(updated);
+}
+export async function examReadiness(actor, examId) {
+    assertExamPermission(actor, 'exam.reports');
+    const matrix = await capabilityMatrix(actor.collegeId);
+    const exam = examId
+        ? await assertExamCollege(examId, actor.collegeId)
+        : await db('examinations')
+            .where({ college_id: actor.collegeId })
+            .whereIn('status', ['DRAFT', 'PLANNING', 'REGISTRATION', 'READY', 'SCHEDULED', 'IN_PROGRESS', 'ONGOING', 'RESULT_PROCESSING'])
+            .orderBy('start_date', 'desc')
+            .orderBy('id', 'desc')
+            .first();
+    if (!exam)
+        return { governanceType: matrix.governanceType, exam: null, status: 'BLOCKED', score: 0, checks: [] };
+    const subjects = await db('examination_subjects').where({ exam_id: exam.id, college_id: actor.collegeId });
+    const subjectIds = subjects.map((subject) => Number(subject.id));
+    const countFor = async (table, where = {}) => {
+        if (!subjectIds.length || !(await db.schema.hasTable(table)))
+            return 0;
+        const row = await db(table)
+            .where({ college_id: actor.collegeId, ...where })
+            .whereIn('exam_subject_id', subjectIds)
+            .count({ c: '*' })
+            .first();
+        return Number(row?.c ?? 0);
+    };
+    const totalSubjects = subjects.length;
+    const scheduledSubjects = subjects.filter((subject) => subject.exam_date && subject.start_time && subject.end_time).length;
+    const lockedSeats = subjects.filter((subject) => Boolean(subject.seats_locked)).length;
+    const eligibilityRows = await (subjectIds.length
+        ? db('exam_eligibility').where({ college_id: actor.collegeId, exam_id: exam.id }).count({ c: '*' }).first()
+        : Promise.resolve({ c: 0 }));
+    const blockedEligibility = await (subjectIds.length
+        ? db('exam_eligibility')
+            .where({ college_id: actor.collegeId, exam_id: exam.id })
+            .whereIn('status', ['NOT_ELIGIBLE', 'WITHHELD'])
+            .count({ c: '*' })
+            .first()
+        : Promise.resolve({ c: 0 }));
+    const roomAllocations = await countFor('exam_room_allocations');
+    const seats = await countFor('exam_student_seats');
+    const duties = await countFor('exam_invigilation_duties');
+    const marksSheets = await (subjectIds.length
+        ? db('exam_marks_sheets').where({ college_id: actor.collegeId }).whereIn('exam_subject_id', subjectIds).select('status', 'locked')
+        : []);
+    const finalizedQps = await countRows('internal_question_papers', actor.collegeId, { status: 'FINALIZED' });
+    const checks = [
+        readinessCheck('Timetable', totalSubjects > 0 && scheduledSubjects === totalSubjects, scheduledSubjects, totalSubjects),
+        readinessCheck('Eligibility', Number(eligibilityRows?.c ?? 0) > 0 && Number(blockedEligibility?.c ?? 0) === 0, Number(eligibilityRows?.c ?? 0) - Number(blockedEligibility?.c ?? 0), Number(eligibilityRows?.c ?? 0)),
+        readinessCheck('Rooms', totalSubjects > 0 && roomAllocations >= totalSubjects, roomAllocations, totalSubjects),
+        readinessCheck('Seating', totalSubjects > 0 && lockedSeats === totalSubjects && seats > 0, lockedSeats, totalSubjects),
+        readinessCheck('Invigilators', totalSubjects > 0 && duties >= totalSubjects, duties, totalSubjects),
+        readinessCheck('Question Papers', matrix.governanceType === 'VTU_AFFILIATED' || finalizedQps >= totalSubjects, finalizedQps, totalSubjects, matrix.governanceType === 'VTU_AFFILIATED' ? 'University-owned; track local custody/readiness references.' : undefined),
+        readinessCheck('Marks/Valuation', marksSheets.length > 0 && marksSheets.every((sheet) => sheet.locked), marksSheets.filter((sheet) => sheet.locked).length, Math.max(marksSheets.length, totalSubjects)),
+    ];
+    const ready = checks.filter((check) => check.status === 'READY').length;
+    const warnings = checks.filter((check) => check.status === 'WARNING').length;
+    const score = checks.length ? Math.round((ready / checks.length) * 100) : 0;
+    return {
+        governanceType: matrix.governanceType,
+        exam: serializeExam(exam),
+        status: checks.some((check) => check.status === 'BLOCKED') ? 'BLOCKED' : warnings ? 'WARNING' : 'READY',
+        score,
+        checks,
+    };
+}
+function readinessCheck(label, ok, actual, expected, note) {
+    let status = 'READY';
+    if (!ok && actual > 0)
+        status = 'WARNING';
+    if (!ok && actual <= 0)
+        status = 'BLOCKED';
+    return { label, status, actual, expected, note };
 }
 export async function autoPopulateSubjectsFromClass(actor, examId, classId) {
     assertExamPermission(actor, 'exam.create');

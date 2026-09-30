@@ -29,6 +29,8 @@ const ROLE_FINANCE_PERMISSIONS: Record<string, FinancePermission[]> = {
     'finance.scholarship.manage',
     'finance.refund.approve',
     'finance.report.view',
+    'finance.scholarship_application.process',
+    'finance.scholarship_application.approve',
   ],
   PRINCIPAL: ['finance.view', 'finance.receipt.view', 'finance.report.view'],
   HOD: ['finance.view', 'finance.report.view'],

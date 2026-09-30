@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { api } from '../../lib/api';
-import { Button, Input, PageHeader, Skeleton, Surface } from '../../components/ui';
+import { Button, EmptyState, Field, FilterChip, Input, PageHeader, Skeleton, Surface, Textarea } from '../../components/ui';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 import { formatDate } from '../../lib/utils';
 import { StatusPill, statusToneFor } from '../lms/studentUi';
@@ -411,6 +411,191 @@ export function FinanceScholarshipsPage() {
         headers={['Student', 'USN', 'Scheme', 'Expected', 'Sanctioned', 'Status']}
         rows={rows.map((r) => [r.studentName, r.usn, r.schemeName, formatInr(r.expectedAmount), r.sanctionedAmount ? formatInr(r.sanctionedAmount) : '-', r.status])}
       />
+    </div>
+  );
+}
+
+type StaffApplication = {
+  id: number;
+  studentName: string;
+  usn: string;
+  schemeName: string;
+  benefitType: string;
+  status: string;
+  eligibilityStatus: string;
+  requestedAmount: string | null;
+  sanctionedAmount: string | null;
+  submittedAt: string | null;
+  internalRemarks?: string | null;
+  studentScholarshipId?: number | null;
+};
+
+const APPLICATION_STATUS_FILTERS = ['SUBMITTED', 'UNDER_VERIFICATION', 'VERIFIED', 'APPROVED', 'SANCTIONED', 'RETURNED', 'COMPLETED', 'REJECTED'];
+
+export function FinanceScholarshipApplicationsPage() {
+  const basePath = useFinanceBasePath();
+  const [status, setStatus] = useState('SUBMITTED');
+  const [rows, setRows] = useState<StaffApplication[]>([]);
+  useDocumentTitle('Scholarship Applications');
+
+  function load() {
+    api<{ applications: StaffApplication[] }>(`/api/finance/scholarship-applications?status=${status}`).then((d) => setRows(d.applications));
+  }
+
+  useEffect(load, [status]);
+
+  return (
+    <div className="animate-fade-in space-y-4">
+      <PageHeader title="Scholarship Applications" subtitle="Verify, approve, and sanction student scholarship applications" />
+      <div className="flex flex-wrap gap-2">
+        {APPLICATION_STATUS_FILTERS.map((s) => (
+          <FilterChip key={s} active={status === s} onClick={() => setStatus(s)}>
+            {s.replace(/_/g, ' ')}
+          </FilterChip>
+        ))}
+      </div>
+      {rows.length === 0 ? (
+        <EmptyState title="No applications" body={`No applications are currently ${status.replace(/_/g, ' ').toLowerCase()}.`} />
+      ) : (
+        <div className="space-y-2">
+          {rows.map((r) => (
+            <Link
+              key={r.id}
+              to={`${basePath}/scholarship-applications/${r.id}`}
+              className="block rounded-[var(--radius-lg)] border border-border bg-surface p-4 hover:border-border-strong"
+            >
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <div>
+                  <p className="font-medium">{r.studentName} · {r.usn}</p>
+                  <p className="text-sm text-ink-muted">{r.schemeName} ({r.benefitType.replace(/_/g, ' ')})</p>
+                </div>
+                <div className="text-right">
+                  <StatusPill tone={statusToneFor(r.status)}>{r.status.replace(/_/g, ' ')}</StatusPill>
+                  <p className="mt-1 text-xs text-ink-muted">Eligibility: {r.eligibilityStatus.replace(/_/g, ' ')}</p>
+                  {r.requestedAmount ? <p className="text-sm tabular-nums">Requested: {formatInr(r.requestedAmount)}</p> : null}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function FinanceScholarshipApplicationDetailPage() {
+  const { id } = useParams();
+  const basePath = useFinanceBasePath();
+  const [app, setApp] = useState<StaffApplication | null>(null);
+  const [documents, setDocuments] = useState<Array<{ id: number; category: string; originalFilename: string; status: string }>>([]);
+  const [remarks, setRemarks] = useState('');
+  const [amount, setAmount] = useState('');
+  const [evidence, setEvidence] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  useDocumentTitle('Application Detail');
+
+  function load() {
+    if (!id) return;
+    api<StaffApplication>(`/api/finance/scholarship-applications/${id}`).then(setApp);
+    api<{ documents: typeof documents }>(`/api/finance/scholarship-applications/${id}/documents`).then((d) => setDocuments(d.documents));
+  }
+
+  useEffect(load, [id]);
+
+  async function act(action: string, body?: Record<string, unknown>) {
+    if (!id) return;
+    setBusy(true);
+    setError('');
+    try {
+      await api(`/api/finance/scholarship-applications/${id}/${action}`, { method: 'POST', body: JSON.stringify(body ?? {}) });
+      setRemarks('');
+      load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Action failed');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (!app) return <Skeleton className="h-40 w-full" />;
+
+  return (
+    <div className="animate-fade-in max-w-2xl space-y-4">
+      <div className="flex items-center justify-between">
+        <PageHeader title={`${app.studentName} · ${app.usn}`} subtitle={app.schemeName} />
+        <Link to={`${basePath}/scholarship-applications`}><Button variant="secondary" size="sm">Back to queue</Button></Link>
+      </div>
+
+      <Surface className="space-y-2 p-4">
+        <div className="flex justify-between"><span className="text-ink-muted">Status</span><StatusPill tone={statusToneFor(app.status)}>{app.status.replace(/_/g, ' ')}</StatusPill></div>
+        <div className="flex justify-between"><span className="text-ink-muted">Eligibility</span><span>{app.eligibilityStatus.replace(/_/g, ' ')}</span></div>
+        {app.requestedAmount ? <div className="flex justify-between"><span className="text-ink-muted">Requested</span><span className="tabular-nums">{formatInr(app.requestedAmount)}</span></div> : null}
+        {app.sanctionedAmount ? <div className="flex justify-between"><span className="text-ink-muted">Sanctioned</span><span className="tabular-nums">{formatInr(app.sanctionedAmount)}</span></div> : null}
+        {app.internalRemarks ? <p className="text-sm text-ink-muted">Notes: {app.internalRemarks}</p> : null}
+      </Surface>
+
+      <Surface className="p-4">
+        <h2 className="mb-3 font-semibold">Evidence Documents</h2>
+        {documents.length === 0 ? (
+          <p className="text-sm text-ink-muted">No documents uploaded yet.</p>
+        ) : (
+          <ul className="space-y-1 text-sm">
+            {documents.map((d) => (
+              <li key={d.id} className="flex justify-between">
+                <span>{d.category.replace(/_/g, ' ')}: {d.originalFilename}</span>
+                <span className="text-ink-muted">{d.status}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Surface>
+
+      {error ? <p className="text-sm text-danger">{error}</p> : null}
+
+      <Surface className="space-y-3 p-4">
+        <h2 className="font-semibold">Actions</h2>
+        <Textarea placeholder="Remarks (required to return or reject)" value={remarks} onChange={(e) => setRemarks(e.target.value)} rows={2} />
+        <div className="flex flex-wrap gap-2">
+          {app.status === 'SUBMITTED' ? (
+            <Button disabled={busy} onClick={() => act('start-verification')}>Start Verification</Button>
+          ) : null}
+          {app.status === 'UNDER_VERIFICATION' ? (
+            <>
+              <Button disabled={busy} onClick={() => act('verify', { remarks })}>Mark Verified</Button>
+              <Button disabled={busy} variant="secondary" onClick={() => act('return', { remarks })}>Return to Student</Button>
+            </>
+          ) : null}
+          {app.status === 'VERIFIED' ? (
+            <Button disabled={busy} onClick={() => act('approve', { remarks })}>Approve</Button>
+          ) : null}
+          {['SUBMITTED', 'UNDER_VERIFICATION', 'VERIFIED'].includes(app.status) ? (
+            <Button disabled={busy} variant="secondary" onClick={() => act('reject', { remarks })}>Reject</Button>
+          ) : null}
+        </div>
+
+        {app.status === 'APPROVED' ? (
+          <div className="flex items-end gap-2 border-t border-border pt-3">
+            <Field label="Sanctioned Amount">
+              <Input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+            </Field>
+            <Button disabled={busy || !amount} onClick={() => act('sanction', { sanctionedAmount: Number(amount) })}>Sanction</Button>
+          </div>
+        ) : null}
+
+        {app.status === 'SANCTIONED' ? (
+          <div className="flex items-end gap-2 border-t border-border pt-3">
+            <Field label="Evidence Reference (e.g. DBT transaction ID)">
+              <Input value={evidence} onChange={(e) => setEvidence(e.target.value)} />
+            </Field>
+            <Button disabled={busy || !evidence} onClick={() => act('complete', { evidenceReference: evidence })}>Mark Completed</Button>
+          </div>
+        ) : null}
+
+        {!['REJECTED', 'WITHDRAWN', 'CANCELLED', 'COMPLETED'].includes(app.status) ? (
+          <Button disabled={busy} variant="secondary" onClick={() => act('cancel', { remarks: remarks || 'Cancelled by staff' })}>Cancel Application</Button>
+        ) : null}
+      </Surface>
     </div>
   );
 }

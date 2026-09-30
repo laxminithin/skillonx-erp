@@ -226,6 +226,7 @@ export function StudentNewRequestPage() {
   const [title, setTitle] = useState('');
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const [ownCertificates, setOwnCertificates] = useState<Array<{ id: number; documentType: string; certificateNumber: string; status: string }>>([]);
   useDocumentTitle('New Request');
 
   useEffect(() => {
@@ -233,6 +234,16 @@ export function StudentNewRequestPage() {
       const found = d.requestTypes.find((t) => t.code === typeCode);
       setType(found ?? null);
       if (found) setTitle(found.label);
+    });
+  }, [typeCode]);
+
+  // DUPLICATE_CERTIFICATE's `originalDocumentId` field has no static option
+  // list (it depends on what the student already holds) — populate it from
+  // their own certificates instead of leaving the generic select empty.
+  useEffect(() => {
+    if (typeCode !== 'DUPLICATE_CERTIFICATE') return;
+    api<{ certificates: typeof ownCertificates }>('/api/student/certificates').then((d) => {
+      setOwnCertificates(d.certificates.filter((c) => c.status === 'VALID'));
     });
   }, [typeCode]);
 
@@ -282,6 +293,17 @@ export function StudentNewRequestPage() {
                 value={formData[field.key] ?? ''}
                 onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
               />
+            ) : field.type === 'select' && field.key === 'originalDocumentId' ? (
+              <select
+                className="mt-1 w-full rounded-[var(--radius-md)] border border-border bg-surface px-3 py-2 text-sm"
+                value={formData[field.key] ?? ''}
+                onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
+              >
+                <option value="">Select a certificate…</option>
+                {ownCertificates.map((c) => (
+                  <option key={c.id} value={c.id}>{c.documentType.replace(/_/g, ' ')} — {c.certificateNumber}</option>
+                ))}
+              </select>
             ) : field.type === 'select' ? (
               <select
                 className="mt-1 w-full rounded-[var(--radius-md)] border border-border bg-surface px-3 py-2 text-sm"

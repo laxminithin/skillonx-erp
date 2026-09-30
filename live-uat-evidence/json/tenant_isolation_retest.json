@@ -1,0 +1,196 @@
+{
+  "target": "https://campus.skillonx.com",
+  "executedAt": "2026-09-29T09:22:13.715Z",
+  "tenantA": 1,
+  "tenantB": 2,
+  "checks": [
+    {
+      "label": "A reads tenant B faculty",
+      "path": "/api/admin/faculty/44",
+      "method": "GET",
+      "status": 404,
+      "safeDenied": true,
+      "body": {
+        "error": "Faculty member not found",
+        "keys": [
+          "error"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": true
+    },
+    {
+      "label": "A mutates tenant B QA faculty",
+      "path": "/api/admin/faculty/44",
+      "method": "PATCH",
+      "status": 404,
+      "safeDenied": true,
+      "body": {
+        "error": "Faculty member not found",
+        "keys": [
+          "error"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": true
+    },
+    {
+      "label": "A enumerates faculty id 43",
+      "path": "/api/admin/faculty/43",
+      "method": "GET",
+      "status": 200,
+      "safeDenied": false,
+      "body": {
+        "error": null,
+        "keys": [
+          "faculty"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": true
+    },
+    {
+      "label": "A enumerates faculty id 44",
+      "path": "/api/admin/faculty/44",
+      "method": "GET",
+      "status": 404,
+      "safeDenied": true,
+      "body": {
+        "error": "Faculty member not found",
+        "keys": [
+          "error"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": true
+    },
+    {
+      "label": "A enumerates faculty id 45",
+      "path": "/api/admin/faculty/45",
+      "method": "GET",
+      "status": 404,
+      "safeDenied": true,
+      "body": {
+        "error": "Faculty member not found",
+        "keys": [
+          "error"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": true
+    },
+    {
+      "label": "B tampers student list tenant selector",
+      "path": "/api/admin/students?collegeId=1&limit=100",
+      "method": "GET",
+      "status": 200,
+      "safeDenied": false,
+      "body": {
+        "error": null,
+        "keys": [
+          "students"
+        ],
+        "arrayCounts": {
+          "students": 0
+        }
+      },
+      "pass": true
+    },
+    {
+      "label": "B reads tenant A admission",
+      "path": "/api/admissions/applications/2",
+      "method": "GET",
+      "status": 404,
+      "safeDenied": true,
+      "body": {
+        "error": "Applicant not found",
+        "keys": [
+          "error"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": true
+    },
+    {
+      "label": "B reads tenant A finance structure",
+      "path": "/api/finance/fee-structures/1",
+      "method": "GET",
+      "status": 500,
+      "safeDenied": false,
+      "body": {
+        "error": "Internal server error",
+        "keys": [
+          "error"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": false
+    },
+    {
+      "label": "B reads tenant A examination",
+      "path": "/api/examinations/1",
+      "method": "GET",
+      "status": 404,
+      "safeDenied": true,
+      "body": {
+        "error": "Examination not found",
+        "keys": [
+          "error"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": true
+    },
+    {
+      "label": "B reads tenant A transport route",
+      "path": "/api/transport/routes/1",
+      "method": "GET",
+      "status": 404,
+      "safeDenied": true,
+      "body": {
+        "error": "Route not found",
+        "keys": [
+          "error"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": true
+    },
+    {
+      "label": "B reads tenant A alumni profile",
+      "path": "/api/alumni-admin/profiles/1/360",
+      "method": "GET",
+      "status": 404,
+      "safeDenied": true,
+      "body": {
+        "error": "Alumni profile not found",
+        "keys": [
+          "error"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": true
+    },
+    {
+      "label": "B cross-tenant platform administration",
+      "path": "/api/platform/tenants/1",
+      "method": "GET",
+      "status": 403,
+      "safeDenied": true,
+      "body": {
+        "error": "Platform governance access required",
+        "keys": [
+          "error",
+          "code"
+        ],
+        "arrayCounts": {}
+      },
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 12,
+    "pass": 11,
+    "fail": 1
+  }
+}

@@ -21,6 +21,8 @@ export async function api<T>(
   if (auth) {
     const token = getToken();
     if (token) h.set('Authorization', `Bearer ${token}`);
+    const portalContext = localStorage.getItem('portal_context');
+    if (portalContext) h.set('X-Portal-Context', portalContext);
   }
 
   const res = await fetch(`${API_URL}${path}`, { ...rest, headers: h });

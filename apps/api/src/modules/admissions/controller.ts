@@ -27,6 +27,7 @@ import {
   enquirySchema,
   evaluateEligibility,
   getApplicationWorkspace,
+  guardianSchema,
   intakeSchema,
   issueOffer,
   listApplications,
@@ -36,6 +37,7 @@ import {
   selectApplicant,
   selectionSchema,
   submitApplication,
+  updateApplicantGuardian,
   uploadDocument,
   verifyDocument,
 } from './service.js';
@@ -160,6 +162,12 @@ staffRouter.patch('/documents/:id/verification', asyncHandler(async (req: Authed
 
 staffRouter.post('/eligibility-rules', asyncHandler(async (req: AuthedRequest, res) => {
   res.status(201).json({ rule: await createEligibilityRule(staffActor(req), validate(eligibilityRuleSchema, req.body)) });
+}));
+
+staffRouter.patch('/applications/:id/guardian', asyncHandler(async (req: AuthedRequest, res) => {
+  res.json({
+    applicant: await updateApplicantGuardian(staffActor(req), Number(req.params.id), validate(guardianSchema, req.body)),
+  });
 }));
 
 staffRouter.post('/applications/:id/eligibility/evaluate', asyncHandler(async (req: AuthedRequest, res) => {

@@ -1,5 +1,6 @@
 import { db } from '../../db/index.js';
 import { AppError } from '../../utils/errors.js';
+import { governanceForCollege } from './capabilities.js';
 import { studentEligibility } from './eligibility.js';
 export async function studentHallTicket(studentId, collegeId, examId) {
     const student = await db('students as s')
@@ -19,6 +20,7 @@ export async function studentHallTicket(studentId, collegeId, examId) {
         .first();
     if (!exam)
         throw new AppError(404, 'Examination not found');
+    const governanceType = await governanceForCollege(collegeId);
     const eligibility = await studentEligibility(studentId, collegeId, examId);
     const eligible = eligibility.filter((e) => ['ELIGIBLE', 'CONDONED'].includes(e.status));
     const withheld = eligibility.filter((e) => ['NOT_ELIGIBLE', 'WITHHELD'].includes(e.status));
@@ -31,6 +33,11 @@ export async function studentHallTicket(studentId, collegeId, examId) {
     const seatMap = new Map(seats.map((s) => [Number(s.exam_subject_id), s]));
     return {
         institution: student.college_name,
+        governanceType,
+        documentAuthority: governanceType === 'VTU_AFFILIATED' ? 'UNIVERSITY_REFERENCE' : 'INSTITUTIONAL',
+        documentDisclaimer: governanceType === 'VTU_AFFILIATED'
+            ? 'University hall ticket remains authoritative; this is a SkillonX local readiness/reference view.'
+            : null,
         student: {
             id: Number(student.id),
             name: student.name,

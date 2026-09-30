@@ -3,6 +3,12 @@ import { AppError } from '../../utils/errors.js';
 import { assertActiveResident, assertHostelPermission, assertWardenHostelAccess } from './access.js';
 import { recordHostelAudit } from './audit.js';
 import { notifyHostelEvent } from './notifications.js';
+function mysqlDateTime(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime()))
+        throw new AppError(400, 'Invalid leave date');
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+}
 export async function listStudentLeaves(studentId, collegeId) {
     const resident = await assertActiveResident(studentId, collegeId);
     const rows = await db('hostel_leave_requests')
@@ -33,8 +39,8 @@ export async function createLeave(studentId, collegeId, input) {
         resident_id: resident.id,
         student_id: studentId,
         leave_type: input.leaveType ?? 'HOME_VISIT',
-        from_at: input.fromAt,
-        to_at: input.toAt,
+        from_at: mysqlDateTime(input.fromAt),
+        to_at: mysqlDateTime(input.toAt),
         destination: input.destination ?? null,
         reason: input.reason ?? null,
         guardian_confirmed: input.guardianConfirmed ?? false,

@@ -1,0 +1,178 @@
+{
+  "executedAt": "2026-09-29T09:27:09.149Z",
+  "checks": [
+    {
+      "path": "/platform/tenants",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/admin/faculty",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/management/reports",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/principal",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/hod",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/dashboard",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/courses",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/lms/subjects",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/lms/attendance",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/parent/fees",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/admissions/applications",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/coe/examinations",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/accountant/receipts",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/hr/admin/employees",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/hr/payroll",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/placements/opportunities",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/hostel/residents",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/transport/routes",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/alumni/360",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/library/reports",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/lab/assets",
+      "status": 500,
+      "contentType": null,
+      "spaShell": false,
+      "server404": false
+    },
+    {
+      "path": "/office/requests",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/maintenance/manager",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    },
+    {
+      "path": "/iqac",
+      "status": 200,
+      "contentType": "text/html",
+      "spaShell": true,
+      "server404": false
+    }
+  ],
+  "summary": {
+    "total": 24,
+    "pass": 23,
+    "fail": 1
+  }
+}

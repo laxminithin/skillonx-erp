@@ -23,8 +23,10 @@ type ApplicationRow = {
   outstanding_amount?: string;
 };
 
+type Guardian = { name?: string | null; email?: string | null; phone?: string | null; relationship?: string | null };
+
 type Workspace = {
-  applicant: ApplicationRow & { submitted_at?: string; phone?: string };
+  applicant: ApplicationRow & { submitted_at?: string; phone?: string; guardian_json?: Guardian | null };
   education: Array<Record<string, unknown>>;
   preferences: Array<Record<string, unknown>>;
   documents: Array<Record<string, unknown>>;
@@ -167,9 +169,39 @@ export function AdmissionsApplicationReviewPage() {
   const { id } = useParams();
   const [data, setData] = useState<Workspace | null>(null);
   const [error, setError] = useState('');
+  const [guardian, setGuardian] = useState<Guardian>({ name: '', email: '', phone: '', relationship: '' });
+  const [guardianStatus, setGuardianStatus] = useState('');
   useEffect(() => {
-    api<Workspace>(`/api/admissions/applications/${id}`).then(setData).catch((err) => setError(err.message));
+    api<Workspace>(`/api/admissions/applications/${id}`).then((workspace) => {
+      setData(workspace);
+      const g = workspace.applicant.guardian_json;
+      setGuardian({
+        name: g?.name ?? '',
+        email: g?.email ?? '',
+        phone: g?.phone ?? '',
+        relationship: g?.relationship ?? '',
+      });
+    }).catch((err) => setError(err.message));
   }, [id]);
+  const saveGuardian = async () => {
+    setGuardianStatus('Saving...');
+    try {
+      const payload = {
+        name: guardian.name || null,
+        email: guardian.email || null,
+        phone: guardian.phone || null,
+        relationship: guardian.relationship || null,
+      };
+      const result = await api<{ applicant: Workspace['applicant'] }>(`/api/admissions/applications/${id}/guardian`, {
+        method: 'PATCH',
+        body: JSON.stringify(payload),
+      });
+      setData((prev) => (prev ? { ...prev, applicant: result.applicant } : prev));
+      setGuardianStatus('Saved');
+    } catch (err) {
+      setGuardianStatus(err instanceof Error ? err.message : 'Failed to save guardian details');
+    }
+  };
   if (error) return <div className="text-sm text-red-600">{error}</div>;
   if (!data) return <div className="text-sm text-slate-500">Loading application...</div>;
   const finance = data.finance;
@@ -199,6 +231,44 @@ export function AdmissionsApplicationReviewPage() {
         </Panel>
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
+        <Panel title="Guardian / Parent">
+          <div className="space-y-2">
+            <input
+              className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+              placeholder="Guardian name"
+              value={guardian.name ?? ''}
+              onChange={(e) => setGuardian({ ...guardian, name: e.target.value })}
+            />
+            <input
+              className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+              placeholder="Guardian email"
+              value={guardian.email ?? ''}
+              onChange={(e) => setGuardian({ ...guardian, email: e.target.value })}
+            />
+            <input
+              className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+              placeholder="Guardian phone"
+              value={guardian.phone ?? ''}
+              onChange={(e) => setGuardian({ ...guardian, phone: e.target.value })}
+            />
+            <input
+              className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+              placeholder="Relationship (e.g. Father, Mother)"
+              value={guardian.relationship ?? ''}
+              onChange={(e) => setGuardian({ ...guardian, relationship: e.target.value })}
+            />
+            <div className="flex items-center gap-3 pt-1">
+              <button
+                type="button"
+                onClick={saveGuardian}
+                className="rounded-md bg-slate-950 px-4 py-2 text-sm font-medium text-white"
+              >
+                Save
+              </button>
+              {guardianStatus ? <span className="text-xs text-slate-500">{guardianStatus}</span> : null}
+            </div>
+          </div>
+        </Panel>
         <Panel title="Documents">
           <div className="space-y-2">
             {data.documents.map((doc) => (

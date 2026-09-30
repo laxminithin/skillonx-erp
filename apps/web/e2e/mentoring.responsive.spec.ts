@@ -57,7 +57,7 @@ test.describe('Mentoring & Student Advisory responsive QA', () => {
     test('mentor dashboard', async ({ page }, ti) => {
       await visit(page, '/mentoring', /Mentoring & Student Advisory/i);
       await expect(page.getByText('Who needs my attention today?')).toBeVisible();
-      await expect(page.getByText('My mentees')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'My mentees' })).toBeVisible();
       await maybeShot(page, ti, 'mentor-dashboard');
     });
 

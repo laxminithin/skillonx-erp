@@ -22,6 +22,7 @@ const groups = [
       { to: '/accountant/receipts', label: 'Receipts', icon: ReceiptText, activePrefix: '/accountant/receipts' },
       { to: '/accountant/fee-structures', label: 'Demands & Fee Setup', icon: WalletCards, activePrefix: '/accountant/fee-structures' },
       { to: '/accountant/scholarships', label: 'Scholarships', icon: FileCheck2, activePrefix: '/accountant/scholarships' },
+      { to: '/accountant/scholarship-applications', label: 'Scholarship Applications', icon: FileCheck2, activePrefix: '/accountant/scholarship-applications' },
       { to: '/accountant/refunds', label: 'Refunds', icon: RotateCcw, activePrefix: '/accountant/refunds' },
       { to: '/accountant/reconciliation', label: 'Reconciliation', icon: FileSearch, activePrefix: '/accountant/reconciliation' },
       { to: '/accountant/reports', label: 'Reports', icon: FileSearch, activePrefix: '/accountant/reports' },

@@ -119,9 +119,25 @@ describe('transport closure evidence', () => {
 });
 
 describe('transport named concurrency evidence', () => {
+  // Two disposable pending applications, looked up by their owning students' USNs rather than
+  // by a hardcoded application row id — a fresh/reseeded database has different auto-increment
+  // history, so a literal id is not portable across environments. The Student LMS E2E seed
+  // (seedStudentLmsE2e.ts) idempotently provisions exactly two such applications alongside
+  // ctx.studentId's: 4VV24CS002 (ctx.otherStudentId, SUBMITTED, application SX/TRN/2026/000146)
+  // and 4VV24CS003 (the "waitlisted" fixture student, WAITLISTED, SX/TRN/2026/000147). Both are
+  // reused here read-only aside from the deliberate, restored mutation inside the test body —
+  // nothing is deleted or recreated, so this suite stays repeatable across reruns and orderings.
+  let disposableStudentIds: number[] = [];
+
+  before(async () => {
+    const waitlisted = await db('students').where({ college_id: ctx.collegeId, usn: '4VV24CS003' }).first();
+    if (!waitlisted) throw new Error('Transport concurrency fixture requires seeded student 4VV24CS003 (waitlisted)');
+    disposableStudentIds = [ctx.otherStudentId, Number(waitlisted.id)];
+  });
+
   it('A LAST-SEAT CAPACITY CONCURRENCY: one of two simultaneous assignments gets the last seat', async () => {
     const vehicle = await db('transport_vehicles').where({ id: ctx.vehicleId }).first();
-    const apps = await db('transport_applications').where({ college_id: ctx.collegeId }).whereIn('student_id', [ctx.otherStudentId, 78]).select('*');
+    const apps = await db('transport_applications').where({ college_id: ctx.collegeId }).whereIn('student_id', disposableStudentIds).select('*');
     if (!vehicle || apps.length < 2) { assert.fail('Two disposable seeded pending applications are required'); }
     const appIds = apps.slice(0, 2).map((x) => Number(x.id));
     const originalStatuses = new Map(apps.map((x) => [Number(x.id), x.status]));

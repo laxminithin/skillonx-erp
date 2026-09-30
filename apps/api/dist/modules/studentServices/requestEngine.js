@@ -28,6 +28,10 @@ function serializeRequest(row, typeRow) {
         priority: row.priority,
         currentStage: row.current_stage,
         currentStepOrder: row.current_step_order != null ? Number(row.current_step_order) : null,
+        requesterType: row.requester_type ?? 'STUDENT',
+        requesterParentUserId: row.requester_parent_user_id != null ? Number(row.requester_parent_user_id) : null,
+        parentActionState: row.parent_action_state ?? null,
+        hostelCorrelationId: row.hostel_correlation_id ?? null,
         formData: parseJson(row.form_data, {}),
         submittedAt: row.submitted_at,
         completedAt: row.completed_at,
@@ -35,6 +39,73 @@ function serializeRequest(row, typeRow) {
         createdAt: row.created_at,
         updatedAt: row.updated_at,
     };
+}
+function dayCount(formData) {
+    const window = resolveDateWindow(formData);
+    if (!window)
+        return 0;
+    return Math.max(1, Math.round((Date.parse(window.to) - Date.parse(window.from)) / 86400000) + 1);
+}
+function resolveDateWindow(formData) {
+    const from = toDateOnly(formData.fromDate) ?? toDateOnly(formData.onDate);
+    const to = toDateOnly(formData.toDate) ?? toDateOnly(formData.onDate) ?? from;
+    if (!from || !to)
+        return null;
+    return from <= to ? { from, to } : { from: to, to: from };
+}
+function toDateOnly(v) {
+    if (!v)
+        return null;
+    const d = new Date(String(v));
+    if (Number.isNaN(d.getTime()))
+        return null;
+    return d.toISOString().slice(0, 10);
+}
+function normalizeLeaveKind(typeCode, formData) {
+    const raw = String(formData.leaveType ?? formData.permissionType ?? '').toUpperCase().replace(/\s+/g, '_');
+    if (typeCode === 'STUDENT_PERMISSION_REQUEST') {
+        if (raw.includes('OFFICIAL') || raw.includes('ON-DUTY') || raw.includes('ON_DUTY'))
+            return 'OFFICIAL_DUTY';
+        return 'SHORT_PERMISSION';
+    }
+    if (raw.includes('MEDICAL'))
+        return 'MEDICAL_LEAVE';
+    if (raw.includes('RETROSPECTIVE'))
+        return 'RETROSPECTIVE_LEAVE';
+    if (raw.includes('EMERGENCY'))
+        return 'EMERGENCY_LEAVE';
+    if (raw.includes('OFFICIAL') || raw.includes('ON-DUTY') || raw.includes('ON_DUTY'))
+        return 'OFFICIAL_DUTY';
+    if (raw.includes('HALF'))
+        return 'HALF_DAY';
+    return dayCount(formData) > 1 ? 'MULTI_DAY_LEAVE' : 'NORMAL_LEAVE';
+}
+async function resolveLeaveWorkflowSteps(collegeId, typeCode, formData, requesterType) {
+    if (!['STUDENT_LEAVE_REQUEST', 'STUDENT_PERMISSION_REQUEST'].includes(typeCode))
+        return null;
+    const kind = normalizeLeaveKind(typeCode, formData);
+    const policy = await db('student_leave_policies')
+        .where({ college_id: collegeId, leave_type: kind, is_active: true })
+        .first()
+        .catch(() => null);
+    const permission = typeCode === 'STUDENT_PERMISSION_REQUEST';
+    const requiresParent = Boolean(policy?.requires_parent ?? (!permission && kind !== 'OFFICIAL_DUTY'));
+    const requiresMentor = Boolean(policy?.requires_mentor ?? true);
+    const requiresCoordinator = Boolean(policy?.requires_coordinator ?? true);
+    const requiresHod = Boolean(policy?.requires_hod ?? (['MEDICAL_LEAVE', 'RETROSPECTIVE_LEAVE', 'MULTI_DAY_LEAVE'].includes(kind)));
+    const requiresPrincipal = Boolean(policy?.requires_principal ?? false);
+    const steps = [];
+    if (requiresParent && requesterType !== 'PARENT')
+        steps.push({ step_key: 'PARENT_ACTION', label: 'Parent Action', actor_role: 'PARENT' });
+    if (requiresMentor)
+        steps.push({ step_key: permission ? 'MENTOR_REVIEW' : 'MENTOR_APPROVAL', label: permission ? 'Mentor Review' : 'Mentor Approval', actor_role: 'MENTOR' });
+    if (requiresCoordinator)
+        steps.push({ step_key: 'COORDINATOR_APPROVAL', label: 'Class Coordinator Approval', actor_role: 'CLASS_COORDINATOR' });
+    if (requiresHod)
+        steps.push({ step_key: 'HOD_APPROVAL', label: 'HOD Approval', actor_role: 'HOD' });
+    if (requiresPrincipal)
+        steps.push({ step_key: 'PRINCIPAL_APPROVAL', label: 'Principal Approval', actor_role: 'PRINCIPAL' });
+    return steps.map((step, i) => ({ ...step, step_order: i + 1 }));
 }
 async function nextRequestNumber(collegeId) {
     return db.transaction(async (trx) => {
@@ -151,6 +222,242 @@ export async function createRequest(actor, input) {
     });
     return getStudentRequest(actor, Number(id));
 }
+export async function createParentInitiatedRequest(actor, studentId, input) {
+    await ensureCollegeServicesDefaults(actor.collegeId);
+    const link = await assertParentStudentLink(actor, studentId);
+    const typeRow = await getRequestType(actor.collegeId, input.requestTypeCode);
+    if (!typeRow)
+        throw new AppError(404, 'Request type not found');
+    if (!isLeaveRequestType(typeRow))
+        throw new AppError(400, 'Parents can submit only student leave or permission requests');
+    const kind = normalizeLeaveKind(String(typeRow.code), input.formData ?? {});
+    const policy = await db('student_leave_policies')
+        .where({ college_id: actor.collegeId, leave_type: kind, is_active: true })
+        .first()
+        .catch(() => null);
+    if (policy && !policy.parent_can_initiate)
+        throw new AppError(403, 'Parent initiated request is not allowed by policy');
+    const wfData = await getWorkflowForType(actor.collegeId, Number(typeRow.id));
+    const formData = { ...(input.formData ?? {}), requestedBy: 'PARENT', requesterParentUserId: actor.parentUserId };
+    const insertData = {
+        college_id: actor.collegeId,
+        student_id: studentId,
+        requester_type: 'PARENT',
+        requester_parent_user_id: actor.parentUserId,
+        parent_action_state: 'ACKNOWLEDGED',
+        request_type_id: typeRow.id,
+        workflow_id: wfData?.workflow.id ?? null,
+        title: input.title,
+        description: input.description ?? null,
+        status: 'DRAFT',
+        priority: input.priority ?? 'NORMAL',
+        form_data: JSON.stringify(formData),
+    };
+    const [id] = await db('student_service_requests').insert(insertData);
+    await recordServicesAudit({
+        collegeId: actor.collegeId,
+        actorId: actor.parentUserId,
+        actorType: 'PARENT',
+        action: 'REQUEST_CREATED_BY_PARENT',
+        entityType: 'student_service_request',
+        entityId: id,
+        afterState: { requestTypeCode: input.requestTypeCode, studentId, parentStudentLinkId: Number(link.id) },
+    });
+    return getParentRequest(actor, Number(id));
+}
+export async function submitParentInitiatedRequest(actor, requestId) {
+    const row = await assertParentRequestAccess(actor, requestId);
+    if (row.requester_type !== 'PARENT' || Number(row.requester_parent_user_id) !== actor.parentUserId) {
+        throw new AppError(403, 'Only the initiating parent can submit this draft');
+    }
+    if (row.status !== 'DRAFT')
+        throw new AppError(400, 'Only draft requests can be submitted');
+    return submitExistingRequest({
+        collegeId: actor.collegeId,
+        requestId,
+        actorId: actor.parentUserId,
+        actorType: 'PARENT',
+        actorName: actor.name,
+        studentId: Number(row.student_id),
+        requesterType: 'PARENT',
+    });
+}
+function isLeaveRequestType(typeRow) {
+    if (!typeRow)
+        return false;
+    return ['LEAVE', 'PERMISSION'].includes(String(typeRow.category ?? '')) || ['STUDENT_LEAVE_REQUEST', 'STUDENT_PERMISSION_REQUEST'].includes(String(typeRow.code ?? ''));
+}
+async function assertParentStudentLink(actor, studentId) {
+    const link = await db('parent_student_links as l')
+        .join('students as s', 's.id', 'l.student_id')
+        .where({
+        'l.parent_user_id': actor.parentUserId,
+        'l.student_id': studentId,
+        'l.college_id': actor.collegeId,
+        'l.is_active': true,
+        'l.verification_state': 'VERIFIED',
+        's.college_id': actor.collegeId,
+        's.is_active': true,
+    })
+        .select('l.*')
+        .first();
+    if (!link)
+        throw new AppError(403, 'You are not authorized to access this student', undefined, 'PARENT_STUDENT_LINK_REQUIRED');
+    return link;
+}
+async function assertParentRequestAccess(actor, requestId) {
+    const row = await db('student_service_requests')
+        .where({ id: requestId, college_id: actor.collegeId })
+        .first();
+    if (!row)
+        throw new AppError(404, 'Request not found');
+    await assertParentStudentLink(actor, Number(row.student_id));
+    return row;
+}
+export async function listParentLeaveRequests(actor, studentId, status) {
+    await assertParentStudentLink(actor, studentId);
+    let q = db('student_service_requests as r')
+        .join('student_service_request_types as t', 't.id', 'r.request_type_id')
+        .where({ 'r.student_id': studentId, 'r.college_id': actor.collegeId })
+        .whereNot('r.status', 'DRAFT')
+        .whereIn('t.category', ['LEAVE', 'PERMISSION'])
+        .select('r.*', 't.code as type_code', 't.label as type_label')
+        .orderBy('r.updated_at', 'desc');
+    if (status)
+        q = q.where('r.status', status);
+    const rows = await q;
+    return rows.map((r) => serializeRequest(r, { code: r.type_code, label: r.type_label }));
+}
+export async function getParentRequest(actor, requestId) {
+    const row = await assertParentRequestAccess(actor, requestId);
+    const typeRow = await db('student_service_request_types').where({ id: row.request_type_id }).first();
+    if (!isLeaveRequestType(typeRow))
+        throw new AppError(404, 'Request not found');
+    const actions = await db('student_request_actions as a')
+        .leftJoin('faculty_users as f', 'f.id', 'a.acted_by_faculty_id')
+        .leftJoin('parent_users as p', 'p.id', 'a.acted_by_parent_user_id')
+        .where({ 'a.request_id': requestId })
+        .where('a.is_internal', false)
+        .select('a.*', 'f.name as acted_by_faculty_name', 'p.name as acted_by_parent_name')
+        .orderBy('a.step_order');
+    const attachments = await db('student_service_attachments')
+        .where({ request_id: requestId })
+        .whereIn('visibility', ['ALL'])
+        .orderBy('created_at');
+    const linked = await listLinkedLeaveRequests(actor.collegeId, requestId);
+    return {
+        ...serializeRequest(row, typeRow),
+        type: typeRow ? { code: typeRow.code, label: typeRow.label, formSchema: parseJson(typeRow.form_schema, []) } : null,
+        timeline: actions.map((a) => ({
+            stepOrder: Number(a.step_order),
+            stepKey: a.step_key,
+            label: a.step_label,
+            actorRole: a.actor_role,
+            status: a.status,
+            remarks: a.remarks,
+            actedByName: a.acted_by_parent_name ?? a.acted_by_faculty_name ?? null,
+            actedAt: a.acted_at,
+        })),
+        attachments: attachments.map((a) => ({
+            id: Number(a.id),
+            fileName: a.file_name,
+            mimeType: a.mime_type,
+            fileSize: Number(a.file_size),
+            createdAt: a.created_at,
+        })),
+        linkedRequests: linked,
+    };
+}
+export async function parentActionOnRequest(actor, requestId, input) {
+    const row = await assertParentRequestAccess(actor, requestId);
+    const typeRow = await db('student_service_request_types').where({ id: row.request_type_id }).first();
+    if (!isLeaveRequestType(typeRow))
+        throw new AppError(404, 'Request not found');
+    if (!['SUBMITTED', 'UNDER_REVIEW', 'ACTION_REQUIRED'].includes(String(row.status)))
+        throw new AppError(400, 'Request is not actionable');
+    const currentAction = await db('student_request_actions')
+        .where({ request_id: requestId, status: 'IN_PROGRESS', actor_role: 'PARENT' })
+        .orderBy('step_order')
+        .first();
+    if (!currentAction)
+        throw new AppError(403, 'This request is not awaiting parent action');
+    const link = await assertParentStudentLink(actor, Number(row.student_id));
+    if (input.action === 'DECLINE') {
+        await db.transaction(async (trx) => {
+            await trx('student_request_actions').where({ id: currentAction.id }).update({
+                status: 'REJECTED',
+                acted_by_parent_user_id: actor.parentUserId,
+                parent_student_link_id: Number(link.id),
+                remarks: input.remarks ?? null,
+                acted_at: trx.fn.now(),
+            });
+            await trx('student_service_requests').where({ id: requestId }).update({
+                status: 'REJECTED',
+                current_stage: 'Parent Declined',
+                parent_action_state: 'DECLINED',
+                updated_at: trx.fn.now(),
+            });
+        });
+    }
+    else {
+        await db.transaction(async (trx) => {
+            await trx('student_request_actions').where({ id: currentAction.id }).update({
+                status: 'COMPLETED',
+                acted_by_parent_user_id: actor.parentUserId,
+                parent_student_link_id: Number(link.id),
+                remarks: input.remarks ?? null,
+                acted_at: trx.fn.now(),
+            });
+            const nextAction = await trx('student_request_actions')
+                .where({ request_id: requestId, status: 'PENDING' })
+                .orderBy('step_order')
+                .first();
+            if (nextAction) {
+                await trx('student_request_actions').where({ id: nextAction.id }).update({ status: 'IN_PROGRESS' });
+                await trx('student_service_requests').where({ id: requestId }).update({
+                    status: 'UNDER_REVIEW',
+                    current_stage: nextAction.step_label,
+                    current_step_order: nextAction.step_order,
+                    parent_action_state: 'APPROVED',
+                    updated_at: trx.fn.now(),
+                });
+            }
+            else {
+                await trx('student_service_requests').where({ id: requestId }).update({
+                    status: 'COMPLETED',
+                    current_stage: 'Completed',
+                    parent_action_state: 'APPROVED',
+                    completed_at: trx.fn.now(),
+                    updated_at: trx.fn.now(),
+                });
+            }
+        });
+    }
+    await recordServicesAudit({
+        collegeId: actor.collegeId,
+        actorId: actor.parentUserId,
+        actorType: 'PARENT',
+        actorName: actor.name,
+        action: input.action === 'DECLINE' ? 'REQUEST_PARENT_DECLINED' : 'REQUEST_PARENT_APPROVED',
+        entityType: 'student_service_request',
+        entityId: requestId,
+        reason: input.remarks ?? null,
+    });
+    return getParentRequest(actor, requestId);
+}
+async function listLinkedLeaveRequests(collegeId, requestId) {
+    if (!(await db.schema.hasTable('student_leave_linked_requests')))
+        return [];
+    const rows = await db('student_leave_linked_requests')
+        .where({ college_id: collegeId, academic_request_id: requestId })
+        .orderBy('created_at');
+    return rows.map((r) => ({
+        domain: r.linked_domain,
+        entityType: r.linked_entity_type,
+        entityId: Number(r.linked_entity_id),
+        correlationId: r.correlation_id,
+    }));
+}
 /** Faculty-owned Office request path; never impersonates a student. */
 export async function createFacultyRequest(actor, input) {
     await ensureCollegeServicesDefaults(actor.collegeId);
@@ -206,11 +513,31 @@ export async function submitRequest(actor, requestId) {
     const row = await assertStudentRequest(actor, requestId);
     if (row.status !== 'DRAFT')
         throw new AppError(400, 'Only draft requests can be submitted');
+    return submitExistingRequest({
+        collegeId: actor.collegeId,
+        requestId,
+        actorId: actor.studentId,
+        actorType: 'STUDENT',
+        studentId: actor.studentId,
+        requesterType: String(row.requester_type ?? 'STUDENT'),
+    });
+}
+async function submitExistingRequest(input) {
+    const row = await db('student_service_requests')
+        .where({ id: input.requestId, college_id: input.collegeId })
+        .first();
+    if (!row)
+        throw new AppError(404, 'Request not found');
+    if (row.status !== 'DRAFT')
+        throw new AppError(400, 'Only draft requests can be submitted');
     const typeRow = await db('student_service_request_types').where({ id: row.request_type_id }).first();
     if (!typeRow)
         throw new AppError(404, 'Request type not found');
-    const requestNumber = await nextRequestNumber(actor.collegeId);
-    const wfData = await getWorkflowForType(actor.collegeId, Number(typeRow.id));
+    const requestNumber = await nextRequestNumber(input.collegeId);
+    const wfData = await getWorkflowForType(input.collegeId, Number(typeRow.id));
+    const formData = parseJson(row.form_data, {});
+    const dynamicSteps = await resolveLeaveWorkflowSteps(input.collegeId, String(typeRow.code), formData, input.requesterType);
+    const workflowSteps = dynamicSteps ?? wfData?.steps ?? [];
     let status;
     let currentStage = null;
     let currentStepOrder = null;
@@ -218,18 +545,18 @@ export async function submitRequest(actor, requestId) {
         status = 'APPROVED';
         currentStage = 'Auto Approved';
     }
-    else if (!wfData || wfData.steps.length === 0) {
+    else if (!workflowSteps.length) {
         status = typeRow.auto_approve ? 'APPROVED' : 'SUBMITTED';
         currentStage = typeRow.auto_approve ? 'Auto Approved' : 'Pending Review';
     }
     else {
         status = 'UNDER_REVIEW';
-        const firstStep = wfData.steps[0];
+        const firstStep = workflowSteps[0];
         currentStage = firstStep.label;
         currentStepOrder = Number(firstStep.step_order);
-        for (const step of wfData.steps) {
+        for (const step of workflowSteps) {
             await db('student_request_actions').insert({
-                request_id: requestId,
+                request_id: input.requestId,
                 step_order: step.step_order,
                 step_key: step.step_key,
                 step_label: step.label,
@@ -238,40 +565,46 @@ export async function submitRequest(actor, requestId) {
             });
         }
     }
-    await db('student_service_requests').where({ id: requestId }).update({
+    const updateData = {
         request_number: requestNumber,
         status,
         current_stage: currentStage,
         current_step_order: currentStepOrder,
         submitted_at: db.fn.now(),
         updated_at: db.fn.now(),
-    });
+    };
+    if (workflowSteps.some((s) => s.actor_role === 'PARENT'))
+        updateData.parent_action_state = 'PENDING';
+    else if (isLeaveRequestType(typeRow) && input.requesterType === 'PARENT')
+        updateData.parent_action_state = 'ACKNOWLEDGED';
+    await db('student_service_requests').where({ id: input.requestId }).update(updateData);
     await recordServicesAudit({
-        collegeId: actor.collegeId,
-        actorId: actor.studentId,
-        actorType: 'STUDENT',
+        collegeId: input.collegeId,
+        actorId: input.actorId,
+        actorType: input.actorType,
+        actorName: input.actorName,
         action: 'REQUEST_SUBMITTED',
         entityType: 'student_service_request',
-        entityId: requestId,
+        entityId: input.requestId,
         afterState: { requestNumber, status },
     });
     await notifyStudent({
-        studentId: actor.studentId,
-        collegeId: actor.collegeId,
+        studentId: input.studentId,
+        collegeId: input.collegeId,
         type: 'REQUEST_SUBMITTED',
         title: 'Request submitted',
         body: `Your request ${requestNumber} has been submitted.`,
-        link: `/lms/services/requests/${requestId}`,
+        link: `/lms/services/requests/${input.requestId}`,
         relatedType: 'service_request',
-        relatedId: requestId,
+        relatedId: input.requestId,
     });
     // Finance integration — generate fee demand if request type requires payment
     if (await db.schema.hasColumn('student_service_request_types', 'fee_required')) {
         try {
             const { createServiceRequestFeeDemand } = await import('../finance/integration.js');
-            const demand = await createServiceRequestFeeDemand(actor.collegeId, actor.studentId, String(typeRow.code), requestId);
+            const demand = await createServiceRequestFeeDemand(input.collegeId, input.studentId, String(typeRow.code), input.requestId);
             if (demand && typeRow.fee_required) {
-                await db('student_service_requests').where({ id: requestId }).update({
+                await db('student_service_requests').where({ id: input.requestId }).update({
                     current_stage: 'Awaiting Fee Payment',
                     updated_at: db.fn.now(),
                 });
@@ -283,9 +616,11 @@ export async function submitRequest(actor, requestId) {
     }
     if (status === 'APPROVED' && typeRow.generates_certificate) {
         const { generateCertificateForRequest } = await import('./certificates.js');
-        await generateCertificateForRequest(actor.collegeId, requestId, null);
+        await generateCertificateForRequest(input.collegeId, input.requestId, null);
     }
-    return getStudentRequest(actor, requestId);
+    if (input.actorType === 'PARENT')
+        return getParentRequest({ parentUserId: input.actorId, collegeId: input.collegeId, role: 'PARENT', name: input.actorName ?? undefined }, input.requestId);
+    return getStudentRequest({ studentId: input.studentId, collegeId: input.collegeId }, input.requestId);
 }
 export async function cancelRequest(actor, requestId) {
     const row = await assertStudentRequest(actor, requestId);
@@ -518,6 +853,23 @@ export async function staffActionOnRequest(actor, requestId, input) {
         if (!canAct)
             throw new AppError(403, 'You are not authorized for this workflow step');
     }
+    // No-due auto-clearance: the FINANCE_CLEARANCE step (NO_DUE_CERTIFICATE,
+    // TRANSFER_CERTIFICATE, MIGRATION_CERTIFICATE) is validated against the
+    // real cross-domain aggregator instead of trusting a manual sign-off.
+    // SOURCE_ERROR/PENDING_INTEGRATION never silently count as cleared —
+    // `getFinancialClearance` already encodes that; we only gate on its
+    // authoritative `cleared` boolean. A rejection/return still bypasses this
+    // (only APPROVE/PROCESS on this specific step is gated).
+    if (currentAction?.step_key === 'FINANCE_CLEARANCE' && (input.action === 'APPROVE' || input.action === 'PROCESS')) {
+        const { getFinancialClearance } = await import('../finance/clearance.js');
+        const clearance = await getFinancialClearance(Number(row.student_id), actor.collegeId);
+        if (!clearance.cleared) {
+            const pendingDomains = Object.entries(clearance.domains)
+                .filter(([, status]) => status === 'DUE')
+                .map(([domain]) => domain);
+            throw new AppError(409, `Student has outstanding dues in: ${pendingDomains.join(', ') || 'Finance'}. Clearance must be resolved before this step can be approved.`);
+        }
+    }
     const beforeStatus = row.status;
     if (input.action === 'REJECT') {
         await db('student_service_requests').where({ id: requestId }).update({
@@ -610,6 +962,17 @@ export async function staffActionOnRequest(actor, requestId, input) {
             if (input.action === 'PROCESS' || typeRow.auto_approve) {
                 const { generateCertificateForRequest } = await import('./certificates.js');
                 await generateCertificateForRequest(actor.collegeId, requestId, actor.facultyUserId);
+            }
+        }
+        else if (typeRow?.code === 'DUPLICATE_CERTIFICATE') {
+            await db('student_service_requests').where({ id: requestId }).update({
+                status: 'APPROVED',
+                current_stage: 'Approved — Pending Duplicate Issuance',
+                updated_at: db.fn.now(),
+            });
+            if (input.action === 'PROCESS') {
+                const { duplicateDocument } = await import('./certificates.js');
+                await duplicateDocument(actor.collegeId, requestId, actor.facultyUserId);
             }
         }
         else {

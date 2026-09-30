@@ -42,6 +42,35 @@ export function isOwner(actor, employee) {
     return employee.facultyUserId != null && Number(employee.facultyUserId) === Number(actor.facultyUserId);
 }
 /**
+ * Departments the actor is HOD of. Prefers the canonical Academic Leadership
+ * authority (`hodDepartmentIds`, populated by the router's leadership
+ * enrichment); falls back to the legacy `faculty_users.role === 'HOD'` +
+ * `departmentId` representation when the actor was not enriched (unit fixtures,
+ * already-seeded role-based HODs). This is the single source of HOD scope for
+ * Faculty Profile — it does not introduce a second HOD model.
+ */
+export function hodDepartmentIds(actor) {
+    if (actor.hodDepartmentIds != null)
+        return actor.hodDepartmentIds.map(Number);
+    if (actor.role === 'HOD' && actor.departmentId != null)
+        return [Number(actor.departmentId)];
+    return [];
+}
+/** True when the actor is HOD of the employee's department (department-scoped). */
+function isHodOfDepartment(actor, employee) {
+    if (employee.departmentId == null)
+        return false;
+    return hodDepartmentIds(actor).includes(Number(employee.departmentId));
+}
+/** True when the actor can act as a verifier for anyone (UI capability hint). */
+export function canActAsVerifier(actor) {
+    if (isSuperAdmin(actor.role))
+        return false;
+    if (INSTITUTION_VERIFIER_ROLES.has(actor.role))
+        return true;
+    return hodDepartmentIds(actor).length > 0;
+}
+/**
  * Can the actor view this employee's academic profile?
  * - owner: always
  * - HOD: only within their own department
@@ -56,11 +85,7 @@ export function canViewProfile(actor, employee) {
         return true; // COLLEGE_ADMIN / SUPER_ADMIN (tenant-checked above)
     if (INSTITUTION_VIEWER_ROLES.has(actor.role))
         return true;
-    if (actor.role === 'HOD') {
-        return actor.departmentId != null && employee.departmentId != null
-            && Number(actor.departmentId) === Number(employee.departmentId);
-    }
-    return false;
+    return isHodOfDepartment(actor, employee);
 }
 /**
  * Can the actor verify records on this employee's profile?
@@ -75,11 +100,7 @@ export function canVerify(actor, employee) {
         return false; // hard self-verify guard
     if (INSTITUTION_VERIFIER_ROLES.has(actor.role))
         return true;
-    if (actor.role === 'HOD') {
-        return actor.departmentId != null && employee.departmentId != null
-            && Number(actor.departmentId) === Number(employee.departmentId);
-    }
-    return false;
+    return isHodOfDepartment(actor, employee);
 }
 /** Only the owning faculty edits their own eligible records. */
 export function canEditOwnRecords(actor, employee) {

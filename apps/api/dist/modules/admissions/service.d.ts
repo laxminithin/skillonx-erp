@@ -87,6 +87,22 @@ export declare const enquirySchema: z.ZodObject<{
     interestedProgramId?: number | null | undefined;
     nextFollowUp?: string | null | undefined;
 }>;
+export declare const guardianSchema: z.ZodObject<{
+    name: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    email: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    phone: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    relationship: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+}, "strict", z.ZodTypeAny, {
+    name?: string | null | undefined;
+    relationship?: string | null | undefined;
+    phone?: string | null | undefined;
+    email?: string | null | undefined;
+}, {
+    name?: string | null | undefined;
+    relationship?: string | null | undefined;
+    phone?: string | null | undefined;
+    email?: string | null | undefined;
+}>;
 export declare const applicantSchema: z.ZodObject<{
     cycleId: z.ZodNumber;
     enquiryId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
@@ -95,7 +111,22 @@ export declare const applicantSchema: z.ZodObject<{
     phone: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     profile: z.ZodNullable<z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>>;
     address: z.ZodNullable<z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>>;
-    guardian: z.ZodNullable<z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>>;
+    guardian: z.ZodNullable<z.ZodOptional<z.ZodObject<{
+        name: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+        email: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+        phone: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+        relationship: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    }, "strict", z.ZodTypeAny, {
+        name?: string | null | undefined;
+        relationship?: string | null | undefined;
+        phone?: string | null | undefined;
+        email?: string | null | undefined;
+    }, {
+        name?: string | null | undefined;
+        relationship?: string | null | undefined;
+        phone?: string | null | undefined;
+        email?: string | null | undefined;
+    }>>>;
     password: z.ZodOptional<z.ZodString>;
     admissionCategory: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     education: z.ZodDefault<z.ZodArray<z.ZodObject<{
@@ -177,7 +208,12 @@ export declare const applicantSchema: z.ZodObject<{
     password?: string | undefined;
     enquiryId?: number | null | undefined;
     profile?: Record<string, unknown> | null | undefined;
-    guardian?: Record<string, unknown> | null | undefined;
+    guardian?: {
+        name?: string | null | undefined;
+        relationship?: string | null | undefined;
+        phone?: string | null | undefined;
+        email?: string | null | undefined;
+    } | null | undefined;
     admissionCategory?: string | null | undefined;
 }, {
     name: string;
@@ -205,7 +241,12 @@ export declare const applicantSchema: z.ZodObject<{
     }[] | undefined;
     enquiryId?: number | null | undefined;
     profile?: Record<string, unknown> | null | undefined;
-    guardian?: Record<string, unknown> | null | undefined;
+    guardian?: {
+        name?: string | null | undefined;
+        relationship?: string | null | undefined;
+        phone?: string | null | undefined;
+        email?: string | null | undefined;
+    } | null | undefined;
     admissionCategory?: string | null | undefined;
 }>;
 export declare const applicantLoginSchema: z.ZodObject<{
@@ -258,14 +299,14 @@ export declare const documentUploadSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     fileName: string;
     mimeType: string;
-    fileSizeBytes: number;
     storageKey: string;
+    fileSizeBytes: number;
     requirementId?: number | null | undefined;
 }, {
     fileName: string;
     mimeType: string;
-    fileSizeBytes: number;
     storageKey: string;
+    fileSizeBytes: number;
     requirementId?: number | null | undefined;
 }>;
 export declare const eligibilityRuleSchema: z.ZodObject<{
@@ -399,6 +440,7 @@ export declare function confirmAdmission(actor: AdmissionActor, applicantId: num
     conversion: Record<string, unknown>;
     activationToken: null;
 }>;
+export declare function updateApplicantGuardian(actor: AdmissionActor, applicantId: number, input: z.infer<typeof guardianSchema>): Promise<any>;
 export declare function createAdmissionFeeDemand(actor: AdmissionActor, applicantId: number, input: z.infer<typeof admissionDemandSchema>): Promise<{
     id: number;
     studentId: number | null;

@@ -171,8 +171,8 @@ export declare const programSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     code: string;
     title: string;
-    deliveryMode: "ONLINE" | "HYBRID" | "IN_PERSON" | "SELF_PACED";
     providerType: "INTERNAL" | "EXTERNAL";
+    deliveryMode: "ONLINE" | "HYBRID" | "IN_PERSON" | "SELF_PACED";
     applicabilityType: "FACULTY" | "ALL" | "DEPARTMENT" | "NON_FACULTY" | "DESIGNATION" | "EMPLOYMENT_TYPE" | "SPECIFIC";
     link?: string | null | undefined;
     startDate?: string | null | undefined;
@@ -212,10 +212,10 @@ export declare const programSchema: z.ZodObject<{
     capacity?: number | null | undefined;
     courseId?: number | null | undefined;
     durationHours?: number | null | undefined;
+    providerType?: "INTERNAL" | "EXTERNAL" | undefined;
     deliveryMode?: "ONLINE" | "HYBRID" | "IN_PERSON" | "SELF_PACED" | undefined;
     venue?: string | null | undefined;
     cost?: Record<string, number> | null | undefined;
-    providerType?: "INTERNAL" | "EXTERNAL" | undefined;
     providerId?: number | null | undefined;
     trainerEmployeeId?: number | null | undefined;
     externalTrainerName?: string | null | undefined;
@@ -303,10 +303,10 @@ export declare const programUpdateSchema: z.ZodObject<{
     capacity?: number | null | undefined;
     courseId?: number | null | undefined;
     durationHours?: number | null | undefined;
+    providerType?: "INTERNAL" | "EXTERNAL" | undefined;
     deliveryMode?: "ONLINE" | "HYBRID" | "IN_PERSON" | "SELF_PACED" | undefined;
     venue?: string | null | undefined;
     cost?: Record<string, number> | null | undefined;
-    providerType?: "INTERNAL" | "EXTERNAL" | undefined;
     providerId?: number | null | undefined;
     trainerEmployeeId?: number | null | undefined;
     externalTrainerName?: string | null | undefined;
@@ -337,10 +337,10 @@ export declare const programUpdateSchema: z.ZodObject<{
     capacity?: number | null | undefined;
     courseId?: number | null | undefined;
     durationHours?: number | null | undefined;
+    providerType?: "INTERNAL" | "EXTERNAL" | undefined;
     deliveryMode?: "ONLINE" | "HYBRID" | "IN_PERSON" | "SELF_PACED" | undefined;
     venue?: string | null | undefined;
     cost?: Record<string, number> | null | undefined;
-    providerType?: "INTERNAL" | "EXTERNAL" | undefined;
     providerId?: number | null | undefined;
     trainerEmployeeId?: number | null | undefined;
     externalTrainerName?: string | null | undefined;
@@ -413,7 +413,7 @@ export declare const devNeedSchema: z.ZodObject<{
     targetPeriod: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, "strip", z.ZodTypeAny, {
     priority: "MEDIUM" | "HIGH" | "LOW";
-    sourceType: "HR" | "MANAGER" | "APPRAISAL" | "SELF" | "INSTITUTIONAL" | "ROLE" | "COMPLIANCE";
+    sourceType: "HR" | "INSTITUTIONAL" | "MANAGER" | "APPRAISAL" | "SELF" | "ROLE" | "COMPLIANCE";
     developmentArea: string;
     employeeId?: number | undefined;
     targetCompetency?: string | null | undefined;
@@ -423,7 +423,7 @@ export declare const devNeedSchema: z.ZodObject<{
     developmentArea: string;
     employeeId?: number | undefined;
     priority?: "MEDIUM" | "HIGH" | "LOW" | undefined;
-    sourceType?: "HR" | "MANAGER" | "APPRAISAL" | "SELF" | "INSTITUTIONAL" | "ROLE" | "COMPLIANCE" | undefined;
+    sourceType?: "HR" | "INSTITUTIONAL" | "MANAGER" | "APPRAISAL" | "SELF" | "ROLE" | "COMPLIANCE" | undefined;
     targetCompetency?: string | null | undefined;
     sourceRefId?: number | null | undefined;
     targetPeriod?: string | null | undefined;
@@ -539,16 +539,16 @@ export declare const externalCertSchema: z.ZodObject<{
     title: string;
     provider?: string | null | undefined;
     programId?: number | null | undefined;
+    fileReference?: string | null | undefined;
     issuedOn?: string | null | undefined;
     expiresOn?: string | null | undefined;
-    fileReference?: string | null | undefined;
 }, {
     title: string;
     provider?: string | null | undefined;
     programId?: number | null | undefined;
+    fileReference?: string | null | undefined;
     issuedOn?: string | null | undefined;
     expiresOn?: string | null | undefined;
-    fileReference?: string | null | undefined;
 }>;
 export declare const certVerifySchema: z.ZodObject<{
     decision: z.ZodEnum<["VERIFIED", "REJECTED"]>;

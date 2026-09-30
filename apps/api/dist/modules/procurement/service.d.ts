@@ -86,7 +86,7 @@ export declare const itemSchema: z.ZodObject<{
 }>;
 export declare const indentSchema: z.ZodObject<{
     departmentId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
-    consumerModule: z.ZodOptional<z.ZodEnum<["LAB", "HOSTEL", "TRANSPORT", "MAINTENANCE", "DEPARTMENT", "ADMINISTRATION", "IT", "OTHER"]>>;
+    consumerModule: z.ZodOptional<z.ZodEnum<["LAB", "HOSTEL", "TRANSPORT", "MAINTENANCE", "DEPARTMENT", "ADMINISTRATION", "IT", "CANTEEN", "OTHER"]>>;
     sourceEntityType: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     sourceEntityId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
     deliveryStoreId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
@@ -133,7 +133,7 @@ export declare const indentSchema: z.ZodObject<{
     sourceEntityType?: string | null | undefined;
     sourceEntityId?: number | null | undefined;
     requiredDate?: string | null | undefined;
-    consumerModule?: "OTHER" | "LAB" | "MAINTENANCE" | "HOSTEL" | "TRANSPORT" | "DEPARTMENT" | "IT" | "ADMINISTRATION" | undefined;
+    consumerModule?: "OTHER" | "LAB" | "MAINTENANCE" | "HOSTEL" | "TRANSPORT" | "DEPARTMENT" | "IT" | "ADMINISTRATION" | "CANTEEN" | undefined;
     deliveryStoreId?: number | null | undefined;
     urgency?: "LOW" | "CRITICAL" | "NORMAL" | "URGENT" | undefined;
 }, {
@@ -151,7 +151,7 @@ export declare const indentSchema: z.ZodObject<{
     sourceEntityType?: string | null | undefined;
     sourceEntityId?: number | null | undefined;
     requiredDate?: string | null | undefined;
-    consumerModule?: "OTHER" | "LAB" | "MAINTENANCE" | "HOSTEL" | "TRANSPORT" | "DEPARTMENT" | "IT" | "ADMINISTRATION" | undefined;
+    consumerModule?: "OTHER" | "LAB" | "MAINTENANCE" | "HOSTEL" | "TRANSPORT" | "DEPARTMENT" | "IT" | "ADMINISTRATION" | "CANTEEN" | undefined;
     deliveryStoreId?: number | null | undefined;
     urgency?: "LOW" | "CRITICAL" | "NORMAL" | "URGENT" | undefined;
 }>;
@@ -183,10 +183,10 @@ export declare const vendorSchema: z.ZodObject<{
     phone?: string | null | undefined;
     address?: string | null | undefined;
     email?: string | null | undefined;
+    categories?: string[] | undefined;
     contactPerson?: string | null | undefined;
     taxIdentifier?: string | null | undefined;
     bankDetails?: string | null | undefined;
-    categories?: string[] | undefined;
 }, {
     name: string;
     vendorCode: string;
@@ -194,10 +194,10 @@ export declare const vendorSchema: z.ZodObject<{
     phone?: string | null | undefined;
     address?: string | null | undefined;
     email?: string | null | undefined;
+    categories?: string[] | undefined;
     contactPerson?: string | null | undefined;
     taxIdentifier?: string | null | undefined;
     bankDetails?: string | null | undefined;
-    categories?: string[] | undefined;
 }>;
 export declare const rfqSchema: z.ZodObject<{
     indentId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
@@ -207,13 +207,13 @@ export declare const rfqSchema: z.ZodObject<{
 }, "strict", z.ZodTypeAny, {
     vendorIds: number[];
     dueDate?: string | null | undefined;
-    terms?: string | null | undefined;
     indentId?: number | null | undefined;
+    terms?: string | null | undefined;
 }, {
     vendorIds: number[];
     dueDate?: string | null | undefined;
-    terms?: string | null | undefined;
     indentId?: number | null | undefined;
+    terms?: string | null | undefined;
 }>;
 export declare const quotationSchema: z.ZodObject<{
     vendorId: z.ZodNumber;
@@ -261,9 +261,9 @@ export declare const quotationSchema: z.ZodObject<{
         discountAmount?: number | undefined;
     }[];
     vendorId: number;
-    validUntil?: string | null | undefined;
     quotationNo?: string | null | undefined;
     quotationDate?: string | null | undefined;
+    validUntil?: string | null | undefined;
     deliveryPeriod?: string | null | undefined;
     warranty?: string | null | undefined;
     paymentTerms?: string | null | undefined;
@@ -280,9 +280,9 @@ export declare const quotationSchema: z.ZodObject<{
         discountAmount?: number | undefined;
     }[];
     vendorId: number;
-    validUntil?: string | null | undefined;
     quotationNo?: string | null | undefined;
     quotationDate?: string | null | undefined;
+    validUntil?: string | null | undefined;
     deliveryPeriod?: string | null | undefined;
     warranty?: string | null | undefined;
     paymentTerms?: string | null | undefined;
@@ -375,6 +375,7 @@ export declare const grnSchema: z.ZodObject<{
     receivingStoreId: z.ZodNumber;
     inspectionStatus: z.ZodOptional<z.ZodEnum<["ACCEPTED", "PARTIALLY_ACCEPTED", "REJECTED", "PENDING_INSPECTION"]>>;
     remarks: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    idempotencyKey: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     items: z.ZodArray<z.ZodObject<{
         poItemId: z.ZodNumber;
         receivedQuantity: z.ZodNumber;
@@ -382,22 +383,22 @@ export declare const grnSchema: z.ZodObject<{
         rejectedQuantity: z.ZodOptional<z.ZodNumber>;
         rejectionReason: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     }, "strict", z.ZodTypeAny, {
-        poItemId: number;
         receivedQuantity: number;
+        poItemId: number;
         acceptedQuantity: number;
         rejectionReason?: string | null | undefined;
         rejectedQuantity?: number | undefined;
     }, {
-        poItemId: number;
         receivedQuantity: number;
+        poItemId: number;
         acceptedQuantity: number;
         rejectionReason?: string | null | undefined;
         rejectedQuantity?: number | undefined;
     }>, "many">;
 }, "strict", z.ZodTypeAny, {
     items: {
-        poItemId: number;
         receivedQuantity: number;
+        poItemId: number;
         acceptedQuantity: number;
         rejectionReason?: string | null | undefined;
         rejectedQuantity?: number | undefined;
@@ -405,13 +406,14 @@ export declare const grnSchema: z.ZodObject<{
     receivedDate: string;
     receivingStoreId: number;
     remarks?: string | null | undefined;
+    idempotencyKey?: string | null | undefined;
     deliveryReference?: string | null | undefined;
     invoiceReference?: string | null | undefined;
     inspectionStatus?: "REJECTED" | "ACCEPTED" | "PARTIALLY_ACCEPTED" | "PENDING_INSPECTION" | undefined;
 }, {
     items: {
-        poItemId: number;
         receivedQuantity: number;
+        poItemId: number;
         acceptedQuantity: number;
         rejectionReason?: string | null | undefined;
         rejectedQuantity?: number | undefined;
@@ -419,13 +421,14 @@ export declare const grnSchema: z.ZodObject<{
     receivedDate: string;
     receivingStoreId: number;
     remarks?: string | null | undefined;
+    idempotencyKey?: string | null | undefined;
     deliveryReference?: string | null | undefined;
     invoiceReference?: string | null | undefined;
     inspectionStatus?: "REJECTED" | "ACCEPTED" | "PARTIALLY_ACCEPTED" | "PENDING_INSPECTION" | undefined;
 }>;
 export declare const issueSchema: z.ZodObject<{
     storeId: z.ZodNumber;
-    consumerModule: z.ZodEnum<["LAB", "HOSTEL", "TRANSPORT", "MAINTENANCE", "DEPARTMENT", "ADMINISTRATION", "IT", "OTHER"]>;
+    consumerModule: z.ZodEnum<["LAB", "HOSTEL", "TRANSPORT", "MAINTENANCE", "DEPARTMENT", "ADMINISTRATION", "IT", "CANTEEN", "OTHER"]>;
     departmentId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
     recipientName: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     sourceEntityType: z.ZodNullable<z.ZodOptional<z.ZodString>>;
@@ -468,7 +471,7 @@ export declare const issueSchema: z.ZodObject<{
         taxAmount?: number | undefined;
         discountAmount?: number | undefined;
     }[];
-    consumerModule: "OTHER" | "LAB" | "MAINTENANCE" | "HOSTEL" | "TRANSPORT" | "DEPARTMENT" | "IT" | "ADMINISTRATION";
+    consumerModule: "OTHER" | "LAB" | "MAINTENANCE" | "HOSTEL" | "TRANSPORT" | "DEPARTMENT" | "IT" | "ADMINISTRATION" | "CANTEEN";
     storeId: number;
     departmentId?: number | null | undefined;
     purpose?: string | null | undefined;
@@ -486,7 +489,7 @@ export declare const issueSchema: z.ZodObject<{
         taxAmount?: number | undefined;
         discountAmount?: number | undefined;
     }[];
-    consumerModule: "OTHER" | "LAB" | "MAINTENANCE" | "HOSTEL" | "TRANSPORT" | "DEPARTMENT" | "IT" | "ADMINISTRATION";
+    consumerModule: "OTHER" | "LAB" | "MAINTENANCE" | "HOSTEL" | "TRANSPORT" | "DEPARTMENT" | "IT" | "ADMINISTRATION" | "CANTEEN";
     storeId: number;
     departmentId?: number | null | undefined;
     purpose?: string | null | undefined;
@@ -612,6 +615,42 @@ export declare const financeHandoffSchema: z.ZodObject<{
 }, {
     idempotencyKey?: string | null | undefined;
     invoiceReference?: string | null | undefined;
+}>;
+export declare const assetHandoffSchema: z.ZodObject<{
+    assets: z.ZodArray<z.ZodObject<{
+        assetTag: z.ZodString;
+        serialNumber: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+        name: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    }, "strict", z.ZodTypeAny, {
+        assetTag: string;
+        name?: string | null | undefined;
+        serialNumber?: string | null | undefined;
+    }, {
+        assetTag: string;
+        name?: string | null | undefined;
+        serialNumber?: string | null | undefined;
+    }>, "many">;
+    departmentId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    custodianFacultyId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    locationRoomId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+}, "strict", z.ZodTypeAny, {
+    assets: {
+        assetTag: string;
+        name?: string | null | undefined;
+        serialNumber?: string | null | undefined;
+    }[];
+    departmentId?: number | null | undefined;
+    custodianFacultyId?: number | null | undefined;
+    locationRoomId?: number | null | undefined;
+}, {
+    assets: {
+        assetTag: string;
+        name?: string | null | undefined;
+        serialNumber?: string | null | undefined;
+    }[];
+    departmentId?: number | null | undefined;
+    custodianFacultyId?: number | null | undefined;
+    locationRoomId?: number | null | undefined;
 }>;
 export declare function dashboard(actor: ProcurementActor): Promise<{
     metrics: {
@@ -816,6 +855,26 @@ export declare function getGrn(actor: ProcurementActor, id: number, trx?: Knex.T
         [k: string]: unknown;
     }[];
 }>;
+/**
+ * Campus OS Phase 1 — Asset handoff.
+ *
+ * A GRN line for an ASSET_TRACKABLE item is not automatically turned into an asset —
+ * this is a separate, explicitly governed transition, gated by `procurement.asset.handoff`
+ * (Phase-1 brief §5/§31). It calls the frozen P0.2 Asset Management engine's own
+ * `registerAsset()` unchanged; P0.2's schema/code is never modified.
+ *
+ * Idempotency (§32): `procurement_asset_handoffs` has a unique (college_id, grn_item_id)
+ * constraint, so at most one handoff is ever recorded per GRN line. Additionally, each
+ * asset tag is checked for prior existence before creating it, so a retry after a
+ * partial failure (§50) reuses already-created assets instead of erroring or duplicating.
+ */
+export declare function handoffGrnItemToAssets(actor: ProcurementActor, grnItemId: number, input: z.infer<typeof assetHandoffSchema>): Promise<{
+    assetIds: any;
+    idempotent: boolean;
+}>;
+export declare function getAssetHandoff(actor: ProcurementActor, grnItemId: number): Promise<{
+    [k: string]: unknown;
+} | null>;
 export declare function listGrns(actor: ProcurementActor): Promise<{
     grns: {
         [k: string]: unknown;
@@ -880,3 +939,26 @@ export declare function reports(actor: ProcurementActor): Promise<{
     }[];
     pendingPurchaseOrders: number;
 }>;
+/**
+ * Campus OS Phase 0 — Vendor Master consolidation.
+ *
+ * `procurement_vendors` is the canonical, cross-campus vendor master (see
+ * docs/CAMPUS_OS_PHASE0_PREIMPLEMENTATION_AUDIT.md). This accessor exists so future
+ * consumers (Asset Management, and any later module) can read the vendor directory
+ * without pulling the full `/masters` bundle and without a second vendor table.
+ * It does not add columns or change existing vendor behaviour.
+ */
+export declare const VENDOR_CATEGORY_SUGGESTIONS: readonly ["SUPPLIER", "SERVICE_PROVIDER", "CONTRACTOR", "TRANSPORT_VENDOR", "MAINTENANCE_VENDOR", "EQUIPMENT_VENDOR", "OTHER"];
+export declare function listVendorDirectory(actor: ProcurementActor, opts?: {
+    activeOnly?: boolean;
+}): Promise<{
+    [k: string]: unknown;
+}[]>;
+/**
+ * Internal cross-module lookup, not exposed over HTTP. Tenant-scoped by the caller's
+ * own collegeId. Returns null rather than throwing so a stale/removed vendor reference
+ * degrades gracefully in a consumer module's display, instead of breaking it.
+ */
+export declare function findVendorRef(collegeId: number, vendorId: number | null | undefined): Promise<{
+    [k: string]: unknown;
+} | null>;

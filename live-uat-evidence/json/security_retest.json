@@ -1,0 +1,104 @@
+{
+  "executedAt": "2026-09-29T09:26:54.504Z",
+  "cases": [
+    {
+      "name": "http-root",
+      "status": 301,
+      "headers": {
+        "location": "https://campus.skillonx.com/",
+        "server": "nginx"
+      }
+    },
+    {
+      "name": "https-root",
+      "status": 200,
+      "headers": {
+        "access-control-allow-origin": "*",
+        "access-control-allow-methods": "GET",
+        "x-powered-by": "PleskLin",
+        "server": "nginx"
+      }
+    },
+    {
+      "name": "api-health-no-origin",
+      "status": 200,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains",
+        "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "no-referrer",
+        "access-control-allow-credentials": "true",
+        "x-powered-by": "PleskLin",
+        "server": "nginx",
+        "vary": "Origin"
+      }
+    },
+    {
+      "name": "api-health-trusted-origin",
+      "status": 200,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains",
+        "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "no-referrer",
+        "access-control-allow-origin": "https://campus.skillonx.com",
+        "access-control-allow-credentials": "true",
+        "x-powered-by": "PleskLin",
+        "server": "nginx",
+        "vary": "Origin"
+      }
+    },
+    {
+      "name": "api-health-untrusted-origin",
+      "status": 200,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains",
+        "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "no-referrer",
+        "access-control-allow-credentials": "true",
+        "x-powered-by": "PleskLin",
+        "server": "nginx",
+        "vary": "Origin"
+      }
+    },
+    {
+      "name": "api-login-preflight-trusted",
+      "status": 204,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains",
+        "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "no-referrer",
+        "access-control-allow-origin": "https://campus.skillonx.com",
+        "access-control-allow-credentials": "true",
+        "access-control-allow-methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+        "access-control-allow-headers": "content-type",
+        "x-powered-by": "PleskLin",
+        "server": "nginx",
+        "vary": "Origin,Access-Control-Request-Headers"
+      }
+    },
+    {
+      "name": "api-login-preflight-untrusted",
+      "status": 204,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains",
+        "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "no-referrer",
+        "access-control-allow-credentials": "true",
+        "access-control-allow-methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+        "access-control-allow-headers": "content-type",
+        "x-powered-by": "PleskLin",
+        "server": "nginx",
+        "vary": "Origin,Access-Control-Request-Headers"
+      }
+    }
+  ]
+}

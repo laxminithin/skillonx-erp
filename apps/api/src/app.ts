@@ -79,6 +79,14 @@ import { platformRouter } from './modules/platform/controller.js';
 import { parentAuthRouter, parentPortalRouter } from './modules/parent/controller.js';
 import { alumniAdminRouter, alumniAuthRouter, alumniRouter } from './modules/alumni/controller.js';
 import { procurementRouter } from './modules/procurement/controller.js';
+import { assetManagementRouter } from './modules/assetManagement/controller.js';
+import { workflowRouter } from './modules/workflowEngine/controller.js';
+import { documentEngineRouter } from './modules/documentEngine/controller.js';
+import { canteenRouter } from './modules/canteen/controller.js';
+import { securityRouter } from './modules/security/controller.js';
+import { researchRouter } from './modules/research/controller.js';
+import { iqacRouter } from './modules/iqac/controller.js';
+import { eventsRouter, studentEventsRouter } from './modules/events/controller.js';
 import { ensureAcademicContent } from './modules/academicContent.js';
 import { ensureAcademicStandardAndLibraries } from './modules/attainment/bootstrap.js';
 import { startHrLifecycleScheduler } from './modules/hr/scheduler.js';
@@ -111,6 +119,14 @@ app.use('/api/alumni-auth', alumniAuthRouter);
 app.use('/api/alumni', alumniRouter);
 app.use('/api/alumni-admin', alumniAdminRouter);
 app.use('/api/procurement', procurementRouter);
+app.use('/api/assets', assetManagementRouter);
+app.use('/api/workflow', workflowRouter);
+app.use('/api/documents', documentEngineRouter);
+app.use('/api/canteen', canteenRouter);
+app.use('/api/security', securityRouter);
+app.use('/api/research', researchRouter);
+app.use('/api/iqac', iqacRouter);
+app.use('/api/events', eventsRouter);
 app.use('/api/student/attendance', studentAttendanceRouter);
 app.use('/api/student', studentTimetableRouter);
 app.use('/api/student', studentExaminationRouter);
@@ -119,6 +135,7 @@ app.use('/api/student', studentServicesRouter);
 app.use('/api/student', studentMentoringRouter);
 app.use('/api/student', studentFinanceRouter);
 app.use('/api/student', studentLibraryRouter);
+app.use('/api/student', studentEventsRouter);
 app.use('/api/student', studentPlacementRouter);
 app.use('/api/student', studentHostelRouter);
 app.use('/api/student', studentTransportRouter);
@@ -182,11 +199,13 @@ app.use(errorHandler);
 
 app.listen(env.PORT, () => {
   console.log(`SkillonX Lecturer LMS API listening on http://localhost:${env.PORT}`);
-  ensureAcademicContent().catch((err) => {
-    console.error('Academic content bootstrap failed:', err);
-  });
-  ensureAcademicStandardAndLibraries().catch((err) => {
-    console.error('Academic standard bootstrap failed:', err);
-  });
-  startHrLifecycleScheduler();
+  if (env.NODE_ENV !== 'test') {
+    ensureAcademicContent().catch((err) => {
+      console.error('Academic content bootstrap failed:', err);
+    });
+    ensureAcademicStandardAndLibraries().catch((err) => {
+      console.error('Academic standard bootstrap failed:', err);
+    });
+    startHrLifecycleScheduler();
+  }
 });

@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build outputs (regenerable — sources live in src/ and public/)
+apps/api/dist/
+apps/web/dist/
+dist/
+build/
+
+# Environment / secrets — never commit real credentials.
+# If an example/template file is ever added, uncomment the matching line below.
+.env
+.env.*
+# !.env.example
+
+# Test / QA runtime artifacts
+coverage/
+apps/web/playwright-report/
+apps/web/test-results/
+apps/web/e2e/.auth/
+tmp/
+
+# User-uploaded / runtime-generated storage
+apps/api/uploads/
+
+# OS / editor junk
+.DS_Store
+*.log
+npm-debug.log*

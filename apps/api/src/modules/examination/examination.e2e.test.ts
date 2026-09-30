@@ -1,7 +1,7 @@
 /**
  * Examination module E2E invariants. Skips when E2E seed is absent.
  */
-import { describe, it } from 'node:test';
+import { describe, it, before } from 'node:test';
 import assert from 'node:assert/strict';
 import { db } from '../../db/index.js';
 import { computeEligibility, condoneEligibility } from './eligibility.js';
@@ -55,6 +55,19 @@ function coeActor(row: { id: number; college_id: number; department_id?: number 
 }
 
 describe('examination E2E', () => {
+  before(async () => {
+    // 'condonation records audit' (below) permanently condones the low-attendance student's
+    // eligibility row — condonation is intentionally sticky, so computeEligibility() never
+    // overwrites it on its own. Clear that one specific override before this suite runs so a
+    // prior run's condonation doesn't leak into 'low attendance student is not eligible'.
+    const ctx = await e2eContext();
+    if (ctx?.lowAtt && ctx.exam) {
+      await db('exam_eligibility')
+        .where({ exam_id: ctx.exam.id, student_id: ctx.lowAtt.id, status: 'CONDONED' })
+        .delete();
+    }
+  });
+
   it('eligible student passes eligibility check', async () => {
     const ctx = await e2eContext();
     if (!ctx?.admin) return;

@@ -1,4 +1,4 @@
-import { test, expect, type APIRequestContext, type Page } from '@playwright/test';
+import { test, expect, type APIRequestContext, type Locator, type Page } from '@playwright/test';
 import path from 'node:path';
 import { mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -8,7 +8,7 @@ const screenshotDir = path.join(__dirname, 'screenshots', 'hostel');
 const API = 'http://127.0.0.1:4000';
 const STAFF_PASSWORD = 'Password123';
 const STUDENT_PASSWORD = process.env.MOBILE_E2E_STUDENT_PASSWORD || 'Password123';
-const shotViewports = ['1920x1080', '390x844'];
+const shotViewports = ['1440x900', '390x844'];
 
 type AuthKind = 'student' | 'staff';
 
@@ -66,9 +66,9 @@ const experiences: Experience[] = [
     auth: 'staff',
     email: 'qa.warden@vviet.edu.in',
     password: STAFF_PASSWORD,
-    heading: /Hostel Management/i,
-    expectedText: /Occupancy|Action Required|Pending Applications|Waitlisted|Available Beds|Active Residents|Complaints/i,
-    primaryControl: /Applications|Residents|Rooms & Beds|Complaints|Gate Panel/i,
+    heading: /Warden Portal/i,
+    expectedText: /Action Required|Pending allocations|Available beds|Residents|Open complaints/i,
+    primaryControl: /Pending allocations|Residents|Rooms & Beds|Entry \/ Exit/i,
     screenshotName: 'warden-dashboard',
   },
   {
@@ -77,9 +77,9 @@ const experiences: Experience[] = [
     auth: 'staff',
     email: 'qa.warden@vviet.edu.in',
     password: STAFF_PASSWORD,
-    heading: /Pending Applications/i,
+    heading: /New \/ Pending Allocation/i,
     expectedText: /Application|No pending applications|Approve|Waitlist|Reject|4VV24CS002/i,
-    primaryControl: /Approve|Waitlist|Reject|Pending Applications/i,
+    primaryControl: /Approve|Waitlist|Reject|New \/ Pending Allocation/i,
   },
   {
     title: 'Room & Bed Management',
@@ -87,7 +87,7 @@ const experiences: Experience[] = [
     auth: 'staff',
     email: 'qa.warden@vviet.edu.in',
     password: STAFF_PASSWORD,
-    heading: /Room Occupancy/i,
+    heading: /Rooms & Beds/i,
     expectedText: /Block A|Floor|A-101|A-101-A|Available/i,
     primaryControl: /A-101|A-102|A-103/i,
     screenshotName: 'room-bed-management',
@@ -98,10 +98,43 @@ const experiences: Experience[] = [
     auth: 'staff',
     email: 'qa.warden@vviet.edu.in',
     password: STAFF_PASSWORD,
-    heading: /Residents/i,
+    heading: /Resident Directory/i,
     expectedText: /USN|Name|Room|Bed|Status|4VV24CS001/i,
     primaryControl: /4VV24CS001|A-101|ACTIVE/i,
     screenshotName: 'resident-allocation-workspace',
+  },
+  {
+    title: 'Room Transfer Workspace',
+    route: '/hostel/transfers',
+    auth: 'staff',
+    email: 'qa.warden@vviet.edu.in',
+    password: STAFF_PASSWORD,
+    heading: /Room Transfers/i,
+    expectedText: /Select resident|New available bed|Optional transfer reason/i,
+    primaryControl: /Confirm transfer/i,
+    screenshotName: 'room-transfer-workspace',
+  },
+  {
+    title: 'Hostel Maintenance Workspace',
+    route: '/hostel/maintenance',
+    auth: 'staff',
+    email: 'qa.warden@vviet.edu.in',
+    password: STAFF_PASSWORD,
+    heading: /^Maintenance$/i,
+    expectedText: /Issue title|Building or block|Hostel maintenance tickets/i,
+    primaryControl: /Raise ticket/i,
+    screenshotName: 'hostel-maintenance-workspace',
+  },
+  {
+    title: 'Hostel Reports Workspace',
+    route: '/hostel/reports',
+    auth: 'staff',
+    email: 'qa.warden@vviet.edu.in',
+    password: STAFF_PASSWORD,
+    heading: /Hostel Reports/i,
+    expectedText: /Active Residents|Occupancy|Available Beds|Pending Allocation/i,
+    primaryControl: /Export residents CSV/i,
+    screenshotName: 'hostel-reports-workspace',
   },
   {
     title: 'Principal / Management Hostel Oversight',
@@ -170,12 +203,20 @@ async function assertContainedTables(page: Page) {
   expect(escaped, 'wide tables should be intentionally horizontally contained').toEqual([]);
 }
 
+async function expectAnyVisible(locator: Locator) {
+  await expect.poll(async () => {
+    const matches = await locator.all();
+    const visibility = await Promise.all(matches.map((match) => match.isVisible()));
+    return visibility.some(Boolean);
+  }).toBe(true);
+}
+
 async function waitForStablePage(page: Page, experience: Experience) {
   await expect(page).not.toHaveURL(/\/login|\/lms\/login/);
   await expect(page.getByRole('heading', { name: experience.heading }).first()).toBeVisible({ timeout: 20_000 });
   await page.locator('.animate-pulse').first().waitFor({ state: 'detached', timeout: 15_000 }).catch(() => undefined);
-  await expect(page.getByText(experience.expectedText).first()).toBeVisible({ timeout: 15_000 });
-  await expect(page.getByText(experience.primaryControl).first()).toBeVisible({ timeout: 15_000 });
+  await expectAnyVisible(page.getByText(experience.expectedText));
+  await expectAnyVisible(page.getByText(experience.primaryControl));
   if (experience.forbiddenControls) {
     await expect(page.getByRole('button', { name: experience.forbiddenControls })).toHaveCount(0);
     await expect(page.getByRole('link', { name: experience.forbiddenControls })).toHaveCount(0);
@@ -234,4 +275,42 @@ test.describe('Hostel Management responsive freeze QA', () => {
       await maybeScreenshot(page, testInfo.project.name, experience);
     });
   }
+
+  test('Faculty + Warden identity keeps portal contexts isolated', async ({ page, request }) => {
+    const experience: Experience = {
+      title: 'Faculty Warden', route: '/hostel', auth: 'staff',
+      email: 'qa.faculty.warden@vviet.edu.in', password: STAFF_PASSWORD,
+      heading: /Warden Portal/i, expectedText: /Action Required/i, primaryControl: /Pending allocations/i,
+    };
+    const token = await login(request, experience);
+
+    const denied = await request.get(`${API}/api/hostel/dashboard`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    expect(denied.status()).toBe(403);
+    const allowed = await request.get(`${API}/api/hostel/dashboard`, {
+      headers: { Authorization: `Bearer ${token}`, 'X-Portal-Context': 'WARDEN' },
+    });
+    expect(allowed.ok()).toBeTruthy();
+
+    await applyToken(page, token);
+    await page.evaluate(() => localStorage.setItem('portal_context', 'WARDEN'));
+    await page.goto('/hostel');
+    await expect(page.getByRole('heading', { name: /Warden Portal/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Courses|Assignments|Quizzes|Lesson Plans|Question Bank/i })).toHaveCount(0);
+
+    await page.evaluate(() => localStorage.setItem('portal_context', 'FACULTY'));
+    await page.goto('/dashboard');
+    await expect(page).toHaveURL(/\/dashboard/);
+    await expect(page.getByRole('link', { name: /Warden Portal/i })).toHaveCount(1);
+  });
+
+  test('Warden-only identity cannot enter direct Faculty routes', async ({ page, request }) => {
+    const experience = experiences.find((item) => item.title === 'Warden Dashboard')!;
+    const token = await login(request, experience);
+    await applyToken(page, token);
+    await page.goto('/courses');
+    await expect(page).toHaveURL(/\/hostel$/);
+    await expect(page.getByRole('heading', { name: /Warden Portal/i })).toBeVisible();
+  });
 });

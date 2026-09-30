@@ -20,9 +20,11 @@ const identities = [
   ['qa.librarian.office@vviet.edu.in', 'Librarian QA', 'LIBRARIAN'],
   ['qa.warden.office@vviet.edu.in', 'Warden QA', 'WARDEN'],
   ['qa.transport.office@vviet.edu.in', 'Transport QA', 'TRANSPORT_OFFICER'],
-  ['qa.tp.office@vviet.edu.in', 'T&P QA', 'TP_OFFICER'],
+  ['qa.tp.office@vviet.edu.in', 'T&P QA', 'PLACEMENT_OFFICER'],
   ['qa.hr.office@vviet.edu.in', 'HR QA', 'HR_MANAGER'],
   ['qa.superadmin.office@vviet.edu.in', 'SUPER_ADMIN QA', 'SUPER_ADMIN'],
+  ['qa.grievance.office@vviet.edu.in', 'Grievance Officer QA', 'GRIEVANCE_OFFICER'],
+  ['qa.welfare.office@vviet.edu.in', 'Student Welfare Officer QA', 'STUDENT_WELFARE_OFFICER'],
 ] as const;
 
 export async function seedOfficeQa() {

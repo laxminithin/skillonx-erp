@@ -1,7 +1,7 @@
 import { db } from '../../db/index.js';
 import { refreshOverdueStatuses, sendDueReminders } from './circulation.js';
 import { expireReadyReservations } from './reservations.js';
-import { generateOverdueFine } from './fines.js';
+import { generateOverdueFine, reconcilePendingFineFinanceHandoffs } from './fines.js';
 /** Idempotent scheduled library maintenance for a college. */
 export async function runLibraryJobs(collegeId) {
     const overdue = await refreshOverdueStatuses(collegeId);
@@ -13,7 +13,9 @@ export async function runLibraryJobs(collegeId) {
     for (const loan of overdueLoans) {
         await generateOverdueFine(Number(loan.id), collegeId);
     }
-    return { overdue, reminders, expired };
+    // Retry any fine → Finance handoffs that failed or were never attempted
+    const financeHandoffs = await reconcilePendingFineFinanceHandoffs(collegeId);
+    return { overdue, reminders, expired, financeHandoffs };
 }
 export async function runLibraryJobsAllColleges() {
     const colleges = await db('colleges').select('id');

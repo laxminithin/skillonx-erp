@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
+  Award,
   BriefcaseBusiness,
   CalendarDays,
   HandCoins,
@@ -46,10 +47,12 @@ type AlumniProfile = {
 
 const nav = [
   { to: '/alumni', label: 'Home', icon: LayoutDashboard },
+  { to: '/alumni/360', label: 'My 360', icon: UserRound },
   { to: '/alumni/profile', label: 'Profile', icon: UserRound },
   { to: '/alumni/network', label: 'Network', icon: Network },
   { to: '/alumni/events', label: 'Events', icon: CalendarDays },
   { to: '/alumni/opportunities', label: 'Opportunities', icon: BriefcaseBusiness },
+  { to: '/alumni/recognition', label: 'Recognition', icon: Award },
   { to: '/alumni/contributions', label: 'Contributions', icon: HandCoins },
 ];
 
@@ -202,6 +205,7 @@ export function AlumniDashboardPage() {
       <PageHeader
         title={`Welcome, ${profile.name}`}
         subtitle={[profile.headline, profile.departmentName, profile.graduationYear].filter(Boolean).join(' · ')}
+        actions={<Link className="inline-flex items-center rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm font-medium hover:bg-surface-muted" to="/alumni/360">Open My 360</Link>}
       />
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <Metric label="Profile completion" value={`${data.profileCompletion}%`} />
@@ -499,16 +503,32 @@ export function AlumniAdminPage() {
   useDocumentTitle('Alumni Administration');
   const [overview, setOverview] = useState<any>(null);
   const [profiles, setProfiles] = useState<any[]>([]);
+  const [allProfiles, setAllProfiles] = useState<any[]>([]);
   const [message, setMessage] = useState('');
   const reload = () => {
     api('/api/alumni-admin/overview').then(setOverview);
     api<{ profiles: any[] }>('/api/alumni-admin/profiles?verificationState=PENDING').then((r) => setProfiles(r.profiles));
+    api<{ profiles: any[] }>('/api/alumni-admin/profiles?limit=30').then((r) => setAllProfiles(r.profiles));
   };
   useEffect(reload, []);
   const totals = overview?.totals ?? {};
   return (
     <div className="space-y-6">
-      <PageHeader title="Alumni Administration" subtitle="Verification, analytics, and lifecycle controls." />
+      <PageHeader
+        title="Alumni Administration"
+        subtitle="Verification, Alumni 360, relationship CRM, and lifecycle controls."
+        actions={(
+          <div className="flex flex-wrap gap-2">
+            <Link className="inline-flex items-center rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm font-medium hover:bg-surface-muted" to="/alumni-admin/recognition">Recognition</Link>
+            <Link className="inline-flex items-center rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm font-medium hover:bg-surface-muted" to="/alumni-admin/impact">Impact</Link>
+            <Link className="inline-flex items-center rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm font-medium hover:bg-surface-muted" to="/alumni-admin/assistant">Assistant</Link>
+            <Link className="inline-flex items-center rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm font-medium hover:bg-surface-muted" to="/alumni-admin/matching">Matching</Link>
+            <Link className="inline-flex items-center rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm font-medium hover:bg-surface-muted" to="/alumni-admin/engagement">Engagement</Link>
+            <Link className="inline-flex items-center rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm font-medium hover:bg-surface-muted" to="/alumni-admin/intelligence">Intelligence</Link>
+            <Link className="inline-flex items-center rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm font-medium hover:bg-surface-muted" to="/alumni-admin/crm">CRM workspace</Link>
+          </div>
+        )}
+      />
       {message ? <div className="rounded-[var(--radius-md)] border border-success/20 bg-success-soft p-3 text-sm text-success">{message}</div> : null}
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <Metric label="Total alumni" value={totals.alumni ?? 0} />
@@ -525,10 +545,35 @@ export function AlumniAdminPage() {
               {profiles.map((p) => (
                 <tr key={p.id} className="border-b last:border-0">
                   <td className="p-3">{p.name}</td><td className="p-3">{p.usn}</td><td className="p-3">{p.programName ?? '—'}</td><td className="p-3">{p.graduationYear}</td>
-                  <td className="p-3"><Button size="sm" onClick={async () => { await api(`/api/alumni-admin/profiles/${p.id}/verify`, { method: 'POST' }); setMessage('Profile verified.'); reload(); }}><ShieldCheck size={14} /> Verify</Button></td>
+                  <td className="p-3">
+                    <div className="flex flex-wrap gap-2">
+                      <Button size="sm" onClick={async () => { await api(`/api/alumni-admin/profiles/${p.id}/verify`, { method: 'POST' }); setMessage('Profile verified.'); reload(); }}><ShieldCheck size={14} /> Verify</Button>
+                      <Link className="inline-flex items-center rounded-[var(--radius-md)] border border-border px-2.5 py-1.5 text-xs font-medium hover:bg-surface-muted" to={`/alumni-admin/profiles/${p.id}/360`}>360</Link>
+                    </div>
+                  </td>
                 </tr>
               ))}
               {!profiles.length ? <tr><td className="p-3 text-ink-muted" colSpan={5}>No pending alumni profiles.</td></tr> : null}
+            </tbody>
+          </table>
+        </div>
+      </Surface>
+      <Surface>
+        <h2 className="text-sm font-semibold">Alumni 360 directory</h2>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full min-w-[720px] text-sm">
+            <thead><tr className="border-b text-left text-ink-muted"><th className="p-3">Name</th><th className="p-3">USN</th><th className="p-3">Status</th><th className="p-3">Year</th><th className="p-3">View</th></tr></thead>
+            <tbody>
+              {allProfiles.map((p) => (
+                <tr key={p.id} className="border-b last:border-0">
+                  <td className="p-3">{p.name}</td>
+                  <td className="p-3">{p.usn}</td>
+                  <td className="p-3">{p.verificationState}</td>
+                  <td className="p-3">{p.graduationYear}</td>
+                  <td className="p-3"><Link className="text-sm font-medium underline-offset-2 hover:underline" to={`/alumni-admin/profiles/${p.id}/360`}>Open 360</Link></td>
+                </tr>
+              ))}
+              {!allProfiles.length ? <tr><td className="p-3 text-ink-muted" colSpan={5}>No alumni profiles.</td></tr> : null}
             </tbody>
           </table>
         </div>

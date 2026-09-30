@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { asyncHandler, validate } from '../../utils/errors.js';
+import { AppError, asyncHandler, validate } from '../../utils/errors.js';
 import { requireAuth, requireStudentAuth } from '../../middleware/auth.js';
-import { assertHostelPermission, getWardenHostelIds } from './access.js';
+import { assertHostelPermission, assertWardenHostelAccess, getWardenHostelIds, hostelPermissionsForRole } from './access.js';
 import { getStudentHostelAccess } from './studentAccess.js';
 import * as applications from './applications.js';
 import * as allocations from './allocations.js';
@@ -26,6 +26,24 @@ function actor(req) {
         role: req.user.role,
         name: req.user.name,
     };
+}
+async function resolveHostelPortalContext(req, _res, next) {
+    try {
+        const requested = String(req.headers['x-portal-context'] ?? '').toUpperCase();
+        if (requested !== 'WARDEN' || !req.user || hostelPermissionsForRole(req.user.role).length > 0)
+            return next();
+        const { db } = await import('../../db/index.js');
+        const assignment = await db('hostel_warden_assignments')
+            .where({ faculty_user_id: req.user.facultyUserId, college_id: req.user.collegeId, status: 'ACTIVE' })
+            .first();
+        if (!assignment)
+            return next(new AppError(403, 'Active Warden assignment required'));
+        req.user = { ...req.user, role: 'WARDEN' };
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
 }
 // ── Student router ──────────────────────────────────────────────────────
 export const studentHostelRouter = Router();
@@ -163,6 +181,7 @@ studentHostelRouter.post('/hostel/vacating', asyncHandler(async (req, res) => {
 // ── Staff warden router ─────────────────────────────────────────────────
 export const hostelRouter = Router();
 hostelRouter.use(requireAuth);
+hostelRouter.use(resolveHostelPortalContext);
 hostelRouter.get('/dashboard', asyncHandler(async (req, res) => {
     const hostelId = req.query.hostelId ? Number(req.query.hostelId) : undefined;
     res.json(await dashboard.wardenDashboard(actor(req), hostelId));
@@ -190,8 +209,24 @@ hostelRouter.get('/waitlist', asyncHandler(async (req, res) => {
     res.json({ waitlist: await dashboard.listWaitlist(actor(req), hostelId) });
 }));
 hostelRouter.get('/residents', asyncHandler(async (req, res) => {
-    const hostelId = req.query.hostelId ? Number(req.query.hostelId) : undefined;
-    res.json({ residents: await dashboard.listResidents(actor(req), hostelId) });
+    res.json(await dashboard.listResidents(actor(req), {
+        page: req.query.page ? Number(req.query.page) : undefined,
+        pageSize: req.query.pageSize ? Number(req.query.pageSize) : undefined,
+        search: typeof req.query.search === 'string' ? req.query.search : undefined,
+        hostelId: req.query.hostelId ? Number(req.query.hostelId) : undefined,
+        blockId: req.query.blockId ? Number(req.query.blockId) : undefined,
+        floorId: req.query.floorId ? Number(req.query.floorId) : undefined,
+        roomId: req.query.roomId ? Number(req.query.roomId) : undefined,
+        programme: typeof req.query.programme === 'string' ? req.query.programme : undefined,
+        semester: typeof req.query.semester === 'string' ? req.query.semester : undefined,
+        status: typeof req.query.status === 'string' ? req.query.status : undefined,
+    }));
+}));
+hostelRouter.get('/residents/:id', asyncHandler(async (req, res) => {
+    const profile = await dashboard.getResidentProfile(actor(req), Number(req.params.id));
+    if (!profile)
+        return res.status(404).json({ error: 'Resident not found' });
+    res.json(profile);
 }));
 hostelRouter.post('/allocations', asyncHandler(async (req, res) => {
     const body = validate(z.object({
@@ -217,8 +252,45 @@ hostelRouter.get('/rooms/occupancy', asyncHandler(async (req, res) => {
     res.json({ occupancy: await allocations.getRoomOccupancy(actor(req), hostelId) });
 }));
 hostelRouter.get('/capacity', asyncHandler(async (req, res) => {
+    const a = actor(req);
+    assertHostelPermission(a, 'hostel.view');
     const hostelId = req.query.hostelId ? Number(req.query.hostelId) : undefined;
-    res.json(await allocations.getHostelCapacity(actor(req).collegeId, hostelId));
+    if (hostelId) {
+        await assertWardenHostelAccess(a, hostelId);
+        return res.json(await allocations.getHostelCapacity(a.collegeId, hostelId));
+    }
+    const hostelIds = await getWardenHostelIds(a);
+    const capacities = await Promise.all(hostelIds.map((id) => allocations.getHostelCapacity(a.collegeId, id)));
+    const capacity = capacities.reduce((acc, c) => ({
+        totalBeds: acc.totalBeds + c.totalBeds,
+        usableBeds: acc.usableBeds + c.usableBeds,
+        occupiedBeds: acc.occupiedBeds + c.occupiedBeds,
+        reservedBeds: acc.reservedBeds + c.reservedBeds,
+        availableBeds: acc.availableBeds + c.availableBeds,
+        maintenanceBeds: acc.maintenanceBeds + c.maintenanceBeds,
+        blockedBeds: acc.blockedBeds + c.blockedBeds,
+        occupancyPercent: 0,
+    }), { totalBeds: 0, usableBeds: 0, occupiedBeds: 0, reservedBeds: 0, availableBeds: 0, maintenanceBeds: 0, blockedBeds: 0, occupancyPercent: 0 });
+    capacity.occupancyPercent = capacity.usableBeds > 0 ? Math.round((capacity.occupiedBeds / capacity.usableBeds) * 100) : 0;
+    res.json(capacity);
+}));
+hostelRouter.get('/reports/summary', asyncHandler(async (req, res) => {
+    const hostelId = req.query.hostelId ? Number(req.query.hostelId) : undefined;
+    res.json(await dashboard.wardenReportSummary(actor(req), hostelId));
+}));
+hostelRouter.get('/reports/residents.csv', asyncHandler(async (req, res) => {
+    const hostelId = req.query.hostelId ? Number(req.query.hostelId) : undefined;
+    assertHostelPermission(actor(req), 'hostel.report.view');
+    const result = await dashboard.listResidents(actor(req), { hostelId, pageSize: 100 });
+    const rows = result.residents;
+    const quote = (value) => `"${String(value ?? '').replaceAll('"', '""')}"`;
+    const csv = [
+        ['USN', 'Student', 'Hostel', 'Room', 'Bed', 'Status'].map(quote).join(','),
+        ...rows.map((row) => [row.usn, row.studentName, row.hostelName, row.roomNumber, row.bedCode, row.status].map(quote).join(',')),
+    ].join('\n');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="hostel-residents.csv"');
+    res.send(csv);
 }));
 hostelRouter.get('/outpasses', asyncHandler(async (req, res) => {
     assertHostelPermission(actor(req), 'hostel.outpass.approve');
@@ -292,6 +364,16 @@ hostelRouter.post('/damage/:id/charge', asyncHandler(async (req, res) => {
 // ── Gate router ─────────────────────────────────────────────────────────
 export const hostelGateRouter = Router();
 hostelGateRouter.use(requireAuth);
+hostelGateRouter.use(resolveHostelPortalContext);
+hostelGateRouter.use((req, _res, next) => {
+    try {
+        assertHostelPermission(actor(req), 'hostel.gate.manage');
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+});
 hostelGateRouter.get('/residents/search', asyncHandler(async (req, res) => {
     const q = typeof req.query.q === 'string' ? req.query.q : '';
     if (!q)
@@ -352,6 +434,7 @@ hostelGateRouter.post('/emergency-override', asyncHandler(async (req, res) => {
 // ── Operations (mess) router ────────────────────────────────────────────
 export const hostelOperationsRouter = Router();
 hostelOperationsRouter.use(requireAuth);
+hostelOperationsRouter.use(resolveHostelPortalContext);
 hostelOperationsRouter.get('/dashboard', asyncHandler(async (req, res) => {
     assertHostelPermission(actor(req), 'hostel.mess.manage');
     const hostelId = req.query.hostelId ? Number(req.query.hostelId) : undefined;
@@ -384,6 +467,7 @@ hostelOperationsRouter.get('/mess/menu/weekly', asyncHandler(async (req, res) =>
 // ── Management router ───────────────────────────────────────────────────
 export const hostelManagementRouter = Router();
 hostelManagementRouter.use(requireAuth);
+hostelManagementRouter.use(resolveHostelPortalContext);
 hostelManagementRouter.get('/dashboard', asyncHandler(async (req, res) => {
     res.json(await dashboard.managementDashboard(actor(req)));
 }));

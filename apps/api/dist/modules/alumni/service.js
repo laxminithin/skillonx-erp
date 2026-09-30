@@ -359,9 +359,13 @@ export async function dashboard(actor) {
 export async function updateOwnProfile(actor, input) {
     const patch = { updated_at: db.fn.now() };
     const map = {
+        headline: 'headline',
+        biography: 'biography',
         profilePhotoUrl: 'profile_photo_url',
         currentCity: 'current_city',
         currentCountry: 'current_country',
+        skills: 'skills',
+        interests: 'interests',
         linkedinUrl: 'linkedin_url',
         websiteUrl: 'website_url',
         networkingAvailable: 'networking_available',
@@ -375,10 +379,13 @@ export async function updateOwnProfile(actor, input) {
         networkingVisibility: 'networking_visibility',
     };
     for (const [key, value] of Object.entries(input)) {
+        const col = map[key];
+        if (!col)
+            continue; // mass-assignment protection: ignore unknown / authoritative keys
         if (key === 'skills' || key === 'interests' || key === 'mentorshipAreas')
-            patch[map[key] ?? key] = JSON.stringify(value);
+            patch[col] = JSON.stringify(value);
         else
-            patch[map[key] ?? key] = value === '' ? null : value;
+            patch[col] = value === '' ? null : value;
     }
     await db('alumni_profiles').where({ id: actor.alumniProfileId, college_id: actor.collegeId }).update(patch);
     await audit({ collegeId: actor.collegeId, actorType: 'ALUMNI', actorAlumniId: actor.alumniProfileId, action: 'ALUMNI_PROFILE_UPDATED', entityType: 'alumni_profile', entityId: actor.alumniProfileId });
@@ -478,6 +485,10 @@ export async function directory(actor, filters) {
         .where('ap.verification_state', 'VERIFIED')
         .where('ap.is_active', true)
         .whereNot('ap.lifecycle_state', 'SUSPENDED');
+    // Opt-out only: treat NULL as visible for pre-migration / unset rows
+    if (await db.schema.hasColumn('alumni_profiles', 'directory_visible')) {
+        q = q.andWhere((b) => b.where('ap.directory_visible', true).orWhereNull('ap.directory_visible'));
+    }
     if (filters.q) {
         const term = `%${String(filters.q).trim()}%`;
         q = q.andWhere((b) => b.where('ap.historical_name', 'like', term).orWhere('ap.headline', 'like', term).orWhere('ap.current_city', 'like', term));

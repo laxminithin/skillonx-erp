@@ -10,7 +10,9 @@ export type FinancePermission =
   | 'finance.concession.approve'
   | 'finance.scholarship.manage'
   | 'finance.refund.approve'
-  | 'finance.report.view';
+  | 'finance.report.view'
+  | 'finance.scholarship_application.process'
+  | 'finance.scholarship_application.approve';
 
 export type FinanceActor = {
   facultyUserId: number;
@@ -145,3 +147,63 @@ export const refundSchema = z.object({
 export const voidReceiptSchema = z.object({
   reason: z.string().trim().min(1).max(500),
 });
+
+export const eligibilityCriteriaSchema = z.object({
+  programIds: z.array(z.number().int().positive()).optional(),
+  minSemester: z.number().int().positive().optional(),
+  minCgpa: z.number().min(0).max(10).optional(),
+  maxIncome: z.number().nonnegative().optional(),
+  categories: z.array(z.string().trim().min(1).max(64)).optional(),
+  minAttendancePercent: z.number().min(0).max(100).optional(),
+  requiredDocumentCategories: z.array(z.string().trim().min(1).max(96)).optional(),
+}).strict();
+
+export const createEligibilityPolicySchema = z.object({
+  schemeId: z.number().int().positive(),
+  academicYearId: z.number().int().positive(),
+  criteria: eligibilityCriteriaSchema,
+});
+
+export const createSchemeSchema = z.object({
+  code: z.string().trim().min(1).max(64),
+  name: z.string().trim().min(1).max(255),
+  description: z.string().trim().max(2000).optional(),
+  provider: z.string().trim().max(128).optional(),
+  providerType: z.enum(['INSTITUTION', 'GOVERNMENT', 'TRUST', 'CORPORATE', 'ALUMNI', 'OTHER']).optional(),
+  benefitType: z.enum(['FEE_CONCESSION', 'FEE_WAIVER', 'REIMBURSEMENT', 'DIRECT_PAYMENT', 'STIPEND', 'OTHER']).optional(),
+  isExternal: z.boolean().optional(),
+  externalPortalUrl: z.string().trim().max(512).optional(),
+  allowMultipleApplications: z.boolean().optional(),
+  renewalAllowed: z.boolean().optional(),
+  applicationStartDate: z.string().trim().max(16).optional(),
+  applicationEndDate: z.string().trim().max(16).optional(),
+});
+
+export const draftApplicationSchema = z.object({
+  schemeId: z.number().int().positive(),
+  academicYearId: z.number().int().positive(),
+  requestedAmount: z.number().positive().optional(),
+  selfDeclaredIncome: z.number().nonnegative().optional(),
+  selfDeclaredCategory: z.string().trim().max(64).optional(),
+}).strict();
+
+export const applicationActionSchema = z.object({
+  remarks: z.string().trim().max(2000).optional(),
+});
+
+export const sanctionApplicationSchema = z.object({
+  sanctionedAmount: z.number().positive(),
+});
+
+export const completeApplicationSchema = z.object({
+  evidenceReference: z.string().trim().min(1).max(255),
+});
+
+export const applicationDocumentUploadSchema = z.object({
+  category: z.string().trim().min(1).max(96),
+  fileName: z.string().trim().min(1).max(255),
+  mimeType: z.string().trim().min(1).max(128),
+  contentBase64: z.string().min(1),
+  description: z.string().trim().max(2000).optional().nullable(),
+  expiryDate: z.string().trim().max(16).optional().nullable(),
+}).strict();

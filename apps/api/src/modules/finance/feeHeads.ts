@@ -1,5 +1,6 @@
 import { db } from '../../db/index.js';
 import type { Knex } from 'knex';
+import { AppError } from '../../utils/errors.js';
 import type { FinanceActor } from './types.js';
 import { assertFinancePermission } from './access.js';
 import { recordFinanceAudit } from './audit.js';
@@ -132,8 +133,8 @@ export async function updateFeeHead(actor: FinanceActor, id: number, body: Parti
 }>) {
   assertFinancePermission(actor, 'finance.fee_structure.manage');
   const before = await db('fee_heads').where({ id, college_id: actor.collegeId }).first();
-  if (!before) throw new Error('Fee head not found');
-  await db('fee_heads').where({ id }).update({
+  if (!before) throw new AppError(404, 'Fee head not found');
+  await db('fee_heads').where({ id, college_id: actor.collegeId }).update({
     name: body.name ?? before.name,
     category: body.category ?? before.category,
     description: body.description !== undefined ? body.description : before.description,
@@ -142,7 +143,7 @@ export async function updateFeeHead(actor: FinanceActor, id: number, body: Parti
     is_active: body.isActive ?? before.is_active,
     updated_at: db.fn.now(),
   });
-  const after = await db('fee_heads').where({ id }).first();
+  const after = await db('fee_heads').where({ id, college_id: actor.collegeId }).first();
   await recordFinanceAudit({
     collegeId: actor.collegeId,
     actorId: actor.facultyUserId,

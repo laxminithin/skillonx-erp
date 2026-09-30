@@ -1,0 +1,10 @@
+{
+  "executedAt": "2026-09-29T09:29:00.087Z",
+  "loginStatus": 200,
+  "path": "/api/finance/fee-structures/1/archive",
+  "status": 200,
+  "dataReturned": true,
+  "returnedId": 1,
+  "returnedCodePresent": true,
+  "error": null
+}

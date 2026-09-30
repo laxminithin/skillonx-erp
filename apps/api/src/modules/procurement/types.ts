@@ -17,6 +17,7 @@ export type ProcurementPermission =
   | 'procurement.po.approve'
   | 'procurement.grn.create'
   | 'procurement.finance.handoff'
+  | 'procurement.asset.handoff'
   | 'inventory.view'
   | 'inventory.master.manage'
   | 'inventory.issue'

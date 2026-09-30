@@ -200,14 +200,14 @@ export declare const stockMovementSchema: z.ZodObject<{
     reference: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     toLabId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
 }, "strip", z.ZodTypeAny, {
-    movementType: "RETURN" | "ISSUE" | "RECEIPT" | "CONSUMPTION" | "TRANSFER" | "ADJUSTMENT" | "SCRAP";
     quantity: number;
+    movementType: "RETURN" | "ISSUE" | "RECEIPT" | "CONSUMPTION" | "TRANSFER" | "ADJUSTMENT" | "SCRAP";
     reason?: string | null | undefined;
     reference?: string | null | undefined;
     toLabId?: number | null | undefined;
 }, {
-    movementType: "RETURN" | "ISSUE" | "RECEIPT" | "CONSUMPTION" | "TRANSFER" | "ADJUSTMENT" | "SCRAP";
     quantity: number;
+    movementType: "RETURN" | "ISSUE" | "RECEIPT" | "CONSUMPTION" | "TRANSFER" | "ADJUSTMENT" | "SCRAP";
     reason?: string | null | undefined;
     reference?: string | null | undefined;
     toLabId?: number | null | undefined;
@@ -234,8 +234,8 @@ export declare const issueSchema: z.ZodObject<{
     recipientType: "STUDENT" | "FACULTY" | "LAB" | "DEPARTMENT";
     remarks?: string | null | undefined;
     description?: string | null | undefined;
-    assetId?: number | null | undefined;
     quantity?: number | undefined;
+    assetId?: number | null | undefined;
     stockItemId?: number | null | undefined;
     recipientFacultyId?: number | null | undefined;
     recipientStudentId?: number | null | undefined;
@@ -249,8 +249,8 @@ export declare const issueSchema: z.ZodObject<{
     recipientType: "STUDENT" | "FACULTY" | "LAB" | "DEPARTMENT";
     remarks?: string | null | undefined;
     description?: string | null | undefined;
-    assetId?: number | null | undefined;
     quantity?: number | undefined;
+    assetId?: number | null | undefined;
     stockItemId?: number | null | undefined;
     recipientFacultyId?: number | null | undefined;
     recipientStudentId?: number | null | undefined;

@@ -9,6 +9,11 @@ export declare function runLibraryJobs(collegeId: number): Promise<{
     expired: {
         expired: number;
     };
+    financeHandoffs: {
+        attempted: number;
+        succeeded: number;
+        failed: number;
+    };
 }>;
 export declare function runLibraryJobsAllColleges(): Promise<{
     overdue: {
@@ -19,6 +24,11 @@ export declare function runLibraryJobsAllColleges(): Promise<{
     };
     expired: {
         expired: number;
+    };
+    financeHandoffs: {
+        attempted: number;
+        succeeded: number;
+        failed: number;
     };
     collegeId: number;
 }[]>;

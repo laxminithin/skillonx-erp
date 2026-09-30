@@ -65,6 +65,7 @@ const groups = [
       { to: '/lms/services/certificates', label: 'Certificates', icon: Award, activePrefix: '/lms/services/certificates' },
       { to: '/lms/services/grievances', label: 'Grievances', icon: MessageSquareWarning, activePrefix: '/lms/services/grievances' },
       { to: '/lms/services/mentor', label: 'Mentoring', icon: UserRound, activePrefix: '/lms/services/mentor' },
+      { to: '/lms/events', label: 'Campus Events', icon: CalendarCheck2, activePrefix: '/lms/events' },
     ],
   },
   {

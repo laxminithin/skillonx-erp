@@ -89,7 +89,8 @@ describe('hrms E2E', () => {
     const cl = await db('hr_leave_types').where({ college_id: ctx.collegeId, code: 'CL' }).first();
     if (!cl) return;
 
-    const year = new Date().getFullYear();
+    const date = await uniqueLeaveDate(Number(emp.id), 21);
+    const year = new Date(`${date}T00:00:00Z`).getUTCFullYear();
     await db('employee_leave_balances')
       .insert({
         college_id: ctx.collegeId,
@@ -106,7 +107,6 @@ describe('hrms E2E', () => {
       .onConflict(['employee_id', 'leave_type_id', 'year'])
       .merge({ available_balance: 8, credited: 8 });
 
-    const date = await uniqueLeaveDate(Number(emp.id), 21);
     const actor = hrActor(ctx.anita);
     const created = await createLeaveRequest(actor, {
       leaveTypeId: Number(cl.id),

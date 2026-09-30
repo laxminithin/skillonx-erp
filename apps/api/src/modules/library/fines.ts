@@ -68,6 +68,12 @@ export async function generateOverdueFine(loanId: number, collegeId: number, trx
   });
 
   const fine = await conn('library_fines').where({ id: fineId }).first();
+
+  // Create finance demand outside the transaction; safe to retry via reconcilePendingFineFinanceHandoffs.
+  setImmediate(() => {
+    createLibraryFineDemand(collegeId, Number(fineId)).catch(() => {});
+  });
+
   return serializeFine(fine!);
 }
 
@@ -178,6 +184,33 @@ export async function syncAllFinesForStudent(studentId: number, collegeId: numbe
   for (const fine of fines) {
     await syncFineFromFinance(Number(fine.id), collegeId);
   }
+}
+
+/**
+ * Retries the Finance handoff for fines whose demand creation previously failed or was
+ * never attempted (e.g. process restart between insert and the fire-and-forget call).
+ * Idempotent: createLibraryFineDemand no-ops once finance_demand_id is set.
+ */
+export async function reconcilePendingFineFinanceHandoffs(collegeId: number) {
+  const pending = await db('library_fines as f')
+    .join('library_members as m', 'm.id', 'f.member_id')
+    .where('f.college_id', collegeId)
+    .whereIn('f.status', ['DUE', 'PARTIALLY_PAID'])
+    .whereNull('f.finance_demand_id')
+    .whereNotNull('m.student_id')
+    .select('f.id');
+
+  let succeeded = 0;
+  let failed = 0;
+  for (const row of pending) {
+    try {
+      const demandId = await createLibraryFineDemand(collegeId, Number(row.id));
+      if (demandId) succeeded++;
+    } catch {
+      failed++;
+    }
+  }
+  return { attempted: pending.length, succeeded, failed };
 }
 
 export async function getMemberOutstanding(memberId: number, collegeId: number) {

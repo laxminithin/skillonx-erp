@@ -108,14 +108,25 @@ export async function listInventory(
   return rows.map((r) => serializeCopy(r, r.title));
 }
 
+const MANUAL_COPY_STATUSES: CopyStatus[] = ['AVAILABLE', 'DAMAGED', 'REPAIR', 'WITHDRAWN'];
+
 export async function updateCopyStatus(
   actor: LibraryActor,
   copyId: number,
   status: CopyStatus,
   reason?: string,
 ) {
+  assertLibraryPermission(actor, 'library.inventory.manage');
+
+  if (!MANUAL_COPY_STATUSES.includes(status)) {
+    throw new AppError(400, 'Use the circulation workflow to issue, reserve, or mark a copy lost');
+  }
+
   const row = await db('library_copies').where({ id: copyId, college_id: actor.collegeId }).first();
   if (!row) throw new AppError(404, 'Copy not found');
+  if (row.status === 'ISSUED' || row.status === 'LOST') {
+    throw new AppError(409, `Copy is ${row.status}; resolve the active loan first`);
+  }
 
   await db('library_copies').where({ id: copyId }).update({ status });
   await recordLibraryAudit({

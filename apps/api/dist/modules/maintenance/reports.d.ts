@@ -50,6 +50,31 @@ export declare function reports(actor: MaintActor): Promise<{
             occurrences: number;
         }[];
     };
+    preventiveDue: {
+        id: number;
+        name: unknown;
+        description: {} | null;
+        assetId: number | null;
+        assetTag: string;
+        categoryId: number | null;
+        categoryName: string;
+        teamId: number | null;
+        teamName: string;
+        vendorId: number | null;
+        vendorName: string;
+        roomId: number | null;
+        building: {} | null;
+        frequencyUnit: unknown;
+        frequencyValue: number;
+        priority: unknown;
+        checklist: any;
+        nextDueDate: unknown;
+        lastGeneratedDate: {} | null;
+        status: unknown;
+        notes: {} | null;
+        createdAt: unknown;
+        updatedAt: unknown;
+    }[];
 }>;
 /**
  * Recurring-issue detection — deterministic. Surfaces repeated failures with

@@ -194,6 +194,7 @@ export async function createLeaveRequest(actor, input) {
                 priority,
             });
         }
+        let emergencyManagerIds = [];
         if (input.isEmergency && impact.affectedSessions.length > 0) {
             const managers = await trx('employees as e')
                 .join('faculty_users as f', 'f.id', 'e.faculty_user_id')
@@ -201,18 +202,7 @@ export async function createLeaveRequest(actor, input) {
                 .whereIn('f.role', ['HOD', 'PRINCIPAL', 'COLLEGE_ADMIN'])
                 .select('e.id')
                 .limit(5);
-            for (const m of managers) {
-                await notifyEmployee({
-                    employeeId: Number(m.id),
-                    collegeId: actor.collegeId,
-                    type: 'EMERGENCY_LEAVE_COVERAGE',
-                    title: 'CRITICAL: Emergency leave coverage required',
-                    body: `${emp.display_name || 'A lecturer'} submitted emergency leave affecting ${impact.totalAffected} session(s).`,
-                    relatedType: 'hr_leave_requests',
-                    relatedId: id,
-                    dedupeKey: `emergency-leave-${id}-${m.id}`,
-                });
-            }
+            emergencyManagerIds = managers.map((manager) => Number(manager.id));
         }
         await trx('hr_leave_actions').insert({
             leave_request_id: id,
@@ -220,8 +210,20 @@ export async function createLeaveRequest(actor, input) {
             actor_employee_id: emp.id,
             actor_faculty_id: actor.facultyUserId,
         });
-        return { id: Number(id), requestNumber, academicImpact: impact };
+        return { id: Number(id), requestNumber, academicImpact: impact, emergencyManagerIds };
     });
+    for (const employeeId of result.emergencyManagerIds) {
+        await notifyEmployee({
+            employeeId,
+            collegeId: actor.collegeId,
+            type: 'EMERGENCY_LEAVE_COVERAGE',
+            title: 'CRITICAL: Emergency leave coverage required',
+            body: `${emp.display_name || 'A lecturer'} submitted emergency leave affecting ${impact.totalAffected} session(s).`,
+            relatedType: 'hr_leave_requests',
+            relatedId: result.id,
+            dedupeKey: `emergency-leave-${result.id}-${employeeId}`,
+        });
+    }
     await recordHrAudit({
         actor,
         action: 'LEAVE_CREATED',
@@ -229,7 +231,8 @@ export async function createLeaveRequest(actor, input) {
         entityId: result.id,
         after: input,
     });
-    return { ...result, requestedDays };
+    const { emergencyManagerIds: _emergencyManagerIds, ...created } = result;
+    return { ...created, requestedDays };
 }
 export async function getLeaveAcademicImpactForRequest(actor, leaveRequestId) {
     const emp = await requireEmployeeForActor(actor);

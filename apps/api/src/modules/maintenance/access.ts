@@ -22,22 +22,22 @@ const ROLE_PERMISSIONS: Record<string, MaintPermission[]> = {
   SUPER_ADMIN: [
     'maint.ticket.create', 'maint.ticket.view.own', 'maint.queue.view', 'maint.triage',
     'maint.assign', 'maint.work', 'maint.parts.request', 'maint.parts.approve',
-    'maint.config', 'maint.report.view', 'maint.oversight.view',
+    'maint.config', 'maint.report.view', 'maint.oversight.view', 'maint.preventive.manage',
   ],
   COLLEGE_ADMIN: [
     'maint.ticket.create', 'maint.ticket.view.own', 'maint.queue.view', 'maint.triage',
     'maint.assign', 'maint.work', 'maint.parts.request', 'maint.parts.approve',
-    'maint.config', 'maint.report.view', 'maint.oversight.view',
+    'maint.config', 'maint.report.view', 'maint.oversight.view', 'maint.preventive.manage',
   ],
   MAINTENANCE_MANAGER: [
     'maint.ticket.create', 'maint.ticket.view.own', 'maint.queue.view', 'maint.triage',
     'maint.assign', 'maint.work', 'maint.parts.request', 'maint.parts.approve',
-    'maint.config', 'maint.report.view', 'maint.oversight.view',
+    'maint.config', 'maint.report.view', 'maint.oversight.view', 'maint.preventive.manage',
   ],
   FACILITIES_OFFICER: [
     'maint.ticket.create', 'maint.ticket.view.own', 'maint.queue.view', 'maint.triage',
     'maint.assign', 'maint.work', 'maint.parts.request', 'maint.parts.approve',
-    'maint.config', 'maint.report.view', 'maint.oversight.view',
+    'maint.config', 'maint.report.view', 'maint.oversight.view', 'maint.preventive.manage',
   ],
   MAINTENANCE_STAFF: [...REQUESTER, 'maint.work', 'maint.parts.request'],
   IT_SUPPORT: [...REQUESTER, 'maint.work', 'maint.parts.request'],

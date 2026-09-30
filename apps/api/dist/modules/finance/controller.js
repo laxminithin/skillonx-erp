@@ -9,8 +9,13 @@ import * as demands from './demands.js';
 import * as payments from './payments.js';
 import * as receipts from './receipts.js';
 import * as scholarships from './scholarships.js';
+import * as applications from './scholarshipApplications.js';
 import * as reports from './reports.js';
 import { verifyAndCompletePayment } from './gateway.js';
+import { createEligibilityPolicySchema, draftApplicationSchema, applicationActionSchema, sanctionApplicationSchema, completeApplicationSchema, applicationDocumentUploadSchema, } from './types.js';
+function studentActor(req) {
+    return { studentId: req.user.studentId, collegeId: req.user.collegeId };
+}
 function actor(req) {
     return {
         facultyUserId: req.user.facultyUserId,
@@ -137,6 +142,60 @@ financeRouter.post('/concessions', asyncHandler(async (req, res) => {
     const body = validate(concessionSchema, req.body);
     res.status(201).json(await scholarships.createConcession(actor(req), body));
 }));
+// Scholarship eligibility policies
+financeRouter.get('/scholarship-eligibility-policies', asyncHandler(async (req, res) => {
+    res.json({ policies: await applications.listEligibilityPolicies(actor(req), req.query.schemeId ? Number(req.query.schemeId) : undefined) });
+}));
+financeRouter.post('/scholarship-eligibility-policies', asyncHandler(async (req, res) => {
+    const body = validate(createEligibilityPolicySchema, req.body);
+    res.status(201).json(await applications.createEligibilityPolicy(actor(req), body));
+}));
+// Scholarship applications — staff processing queue
+financeRouter.get('/scholarship-applications', asyncHandler(async (req, res) => {
+    res.json({
+        applications: await applications.listApplicationsForStaff(actor(req), {
+            status: typeof req.query.status === 'string' ? req.query.status : undefined,
+            schemeId: req.query.schemeId ? Number(req.query.schemeId) : undefined,
+        }),
+    });
+}));
+financeRouter.get('/scholarship-applications/:id', asyncHandler(async (req, res) => {
+    res.json(await applications.getApplicationForStaff(actor(req), Number(req.params.id)));
+}));
+financeRouter.get('/scholarship-applications/:id/documents', asyncHandler(async (req, res) => {
+    res.json({ documents: await applications.listApplicationDocumentsForStaff(actor(req), Number(req.params.id)) });
+}));
+financeRouter.post('/scholarship-applications/:id/start-verification', asyncHandler(async (req, res) => {
+    res.json(await applications.startVerification(actor(req), Number(req.params.id)));
+}));
+financeRouter.post('/scholarship-applications/:id/return', asyncHandler(async (req, res) => {
+    const body = validate(applicationActionSchema, req.body);
+    res.json(await applications.returnApplication(actor(req), Number(req.params.id), body.remarks ?? ''));
+}));
+financeRouter.post('/scholarship-applications/:id/verify', asyncHandler(async (req, res) => {
+    const body = validate(applicationActionSchema, req.body ?? {});
+    res.json(await applications.verifyApplication(actor(req), Number(req.params.id), body.remarks));
+}));
+financeRouter.post('/scholarship-applications/:id/approve', asyncHandler(async (req, res) => {
+    const body = validate(applicationActionSchema, req.body ?? {});
+    res.json(await applications.approveApplication(actor(req), Number(req.params.id), body.remarks));
+}));
+financeRouter.post('/scholarship-applications/:id/reject', asyncHandler(async (req, res) => {
+    const body = validate(applicationActionSchema, req.body);
+    res.json(await applications.rejectApplication(actor(req), Number(req.params.id), body.remarks ?? ''));
+}));
+financeRouter.post('/scholarship-applications/:id/cancel', asyncHandler(async (req, res) => {
+    const body = validate(applicationActionSchema, req.body);
+    res.json(await applications.cancelApplication(actor(req), Number(req.params.id), body.remarks ?? ''));
+}));
+financeRouter.post('/scholarship-applications/:id/sanction', asyncHandler(async (req, res) => {
+    const body = validate(sanctionApplicationSchema, req.body);
+    res.json(await applications.sanctionApplication(actor(req), Number(req.params.id), body.sanctionedAmount));
+}));
+financeRouter.post('/scholarship-applications/:id/complete', asyncHandler(async (req, res) => {
+    const body = validate(completeApplicationSchema, req.body);
+    res.json(await applications.completeApplication(actor(req), Number(req.params.id), body.evidenceReference));
+}));
 // Refunds
 financeRouter.get('/refunds', asyncHandler(async (req, res) => {
     res.json({
@@ -227,6 +286,36 @@ studentFinanceRouter.get('/finance/scholarships', asyncHandler(async (req, res) 
         scholarships: await scholarships.listStudentScholarships(req.user.studentId, req.user.collegeId),
     });
 }));
+studentFinanceRouter.get('/finance/scholarship-schemes', asyncHandler(async (req, res) => {
+    res.json({ schemes: await applications.listApplicableSchemes(req.user.collegeId) });
+}));
+studentFinanceRouter.get('/finance/scholarship-applications', asyncHandler(async (req, res) => {
+    res.json({ applications: await applications.listStudentApplications(studentActor(req)) });
+}));
+studentFinanceRouter.post('/finance/scholarship-applications', asyncHandler(async (req, res) => {
+    const body = validate(draftApplicationSchema, req.body);
+    res.status(201).json(await applications.createDraftApplication(studentActor(req), body));
+}));
+studentFinanceRouter.get('/finance/scholarship-applications/:id', asyncHandler(async (req, res) => {
+    res.json(await applications.getStudentApplication(studentActor(req), Number(req.params.id)));
+}));
+studentFinanceRouter.patch('/finance/scholarship-applications/:id', asyncHandler(async (req, res) => {
+    const body = validate(draftApplicationSchema.partial(), req.body ?? {});
+    res.json(await applications.updateDraftApplication(studentActor(req), Number(req.params.id), body));
+}));
+studentFinanceRouter.post('/finance/scholarship-applications/:id/submit', asyncHandler(async (req, res) => {
+    res.json(await applications.submitApplication(studentActor(req), Number(req.params.id)));
+}));
+studentFinanceRouter.post('/finance/scholarship-applications/:id/withdraw', asyncHandler(async (req, res) => {
+    res.json(await applications.withdrawApplication(studentActor(req), Number(req.params.id)));
+}));
+studentFinanceRouter.get('/finance/scholarship-applications/:id/documents', asyncHandler(async (req, res) => {
+    res.json({ documents: await applications.listApplicationDocuments(studentActor(req), Number(req.params.id)) });
+}));
+studentFinanceRouter.post('/finance/scholarship-applications/:id/documents', asyncHandler(async (req, res) => {
+    const body = validate(applicationDocumentUploadSchema, req.body);
+    res.status(201).json(await applications.uploadApplicationDocument(studentActor(req), Number(req.params.id), body));
+}));
 studentFinanceRouter.get('/finance/no-due', asyncHandler(async (req, res) => {
     res.json(await getStudentNoDueStatus(req.user.studentId, req.user.collegeId));
 }));
@@ -242,4 +331,20 @@ studentFinanceRouter.post('/finance/payments/verify', asyncHandler(async (req, r
         paymentData: z.record(z.unknown()).optional(),
     }), req.body);
     res.json(await verifyAndCompletePayment(body.provider.toUpperCase(), body.eventId, body.orderId, body.paymentData ?? { status: 'success' }));
+}));
+// APPROVED CROSS-MODULE RECEIVER: Examination remuneration -> Finance posting.
+// Finance-owned actions require Finance permissions (COE cannot post/reverse) (§10).
+import * as examRemun from './examRemunerationPosting.js';
+financeRouter.get('/exam-remuneration/:itemId', asyncHandler(async (req, res) => {
+    res.json(await examRemun.getExamRemunerationReadback(actor(req).collegeId, Number(req.params.itemId)));
+}));
+financeRouter.get('/exam-remuneration/:itemId/preview', asyncHandler(async (req, res) => {
+    res.json(await examRemun.previewExamRemunerationPosting(actor(req).collegeId, Number(req.params.itemId)));
+}));
+financeRouter.post('/exam-remuneration/:itemId/post', asyncHandler(async (req, res) => {
+    res.status(201).json(await examRemun.postExamRemuneration(actor(req), Number(req.params.itemId)));
+}));
+financeRouter.post('/exam-remuneration/:itemId/reverse', asyncHandler(async (req, res) => {
+    const body = validate(z.object({ reason: z.string().trim().min(5).max(1000) }), req.body);
+    res.json(await examRemun.reverseExamRemuneration(actor(req), Number(req.params.itemId), body.reason));
 }));

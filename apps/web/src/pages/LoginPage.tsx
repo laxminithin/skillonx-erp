@@ -1,8 +1,9 @@
 import { FormEvent, useState } from 'react';
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { landingPathForUser } from '../auth/ProtectedRoute';
 import { Button, Field, Input, PasswordInput } from '../components/ui';
-import { BrandMark, isAdminRole } from '../components/Brand';
+import { BrandMark } from '../components/Brand';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 
 const DEMO_ACCOUNTS = [
@@ -28,14 +29,6 @@ const DEMO_ACCOUNTS = [
   },
 ] as const;
 
-function staffLandingPath(role?: string | null) {
-  if (role === 'ACCOUNTANT') return '/accountant';
-  if (role === 'COE') return '/coe';
-  if (role === 'LAB_ASSISTANT') return '/lab';
-  if (role === 'OFFICE_ADMIN' || role === 'OFFICE_SUPERINTENDENT') return '/office';
-  return isAdminRole(role) ? '/admin' : '/dashboard';
-}
-
 export function LoginPage() {
   const { user, login } = useAuth();
   useDocumentTitle('Sign In');
@@ -48,10 +41,7 @@ export function LoginPage() {
   const sessionExpired = params.get('expired') === '1';
 
   if (user) {
-    if (user.role === 'STUDENT' || user.kind === 'student') {
-      return <Navigate to="/lms" replace />;
-    }
-    return <Navigate to={staffLandingPath(user.role)} replace />;
+    return <Navigate to={landingPathForUser(user)} replace />;
   }
 
   const onSubmit = async (e: FormEvent) => {
@@ -61,7 +51,7 @@ export function LoginPage() {
     setError('');
     try {
       const next = await login(email, password);
-      navigate(staffLandingPath(next.role));
+      navigate(landingPathForUser(next));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
@@ -69,7 +59,7 @@ export function LoginPage() {
     }
   };
 
-  const useDemoAccount = (account: (typeof DEMO_ACCOUNTS)[number]) => {
+  const fillDemoAccount = (account: (typeof DEMO_ACCOUNTS)[number]) => {
     setEmail(account.email);
     setPassword(account.password);
     setError('');
@@ -160,7 +150,7 @@ export function LoginPage() {
                   <button
                     key={account.email}
                     type="button"
-                    onClick={() => useDemoAccount(account)}
+                    onClick={() => fillDemoAccount(account)}
                     className="flex w-full flex-col gap-0.5 rounded-[var(--radius-sm)] px-2 py-2 text-left transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:flex-row sm:items-center sm:justify-between sm:gap-3"
                     aria-label={`Use ${account.role} demo account`}
                   >

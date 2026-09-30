@@ -3,7 +3,7 @@ import { asyncHandler, validate, AppError } from '../../utils/errors.js';
 import { requireAuth } from '../../middleware/auth.js';
 import { db } from '../../db/index.js';
 import { PROFILE_SECTIONS, VERIFICATION_STATUSES, AWARD_LEVELS, WRITABLE_DOMAINS, DERIVED_DOMAINS, identifiersSchema, notApplicableSchema, recordCreateSchema, recordUpdateSchema, evidenceMetaSchema, verificationActionSchema, } from './types.js';
-import { resolveTarget, actorEmployee, canVerify } from './access.js';
+import { resolveTarget, actorEmployee, canVerify, canActAsVerifier, hodDepartmentIds } from './access.js';
 import { coreProfile, updateIdentifiers, setNotApplicable, academicYears } from './profile.js';
 import { listRecords, getRecord, createRecord, updateRecord, archiveRecord } from './records.js';
 import { attachEvidence, readEvidence, deleteEvidence } from './evidence.js';
@@ -11,6 +11,7 @@ import { submitRecord, actOnVerification, verificationInbox } from './verificati
 import { allDerived } from './derive.js';
 import { computeCompleteness } from './completeness.js';
 import { profileOverview } from './overview.js';
+import { resolveLeadershipContext } from '../academicLeadership/leadership.js';
 function actor(req) {
     return {
         facultyUserId: req.user.facultyUserId,
@@ -18,6 +19,7 @@ function actor(req) {
         departmentId: req.user.departmentId ?? null,
         role: req.user.role,
         name: req.user.name,
+        hodDepartmentIds: req.hodDepartmentIds,
     };
 }
 const num = (v) => {
@@ -28,6 +30,28 @@ const num = (v) => {
 };
 export const facultyProfileRouter = Router();
 facultyProfileRouter.use(requireAuth);
+/**
+ * Canonical HOD authority enrichment. Resolves the Academic Leadership context
+ * once per request so Faculty Profile authorization consumes the institution's
+ * existing HOD model (department-scoped leadership assignments) instead of only
+ * the legacy `faculty_users.role` field. Failures are non-fatal: the actor then
+ * falls back to legacy role-based semantics.
+ */
+facultyProfileRouter.use(asyncHandler(async (req, _res, next) => {
+    try {
+        const ctx = await resolveLeadershipContext({
+            facultyUserId: req.user.facultyUserId,
+            collegeId: req.user.collegeId,
+            role: req.user.role,
+            departmentId: req.user.departmentId ?? null,
+        });
+        req.hodDepartmentIds = ctx.hodDepartmentIds;
+    }
+    catch {
+        req.hodDepartmentIds = undefined;
+    }
+    next();
+}));
 // ── Meta / capabilities ────────────────────────────────────────────────────
 facultyProfileRouter.get('/meta', asyncHandler(async (req, res) => {
     const a = actor(req);
@@ -43,7 +67,7 @@ facultyProfileRouter.get('/meta', asyncHandler(async (req, res) => {
             verifiable: d.verifiable, evidenceExpected: d.evidenceExpected, uniqueRefField: d.uniqueRefField ?? null,
         })),
         derivedDomains: Object.values(DERIVED_DOMAINS),
-        canVerify: ['HOD', 'PRINCIPAL', 'MANAGEMENT', 'CHAIRMAN', 'IQAC_COORDINATOR', 'NBA_COORDINATOR', 'COLLEGE_ADMIN'].includes(a.role),
+        canVerify: canActAsVerifier(a),
     });
 }));
 facultyProfileRouter.get('/academic-years', asyncHandler(async (req, res) => {
@@ -182,22 +206,22 @@ facultyProfileRouter.post('/records/:id/verification', asyncHandler(async (req, 
 facultyProfileRouter.get('/directory', asyncHandler(async (req, res) => {
     const a = actor(req);
     const isInstitution = ['PRINCIPAL', 'MANAGEMENT', 'CHAIRMAN', 'IQAC_COORDINATOR', 'NBA_COORDINATOR', 'COLLEGE_ADMIN', 'SUPER_ADMIN'].includes(a.role);
+    const hodDepts = hodDepartmentIds(a);
     const q = db('employees as e')
         .leftJoin('departments as d', 'd.id', 'e.department_id')
         .leftJoin('hr_designations as g', 'g.id', 'e.designation_id')
         .where('e.college_id', a.collegeId)
         .whereNotNull('e.faculty_user_id');
-    if (a.role === 'HOD') {
-        if (a.departmentId == null)
-            return res.json([]);
-        q.where('e.department_id', a.departmentId);
+    if (isInstitution) {
+        if (num(req.query.departmentId) != null)
+            q.where('e.department_id', num(req.query.departmentId));
     }
-    else if (!isInstitution) {
+    else if (hodDepts.length > 0) {
+        q.whereIn('e.department_id', hodDepts);
+    }
+    else {
         // A plain faculty only ever sees themselves in the directory.
         q.where('e.faculty_user_id', a.facultyUserId);
-    }
-    else if (num(req.query.departmentId) != null) {
-        q.where('e.department_id', num(req.query.departmentId));
     }
     const search = req.query.q ? String(req.query.q).trim() : '';
     if (search)

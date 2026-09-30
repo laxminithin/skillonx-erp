@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { type ClassActor } from '../academicClasses/access.js';
-import { type ConflictHit, type FacultyRef, type Occurrence, type PeriodRow } from './types.js';
+import { type ConflictHit, type FacultyRef, type Occurrence, type OccurrenceState, type PeriodRow } from './types.js';
 export declare const periodSchema: z.ZodObject<{
     name: z.ZodString;
     periodNumber: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
@@ -355,6 +355,22 @@ export declare function listCalendarEvents(actor: ClassActor, academicYearId?: n
     }[];
 }>;
 export declare function createCalendarEvent(actor: ClassActor, input: z.infer<typeof calendarEventSchema>): Promise<any>;
+export type RoomOccupancy = {
+    roomId: number;
+    date: string;
+    startTime: string;
+    endTime: string;
+    state: OccurrenceState;
+    className: string;
+    courseName: string | null;
+};
+/**
+ * Read-only academic room occupancy for other modules (Campus OS Phase 11
+ * venue booking). Timetable stays authoritative: this only expands existing
+ * slots/overrides through `expandSlots` (holidays, cancellations, room changes
+ * and extra/makeup sessions applied) and never writes anything.
+ */
+export declare function roomAcademicOccupancy(collegeId: number, roomIds: number[], from: string, to: string): Promise<RoomOccupancy[]>;
 export declare function classWeek(actor: ClassActor, classId: number, from?: string, to?: string): Promise<{
     timezone: string;
     today: string;

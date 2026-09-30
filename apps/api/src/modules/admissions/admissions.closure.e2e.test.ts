@@ -697,6 +697,77 @@ describe('Admissions closure concurrency E2E', () => {
     assert.equal(rows.length, 1);
     assert.ok(results.some((r) => r.status === 'fulfilled'));
   });
+
+  it('4. two distinct applicants confirmed concurrently BOTH succeed with distinct admission numbers (A1 closure)', async () => {
+    if (!ctx) return;
+    // Each gets its own 500-seat intake so seat-capacity contention (test 2)
+    // cannot be the reason either one fails — this isolates the
+    // admission-number allocation race specifically.
+    const a = await makeReadyApplicant('admno-race-a', { paid: true });
+    const b = await makeReadyApplicant('admno-race-b', { paid: true });
+    const selectionA = await db('admission_selections').where({ applicant_id: a.applicant.id }).first();
+    const selectionB = await db('admission_selections').where({ applicant_id: b.applicant.id }).first();
+
+    const results = await Promise.allSettled([
+      confirmAdmission(ctx.manager, Number(a.applicant.id), { intakeId: Number(selectionA.intake_id) }),
+      confirmAdmission(ctx.manager, Number(b.applicant.id), { intakeId: Number(selectionB.intake_id) }),
+    ]);
+
+    for (const r of results) {
+      if (r.status === 'rejected') assert.fail(`expected both confirmations to succeed, one rejected with: ${r.reason}`);
+    }
+
+    const conversions = await db('admission_student_conversions')
+      .whereIn('applicant_id', [Number(a.applicant.id), Number(b.applicant.id)]);
+    assert.equal(conversions.length, 2, 'both applicants must have exactly one conversion each');
+    const numbers = conversions.map((c) => c.admission_number);
+    assert.notEqual(numbers[0], numbers[1], 'concurrent confirmations must not collide on the same admission number');
+    for (const n of numbers) {
+      assert.match(String(n), /^[A-Z0-9]+\/ADN\/\d{4}\/\d{5}$/, 'admission number format must be preserved unchanged');
+    }
+    const studentIds = conversions.map((c) => c.student_id);
+    const students = await db('students').whereIn('id', studentIds);
+    assert.equal(students.length, 2);
+    assert.notEqual(students[0].admission_number, students[1].admission_number);
+    assert.equal(new Set(students.map((s) => s.admission_number)).size, 2);
+  });
+
+  it('5. an unrelated conflict (duplicate email) is NOT retried or swallowed by the admission-number retry loop', async () => {
+    if (!ctx) return;
+    // Regression guard for the A1 fix's retry scope: confirms the retry is
+    // narrowly matched to the admission-number unique indexes and does not
+    // accidentally catch/retry a different duplicate-key/business error.
+    // Mirrors test 34's own collision setup: a canonical `students` row is
+    // inserted directly (bypassing the applicant-email unique index) so the
+    // only thing under test is confirmAdmission's duplicate-email guard.
+    const applicant = await makeApplicant('admno-scope-guard');
+    await db('students').insert({
+      college_id: ctx.collegeId,
+      department_id: ctx.departmentId,
+      program_id: ctx.programId,
+      scheme_id: ctx.schemeId,
+      academic_year_id: ctx.academicYearId,
+      semester_id: ctx.semesterId,
+      class_section_id: ctx.classSectionId,
+      name: 'Existing Collision Student (Scope Guard)',
+      usn: null,
+      admission_number: `SCOPE-GUARD-${run}`,
+      email: applicant.email,
+      password_hash: await bcrypt.hash(PASSWORD, 10),
+      is_active: true,
+    });
+    await submitApplication(ctx.manager, Number(applicant.id));
+    await verifyRequiredDocument(Number(applicant.id));
+    await evaluateEligibility(ctx.manager, Number(applicant.id));
+    const intakeId = await createClosureIntake('admno-scope-guard', 5);
+    await selectApplicant(ctx.manager, Number(applicant.id), { programId: ctx.programId, intakeId, status: 'SELECTED', meritScore: 91 });
+    await issueOffer(ctx.manager, Number(applicant.id), { programId: ctx.programId, offerDate: '2026-10-10' });
+    await assert.rejects(
+      () => confirmAdmission(ctx.manager, Number(applicant.id), { intakeId }),
+      /canonical student already exists/,
+      'the pre-existing duplicate-email guard must still surface immediately, not be masked by the admission-number retry loop',
+    );
+  });
 });
 
 describe('Admissions RBAC isolation matrix', () => {

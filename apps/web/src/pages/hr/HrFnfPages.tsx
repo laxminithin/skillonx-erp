@@ -220,11 +220,13 @@ export function HrFnfCaseDetailPage() {
   const tabs = ['overview', 'separation', 'clearance', 'payables', 'recoveries', 'calculation', 'approvals', 'finance', 'documents', 'audit'];
   return (
     <div className="animate-fade-in space-y-4">
-      <PageHeader
-        title={String(data.caseNumber ?? 'Case')}
-        subtitle={`${data.employeeName ?? ''} · ${data.employeeNumber ?? ''}`}
-        actions={<Link to="/hr/fnf/cases"><Button variant="secondary">All cases</Button></Link>}
-      />
+      <div className="min-w-0 [&_h1]:break-all [&_p]:break-all">
+        <PageHeader
+          title={String(data.caseNumber ?? 'Case')}
+          subtitle={`${data.employeeName ?? ''} · ${data.employeeNumber ?? ''}`}
+          actions={<Link to="/hr/fnf/cases"><Button variant="secondary">All cases</Button></Link>}
+        />
+      </div>
       <div className="flex flex-wrap gap-2">
         <StatusPill value={String(data.status)} />
         <span className="text-sm text-ink-muted">LWD {String(data.lastWorkingDate ?? '—').slice(0, 10)}</span>
@@ -239,7 +241,7 @@ export function HrFnfCaseDetailPage() {
         <Button size="sm" onClick={() => act('close')}>Close</Button>
         <Button size="sm" onClick={() => act('documents')}>Release documents</Button>
       </div>
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex max-w-full gap-2 overflow-x-auto pb-1">
         {tabs.map((t) => (
           <button
             key={t}

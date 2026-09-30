@@ -172,7 +172,7 @@ describe('Alumni Management focused backend', () => {
     const college = await baseCollege();
     const a = await createVerifiedAlumni(Number(college.id), 'A');
     const b = await createVerifiedAlumni(Number(college.id), 'B');
-    const directory = await alumni.directory(a.actor, { q: 'Alumni' });
+    const directory = await alumni.directory(a.actor, { q: b.profile.historical_name, limit: 50 });
     const seenB = directory.alumni.find((p: any) => p.id === Number(b.profile.id));
     assert.ok(seenB);
     assert.equal(seenB.email, null);

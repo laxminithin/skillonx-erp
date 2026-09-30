@@ -21,8 +21,22 @@ import * as demands from './demands.js';
 import * as payments from './payments.js';
 import * as receipts from './receipts.js';
 import * as scholarships from './scholarships.js';
+import * as applications from './scholarshipApplications.js';
 import * as reports from './reports.js';
 import { verifyAndCompletePayment } from './gateway.js';
+import {
+  createEligibilityPolicySchema,
+  draftApplicationSchema,
+  applicationActionSchema,
+  sanctionApplicationSchema,
+  completeApplicationSchema,
+  applicationDocumentUploadSchema,
+} from './types.js';
+import type { StudentFinanceActor } from './types.js';
+
+function studentActor(req: StudentAuthedRequest): StudentFinanceActor {
+  return { studentId: req.user!.studentId, collegeId: req.user!.collegeId };
+}
 
 function actor(req: AuthedRequest): FinanceActor {
   return {
@@ -252,6 +266,112 @@ financeRouter.post(
   }),
 );
 
+// Scholarship eligibility policies
+financeRouter.get(
+  '/scholarship-eligibility-policies',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    res.json({ policies: await applications.listEligibilityPolicies(actor(req), req.query.schemeId ? Number(req.query.schemeId) : undefined) });
+  }),
+);
+
+financeRouter.post(
+  '/scholarship-eligibility-policies',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const body = validate(createEligibilityPolicySchema, req.body);
+    res.status(201).json(await applications.createEligibilityPolicy(actor(req), body));
+  }),
+);
+
+// Scholarship applications — staff processing queue
+financeRouter.get(
+  '/scholarship-applications',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    res.json({
+      applications: await applications.listApplicationsForStaff(actor(req), {
+        status: typeof req.query.status === 'string' ? req.query.status : undefined,
+        schemeId: req.query.schemeId ? Number(req.query.schemeId) : undefined,
+      }),
+    });
+  }),
+);
+
+financeRouter.get(
+  '/scholarship-applications/:id',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    res.json(await applications.getApplicationForStaff(actor(req), Number(req.params.id)));
+  }),
+);
+
+financeRouter.get(
+  '/scholarship-applications/:id/documents',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    res.json({ documents: await applications.listApplicationDocumentsForStaff(actor(req), Number(req.params.id)) });
+  }),
+);
+
+financeRouter.post(
+  '/scholarship-applications/:id/start-verification',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    res.json(await applications.startVerification(actor(req), Number(req.params.id)));
+  }),
+);
+
+financeRouter.post(
+  '/scholarship-applications/:id/return',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const body = validate(applicationActionSchema, req.body);
+    res.json(await applications.returnApplication(actor(req), Number(req.params.id), body.remarks ?? ''));
+  }),
+);
+
+financeRouter.post(
+  '/scholarship-applications/:id/verify',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const body = validate(applicationActionSchema, req.body ?? {});
+    res.json(await applications.verifyApplication(actor(req), Number(req.params.id), body.remarks));
+  }),
+);
+
+financeRouter.post(
+  '/scholarship-applications/:id/approve',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const body = validate(applicationActionSchema, req.body ?? {});
+    res.json(await applications.approveApplication(actor(req), Number(req.params.id), body.remarks));
+  }),
+);
+
+financeRouter.post(
+  '/scholarship-applications/:id/reject',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const body = validate(applicationActionSchema, req.body);
+    res.json(await applications.rejectApplication(actor(req), Number(req.params.id), body.remarks ?? ''));
+  }),
+);
+
+financeRouter.post(
+  '/scholarship-applications/:id/cancel',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const body = validate(applicationActionSchema, req.body);
+    res.json(await applications.cancelApplication(actor(req), Number(req.params.id), body.remarks ?? ''));
+  }),
+);
+
+financeRouter.post(
+  '/scholarship-applications/:id/sanction',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const body = validate(sanctionApplicationSchema, req.body);
+    res.json(await applications.sanctionApplication(actor(req), Number(req.params.id), body.sanctionedAmount));
+  }),
+);
+
+financeRouter.post(
+  '/scholarship-applications/:id/complete',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const body = validate(completeApplicationSchema, req.body);
+    res.json(await applications.completeApplication(actor(req), Number(req.params.id), body.evidenceReference));
+  }),
+);
+
 // Refunds
 financeRouter.get(
   '/refunds',
@@ -415,6 +535,72 @@ studentFinanceRouter.get(
     res.json({
       scholarships: await scholarships.listStudentScholarships(req.user!.studentId, req.user!.collegeId),
     });
+  }),
+);
+
+studentFinanceRouter.get(
+  '/finance/scholarship-schemes',
+  asyncHandler(async (req: StudentAuthedRequest, res) => {
+    res.json({ schemes: await applications.listApplicableSchemes(req.user!.collegeId) });
+  }),
+);
+
+studentFinanceRouter.get(
+  '/finance/scholarship-applications',
+  asyncHandler(async (req: StudentAuthedRequest, res) => {
+    res.json({ applications: await applications.listStudentApplications(studentActor(req)) });
+  }),
+);
+
+studentFinanceRouter.post(
+  '/finance/scholarship-applications',
+  asyncHandler(async (req: StudentAuthedRequest, res) => {
+    const body = validate(draftApplicationSchema, req.body);
+    res.status(201).json(await applications.createDraftApplication(studentActor(req), body));
+  }),
+);
+
+studentFinanceRouter.get(
+  '/finance/scholarship-applications/:id',
+  asyncHandler(async (req: StudentAuthedRequest, res) => {
+    res.json(await applications.getStudentApplication(studentActor(req), Number(req.params.id)));
+  }),
+);
+
+studentFinanceRouter.patch(
+  '/finance/scholarship-applications/:id',
+  asyncHandler(async (req: StudentAuthedRequest, res) => {
+    const body = validate(draftApplicationSchema.partial(), req.body ?? {});
+    res.json(await applications.updateDraftApplication(studentActor(req), Number(req.params.id), body));
+  }),
+);
+
+studentFinanceRouter.post(
+  '/finance/scholarship-applications/:id/submit',
+  asyncHandler(async (req: StudentAuthedRequest, res) => {
+    res.json(await applications.submitApplication(studentActor(req), Number(req.params.id)));
+  }),
+);
+
+studentFinanceRouter.post(
+  '/finance/scholarship-applications/:id/withdraw',
+  asyncHandler(async (req: StudentAuthedRequest, res) => {
+    res.json(await applications.withdrawApplication(studentActor(req), Number(req.params.id)));
+  }),
+);
+
+studentFinanceRouter.get(
+  '/finance/scholarship-applications/:id/documents',
+  asyncHandler(async (req: StudentAuthedRequest, res) => {
+    res.json({ documents: await applications.listApplicationDocuments(studentActor(req), Number(req.params.id)) });
+  }),
+);
+
+studentFinanceRouter.post(
+  '/finance/scholarship-applications/:id/documents',
+  asyncHandler(async (req: StudentAuthedRequest, res) => {
+    const body = validate(applicationDocumentUploadSchema, req.body);
+    res.status(201).json(await applications.uploadApplicationDocument(studentActor(req), Number(req.params.id), body));
   }),
 );
 

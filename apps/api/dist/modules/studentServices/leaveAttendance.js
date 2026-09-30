@@ -51,6 +51,18 @@ export function resolveLeaveWindow(formData) {
         return null;
     return from <= to ? { from, to } : { from: to, to: from };
 }
+function toPeriod(v) {
+    if (v == null || v === '')
+        return null;
+    const n = Number(v);
+    return Number.isFinite(n) && n > 0 ? n : null;
+}
+function toClock(v) {
+    if (typeof v !== 'string')
+        return null;
+    const trimmed = v.trim();
+    return /^\d{1,2}:\d{2}/.test(trimmed) ? trimmed.slice(0, 5) : null;
+}
 /**
  * Reconcile attendance for a fully-approved leave/permission request.
  * Caller must have already verified the request belongs to `collegeId` and is
@@ -67,15 +79,33 @@ export async function applyApprovedLeaveToAttendance(collegeId, requestId, actor
         return { applied: false, window: null, reclassified: 0 };
     const studentId = Number(request.student_id);
     const marker = `${LEAVE_MARKER_PREFIX} #${request.request_number ?? requestId}`;
+    const formData = parseFormData(request.form_data);
+    const fromPeriod = toPeriod(formData.fromPeriod);
+    const toPeriodNo = toPeriod(formData.toPeriod) ?? fromPeriod;
+    const fromTime = toClock(formData.fromTime);
+    const toTime = toClock(formData.toTime);
     // Candidate records: this student's ABSENT marks on sessions dated within the
-    // leave window. Reclassify to EXCUSED (idempotent — EXCUSED rows are excluded).
-    const candidates = await db('attendance_records as ar')
+    // approved window. For short permission, optional period/time fields narrow
+    // the eligible sessions; we never create synthetic attendance rows.
+    let candidateQuery = db('attendance_records as ar')
         .join('attendance_sessions as s', 's.id', 'ar.attendance_session_id')
         .where('ar.college_id', collegeId)
         .where('ar.student_id', studentId)
         .where('ar.status', 'ABSENT')
-        .whereBetween('s.session_date', [window.from, window.to])
-        .select('ar.id as record_id', 'ar.attendance_session_id', 'ar.status as from_status');
+        .whereBetween('s.session_date', [window.from, window.to]);
+    if (fromPeriod != null && toPeriodNo != null) {
+        const low = Math.min(fromPeriod, toPeriodNo);
+        const high = Math.max(fromPeriod, toPeriodNo);
+        candidateQuery = candidateQuery.whereBetween('s.period_number', [low, high]);
+    }
+    else if (fromTime && toTime) {
+        candidateQuery = candidateQuery.where((q) => {
+            q.whereBetween('s.start_time', [fromTime, toTime])
+                .orWhereBetween('s.end_time', [fromTime, toTime])
+                .orWhere((inner) => inner.where('s.start_time', '<=', fromTime).andWhere('s.end_time', '>=', toTime));
+        });
+    }
+    const candidates = await candidateQuery.select('ar.id as record_id', 'ar.attendance_session_id', 'ar.status as from_status');
     let reclassified = 0;
     for (const c of candidates) {
         await db.transaction(async (trx) => {
@@ -101,7 +131,7 @@ export async function applyApprovedLeaveToAttendance(collegeId, requestId, actor
         action: 'LEAVE_ATTENDANCE_RECONCILED',
         entityType: 'student_service_request',
         entityId: requestId,
-        afterState: { window, reclassified, marker },
+        afterState: { window, fromPeriod, toPeriod: toPeriodNo, fromTime, toTime, reclassified, marker },
     });
     return { applied: true, window, reclassified };
 }

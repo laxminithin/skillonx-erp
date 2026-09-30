@@ -21,6 +21,13 @@ import { getStudentTransportAccess } from '../transport/studentAccess.js';
 import { getStudentAssignment } from '../transport/assignments.js';
 import { getStudentPass } from '../transport/passes.js';
 import { getStudentTransportDues } from '../transport/integration.js';
+import {
+  createParentInitiatedRequest,
+  getParentRequest,
+  listParentLeaveRequests,
+  parentActionOnRequest,
+  submitParentInitiatedRequest,
+} from '../studentServices/requestEngine.js';
 
 export const parentLoginSchema = z.object({
   email: z.string().email().transform((v) => v.trim().toLowerCase()),
@@ -45,6 +52,20 @@ export const parentChangePasswordSchema = z
 export const parentProfileSchema = z.object({
   name: z.string().trim().min(2).max(255).optional(),
   phone: z.string().trim().max(32).nullable().optional(),
+});
+
+export const parentLeaveActionSchema = z.object({
+  action: z.enum(['APPROVE', 'DECLINE']),
+  remarks: z.string().trim().max(2000).optional().nullable(),
+});
+
+export const parentLeaveCreateSchema = z.object({
+  requestTypeCode: z.enum(['STUDENT_LEAVE_REQUEST', 'STUDENT_PERMISSION_REQUEST']),
+  title: z.string().trim().min(1).max(255),
+  description: z.string().trim().max(5000).optional().nullable(),
+  formData: z.record(z.unknown()).optional().nullable(),
+  priority: z.enum(['LOW', 'NORMAL', 'HIGH', 'URGENT']).optional(),
+  submit: z.boolean().optional(),
 });
 
 export type ParentActor = {
@@ -359,4 +380,36 @@ export async function parentMentoring(actor: ParentActor, studentId: number) {
       agreedFollowUp: r.agreed_follow_up ?? null,
     })),
   };
+}
+
+export async function parentLeaveRequests(actor: ParentActor, studentId: number, status?: string) {
+  await assertParentCanAccessStudent(actor, studentId);
+  return { requests: await listParentLeaveRequests(actor, studentId, status) };
+}
+
+export async function parentLeaveRequestDetail(actor: ParentActor, requestId: number) {
+  return getParentRequest(actor, requestId);
+}
+
+export async function parentSubmitLeaveForChild(
+  actor: ParentActor,
+  studentId: number,
+  input: z.infer<typeof parentLeaveCreateSchema>,
+) {
+  await assertParentCanAccessStudent(actor, studentId);
+  const created = await createParentInitiatedRequest(actor, studentId, input);
+  if (input.submit) return submitParentInitiatedRequest(actor, created.id);
+  return created;
+}
+
+export async function parentSubmitLeaveDraft(actor: ParentActor, requestId: number) {
+  return submitParentInitiatedRequest(actor, requestId);
+}
+
+export async function parentActOnLeaveRequest(
+  actor: ParentActor,
+  requestId: number,
+  input: z.infer<typeof parentLeaveActionSchema>,
+) {
+  return parentActionOnRequest(actor, requestId, input);
 }

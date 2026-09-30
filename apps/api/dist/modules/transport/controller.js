@@ -3,6 +3,7 @@ import { z } from 'zod';
 import rateLimit from 'express-rate-limit';
 import { asyncHandler, validate } from '../../utils/errors.js';
 import { requireAuth, requireStudentAuth } from '../../middleware/auth.js';
+import { db } from '../../db/index.js';
 import { assertTransportPermission, getDriverPersonnelId, assertDriverTripAccess, } from './access.js';
 import { getStudentTransportAccess } from './studentAccess.js';
 import * as applications from './applications.js';
@@ -33,6 +34,16 @@ function actor(req) {
         role: req.user.role,
         name: req.user.name,
     };
+}
+function pageParams(req) {
+    const page = Math.max(1, Number(req.query.page ?? 1) || 1);
+    const rawSize = Number(req.query.pageSize ?? 25) || 25;
+    const pageSize = Math.min(100, Math.max(1, rawSize));
+    const offset = (page - 1) * pageSize;
+    return { page, pageSize, offset };
+}
+function paged(items, total, page, pageSize) {
+    return { items, page, pageSize, total, totalPages: Math.max(1, Math.ceil(total / pageSize)) };
 }
 // ── Student router ──────────────────────────────────────────────────────
 export const studentTransportRouter = Router();
@@ -138,6 +149,12 @@ transportRouter.use(requireAuth);
 transportRouter.get('/dashboard', asyncHandler(async (req, res) => {
     res.json(await dashboard.getAdminDashboard(actor(req)));
 }));
+transportRouter.get('/operations/today', asyncHandler(async (req, res) => {
+    res.json(await dashboard.getOperationsDashboard(actor(req)));
+}));
+transportRouter.get('/management/dashboard', asyncHandler(async (req, res) => {
+    res.json(await dashboard.getManagementDashboard(actor(req)));
+}));
 transportRouter.get('/applications', asyncHandler(async (req, res) => {
     const status = typeof req.query.status === 'string' ? req.query.status : undefined;
     const cycleId = req.query.cycleId ? Number(req.query.cycleId) : undefined;
@@ -208,6 +225,150 @@ transportRouter.post('/vehicles', asyncHandler(async (req, res) => {
 }));
 transportRouter.get('/compliance', asyncHandler(async (req, res) => {
     res.json(await vehicles.getComplianceDashboard(actor(req)));
+}));
+transportRouter.get('/personnel', asyncHandler(async (req, res) => {
+    const a = actor(req);
+    assertTransportPermission(a, 'transport.view');
+    const { page, pageSize, offset } = pageParams(req);
+    const type = typeof req.query.type === 'string' ? req.query.type : undefined;
+    const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
+    let q = db('transport_personnel').where({ college_id: a.collegeId });
+    if (type)
+        q = q.andWhere({ personnel_type: type });
+    if (search)
+        q = q.andWhere((b) => b.whereLike('name', `%${search}%`).orWhereLike('phone', `%${search}%`).orWhereLike('license_number', `%${search}%`));
+    const countRow = await q.clone().count({ c: '*' }).first();
+    const rows = await q.orderBy('personnel_type').orderBy('name').limit(pageSize).offset(offset);
+    res.json(paged(rows.map((p) => ({
+        id: Number(p.id),
+        name: p.name,
+        phone: p.phone,
+        personnelType: p.personnel_type,
+        licenseNumber: p.license_number,
+        licenseExpiry: p.license_expiry,
+        status: p.status,
+        facultyUserId: p.faculty_user_id ? Number(p.faculty_user_id) : null,
+    })), Number(countRow?.c ?? 0), page, pageSize));
+}));
+transportRouter.get('/members', asyncHandler(async (req, res) => {
+    const a = actor(req);
+    assertTransportPermission(a, 'transport.view');
+    const { page, pageSize, offset } = pageParams(req);
+    const status = typeof req.query.status === 'string' ? req.query.status : undefined;
+    const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
+    let q = db('transport_members as m')
+        .leftJoin('students as s', 's.id', 'm.student_id')
+        .leftJoin('student_transport_assignments as assn', function () {
+        this.on('assn.transport_member_id', '=', 'm.id').andOn('assn.status', '=', db.raw('?', ['ACTIVE']));
+    })
+        .leftJoin('transport_routes as r', 'r.id', 'assn.route_id')
+        .leftJoin('transport_stops as ps', 'ps.id', 'assn.pickup_stop_id')
+        .leftJoin('transport_passes as p', function () {
+        this.on('p.transport_member_id', '=', 'm.id').andOn('p.status', '=', db.raw('?', ['ACTIVE']));
+    })
+        .where({ 'm.college_id': a.collegeId });
+    if (status)
+        q = q.andWhere('m.status', status);
+    if (search)
+        q = q.andWhere((b) => b.whereLike('s.name', `%${search}%`).orWhereLike('s.usn', `%${search}%`).orWhereLike('m.member_number', `%${search}%`));
+    const countRow = await q.clone().clearSelect().clearOrder().countDistinct({ c: 'm.id' }).first();
+    const rows = await q
+        .select('m.*', 's.name as student_name', 's.usn', 'r.name as route_name', 'r.code as route_code', 'ps.name as pickup_stop_name', 'p.pass_number', 'p.status as pass_status')
+        .orderBy('m.created_at', 'desc')
+        .limit(pageSize)
+        .offset(offset);
+    res.json(paged(rows.map((m) => ({
+        id: Number(m.id),
+        memberNumber: m.member_number,
+        status: m.status,
+        studentId: Number(m.student_id),
+        studentName: m.student_name,
+        usn: m.usn,
+        routeName: m.route_name,
+        routeCode: m.route_code,
+        pickupStopName: m.pickup_stop_name,
+        passNumber: m.pass_number,
+        passStatus: m.pass_status,
+        activatedAt: m.activated_at,
+    })), Number(countRow?.c ?? 0), page, pageSize));
+}));
+transportRouter.get('/passes', asyncHandler(async (req, res) => {
+    const a = actor(req);
+    assertTransportPermission(a, 'transport.view');
+    const { page, pageSize, offset } = pageParams(req);
+    const status = typeof req.query.status === 'string' ? req.query.status : undefined;
+    let q = db('transport_passes as p')
+        .leftJoin('students as s', 's.id', 'p.student_id')
+        .leftJoin('student_transport_assignments as assn', 'assn.id', 'p.route_assignment_id')
+        .leftJoin('transport_routes as r', 'r.id', 'assn.route_id')
+        .where({ 'p.college_id': a.collegeId });
+    if (status)
+        q = q.andWhere('p.status', status);
+    const countRow = await q.clone().count({ c: '*' }).first();
+    const rows = await q.select('p.*', 's.name as student_name', 's.usn', 'r.name as route_name', 'r.code as route_code').orderBy('p.issued_at', 'desc').limit(pageSize).offset(offset);
+    res.json(paged(rows.map((p) => ({
+        id: Number(p.id),
+        passNumber: p.pass_number,
+        status: p.status,
+        studentName: p.student_name,
+        usn: p.usn,
+        routeName: p.route_name,
+        routeCode: p.route_code,
+        validFrom: p.valid_from,
+        validUntil: p.valid_until,
+        issuedAt: p.issued_at,
+    })), Number(countRow?.c ?? 0), page, pageSize));
+}));
+transportRouter.get('/finance-status', asyncHandler(async (req, res) => {
+    const a = actor(req);
+    assertTransportPermission(a, 'transport.view');
+    const { page, pageSize, offset } = pageParams(req);
+    const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
+    let q = db('student_fee_demands as d')
+        .leftJoin('students as s', 's.id', 'd.student_id')
+        .where({ 'd.college_id': a.collegeId })
+        .whereIn('d.demand_type', ['TRANSPORT_FEE', 'TRANSPORT_ADMISSION_FEE', 'TRANSPORT_DEPOSIT', 'TRANSPORT_ROUTE_CHANGE_FEE', 'TRANSPORT_DAMAGE_CHARGE', 'TRANSPORT_FINE'])
+        .whereNot('d.status', 'CANCELLED');
+    if (search)
+        q = q.andWhere((b) => b.whereLike('s.name', `%${search}%`).orWhereLike('s.usn', `%${search}%`));
+    const countRow = await q.clone().count({ c: '*' }).first();
+    const rows = await q.select('d.*', 's.name as student_name', 's.usn').orderBy('d.created_at', 'desc').limit(pageSize).offset(offset);
+    res.json(paged(rows.map((d) => ({
+        id: Number(d.id),
+        studentName: d.student_name,
+        usn: d.usn,
+        demandType: d.demand_type,
+        netAmount: Number(d.net_amount),
+        paidAmount: Number(d.paid_amount),
+        outstandingAmount: Number(d.outstanding_amount),
+        status: d.status,
+        dueDate: d.due_date,
+    })), Number(countRow?.c ?? 0), page, pageSize));
+}));
+transportRouter.get('/clearance', asyncHandler(async (req, res) => {
+    const a = actor(req);
+    assertTransportPermission(a, 'transport.view');
+    const { page, pageSize, offset } = pageParams(req);
+    const rows = await db('transport_members as m')
+        .leftJoin('students as s', 's.id', 'm.student_id')
+        .where({ 'm.college_id': a.collegeId })
+        .select('m.*', 's.name as student_name', 's.usn')
+        .orderBy('m.created_at', 'desc')
+        .limit(pageSize)
+        .offset(offset);
+    const countRow = await db('transport_members').where({ college_id: a.collegeId }).count({ c: '*' }).first();
+    const items = await Promise.all(rows.map(async (m) => {
+        const status = await clearance.getTransportNoDueStatus(Number(m.student_id), a.collegeId);
+        return {
+            id: Number(m.id),
+            studentName: m.student_name,
+            usn: m.usn,
+            memberStatus: m.status,
+            clearanceStatus: status.status,
+            reasons: status.reasons,
+        };
+    }));
+    res.json(paged(items, Number(countRow?.c ?? 0), page, pageSize));
 }));
 transportRouter.post('/route-vehicle-assignments', asyncHandler(async (req, res) => {
     const body = validate(z.object({ routeId: z.number(), vehicleId: z.number(), shiftType: z.string().optional() }), req.body);

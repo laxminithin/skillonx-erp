@@ -22,6 +22,16 @@ export declare function shapeTicket(row: Record<string, unknown>, visibility?: '
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -77,6 +87,16 @@ export declare function shapeTicket(row: Record<string, unknown>, visibility?: '
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -128,6 +148,16 @@ export declare function createTicket(actor: MaintActor, input: Record<string, un
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -183,6 +213,16 @@ export declare function createTicket(actor: MaintActor, input: Record<string, un
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -235,6 +275,16 @@ export declare function listTickets(actor: MaintActor, filters?: Record<string, 
         sourceEntityType: {} | null;
         sourceEntityId: number | null;
         assetRef: {} | null;
+        assetId: number | null;
+        asset: {
+            id: number;
+            assetTag: string;
+            name: string;
+            status: string;
+            warrantyEndDate: {} | null;
+            amcReference: {} | null;
+            amcExpiryDate: {} | null;
+        } | null;
         erpModule: {} | null;
         erpRoute: {} | null;
         priority: unknown;
@@ -290,6 +340,16 @@ export declare function listTickets(actor: MaintActor, filters?: Record<string, 
         sourceEntityType: {} | null;
         sourceEntityId: number | null;
         assetRef: {} | null;
+        assetId: number | null;
+        asset: {
+            id: number;
+            assetTag: string;
+            name: string;
+            status: string;
+            warrantyEndDate: {} | null;
+            amcReference: {} | null;
+            amcExpiryDate: {} | null;
+        } | null;
         erpModule: {} | null;
         erpRoute: {} | null;
         priority: unknown;
@@ -398,6 +458,16 @@ export declare function getTicket(actor: MaintActor, ticketId: number): Promise<
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -506,6 +576,16 @@ export declare function getTicket(actor: MaintActor, ticketId: number): Promise<
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -561,6 +641,16 @@ export declare function assignTicket(actor: MaintActor, ticketId: number, input:
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -616,6 +706,16 @@ export declare function assignTicket(actor: MaintActor, ticketId: number, input:
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -667,6 +767,16 @@ export declare function acknowledgeTicket(actor: MaintActor, ticketId: number): 
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -722,6 +832,16 @@ export declare function acknowledgeTicket(actor: MaintActor, ticketId: number): 
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -773,6 +893,16 @@ export declare function startWork(actor: MaintActor, ticketId: number): Promise<
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -828,6 +958,16 @@ export declare function startWork(actor: MaintActor, ticketId: number): Promise<
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -882,6 +1022,16 @@ export declare function setStatus(actor: MaintActor, ticketId: number, input: {
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -937,6 +1087,16 @@ export declare function setStatus(actor: MaintActor, ticketId: number, input: {
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -991,6 +1151,16 @@ export declare function setPriority(actor: MaintActor, ticketId: number, input: 
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1046,6 +1216,16 @@ export declare function setPriority(actor: MaintActor, ticketId: number, input: 
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1100,6 +1280,16 @@ export declare function resolveTicket(actor: MaintActor, ticketId: number, input
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1155,6 +1345,16 @@ export declare function resolveTicket(actor: MaintActor, ticketId: number, input
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1208,6 +1408,16 @@ export declare function confirmResolution(actor: MaintActor, ticketId: number, i
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1263,6 +1473,16 @@ export declare function confirmResolution(actor: MaintActor, ticketId: number, i
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1316,6 +1536,16 @@ export declare function reopenTicket(actor: MaintActor, ticketId: number, input:
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1371,6 +1601,16 @@ export declare function reopenTicket(actor: MaintActor, ticketId: number, input:
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1442,6 +1682,16 @@ export declare function escalateTicket(actor: MaintActor, ticketId: number, inpu
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1497,6 +1747,16 @@ export declare function escalateTicket(actor: MaintActor, ticketId: number, inpu
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1548,6 +1808,16 @@ export declare function updateVendor(actor: MaintActor, ticketId: number, input:
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;
@@ -1603,6 +1873,16 @@ export declare function updateVendor(actor: MaintActor, ticketId: number, input:
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;

@@ -3,7 +3,11 @@
  */
 import { describe, it, before, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
+import express from 'express';
 import { db } from '../../db/index.js';
+import { signToken } from '../../utils/token.js';
+import { errorHandler } from '../../utils/errors.js';
+import { hostelRouter } from './controller.js';
 import type { HostelActor } from './types.js';
 import { getStudentHostelAccess } from './studentAccess.js';
 import { getHostelNoDueStatus } from './clearance.js';
@@ -19,6 +23,7 @@ import { completeVacating, requestVacating, updateVacatingChecklist } from './va
 import { createLeave, listStudentLeaves } from './leaves.js';
 import { createOutpass, listStudentOutpasses, verifyOutpassToken } from './outpasses.js';
 import { hasFinancePermission } from '../finance/access.js';
+import { me as authMe } from '../auth/service.js';
 
 async function e2eContext() {
   try {
@@ -132,6 +137,30 @@ async function cleanupHostelClosureFixtures(prefix = 'HX') {
   }
 }
 
+// `ctx.other` (4VV24CS002) is seeded as an "application-only" fixture — a SUBMITTED hostel
+// application with no allocation (see seedStudentLmsE2e.ts). Real API activity against this
+// QA environment (outside this test file — the allocation row below is not `HX-`-prefixed, so
+// cleanupHostelClosureFixtures never touches it) has since given that student a real, permanent
+// bed allocation, contradicting the fixture's own premise. Restore that one seeded student's
+// baseline explicitly so this suite is self-healing regardless of what else touched the DB.
+async function restoreApplicationOnlyBaseline() {
+  const other = await db('students').where({ usn: '4VV24CS002' }).first();
+  if (!other) return;
+  const residents = await db('hostel_residents').where({ student_id: other.id }).select('id');
+  const residentIds = residents.map((r) => Number(r.id));
+  if (residentIds.length) {
+    await db('hostel_vacating_requests').whereIn('resident_id', residentIds).delete();
+    await db('hostel_complaints').whereIn('resident_id', residentIds).delete();
+    await db('hostel_leave_requests').whereIn('resident_id', residentIds).delete();
+    await db('hostel_outpasses').whereIn('resident_id', residentIds).delete();
+    await db('hostel_bed_allocations').whereIn('resident_id', residentIds).delete();
+    await db('hostel_residents').whereIn('id', residentIds).delete();
+  }
+  await db('hostel_applications')
+    .where({ student_id: other.id, application_number: 'SX/HST/2026/000002' })
+    .update({ status: 'SUBMITTED' });
+}
+
 async function createTempRoom(ctx: Awaited<ReturnType<typeof requireE2eContext>>, suffix: string, capacity = 2) {
   const block = await db('hostel_blocks').where({ hostel_id: ctx.hostel.id }).first();
   const floor = await db('hostel_floors').where({ hostel_id: ctx.hostel.id, block_id: block.id }).first();
@@ -209,6 +238,7 @@ function mysqlDateTime(date: Date) {
 describe('hostel E2E', () => {
   before(async () => {
     await cleanupHostelClosureFixtures();
+    await restoreApplicationOnlyBaseline();
   });
 
   beforeEach(async () => {
@@ -767,9 +797,41 @@ describe('hostel E2E', () => {
     }
     assert.ok(Array.isArray(await listPendingApplications(warden, Number(ctx.hostel.id))));
     assert.ok(Array.isArray(await getRoomOccupancy(warden, Number(ctx.hostel.id))));
-    assert.ok(Array.isArray(await listResidents(warden, Number(ctx.hostel.id))));
+    assert.ok(Array.isArray((await listResidents(warden, { hostelId: Number(ctx.hostel.id) })).residents));
     assert.ok(Array.isArray(await listWaitlist(warden, Number(ctx.hostel.id))));
     assert.ok((await wardenDashboard(warden, Number(ctx.hostel.id))).capacity);
+  });
+
+  it('Resident directory paginates and filters within authorised Hostel scope', async () => {
+    const ctx = await requireE2eContext();
+    const warden = hostelActor(ctx.warden);
+    await createTempResident(ctx, Number(ctx.other.id), 'PAGE-OTHER');
+    await createTempResident(ctx, Number(ctx.nonResident.id), 'PAGE-NONRESIDENT');
+
+    const first = await listResidents(warden, { hostelId: Number(ctx.hostel.id), page: 1, pageSize: 1 });
+    assert.equal(first.residents.length, 1);
+    assert.ok(first.pagination.total >= 3);
+    assert.equal(first.pagination.totalPages, first.pagination.total);
+
+    const middle = await listResidents(warden, { hostelId: Number(ctx.hostel.id), page: 2, pageSize: 1 });
+    assert.equal(middle.residents.length, 1);
+    assert.notEqual(middle.residents[0].id, first.residents[0].id);
+
+    const last = await listResidents(warden, { hostelId: Number(ctx.hostel.id), page: first.pagination.totalPages, pageSize: 1 });
+    assert.equal(last.residents.length, 1);
+
+    const beyond = await listResidents(warden, { hostelId: Number(ctx.hostel.id), page: first.pagination.totalPages + 1, pageSize: 1 });
+    assert.equal(beyond.residents.length, 0);
+    assert.equal(beyond.pagination.total, first.pagination.total);
+
+    const search = await listResidents(warden, { hostelId: Number(ctx.hostel.id), search: String(ctx.other.usn), status: 'ACTIVE', pageSize: 25 });
+    assert.equal(search.pagination.total, 1);
+    assert.equal(search.residents[0].studentId, Number(ctx.other.id));
+
+    const empty = await listResidents(warden, { hostelId: Number(ctx.hostel.id), search: 'NO-SUCH-RESIDENT-QUERY' });
+    assert.equal(empty.pagination.total, 0);
+    assert.equal(empty.pagination.totalPages, 0);
+    assert.deepEqual(empty.residents, []);
   });
 
   it('Student A cannot access Student B allocation or resident record', async () => {
@@ -781,7 +843,7 @@ describe('hostel E2E', () => {
 
   it('Management cannot retrieve private operational resident rows through resident workspace', async () => {
     const ctx = await requireE2eContext();
-    await assertRejectsStatus(() => listResidents({ ...hostelActor(ctx.warden), role: 'MANAGEMENT' }, Number(ctx.hostel.id)), 403);
+    await assertRejectsStatus(() => listResidents({ ...hostelActor(ctx.warden), role: 'MANAGEMENT' }, { hostelId: Number(ctx.hostel.id) }), 403);
   });
 
   it('Full RBAC matrix uses actual canonical Hostel roles', async () => {
@@ -821,6 +883,23 @@ describe('hostel E2E', () => {
     assert.deepEqual(hostelPermissionsForRole('HOSTEL_OFFICER'), []);
     assert.ok(hostelPermissionsForRole('WARDEN').includes('hostel.allocation.manage'));
     assert.ok(hostelPermissionsForRole('CHIEF_WARDEN').includes('hostel.clearance.manage'));
+  });
+
+  it('Faculty plus Warden assignment preserves Faculty role and exposes separate portal contexts', async () => {
+    const ctx = await requireE2eContext();
+    const facultyWarden = await db('faculty_users')
+      .where({ college_id: ctx.cls.college_id, email: 'qa.faculty.warden@vviet.edu.in' })
+      .first();
+    assert.ok(facultyWarden);
+    assert.equal(facultyWarden.role, 'FACULTY');
+    const assignment = await db('hostel_warden_assignments')
+      .where({ college_id: ctx.cls.college_id, faculty_user_id: facultyWarden.id, hostel_id: ctx.hostel.id, status: 'ACTIVE' })
+      .first();
+    assert.ok(assignment);
+    const profile = await authMe(Number(facultyWarden.id));
+    assert.deepEqual(profile.portalContexts, ['FACULTY', 'WARDEN']);
+    assert.equal(profile.role, 'FACULTY');
+    assert.equal(hasHostelPermission(hostelActor(facultyWarden), 'hostel.view'), false);
   });
 
   it('Leave request, approval, rejection boundary, and list persistence work', async () => {
@@ -926,5 +1005,61 @@ describe('hostel E2E', () => {
     assert.equal(hasHostelPermission(actor, 'hostel.application.review'), false);
     assert.equal(hasHostelPermission(actor, 'hostel.allocation.manage'), false);
     assert.equal(hasHostelPermission(actor, 'hostel.vacating.manage'), false);
+  });
+
+  it('GET /hostel/capacity requires hostel.view and scopes to the warden\'s assigned hostels', async () => {
+    const ctx = await requireE2eContext();
+    const facultyUser = await db('faculty_users').where({ college_id: ctx.cls.college_id, role: 'FACULTY' }).first();
+    if (!facultyUser) return;
+
+    const app = express();
+    app.use(express.json());
+    app.use('/api/hostel', hostelRouter);
+    app.use(errorHandler);
+    const server = await new Promise<{ url: string; close: () => Promise<void> }>((resolve) => {
+      const s = app.listen(0, () => {
+        const address = s.address();
+        const port = typeof address === 'object' && address ? address.port : 0;
+        resolve({ url: `http://127.0.0.1:${port}`, close: () => new Promise((r) => s.close(() => r())) });
+      });
+    });
+    try {
+      const tokenFor = (user: { id: number; college_id: number; department_id?: number | null; role: string; email?: string; name?: string }) =>
+        signToken({
+          kind: 'faculty',
+          facultyUserId: Number(user.id),
+          collegeId: Number(user.college_id),
+          departmentId: user.department_id ?? null,
+          role: user.role,
+          email: user.email ?? 'test@example.com',
+          name: user.name ?? 'Test User',
+        });
+
+      const facultyRes = await fetch(`${server.url}/api/hostel/capacity`, {
+        headers: { Authorization: `Bearer ${tokenFor(facultyUser)}` },
+      });
+      assert.equal(facultyRes.status, 403, 'bare FACULTY should be denied hostel capacity');
+
+      const wardenRes = await fetch(`${server.url}/api/hostel/capacity?hostelId=${ctx.hostel.id}`, {
+        headers: { Authorization: `Bearer ${tokenFor(ctx.warden)}` },
+      });
+      assert.equal(wardenRes.status, 200);
+      const wardenCapacity = await wardenRes.json();
+      const directCapacity = await getHostelCapacity(Number(ctx.cls.college_id), Number(ctx.hostel.id));
+      assert.equal(wardenCapacity.totalBeds, directCapacity.totalBeds, 'scoped capacity must match the requested hostel');
+
+      const otherCollegeAdmin = await db('faculty_users').where({ college_id: ctx.cls.college_id, role: 'COLLEGE_ADMIN' }).first();
+      if (otherCollegeAdmin) {
+        const aggregateRes = await fetch(`${server.url}/api/hostel/capacity`, {
+          headers: { Authorization: `Bearer ${tokenFor(otherCollegeAdmin)}` },
+        });
+        assert.equal(aggregateRes.status, 200, 'institution-wide roles can read aggregate capacity with no hostelId');
+      }
+
+      const noAuthRes = await fetch(`${server.url}/api/hostel/capacity`);
+      assert.equal(noAuthRes.status, 401);
+    } finally {
+      await server.close();
+    }
   });
 });

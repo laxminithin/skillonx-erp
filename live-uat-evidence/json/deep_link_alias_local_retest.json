@@ -1,0 +1,33 @@
+{
+  "executedAt": "2026-09-29T09:37:21.710Z",
+  "environment": "local Vite with mocked authenticated API responses",
+  "results": [
+    {
+      "name": "student-courses-redirect",
+      "from": "/lms/courses",
+      "acceptedPaths": [
+        "/lms/subjects"
+      ],
+      "actual": "/lms/subjects",
+      "notFound": false,
+      "pageErrors": [],
+      "pass": true
+    },
+    {
+      "name": "parent-finance-alias",
+      "from": "/parent/finance",
+      "acceptedPaths": [
+        "/parent/finance",
+        "/parent/fees"
+      ],
+      "actual": "/parent/finance",
+      "notFound": false,
+      "pageErrors": [],
+      "pass": true
+    }
+  ],
+  "summary": {
+    "pass": 2,
+    "total": 2
+  }
+}

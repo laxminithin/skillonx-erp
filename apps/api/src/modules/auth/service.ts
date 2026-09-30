@@ -144,12 +144,25 @@ export async function me(facultyUserId: number) {
     tp = null;
   }
 
+  const portalContexts = String(user.role) === 'WARDEN' ? ['WARDEN'] : ['FACULTY'];
+  try {
+    if (await db.schema.hasTable('hostel_warden_assignments')) {
+      const assignment = await db('hostel_warden_assignments')
+        .where({ faculty_user_id: Number(user.id), college_id: Number(user.collegeId), status: 'ACTIVE' })
+        .first();
+      if (assignment) portalContexts.push('WARDEN');
+    }
+  } catch {
+    // Hostel is optional; the primary faculty identity remains usable.
+  }
+
   return {
     ...user,
     isActive: Boolean(user.isActive),
     timezone: user.timezone || 'Asia/Kolkata',
     permissions: parsePermissions(user.permissions),
     roleLabel: ROLE_LABELS[user.role] ?? user.role,
+    portalContexts,
     leadership,
     tp,
   };

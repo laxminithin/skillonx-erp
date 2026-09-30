@@ -1,4 +1,11 @@
 import type { FacultyRequesterActor, ServicesActor, StudentActor } from './types.js';
+type ParentWorkflowActor = {
+    parentUserId: number;
+    collegeId: number;
+    role: 'PARENT';
+    email?: string;
+    name?: string;
+};
 export declare function studentServicesHome(studentId: number, collegeId: number): Promise<{
     requestTypes: {
         code: any;
@@ -32,6 +39,10 @@ export declare function listStudentRequests(studentId: number, collegeId: number
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -50,6 +61,10 @@ export declare function listDraftRequests(studentId: number, collegeId: number):
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -109,6 +124,297 @@ export declare function createRequest(actor: StudentActor, input: {
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}>;
+export declare function createParentInitiatedRequest(actor: ParentWorkflowActor, studentId: number, input: {
+    requestTypeCode: string;
+    title: string;
+    description?: string | null;
+    formData?: Record<string, unknown> | null;
+    priority?: string;
+}): Promise<{
+    type: {
+        code: any;
+        label: any;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        actorRole: any;
+        status: any;
+        remarks: any;
+        actedByName: any;
+        actedAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    linkedRequests: {
+        domain: any;
+        entityType: any;
+        entityId: number;
+        correlationId: any;
+    }[];
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}>;
+export declare function submitParentInitiatedRequest(actor: ParentWorkflowActor, requestId: number): Promise<{
+    type: {
+        code: any;
+        label: any;
+        generatesCertificate: boolean;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        status: any;
+        remarks: any;
+        actedAt: any;
+    }[];
+    comments: {
+        id: number;
+        body: any;
+        authorName: any;
+        isStudent: boolean;
+        createdAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    document: {
+        id: number;
+        certificateNumber: any;
+        verificationCode: any;
+        documentType: any;
+        issuedAt: any;
+    } | null;
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+} | {
+    type: {
+        code: any;
+        label: any;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        actorRole: any;
+        status: any;
+        remarks: any;
+        actedByName: any;
+        actedAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    linkedRequests: {
+        domain: any;
+        entityType: any;
+        entityId: number;
+        correlationId: any;
+    }[];
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}>;
+export declare function listParentLeaveRequests(actor: ParentWorkflowActor, studentId: number, status?: string): Promise<{
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}[]>;
+export declare function getParentRequest(actor: ParentWorkflowActor, requestId: number): Promise<{
+    type: {
+        code: any;
+        label: any;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        actorRole: any;
+        status: any;
+        remarks: any;
+        actedByName: any;
+        actedAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    linkedRequests: {
+        domain: any;
+        entityType: any;
+        entityId: number;
+        correlationId: any;
+    }[];
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}>;
+export declare function parentActionOnRequest(actor: ParentWorkflowActor, requestId: number, input: {
+    action: 'APPROVE' | 'DECLINE';
+    remarks?: string | null;
+}): Promise<{
+    type: {
+        code: any;
+        label: any;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        actorRole: any;
+        status: any;
+        remarks: any;
+        actedByName: any;
+        actedAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    linkedRequests: {
+        domain: any;
+        entityType: any;
+        entityId: number;
+        correlationId: any;
+    }[];
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -134,6 +440,10 @@ export declare function createFacultyRequest(actor: FacultyRequesterActor, input
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -152,6 +462,10 @@ export declare function getFacultyRequest(actor: FacultyRequesterActor, requestI
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -170,6 +484,10 @@ export declare function submitFacultyRequest(actor: FacultyRequesterActor, reque
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -227,6 +545,10 @@ export declare function updateDraftRequest(actor: StudentActor, requestId: numbe
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -280,6 +602,59 @@ export declare function submitRequest(actor: StudentActor, requestId: number): P
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+} | {
+    type: {
+        code: any;
+        label: any;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        actorRole: any;
+        status: any;
+        remarks: any;
+        actedByName: any;
+        actedAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    linkedRequests: {
+        domain: any;
+        entityType: any;
+        entityId: number;
+        correlationId: any;
+    }[];
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -333,6 +708,10 @@ export declare function cancelRequest(actor: StudentActor, requestId: number): P
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -386,6 +765,10 @@ export declare function respondToRequest(actor: StudentActor, requestId: number,
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -439,6 +822,10 @@ export declare function getStudentRequest(actor: StudentActor, requestId: number
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -467,6 +854,10 @@ export declare function staffListRequests(actor: ServicesActor, filters: {
         priority: unknown;
         currentStage: unknown;
         currentStepOrder: number | null;
+        requesterType: {};
+        requesterParentUserId: number | null;
+        parentActionState: {} | null;
+        hostelCorrelationId: {} | null;
         formData: {};
         submittedAt: unknown;
         completedAt: unknown;
@@ -523,6 +914,10 @@ export declare function staffGetRequest(actor: ServicesActor, requestId: number)
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -577,6 +972,10 @@ export declare function staffActionOnRequest(actor: ServicesActor, requestId: nu
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -628,6 +1027,10 @@ export declare function assignRequest(actor: ServicesActor, requestId: number, a
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -689,6 +1092,10 @@ export declare function mentorGetRequest(actor: ServicesActor, requestId: number
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -744,6 +1151,10 @@ export declare function mentorActionOnRequest(actor: ServicesActor, requestId: n
     priority: unknown;
     currentStage: unknown;
     currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
     formData: {};
     submittedAt: unknown;
     completedAt: unknown;
@@ -768,3 +1179,4 @@ export declare function staffPendingActions(actor: ServicesActor): Promise<{
     total: number;
 }>;
 export declare function generateVerificationCode(): string;
+export {};

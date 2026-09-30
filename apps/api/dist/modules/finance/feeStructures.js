@@ -1,4 +1,5 @@
 import { db } from '../../db/index.js';
+import { AppError } from '../../utils/errors.js';
 import { assertFinancePermission } from './access.js';
 import { recordFinanceAudit } from './audit.js';
 import { addMoney, toMoney } from './money.js';
@@ -45,7 +46,7 @@ export async function getFeeStructure(actor, id) {
     assertFinancePermission(actor, 'finance.view');
     const row = await db('fee_structures').where({ id, college_id: actor.collegeId }).first();
     if (!row)
-        throw new Error('Fee structure not found');
+        throw new AppError(404, 'Fee structure not found');
     const items = await db('fee_structure_items as i')
         .join('fee_heads as h', 'h.id', 'i.fee_head_id')
         .where('i.fee_structure_id', id)
@@ -150,6 +151,9 @@ export async function activateFeeStructure(actor, id) {
 }
 export async function archiveFeeStructure(actor, id) {
     assertFinancePermission(actor, 'finance.fee_structure.manage');
+    const before = await db('fee_structures').where({ id, college_id: actor.collegeId }).first();
+    if (!before)
+        throw new AppError(404, 'Fee structure not found');
     await db('fee_structures').where({ id, college_id: actor.collegeId }).update({
         status: 'ARCHIVED',
         updated_at: db.fn.now(),
@@ -161,7 +165,7 @@ export async function archiveFeeStructure(actor, id) {
         entityType: 'fee_structure',
         entityId: id,
     });
-    const row = await db('fee_structures').where({ id }).first();
+    const row = await db('fee_structures').where({ id, college_id: actor.collegeId }).first();
     return serializeStructure(row);
 }
 export async function bulkAssignFeeStructure(actor, body) {

@@ -1,5 +1,8 @@
 export declare function studentHallTicket(studentId: number, collegeId: number, examId: number): Promise<{
     institution: any;
+    governanceType: "VTU_AFFILIATED" | "AUTONOMOUS";
+    documentAuthority: string;
+    documentDisclaimer: string | null;
     student: {
         id: number;
         name: any;

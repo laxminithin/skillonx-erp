@@ -6,7 +6,7 @@
       "localStorage": [
         {
           "name": "survey_token",
-          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJraW5kIjoiZmFjdWx0eSIsImZhY3VsdHlVc2VySWQiOjUxOTQsImNvbGxlZ2VJZCI6NiwiZGVwYXJ0bWVudElkIjpudWxsLCJyb2xlIjoiQ09FIiwiZW1haWwiOiJxYS5jb2VAdnZpZXQuZWR1LmluIiwibmFtZSI6IlFBIENvbnRyb2xsZXIgb2YgRXhhbWluYXRpb25zIiwiaWF0IjoxNzg5NDAwNzg5LCJleHAiOjE3OTAwMDU1ODl9.B5HefnM0kMDyi7a2ejdcxPNUiJM-Q4LHKSQn_5qJG5E"
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJraW5kIjoiZmFjdWx0eSIsImZhY3VsdHlVc2VySWQiOjMwLCJjb2xsZWdlSWQiOjcsImRlcGFydG1lbnRJZCI6bnVsbCwicm9sZSI6IkNPRSIsImVtYWlsIjoicWEuY29lQHZ2aWV0LmVkdS5pbiIsIm5hbWUiOiJRQSBDb250cm9sbGVyIG9mIEV4YW1pbmF0aW9ucyIsImlhdCI6MTc5MDQ4Nzc0MiwiZXhwIjoxNzkxMDkyNTQyfQ.RRZbbT1rNNgm1QEyUOD4qZRQ21MYtm7VUqQSLyLfrLI"
         }
       ]
     }

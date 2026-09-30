@@ -1,3 +1,4 @@
+import type { Knex } from 'knex';
 import { db } from '../../db/index.js';
 import type { FinanceActor } from './types.js';
 import { assertFinancePermission } from './access.js';
@@ -83,14 +84,27 @@ export async function sanctionScholarship(actor: FinanceActor, id: number, sanct
   return getStudentScholarship(actor, id);
 }
 
-async function applyScholarshipToDemands(collegeId: number, studentId: number, amount: number) {
+/**
+ * Applies a sanctioned scholarship amount against a student's open demands,
+ * oldest-first. Exported (not just used by `sanctionScholarship`) so the
+ * Phase 10 scholarship-application finance handoff can reuse this exact
+ * demand-walk logic inside its own transaction, keeping the application's
+ * status flip and the financial effect atomic (directive §37/§63) instead
+ * of duplicating this logic.
+ */
+export async function applyScholarshipToDemands(
+  collegeId: number,
+  studentId: number,
+  amount: number,
+  existingTrx?: Knex.Transaction,
+) {
   let remaining = toMoney(amount);
-  const demands = await db('student_fee_demands')
+  const demands = await (existingTrx ?? db)('student_fee_demands')
     .where({ student_id: studentId, college_id: collegeId })
     .whereIn('status', ['ISSUED', 'PARTIALLY_PAID', 'OVERDUE'])
     .orderBy('issue_date', 'asc');
 
-  await db.transaction(async (trx) => {
+  const run = async (trx: Knex.Transaction) => {
     for (const demand of demands) {
       if (Number(remaining) <= 0) break;
       const apply = Number(remaining) > Number(demand.outstanding_amount)
@@ -120,7 +134,13 @@ async function applyScholarshipToDemands(collegeId: number, studentId: number, a
       await recalculateDemandTotals(trx, Number(demand.id));
       remaining = subtractMoney(remaining, apply);
     }
-  });
+  };
+
+  if (existingTrx) {
+    await run(existingTrx);
+  } else {
+    await db.transaction(run);
+  }
 }
 
 export async function getStudentScholarship(actor: FinanceActor, id: number) {

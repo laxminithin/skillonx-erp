@@ -446,6 +446,11 @@ describe('HRMS Payroll E2E', () => {
       generateArrear: false,
     });
     await ensureAttendanceReady(actor, year, month);
+    // Without a per-employee monthly attendance row, buildEmployeeSnapshot reports "Missing
+    // attendance handoff for employee" and prorates pay to zero — old and new net both compute
+    // to 0.00, so maybeGenerateRevisionArrear correctly finds no difference and returns null.
+    // Seed it, matching the pattern used by the other tests in this file that need real pay.
+    await ensureMonthlyAttendanceRow(ctx.collegeId, empId, year, month);
     const period = await ensurePayrollPeriod(actor, {
       label: `PAY-ARR-${bounds.label}-${stamp}`,
       startDate: bounds.start,

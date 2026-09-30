@@ -47,6 +47,38 @@ export declare const parentProfileSchema: z.ZodObject<{
     name?: string | undefined;
     phone?: string | null | undefined;
 }>;
+export declare const parentLeaveActionSchema: z.ZodObject<{
+    action: z.ZodEnum<["APPROVE", "DECLINE"]>;
+    remarks: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+}, "strip", z.ZodTypeAny, {
+    action: "APPROVE" | "DECLINE";
+    remarks?: string | null | undefined;
+}, {
+    action: "APPROVE" | "DECLINE";
+    remarks?: string | null | undefined;
+}>;
+export declare const parentLeaveCreateSchema: z.ZodObject<{
+    requestTypeCode: z.ZodEnum<["STUDENT_LEAVE_REQUEST", "STUDENT_PERMISSION_REQUEST"]>;
+    title: z.ZodString;
+    description: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    formData: z.ZodNullable<z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>>;
+    priority: z.ZodOptional<z.ZodEnum<["LOW", "NORMAL", "HIGH", "URGENT"]>>;
+    submit: z.ZodOptional<z.ZodBoolean>;
+}, "strip", z.ZodTypeAny, {
+    title: string;
+    requestTypeCode: "STUDENT_LEAVE_REQUEST" | "STUDENT_PERMISSION_REQUEST";
+    description?: string | null | undefined;
+    priority?: "HIGH" | "LOW" | "NORMAL" | "URGENT" | undefined;
+    submit?: boolean | undefined;
+    formData?: Record<string, unknown> | null | undefined;
+}, {
+    title: string;
+    requestTypeCode: "STUDENT_LEAVE_REQUEST" | "STUDENT_PERMISSION_REQUEST";
+    description?: string | null | undefined;
+    priority?: "HIGH" | "LOW" | "NORMAL" | "URGENT" | undefined;
+    submit?: boolean | undefined;
+    formData?: Record<string, unknown> | null | undefined;
+}>;
 export type ParentActor = {
     parentUserId: number;
     collegeId: number;
@@ -1229,4 +1261,340 @@ export declare function parentMentoring(actor: ParentActor, studentId: number): 
         summary: any;
         agreedFollowUp: any;
     }[];
+}>;
+export declare function parentLeaveRequests(actor: ParentActor, studentId: number, status?: string): Promise<{
+    requests: {
+        id: number;
+        requestNumber: string | null;
+        requestTypeCode: {} | null;
+        requestTypeLabel: {} | null;
+        title: unknown;
+        description: unknown;
+        status: unknown;
+        priority: unknown;
+        currentStage: unknown;
+        currentStepOrder: number | null;
+        requesterType: {};
+        requesterParentUserId: number | null;
+        parentActionState: {} | null;
+        hostelCorrelationId: {} | null;
+        formData: {};
+        submittedAt: unknown;
+        completedAt: unknown;
+        cancelledAt: unknown;
+        createdAt: unknown;
+        updatedAt: unknown;
+    }[];
+}>;
+export declare function parentLeaveRequestDetail(actor: ParentActor, requestId: number): Promise<{
+    type: {
+        code: any;
+        label: any;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        actorRole: any;
+        status: any;
+        remarks: any;
+        actedByName: any;
+        actedAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    linkedRequests: {
+        domain: any;
+        entityType: any;
+        entityId: number;
+        correlationId: any;
+    }[];
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}>;
+export declare function parentSubmitLeaveForChild(actor: ParentActor, studentId: number, input: z.infer<typeof parentLeaveCreateSchema>): Promise<{
+    type: {
+        code: any;
+        label: any;
+        generatesCertificate: boolean;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        status: any;
+        remarks: any;
+        actedAt: any;
+    }[];
+    comments: {
+        id: number;
+        body: any;
+        authorName: any;
+        isStudent: boolean;
+        createdAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    document: {
+        id: number;
+        certificateNumber: any;
+        verificationCode: any;
+        documentType: any;
+        issuedAt: any;
+    } | null;
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+} | {
+    type: {
+        code: any;
+        label: any;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        actorRole: any;
+        status: any;
+        remarks: any;
+        actedByName: any;
+        actedAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    linkedRequests: {
+        domain: any;
+        entityType: any;
+        entityId: number;
+        correlationId: any;
+    }[];
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}>;
+export declare function parentSubmitLeaveDraft(actor: ParentActor, requestId: number): Promise<{
+    type: {
+        code: any;
+        label: any;
+        generatesCertificate: boolean;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        status: any;
+        remarks: any;
+        actedAt: any;
+    }[];
+    comments: {
+        id: number;
+        body: any;
+        authorName: any;
+        isStudent: boolean;
+        createdAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    document: {
+        id: number;
+        certificateNumber: any;
+        verificationCode: any;
+        documentType: any;
+        issuedAt: any;
+    } | null;
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+} | {
+    type: {
+        code: any;
+        label: any;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        actorRole: any;
+        status: any;
+        remarks: any;
+        actedByName: any;
+        actedAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    linkedRequests: {
+        domain: any;
+        entityType: any;
+        entityId: number;
+        correlationId: any;
+    }[];
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
+}>;
+export declare function parentActOnLeaveRequest(actor: ParentActor, requestId: number, input: z.infer<typeof parentLeaveActionSchema>): Promise<{
+    type: {
+        code: any;
+        label: any;
+        formSchema: never[];
+    } | null;
+    timeline: {
+        stepOrder: number;
+        stepKey: any;
+        label: any;
+        actorRole: any;
+        status: any;
+        remarks: any;
+        actedByName: any;
+        actedAt: any;
+    }[];
+    attachments: {
+        id: number;
+        fileName: any;
+        mimeType: any;
+        fileSize: number;
+        createdAt: any;
+    }[];
+    linkedRequests: {
+        domain: any;
+        entityType: any;
+        entityId: number;
+        correlationId: any;
+    }[];
+    id: number;
+    requestNumber: string | null;
+    requestTypeCode: {} | null;
+    requestTypeLabel: {} | null;
+    title: unknown;
+    description: unknown;
+    status: unknown;
+    priority: unknown;
+    currentStage: unknown;
+    currentStepOrder: number | null;
+    requesterType: {};
+    requesterParentUserId: number | null;
+    parentActionState: {} | null;
+    hostelCorrelationId: {} | null;
+    formData: {};
+    submittedAt: unknown;
+    completedAt: unknown;
+    cancelledAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
 }>;

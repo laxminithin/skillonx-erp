@@ -151,7 +151,33 @@ export declare function managerDashboard(actor: MaintActor): Promise<{
         waitingApproval: number;
         resolvedToday: number;
         closedToday: number;
+        preventiveDue: number;
     };
+    preventiveDue: {
+        id: number;
+        name: unknown;
+        description: {} | null;
+        assetId: number | null;
+        assetTag: string;
+        categoryId: number | null;
+        categoryName: string;
+        teamId: number | null;
+        teamName: string;
+        vendorId: number | null;
+        vendorName: string;
+        roomId: number | null;
+        building: {} | null;
+        frequencyUnit: unknown;
+        frequencyValue: number;
+        priority: unknown;
+        checklist: any;
+        nextDueDate: unknown;
+        lastGeneratedDate: {} | null;
+        status: unknown;
+        notes: {} | null;
+        createdAt: unknown;
+        updatedAt: unknown;
+    }[];
     queueHealth: Record<string, number>;
     byTeam: {
         teamId: number | null;

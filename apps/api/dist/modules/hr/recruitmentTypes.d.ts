@@ -404,15 +404,15 @@ export declare const evaluateInterviewSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     recommendation: "REJECT" | "ADVANCE" | "HOLD" | "STRONG_HIRE";
     privateNotes?: string | null | undefined;
+    comments?: string | null | undefined;
     scores?: Record<string, string | number> | undefined;
     overallScore?: number | null | undefined;
-    comments?: string | null | undefined;
 }, {
     recommendation: "REJECT" | "ADVANCE" | "HOLD" | "STRONG_HIRE";
     privateNotes?: string | null | undefined;
+    comments?: string | null | undefined;
     scores?: Record<string, string | number> | undefined;
     overallScore?: number | null | undefined;
-    comments?: string | null | undefined;
 }>;
 export declare const createOfferSchema: z.ZodObject<{
     applicationId: z.ZodNumber;
@@ -430,23 +430,23 @@ export declare const createOfferSchema: z.ZodObject<{
     departmentId?: number | undefined;
     designationId?: number | undefined;
     employmentTypeId?: number | undefined;
+    terms?: string | null | undefined;
+    validUntil?: string | null | undefined;
     offerDate?: string | null | undefined;
     proposedJoiningDate?: string | null | undefined;
-    validUntil?: string | null | undefined;
     compensationSummary?: string | null | undefined;
     compensation?: Record<string, unknown> | null | undefined;
-    terms?: string | null | undefined;
 }, {
     applicationId: number;
     departmentId?: number | undefined;
     designationId?: number | undefined;
     employmentTypeId?: number | undefined;
+    terms?: string | null | undefined;
+    validUntil?: string | null | undefined;
     offerDate?: string | null | undefined;
     proposedJoiningDate?: string | null | undefined;
-    validUntil?: string | null | undefined;
     compensationSummary?: string | null | undefined;
     compensation?: Record<string, unknown> | null | undefined;
-    terms?: string | null | undefined;
 }>;
 export declare const offerDecisionSchema: z.ZodObject<{
     reason: z.ZodOptional<z.ZodString>;
@@ -502,9 +502,9 @@ export declare const uploadDocumentSchema: z.ZodObject<{
     docType: "OTHER" | "CERTIFICATE" | "RESUME" | "EXPERIENCE" | "IDENTITY" | "PORTFOLIO" | "OFFER_LETTER";
     applicationId?: number | null | undefined;
     fileName?: string | null | undefined;
+    contentBase64?: string | null | undefined;
     contentType?: string | null | undefined;
     bodyText?: string | null | undefined;
-    contentBase64?: string | null | undefined;
     fields?: Record<string, unknown> | null | undefined;
     isSensitive?: boolean | undefined;
 }, {
@@ -512,9 +512,9 @@ export declare const uploadDocumentSchema: z.ZodObject<{
     docType: "OTHER" | "CERTIFICATE" | "RESUME" | "EXPERIENCE" | "IDENTITY" | "PORTFOLIO" | "OFFER_LETTER";
     applicationId?: number | null | undefined;
     fileName?: string | null | undefined;
+    contentBase64?: string | null | undefined;
     contentType?: string | null | undefined;
     bodyText?: string | null | undefined;
-    contentBase64?: string | null | undefined;
     fields?: Record<string, unknown> | null | undefined;
     isSensitive?: boolean | undefined;
 }>;

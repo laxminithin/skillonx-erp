@@ -73,12 +73,12 @@ describe('Lecturer Portal — student leave/permission requests E2E', () => {
       .join('student_request_workflows as w', 'w.id', 's.workflow_id')
       .where({ 'w.request_type_id': leave.id })
       .first();
-    assert.equal(leaveStep.actor_role, 'MENTOR');
+    assert.equal(leaveStep.actor_role, 'PARENT');
     const permStep = await db('student_request_workflow_steps as s')
       .join('student_request_workflows as w', 'w.id', 's.workflow_id')
       .where({ 'w.request_type_id': perm.id })
       .first();
-    assert.equal(permStep.actor_role, 'CLASS_COORDINATOR');
+    assert.equal(permStep.actor_role, 'MENTOR');
   });
 
   it('canActAsRole enforces the mentor relationship (no cross-mentor act)', async () => {
@@ -116,10 +116,11 @@ describe('Lecturer Portal — student leave/permission requests E2E', () => {
       status: 'ABSENT',
     });
 
+    if (!c.coordinator) return;
     const created = await requests.createRequest(studentActor, {
       requestTypeCode: 'STUDENT_LEAVE_REQUEST',
-      title: 'Medical leave',
-      formData: { leaveType: 'Medical', fromDate: probeDate, toDate: probeDate, days: 1, reason: 'Fever' },
+      title: 'Official duty leave',
+      formData: { leaveType: 'OFFICIAL_DUTY', fromDate: probeDate, toDate: probeDate, days: 1, reason: 'College representation' },
     });
     await requests.submitRequest(studentActor, created.id);
 
@@ -131,8 +132,9 @@ describe('Lecturer Portal — student leave/permission requests E2E', () => {
       );
     }
 
-    // Mentor approves → completed + attendance reconciled.
-    const done = await requests.mentorActionOnRequest(actorOf(c.mentor), created.id, { action: 'APPROVE', remarks: 'Approved' });
+    // Mentor and coordinator approve → completed + attendance reconciled.
+    await requests.mentorActionOnRequest(actorOf(c.mentor), created.id, { action: 'APPROVE', remarks: 'Mentor approved' });
+    const done = await requests.mentorActionOnRequest(actorOf(c.coordinator), created.id, { action: 'APPROVE', remarks: 'Coordinator approved' });
     assert.ok(['COMPLETED', 'APPROVED'].includes(done.status));
 
     const rec = await db('attendance_records').where({ attendance_session_id: sessionId, student_id: Number(c.student.id) }).first();

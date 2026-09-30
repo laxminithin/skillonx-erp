@@ -1,14 +1,16 @@
+import { z } from 'zod';
 import { db } from '../../db/index.js';
 import { AppError } from '../../utils/errors.js';
 import { assertExamCollege, assertExamPermission, canPublishResults } from './access.js';
 import { recordExamAudit } from './audit.js';
+import { assertInstitutionOwnsCapability } from './capabilities.js';
 import { computeCgpa, computeSgpa, gradeForMarks, parseGradeBands, subjectPass } from './grading.js';
 import { computeInternalMarks } from './internalMarks.js';
 import { resolvePolicy } from './policy.js';
 function resultStatusForSubject(markStatus, passed) {
     if (markStatus === 'ABSENT')
         return 'ABSENT';
-    if (markStatus === 'MALPRACTICE')
+    if (markStatus === 'MALPRACTICE' || markStatus === 'MPC')
         return 'MALPRACTICE';
     if (markStatus === 'WITHHELD')
         return 'WITHHELD';
@@ -16,6 +18,7 @@ function resultStatusForSubject(markStatus, passed) {
 }
 export async function processResults(actor, examId) {
     assertExamPermission(actor, 'exam.result.process');
+    await assertInstitutionOwnsCapability(actor, 'RESULT_PROCESSING');
     const exam = await assertExamCollege(examId, actor.collegeId);
     if (!['COMPLETED', 'RESULT_PROCESSING'].includes(exam.status)) {
         await db('examinations').where({ id: examId }).update({ status: 'RESULT_PROCESSING' });
@@ -171,6 +174,7 @@ async function upsertAcademicRecord(collegeId, studentId, exam, sgpa, creditsEar
 export async function publishResults(actor, examId) {
     if (!canPublishResults(actor))
         throw new AppError(403, 'Not authorized to publish results');
+    await assertInstitutionOwnsCapability(actor, 'RESULT_PROCESSING');
     const exam = await assertExamCollege(examId, actor.collegeId);
     const count = await db('semester_results')
         .where({ exam_id: examId, college_id: actor.collegeId })
@@ -192,11 +196,191 @@ export async function publishResults(actor, examId) {
     });
     return { published: count };
 }
+// Governed versioned result correction: V1 is retained as history; a corrected V2 becomes current (§28).
+export const resultCorrectionSchema = z.object({
+    reason: z.string().trim().min(1).max(2000),
+    subjectCorrections: z
+        .array(z.object({
+        courseId: z.number().int().positive(),
+        totalMarks: z.number().nonnegative().optional(),
+        internalMarks: z.number().nonnegative().optional(),
+        externalMarks: z.number().nonnegative().optional(),
+        maxMarks: z.number().positive().optional(),
+        credits: z.number().nonnegative().optional(),
+        resultStatus: z.enum(['PASS', 'FAIL', 'ABSENT', 'MALPRACTICE', 'WITHHELD']).optional(),
+    }))
+        .min(1),
+});
+export async function correctResult(actor, semesterResultId, body) {
+    if (!canPublishResults(actor))
+        throw new AppError(403, 'Not authorized to correct results');
+    // Only the institution that owns result processing may version-correct (VTU results are external authority).
+    await assertInstitutionOwnsCapability(actor, 'RESULT_PROCESSING');
+    const base = await db('semester_results')
+        .where({ id: semesterResultId, college_id: actor.collegeId })
+        .first();
+    if (!base)
+        throw new AppError(404, 'Result not found');
+    if (!base.published)
+        throw new AppError(400, 'Only a published result can be corrected');
+    if (base.superseded_at)
+        throw new AppError(409, 'This result version has already been superseded');
+    const bands = parseGradeBands(base.grade_bands_snapshot);
+    const exam = await db('examinations').where({ id: base.exam_id }).first();
+    const subjects = await db('subject_results').where({ semester_result_id: base.id });
+    const byCourse = new Map(body.subjectCorrections.map((c) => [c.courseId, c]));
+    for (const c of body.subjectCorrections) {
+        if (!subjects.some((s) => Number(s.course_id) === c.courseId)) {
+            throw new AppError(400, `Course ${c.courseId} is not part of this result`);
+        }
+    }
+    const result = await db.transaction(async (trx) => {
+        const newVersion = Number(base.result_version) + 1;
+        const [newId] = await trx('semester_results').insert({
+            college_id: base.college_id,
+            student_id: base.student_id,
+            exam_id: base.exam_id,
+            academic_year_id: base.academic_year_id,
+            semester_id: base.semester_id,
+            program_id: base.program_id,
+            total_credits: base.total_credits,
+            earned_credits: base.earned_credits,
+            status: base.status,
+            result_version: newVersion,
+            published: true,
+            published_at: trx.fn.now(),
+            published_by: actor.facultyUserId,
+            exam_policy_id: base.exam_policy_id,
+            grade_bands_snapshot: base.grade_bands_snapshot == null
+                ? null
+                : typeof base.grade_bands_snapshot === 'string'
+                    ? base.grade_bands_snapshot
+                    : JSON.stringify(base.grade_bands_snapshot),
+        });
+        const changes = [];
+        const nextSubjects = [];
+        for (const s of subjects) {
+            const c = byCourse.get(Number(s.course_id));
+            const total = c?.totalMarks ?? (s.total_marks != null ? Number(s.total_marks) : null);
+            const maxMarks = c?.maxMarks ?? (s.max_marks != null ? Number(s.max_marks) : null);
+            let grade = s.grade;
+            let gradePoints = s.grade_points != null ? Number(s.grade_points) : 0;
+            let resultStatus = s.result_status;
+            if (c) {
+                if (total != null && maxMarks != null && maxMarks > 0) {
+                    const g = gradeForMarks(total, maxMarks, bands);
+                    grade = g.grade;
+                    gradePoints = g.gradePoints;
+                }
+                resultStatus = c.resultStatus ?? (grade !== 'F' ? 'PASS' : 'FAIL');
+                changes.push({
+                    courseId: Number(s.course_id),
+                    before: { totalMarks: s.total_marks != null ? Number(s.total_marks) : null, grade: s.grade, resultStatus: s.result_status },
+                    after: { totalMarks: total, grade, resultStatus },
+                });
+            }
+            const credits = c?.credits ?? (s.credits != null ? Number(s.credits) : 0);
+            await trx('subject_results').insert({
+                college_id: s.college_id,
+                semester_result_id: newId,
+                student_id: s.student_id,
+                course_id: s.course_id,
+                exam_subject_id: s.exam_subject_id,
+                internal_marks: c?.internalMarks ?? s.internal_marks,
+                external_marks: c?.externalMarks ?? s.external_marks,
+                total_marks: total,
+                max_marks: maxMarks,
+                grade,
+                grade_points: gradePoints,
+                credits,
+                result_status: resultStatus,
+                marks_source: s.marks_source,
+            });
+            nextSubjects.push({ gradePoints, credits, resultStatus });
+        }
+        const sgpa = computeSgpa(nextSubjects);
+        const earnedCredits = nextSubjects
+            .filter((s) => !['FAIL', 'ABSENT', 'WITHHELD', 'MALPRACTICE', 'INCOMPLETE'].includes(s.resultStatus))
+            .reduce((sum, s) => sum + (s.credits || 0), 0);
+        await trx('semester_results').where({ id: newId }).update({ sgpa, earned_credits: earnedCredits });
+        await trx('semester_results').where({ id: base.id }).update({
+            superseded_at: trx.fn.now(),
+            superseded_by_id: newId,
+            updated_at: trx.fn.now(),
+        });
+        await trx('exam_result_corrections').insert({
+            college_id: actor.collegeId,
+            base_semester_result_id: base.id,
+            new_semester_result_id: newId,
+            student_id: base.student_id,
+            exam_id: base.exam_id,
+            from_version: Number(base.result_version),
+            to_version: newVersion,
+            changes: JSON.stringify(changes),
+            reason: body.reason,
+            requested_by: actor.facultyUserId,
+            approved_by: actor.facultyUserId,
+        });
+        return { newId: Number(newId), newVersion, sgpa, earnedCredits, changes };
+    });
+    if (exam) {
+        await upsertAcademicRecord(actor.collegeId, Number(base.student_id), exam, result.sgpa, result.earnedCredits, result.newId, String(base.status));
+    }
+    await recordExamAudit({
+        collegeId: actor.collegeId,
+        actorId: actor.facultyUserId,
+        action: 'RESULT_CORRECTED',
+        entityType: 'semester_result',
+        entityId: result.newId,
+        beforeState: { version: Number(base.result_version), semesterResultId: base.id },
+        afterState: { version: result.newVersion, semesterResultId: result.newId, changes: result.changes },
+        reason: body.reason,
+    });
+    return {
+        baseSemesterResultId: Number(base.id),
+        baseVersion: Number(base.result_version),
+        newSemesterResultId: result.newId,
+        newVersion: result.newVersion,
+        sgpa: result.sgpa,
+        changes: result.changes,
+    };
+}
+// COE results overview: published semester results per exam with current/superseded versions and corrections (read-only UI parity).
+export async function coeResultsOverview(actor, examId) {
+    assertExamPermission(actor, 'exam.result.process');
+    await assertExamCollege(examId, actor.collegeId);
+    const rows = await db('semester_results as sr')
+        .join('students as s', 's.id', 'sr.student_id')
+        .where({ 'sr.exam_id': examId, 'sr.college_id': actor.collegeId })
+        .select('sr.id', 'sr.student_id', 'sr.result_version', 'sr.published', 'sr.superseded_at', 'sr.superseded_by_id', 'sr.sgpa', 'sr.status', 'sr.published_at', 's.name as student_name', 's.usn')
+        .orderBy([{ column: 's.usn', order: 'asc' }, { column: 'sr.result_version', order: 'desc' }]);
+    const corrections = await db('exam_result_corrections')
+        .where({ college_id: actor.collegeId, exam_id: examId })
+        .select('id', 'student_id', 'from_version', 'to_version', 'reason', 'created_at')
+        .orderBy('id', 'desc');
+    return {
+        examId,
+        results: rows.map((r) => ({
+            id: Number(r.id),
+            studentId: Number(r.student_id),
+            studentName: r.student_name,
+            usn: r.usn,
+            version: Number(r.result_version),
+            published: Boolean(r.published),
+            current: !r.superseded_at,
+            sgpa: r.sgpa != null ? Number(r.sgpa) : null,
+            status: r.status,
+            publishedAt: r.published_at,
+        })),
+        corrections: corrections.map((c) => ({ id: Number(c.id), studentId: Number(c.student_id), fromVersion: Number(c.from_version), toVersion: Number(c.to_version), reason: c.reason, createdAt: c.created_at })),
+    };
+}
 export async function studentResults(studentId, collegeId, semesterId) {
     let q = db('semester_results as sr')
         .join('examinations as e', 'e.id', 'sr.exam_id')
         .join('semesters as s', 's.id', 'sr.semester_id')
         .where({ 'sr.student_id': studentId, 'sr.college_id': collegeId, 'sr.published': true })
+        .whereNull('sr.superseded_at')
         .select('sr.*', 'e.name as exam_name', 'e.exam_type', 's.label as semester_label');
     if (semesterId)
         q = q.andWhere('sr.semester_id', semesterId);

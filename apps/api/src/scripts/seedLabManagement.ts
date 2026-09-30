@@ -38,6 +38,31 @@ async function ensureFaculty(collegeId: number, departmentId: number | null, ema
   return user!;
 }
 
+async function ensureEmployeeForFacultyUser(collegeId: number, facultyUserId: number, departmentId: number | null, employeeNumber: string) {
+  let emp = await db('employees').where({ faculty_user_id: facultyUserId }).first();
+  if (emp) return emp;
+  const facultyUser = await db('faculty_users').where({ id: facultyUserId }).first();
+  const parts = String(facultyUser?.name ?? 'QA Leader').split(/\s+/);
+  const des = await db('hr_designations').where({ college_id: collegeId }).first();
+  const empType = await db('employment_types').where({ college_id: collegeId }).first();
+  const [id] = await db('employees').insert({
+    college_id: collegeId,
+    employee_number: employeeNumber,
+    first_name: parts[0] ?? 'QA',
+    last_name: parts.slice(1).join(' ') || 'Leader',
+    display_name: facultyUser?.name ?? employeeNumber,
+    official_email: facultyUser?.email ?? null,
+    employee_category: 'FACULTY',
+    department_id: departmentId,
+    designation_id: des ? Number(des.id) : null,
+    employment_type_id: empType ? Number(empType.id) : null,
+    employment_status: 'ACTIVE',
+    date_of_joining: '2026-01-01',
+    faculty_user_id: facultyUserId,
+  });
+  return db('employees').where({ id }).first();
+}
+
 async function ensureLeadership(collegeId: number, employeeId: number, role: 'HOD' | 'PRINCIPAL', departmentId: number | null) {
   const existing = await db('academic_leadership_assignments')
     .where({ college_id: collegeId, employee_id: employeeId, leadership_role: role, status: 'ACTIVE' }).first();
@@ -113,8 +138,10 @@ export async function seedLabManagement(options: { closeDb?: boolean } = {}) {
   const ravi = await db('faculty_users').where({ college_id: collegeId, email: 'ravi@vviet.edu.in' }).first(); // FACULTY, no assignment
   const hod = await ensureFaculty(collegeId, cseId, 'qa.hod.cse@vviet.edu.in', 'QA HOD CSE', 'FACULTY', 'QA-HOD-CSE');
   const principal = await ensureFaculty(collegeId, null, 'qa.principal@vviet.edu.in', 'QA Principal', 'FACULTY', 'QA-PRIN');
-  if (cseId) await ensureLeadership(collegeId, Number(hod.id), 'HOD', cseId);
-  await ensureLeadership(collegeId, Number(principal.id), 'PRINCIPAL', null);
+  const hodEmp = await ensureEmployeeForFacultyUser(collegeId, Number(hod.id), cseId, 'QA-HOD-CSE');
+  const principalEmp = await ensureEmployeeForFacultyUser(collegeId, Number(principal.id), null, 'QA-PRIN');
+  if (cseId) await ensureLeadership(collegeId, Number(hodEmp!.id), 'HOD', cseId);
+  await ensureLeadership(collegeId, Number(principalEmp!.id), 'PRINCIPAL', null);
 
   // Labs.
   const cseLab = await ensureLab(collegeId, 'SX-E2E-LAB-CSE', {

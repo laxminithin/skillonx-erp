@@ -14,6 +14,14 @@ export type FacultyProfileActor = {
     departmentId: number | null;
     role: string;
     name: string;
+    /**
+     * Departments this actor is HOD of, per the canonical Academic Leadership
+     * authority (`resolveLeadershipContext`). Populated by the router's leadership
+     * enrichment. When absent, access falls back to the legacy `role === 'HOD'`
+     * + `departmentId` semantics so existing role-based HOD accounts and unit
+     * fixtures keep working.
+     */
+    hodDepartmentIds?: number[];
 };
 export declare const PROFILE_SECTIONS: readonly ["OVERVIEW", "ACADEMIC", "EXPERIENCE", "TEACHING", "RESEARCH", "PROFESSIONAL_DEVELOPMENT", "STUDENT_GUIDANCE", "INDUSTRY_CONSULTANCY", "INSTITUTIONAL_CONTRIBUTION", "AWARDS_MEMBERSHIPS", "EVIDENCE"];
 export type ProfileSection = (typeof PROFILE_SECTIONS)[number];

@@ -23,6 +23,7 @@ export const MAINT_PERMISSIONS = [
   'maint.config', // categories / teams / routing rules
   'maint.report.view', // reports
   'maint.oversight.view', // department / institution oversight
+  'maint.preventive.manage', // preventive-maintenance plans + generation
 ] as const;
 export type MaintPermission = (typeof MAINT_PERMISSIONS)[number];
 
@@ -102,6 +103,7 @@ export const createTicketSchema = z.object({
   sourceEntityType: z.string().max(48).optional(),
   sourceEntityId: z.number().int().positive().optional(),
   assetRef: z.string().max(96).optional(),
+  assetId: z.number().int().positive().optional(),
   erpModule: z.string().max(64).optional(),
   erpRoute: z.string().max(200).optional(),
   attachments: z.array(attachmentSchema).max(5).optional(),
@@ -193,6 +195,35 @@ export const teamSchema = z.object({
   status: z.enum(['ACTIVE', 'INACTIVE']).optional(),
   description: z.string().max(1000).optional(),
   memberFacultyIds: z.array(z.number().int().positive()).optional(),
+});
+
+// Preventive maintenance
+export const FREQUENCY_UNITS = ['DAYS', 'WEEKS', 'MONTHS', 'YEARS'] as const;
+export type FrequencyUnit = (typeof FREQUENCY_UNITS)[number];
+
+export const preventivePlanSchema = z.object({
+  name: z.string().min(2).max(200),
+  description: z.string().max(2000).optional(),
+  assetId: z.number().int().positive().nullable().optional(),
+  categoryId: z.number().int().positive().nullable().optional(),
+  teamId: z.number().int().positive().nullable().optional(),
+  vendorId: z.number().int().positive().nullable().optional(),
+  roomId: z.number().int().positive().nullable().optional(),
+  building: z.string().max(96).nullable().optional(),
+  frequencyUnit: z.enum(FREQUENCY_UNITS).optional(),
+  frequencyValue: z.number().int().positive().max(3650).optional(),
+  priority: z.enum(PRIORITIES).optional(),
+  checklist: z.array(z.string().max(300)).max(50).optional(),
+  nextDueDate: z.string().min(8).max(32),
+  notes: z.string().max(2000).optional(),
+});
+
+export const preventivePlanUpdateSchema = preventivePlanSchema.partial().extend({
+  status: z.enum(['ACTIVE', 'PAUSED', 'ENDED']).optional(),
+});
+
+export const preventiveGenerateSchema = z.object({
+  asOf: z.string().max(32).optional(),
 });
 
 export const routingRuleSchema = z.object({

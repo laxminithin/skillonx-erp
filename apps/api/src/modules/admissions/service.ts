@@ -68,6 +68,13 @@ export const enquirySchema = z.object({
   notes: z.string().max(2000).optional().nullable(),
 });
 
+export const guardianSchema = z.object({
+  name: z.string().trim().min(1).max(255).optional().nullable(),
+  email: z.string().trim().toLowerCase().email().optional().nullable(),
+  phone: z.string().trim().max(32).optional().nullable(),
+  relationship: z.string().trim().max(32).optional().nullable(),
+}).strict();
+
 export const applicantSchema = z.object({
   cycleId: z.number().int().positive(),
   enquiryId: z.number().int().positive().optional().nullable(),
@@ -76,7 +83,7 @@ export const applicantSchema = z.object({
   phone: z.string().trim().max(32).optional().nullable(),
   profile: z.record(z.unknown()).optional().nullable(),
   address: z.record(z.unknown()).optional().nullable(),
-  guardian: z.record(z.unknown()).optional().nullable(),
+  guardian: guardianSchema.optional().nullable(),
   password: z.string().optional(),
   admissionCategory: z.string().trim().max(64).optional().nullable(),
   education: z.array(z.object({
@@ -805,10 +812,129 @@ async function activateResetForStudent(trx: Knex.Transaction, studentId: number)
   return rawToken;
 }
 
+async function activateResetForParent(trx: Knex.Transaction, parentId: number) {
+  // Deliberately reuses the stronger hashed-token + 7-day-expiry convention from
+  // activateResetForStudent (above) rather than parent/service.ts's own
+  // forgotParentPassword, which stores an unhashed token with a 1-hour expiry.
+  const rawToken = randomBytes(32).toString('hex');
+  const tokenHash = createHash('sha256').update(rawToken).digest('hex');
+  await trx('parent_users').where({ id: parentId }).update({
+    reset_token: tokenHash,
+    reset_token_expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    updated_at: trx.fn.now(),
+  });
+  return rawToken;
+}
+
+async function provisionGuardianAccount(actor: AdmissionActor, applicantId: number, studentId: number) {
+  const applicant = await db('admission_applicants').where({ id: applicantId, college_id: actor.collegeId }).first();
+  const guardian = parseJson<{ name?: string; email?: string; phone?: string; relationship?: string }>(applicant?.guardian_json, {});
+  if (!guardian?.email || !guardian?.name) {
+    return { status: 'SKIPPED_NO_DATA' as const };
+  }
+  const email = String(guardian.email).trim().toLowerCase();
+  return db.transaction(async (trx) => {
+    let parent = await trx('parent_users').where({ email }).first();
+    if (parent && Number(parent.college_id) !== actor.collegeId) {
+      await auditFromActor(actor, 'APPLICANT_GUARDIAN_LINK_CONFLICT', 'admission_applicant', applicantId, {
+        after: { email, existingParentCollegeId: Number(parent.college_id) },
+      });
+      return { status: 'CONFLICT_OTHER_COLLEGE' as const };
+    }
+    let created = false;
+    if (!parent) {
+      try {
+        const passwordHash = await bcrypt.hash(randomBytes(24).toString('hex'), 10);
+        const [parentId] = await trx('parent_users').insert({
+          college_id: actor.collegeId,
+          name: guardian.name,
+          email,
+          phone: guardian.phone ?? null,
+          password_hash: passwordHash,
+          identity_verified: true,
+          is_active: true,
+        });
+        parent = await trx('parent_users').where({ id: parentId }).first();
+        created = true;
+      } catch (err: any) {
+        // Concurrent creation of the same guardian email lost the race — reuse the winner's row.
+        const isDup = err?.code === 'ER_DUP_ENTRY' || /duplicate/i.test(String(err?.message ?? ''));
+        if (!isDup) throw err;
+        parent = await trx('parent_users').where({ email }).first();
+      }
+    }
+    if (!parent) throw new AppError(500, 'Guardian account provisioning failed unexpectedly');
+    await trx('parent_student_links')
+      .insert({
+        college_id: actor.collegeId,
+        parent_user_id: parent.id,
+        student_id: studentId,
+        relationship_type: guardian.relationship ?? 'Guardian',
+        is_primary_guardian: true,
+        verification_state: 'VERIFIED',
+        is_active: true,
+        verified_by_faculty_id: actor.facultyUserId ?? null,
+        verified_at: trx.fn.now(),
+      })
+      .onConflict(['college_id', 'parent_user_id', 'student_id'])
+      .merge({ is_active: true, verification_state: 'VERIFIED', updated_at: trx.fn.now() });
+    let activationToken: string | null = null;
+    if (created) {
+      activationToken = await activateResetForParent(trx, Number(parent.id));
+    }
+    await auditFromActor(actor, created ? 'APPLICANT_GUARDIAN_PROVISIONED' : 'APPLICANT_GUARDIAN_LINKED', 'admission_applicant', applicantId, {
+      after: { parentId: Number(parent.id), studentId, created },
+    });
+    return { status: 'OK' as const, parentId: Number(parent.id), created, activationToken };
+  });
+}
+
+// Admission numbers are allocated by counting existing rows, not by a DB
+// sequence. Two concurrent confirmAdmission calls for different applicants
+// in the same college/year can compute the same next number; the unique
+// indexes below prevent either from ever being *persisted* twice, but the
+// loser previously surfaced a raw duplicate-key error instead of getting a
+// fresh number. MAX_ADMISSION_NUMBER_ATTEMPTS bounds a retry limited to
+// exactly that conflict — see isAdmissionNumberConflict.
+const MAX_ADMISSION_NUMBER_ATTEMPTS = 5;
+
+function isAdmissionNumberConflict(err: any): boolean {
+  if (!err) return false;
+  const code = err.code ?? err.errno;
+  if (code !== 'ER_DUP_ENTRY' && code !== 1062) return false;
+  const message = String(err.sqlMessage ?? err.message ?? '');
+  return (
+    message.includes('students_college_admission_number_unique') ||
+    message.includes('adm_conv_college_admno_unique')
+  );
+}
+
 export async function confirmAdmission(actor: AdmissionActor, applicantId: number, input: z.infer<typeof confirmSchema>) {
   assertAdmissionPermission(actor, 'admissions.confirm');
   let conversion: Record<string, unknown> | undefined;
   let activationToken: string | null = null;
+
+  for (let attempt = 1; attempt <= MAX_ADMISSION_NUMBER_ATTEMPTS; attempt++) {
+    try {
+      await runConfirmAdmissionTransaction();
+      break;
+    } catch (err: any) {
+      if (isAdmissionNumberConflict(err)) {
+        if (attempt === MAX_ADMISSION_NUMBER_ATTEMPTS) {
+          throw new AppError(
+            409,
+            'Admission number allocation is contended; please retry confirmation',
+            undefined,
+            'ADMISSION_NUMBER_CONTENDED',
+          );
+        }
+        continue;
+      }
+      throw err;
+    }
+  }
+
+  async function runConfirmAdmissionTransaction() {
   await db.transaction(async (trx) => {
     const applicant = await trx('admission_applicants').where({ id: applicantId, college_id: actor.collegeId }).forUpdate().first();
     if (!applicant) throw new AppError(404, 'Applicant not found');
@@ -938,6 +1064,7 @@ export async function confirmAdmission(actor: AdmissionActor, applicantId: numbe
     activationToken = await activateResetForStudent(trx, Number(studentId));
     conversion = await trx('admission_student_conversions').where({ id: conversionId }).first();
   });
+  }
 
   if (!conversion) throw new AppError(500, 'Admission conversion failed');
   await auditFromActor(actor, 'ADMISSION_CONFIRMED_AND_CONVERTED', 'admission_applicant', applicantId, {
@@ -968,7 +1095,28 @@ export async function confirmAdmission(actor: AdmissionActor, applicantId: numbe
     relatedId: Number(conversion.id),
     dedupeKeyOverride: `STUDENT_ACTIVATION_READY:admission_conversion:${conversion.id}`,
   });
+  try {
+    await provisionGuardianAccount(actor, applicantId, Number(conversion.student_id));
+  } catch (err) {
+    await auditFromActor(actor, 'APPLICANT_GUARDIAN_PROVISION_FAILED', 'admission_applicant', applicantId, {
+      after: { error: err instanceof Error ? err.message : String(err) },
+    });
+  }
   return { conversion, activationToken };
+}
+
+export async function updateApplicantGuardian(actor: AdmissionActor, applicantId: number, input: z.infer<typeof guardianSchema>) {
+  assertAdmissionPermission(actor, 'admissions.application.manage');
+  const before = await assertApplicantVisible(actor, applicantId);
+  await db('admission_applicants').where({ id: applicantId }).update({
+    guardian_json: json(input),
+    updated_at: db.fn.now(),
+  });
+  await auditFromActor(actor, 'APPLICANT_GUARDIAN_UPDATED', 'admission_applicant', applicantId, {
+    before: { guardian: before.guardian_json ?? null },
+    after: { guardian: input },
+  });
+  return db('admission_applicants').where({ id: applicantId }).first();
 }
 
 export async function createAdmissionFeeDemand(actor: AdmissionActor, applicantId: number, input: z.infer<typeof admissionDemandSchema>) {

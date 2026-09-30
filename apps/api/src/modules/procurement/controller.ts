@@ -45,6 +45,11 @@ procurementRouter.post('/vendors', asyncHandler(async (req: AuthedRequest, res) 
   res.status(201).json(await svc.createVendor(actor(req), validate(svc.vendorSchema, req.body)));
 }));
 
+// Campus OS Phase 0 — Vendor Master directory, for cross-module consumers (e.g. Asset Management).
+procurementRouter.get('/vendors', asyncHandler(async (req: AuthedRequest, res) => {
+  res.json(await svc.listVendorDirectory(actor(req), { activeOnly: req.query.activeOnly === 'true' }));
+}));
+
 procurementRouter.get('/indents', asyncHandler(async (req: AuthedRequest, res) => {
   res.json(await svc.listIndents(actor(req)));
 }));
@@ -112,6 +117,15 @@ procurementRouter.post('/purchase-orders/:id/grns', asyncHandler(async (req: Aut
 
 procurementRouter.post('/grns/:id/finance-handoff', asyncHandler(async (req: AuthedRequest, res) => {
   res.status(201).json(await svc.financeHandoff(actor(req), Number(req.params.id), validate(svc.financeHandoffSchema, req.body)));
+}));
+
+// Campus OS Phase 1 — governed GRN-line-to-Asset handoff (asset registration lives in P0.2).
+procurementRouter.post('/grn-items/:id/asset-handoff', asyncHandler(async (req: AuthedRequest, res) => {
+  res.status(201).json(await svc.handoffGrnItemToAssets(actor(req), Number(req.params.id), validate(svc.assetHandoffSchema, req.body)));
+}));
+
+procurementRouter.get('/grn-items/:id/asset-handoff', asyncHandler(async (req: AuthedRequest, res) => {
+  res.json(await svc.getAssetHandoff(actor(req), Number(req.params.id)));
 }));
 
 procurementRouter.get('/inventory', asyncHandler(async (req: AuthedRequest, res) => {

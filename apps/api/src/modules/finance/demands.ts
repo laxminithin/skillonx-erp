@@ -307,8 +307,14 @@ export async function createAdHocDemand(
       created_by: params.createdBy ?? null,
     }).onConflict(['college_id', 'idempotency_key']).ignore();
 
+    // Locking read: under REPEATABLE READ, a concurrent caller whose insert was ignored here
+    // (because another transaction won the race and committed first) would otherwise still be
+    // using the snapshot from its own first read, which can predate that commit — a plain
+    // re-select can then miss the row entirely. forUpdate() always reads the latest committed
+    // version, so both callers reliably converge on the same row.
     const demand = await trx('student_fee_demands')
       .where({ college_id: collegeId, idempotency_key: idempotencyKey })
+      .forUpdate()
       .first();
     if (!demand) throw new Error('Unable to create finance demand');
     const demandId = Number(demand.id);

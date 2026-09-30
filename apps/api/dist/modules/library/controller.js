@@ -56,6 +56,23 @@ libraryRouter.post('/catalog', asyncHandler(async (req, res) => {
     }), req.body);
     res.status(201).json(await catalog.createCatalogItem(actor(req), body));
 }));
+libraryRouter.patch('/catalog/:id', asyncHandler(async (req, res) => {
+    const body = validate(z.object({
+        title: z.string().min(1).optional(),
+        isbn: z.string().optional(),
+        authors: z.string().optional(),
+        publisher: z.string().optional(),
+        edition: z.string().optional(),
+        publicationYear: z.number().optional(),
+        subjects: z.string().optional(),
+        callNumber: z.string().optional(),
+        description: z.string().optional(),
+        defaultLocation: z.string().optional(),
+        digitalLink: z.string().optional(),
+        status: z.enum(['ACTIVE', 'INACTIVE']).optional(),
+    }), req.body);
+    res.json(await catalog.updateCatalogItem(actor(req), Number(req.params.id), body));
+}));
 libraryRouter.post('/copies', asyncHandler(async (req, res) => {
     const body = validate(z.object({
         catalogItemId: z.number(),
@@ -69,6 +86,13 @@ libraryRouter.post('/copies', asyncHandler(async (req, res) => {
 libraryRouter.get('/copies/lookup/:barcode', asyncHandler(async (req, res) => {
     assertLibraryPermission(actor(req), 'library.view');
     res.json(await copies.findCopyByBarcode(actor(req).collegeId, req.params.barcode));
+}));
+libraryRouter.patch('/copies/:id/status', asyncHandler(async (req, res) => {
+    const body = validate(z.object({
+        status: z.enum(['AVAILABLE', 'DAMAGED', 'REPAIR', 'WITHDRAWN']),
+        reason: z.string().optional(),
+    }), req.body);
+    res.json(await copies.updateCopyStatus(actor(req), Number(req.params.id), body.status, body.reason));
 }));
 libraryRouter.get('/inventory', asyncHandler(async (req, res) => {
     assertLibraryPermission(actor(req), 'library.view');
@@ -93,6 +117,7 @@ libraryRouter.get('/members/lookup/:query', asyncHandler(async (req, res) => {
     res.json(await members.findMemberByQuery(actor(req).collegeId, req.params.query));
 }));
 libraryRouter.patch('/members/:id/status', asyncHandler(async (req, res) => {
+    assertLibraryPermission(actor(req), 'library.circulation.issue');
     const body = validate(z.object({ status: z.enum(['ACTIVE', 'SUSPENDED', 'EXPIRED', 'CLOSED']), reason: z.string().optional() }), req.body);
     res.json(await members.updateMemberStatus(actor(req), Number(req.params.id), body.status, body.reason));
 }));
@@ -107,9 +132,11 @@ libraryRouter.post('/circulation/return', asyncHandler(async (req, res) => {
     res.json(await circulation.returnBook(actor(req), body.barcode));
 }));
 libraryRouter.post('/circulation/renew/:loanId', asyncHandler(async (req, res) => {
+    assertLibraryPermission(actor(req), 'library.circulation.issue');
     res.json(await circulation.renewLoan(actor(req), Number(req.params.loanId)));
 }));
 libraryRouter.post('/circulation/lost/:loanId', asyncHandler(async (req, res) => {
+    assertLibraryPermission(actor(req), 'library.circulation.return');
     const body = validate(z.object({ chargeAmount: z.number().positive(), remarks: z.string().optional() }), req.body);
     res.json(await circulation.markLoanLost(actor(req), Number(req.params.loanId), body.chargeAmount, body.remarks));
 }));

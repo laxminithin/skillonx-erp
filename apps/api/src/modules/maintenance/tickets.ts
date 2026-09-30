@@ -12,6 +12,7 @@ import { computeState, overallSlaState, totalPausedMs, isWaiting } from './sla.j
 import { recordEvent } from './audit.js';
 import { notifyFaculty } from './notify.js';
 import { onTicketResolvedSyncSource } from './integrations.js';
+import { findAssetRef, recordMaintenanceHistory } from '../assetManagement/service.js';
 
 // ── Ticket number ────────────────────────────────────────────────────────
 async function nextTicketNo(collegeId: number): Promise<string> {
@@ -64,6 +65,13 @@ export function shapeTicket(row: Record<string, unknown>, visibility: 'FULL' | '
     building: row.building ?? null, locationNote: row.location_note ?? null,
     sourceModule: row.source_module, sourceEntityType: row.source_entity_type ?? null,
     sourceEntityId: row.source_entity_id ? Number(row.source_entity_id) : null, assetRef: row.asset_ref ?? null,
+    assetId: row.asset_id ? Number(row.asset_id) : null,
+    asset: row.asset_id ? {
+      id: Number(row.asset_id), assetTag: (row.asset_tag as string) ?? null, name: (row.asset_name as string) ?? null,
+      status: (row.asset_status as string) ?? null,
+      warrantyEndDate: row.asset_warranty_end_date ?? null,
+      amcReference: row.asset_amc_reference ?? null, amcExpiryDate: row.asset_amc_expiry_date ?? null,
+    } : null,
     erpModule: row.erp_module ?? null, erpRoute: row.erp_route ?? null,
     priority: row.priority, status: row.status,
     teamId: row.team_id ? Number(row.team_id) : null, teamName: (row.team_name as string) ?? null,
@@ -94,11 +102,15 @@ const ticketQuery = (collegeId: number) => db('service_tickets as t')
   .leftJoin('faculty_users as af', 'af.id', 't.assigned_to')
   .leftJoin('faculty_users as rf', 'rf.id', 't.requester_faculty_id')
   .leftJoin('students as rs', 'rs.id', 't.requester_student_id')
+  .leftJoin('campus_assets as ca', 'ca.id', 't.asset_id')
   .where('t.college_id', collegeId)
   .select(
     't.*', 'c.name as category_name', 'c.kind as category_kind', 'tm.name as team_name',
     'd.name as department_name', 'r.name as room_name', 'af.name as assignee_name',
     db.raw('COALESCE(rf.name, rs.name) as requester_name'),
+    'ca.asset_tag as asset_tag', 'ca.name as asset_name', 'ca.status as asset_status',
+    'ca.warranty_end_date as asset_warranty_end_date', 'ca.amc_reference as asset_amc_reference',
+    'ca.amc_expiry_date as asset_amc_expiry_date',
   );
 
 // ── Create ─────────────────────────────────────────────────────────────────
@@ -132,6 +144,16 @@ export async function createTicket(actor: MaintActor, input: Record<string, unkn
     if (!building) building = room.building ?? null;
   }
 
+  // Canonical asset reference (P0.2) — optional; tenant-scoped, never trusted blind.
+  let assetId: number | null = null;
+  let assetRef = (input.assetRef as string) ?? null;
+  if (input.assetId) {
+    const asset = await findAssetRef(actor.collegeId, Number(input.assetId));
+    if (!asset) throw new AppError(404, 'Asset not found');
+    assetId = asset.id;
+    if (!assetRef) assetRef = asset.assetTag;
+  }
+
   const sourceModule = (input.sourceModule as string) ?? 'GENERAL';
 
   const route = await resolveRoute({
@@ -158,7 +180,7 @@ export async function createTicket(actor: MaintActor, input: Record<string, unkn
     requester_student_id: actor.kind === 'STUDENT' ? actor.studentId : null,
     department_id: departmentId, room_id: roomId, building, location_note: input.locationNote ?? null,
     source_module: sourceModule, source_entity_type: input.sourceEntityType ?? null,
-    source_entity_id: input.sourceEntityId ?? null, asset_ref: input.assetRef ?? null,
+    source_entity_id: input.sourceEntityId ?? null, asset_ref: assetRef, asset_id: assetId,
     erp_module: input.erpModule ?? null, erp_route: input.erpRoute ?? null,
     priority, status, team_id: route.teamId, routing_explanation: route.explanation,
     sla_ack_due_at: ackDue, sla_resolve_due_at: resolveDue,
@@ -168,6 +190,11 @@ export async function createTicket(actor: MaintActor, input: Record<string, unkn
 
   await recordEvent({ collegeId: actor.collegeId, ticketId, eventType: 'CREATED', actor, toValue: status, note: `Ticket ${ticketNo} raised` });
   await recordEvent({ collegeId: actor.collegeId, ticketId, eventType: 'ROUTED', actor: null, actorTypeOverride: 'SYSTEM', toValue: route.teamId ? String(route.teamId) : null, note: route.explanation, visibility: 'INTERNAL' });
+
+  if (assetId) {
+    // Best-effort — traceable from the asset side (§8); never blocks ticket creation.
+    await recordMaintenanceHistory(actor.collegeId, assetId, 'MAINTENANCE_TICKET_LINKED', { ticketNo, ticketId }, actor.kind === 'FACULTY' ? actor.facultyUserId ?? null : null).catch(() => {});
+  }
 
   // Attachments.
   const attachments = (input.attachments as Array<Record<string, unknown>>) ?? [];
@@ -483,6 +510,9 @@ export async function resolveTicket(actor: MaintActor, ticketId: number, input: 
   await notifyRequester(actor.collegeId, t, `${t.ticket_no} resolved — please confirm`, ticketId);
   // Safe source-module sync (e.g. Lab repair context) — never mutates source lifecycle directly.
   await onTicketResolvedSyncSource(actor, { ...t, resolution_summary: input.resolutionSummary });
+  if (t.asset_id) {
+    await recordMaintenanceHistory(actor.collegeId, Number(t.asset_id), 'MAINTENANCE_COMPLETED', { ticketNo: t.ticket_no, resolutionSummary: input.resolutionSummary }, actor.kind === 'FACULTY' ? actor.facultyUserId ?? null : null).catch(() => {});
+  }
   return reshape(actor, ticketId);
 }
 

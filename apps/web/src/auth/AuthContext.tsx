@@ -43,6 +43,7 @@ export type User = {
     departmentIds?: number[];
     employeeId?: number | null;
   } | null;
+  portalContexts?: string[];
 };
 
 type AuthContextValue = {
@@ -111,6 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
+    localStorage.removeItem('portal_context');
     const data = await api<{ token: string; user: User }>('/api/auth/login', {
       method: 'POST',
       auth: false,
@@ -122,11 +124,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const applySession = (token: string, next: User) => {
+    localStorage.removeItem('portal_context');
     setToken(token);
     setUser(next);
   };
 
   const logout = () => {
+    localStorage.removeItem('portal_context');
     setToken(null);
     setUser(null);
   };

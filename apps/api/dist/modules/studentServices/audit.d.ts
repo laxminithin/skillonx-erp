@@ -1,7 +1,7 @@
 type AuditInput = {
     collegeId: number;
     actorId?: number | null;
-    actorType?: 'FACULTY' | 'STUDENT' | 'SYSTEM';
+    actorType?: 'FACULTY' | 'STUDENT' | 'PARENT' | 'SYSTEM';
     actorName?: string | null;
     action: string;
     entityType: string;

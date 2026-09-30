@@ -1,0 +1,28 @@
+{
+  "executedAt": "2026-09-29T09:38:58.274Z",
+  "note": "Sequential smoke timing; not load testing",
+  "results": [
+    {
+      "path": "/api/health",
+      "samples": 10,
+      "statuses": [
+        200
+      ],
+      "min": 64.3,
+      "median": 84.3,
+      "p95": 609.3,
+      "max": 609.3
+    },
+    {
+      "path": "/",
+      "samples": 10,
+      "statuses": [
+        200
+      ],
+      "min": 58.3,
+      "median": 60.4,
+      "p95": 76.4,
+      "max": 76.4
+    }
+  ]
+}

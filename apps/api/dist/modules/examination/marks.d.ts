@@ -3,14 +3,14 @@ import type { ExamActor } from './access.js';
 export declare const markEntrySchema: z.ZodObject<{
     studentId: z.ZodNumber;
     marks: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
-    status: z.ZodDefault<z.ZodEnum<["PRESENT", "ABSENT", "MALPRACTICE", "WITHHELD"]>>;
+    status: z.ZodDefault<z.ZodEnum<["PRESENT", "ABSENT", "MALPRACTICE", "MPC", "WITHHELD", "SPECIAL_PERMISSION"]>>;
 }, "strip", z.ZodTypeAny, {
-    status: "PRESENT" | "ABSENT" | "WITHHELD" | "MALPRACTICE";
+    status: "PRESENT" | "ABSENT" | "WITHHELD" | "MALPRACTICE" | "MPC" | "SPECIAL_PERMISSION";
     studentId: number;
     marks?: number | null | undefined;
 }, {
     studentId: number;
-    status?: "PRESENT" | "ABSENT" | "WITHHELD" | "MALPRACTICE" | undefined;
+    status?: "PRESENT" | "ABSENT" | "WITHHELD" | "MALPRACTICE" | "MPC" | "SPECIAL_PERMISSION" | undefined;
     marks?: number | null | undefined;
 }>;
 export declare const unlockSchema: z.ZodObject<{

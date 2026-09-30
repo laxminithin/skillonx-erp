@@ -99,3 +99,26 @@ parentPortalRouter.get('/students/:studentId/notices', asyncHandler(async (req: 
 parentPortalRouter.get('/students/:studentId/mentoring', asyncHandler(async (req: ParentAuthedRequest, res) => {
   res.json(await parent.parentMentoring(actor(req), Number(req.params.studentId)));
 }));
+
+parentPortalRouter.get('/students/:studentId/leave-requests', asyncHandler(async (req: ParentAuthedRequest, res) => {
+  const status = typeof req.query.status === 'string' ? req.query.status : undefined;
+  res.json(await parent.parentLeaveRequests(actor(req), Number(req.params.studentId), status));
+}));
+
+parentPortalRouter.post('/students/:studentId/leave-requests', asyncHandler(async (req: ParentAuthedRequest, res) => {
+  const body = validate(parent.parentLeaveCreateSchema, req.body);
+  res.status(201).json(await parent.parentSubmitLeaveForChild(actor(req), Number(req.params.studentId), body));
+}));
+
+parentPortalRouter.get('/leave-requests/:id', asyncHandler(async (req: ParentAuthedRequest, res) => {
+  res.json(await parent.parentLeaveRequestDetail(actor(req), Number(req.params.id)));
+}));
+
+parentPortalRouter.post('/leave-requests/:id/submit', asyncHandler(async (req: ParentAuthedRequest, res) => {
+  res.json(await parent.parentSubmitLeaveDraft(actor(req), Number(req.params.id)));
+}));
+
+parentPortalRouter.post('/leave-requests/:id/action', asyncHandler(async (req: ParentAuthedRequest, res) => {
+  const body = validate(parent.parentLeaveActionSchema, req.body);
+  res.json(await parent.parentActOnLeaveRequest(actor(req), Number(req.params.id), body));
+}));

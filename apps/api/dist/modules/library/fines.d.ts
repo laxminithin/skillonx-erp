@@ -61,6 +61,16 @@ export declare function waiveFine(actor: LibraryActor, fineId: number, amount: n
 }>;
 export declare function syncFineFromFinance(fineId: number, collegeId: number): Promise<void>;
 export declare function syncAllFinesForStudent(studentId: number, collegeId: number): Promise<void>;
+/**
+ * Retries the Finance handoff for fines whose demand creation previously failed or was
+ * never attempted (e.g. process restart between insert and the fire-and-forget call).
+ * Idempotent: createLibraryFineDemand no-ops once finance_demand_id is set.
+ */
+export declare function reconcilePendingFineFinanceHandoffs(collegeId: number): Promise<{
+    attempted: number;
+    succeeded: number;
+    failed: number;
+}>;
 export declare function getMemberOutstanding(memberId: number, collegeId: number): Promise<string>;
 export declare function staffListFines(actor: LibraryActor, status?: string): Promise<{
     memberName: any;

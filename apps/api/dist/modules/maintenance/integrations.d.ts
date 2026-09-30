@@ -36,6 +36,16 @@ export declare function linkLabFault(actor: MaintActor, faultId: number, extra?:
     sourceEntityType: {} | null;
     sourceEntityId: number | null;
     assetRef: {} | null;
+    assetId: number | null;
+    asset: {
+        id: number;
+        assetTag: string;
+        name: string;
+        status: string;
+        warrantyEndDate: {} | null;
+        amcReference: {} | null;
+        amcExpiryDate: {} | null;
+    } | null;
     erpModule: {} | null;
     erpRoute: {} | null;
     priority: unknown;

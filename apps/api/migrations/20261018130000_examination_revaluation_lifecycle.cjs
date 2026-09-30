@@ -18,6 +18,13 @@ exports.up = async function up(knex) {
 };
 
 exports.down = async function down(knex) {
+  // reviewed_by / examiner_id carry FK constraints (added in up()) — drop those first,
+  // or MySQL refuses to drop the column ("needed in a foreign key constraint").
+  for (const fkCol of ['reviewed_by', 'examiner_id']) {
+    if (await knex.schema.hasColumn('exam_revaluation_requests', fkCol)) {
+      await knex.schema.alterTable('exam_revaluation_requests', (t) => t.dropForeign(fkCol));
+    }
+  }
   for (const col of [
     'reviewed_by', 'reviewed_at', 'examiner_id', 'assigned_at', 'revised_marks', 'revised_max',
     'revaluated_at', 'decision', 'decision_reason', 'new_semester_result_id', 'completed_at',

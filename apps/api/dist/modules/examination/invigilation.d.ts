@@ -3,12 +3,12 @@ import type { ExamActor } from './access.js';
 export declare const invigilationSchema: z.ZodObject<{
     facultyId: z.ZodNumber;
     roomId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
-    role: z.ZodDefault<z.ZodEnum<["CHIEF", "INVIGILATOR", "RELIEVER", "SQUAD", "OTHER"]>>;
+    role: z.ZodDefault<z.ZodEnum<["CONTROLLER_OF_EXAMINATIONS", "CHIEF_SUPERINTENDENT", "DEPUTY_CHIEF_SUPERINTENDENT_INTERNAL", "DEPUTY_CHIEF_SUPERINTENDENT_EXTERNAL", "EXAM_COORDINATOR", "ROOM_SUPERINTENDENT", "RELIEVING_SUPERINTENDENT", "SQUAD_MEMBER", "SQUAD_CHAIRMAN", "OBSERVER", "INTERNAL_EXAMINER", "EXTERNAL_EXAMINER", "VALUER", "MODERATOR", "SCRUTINIZER", "QUESTION_PAPER_SETTER", "SUPPORT_STAFF", "CHIEF", "INVIGILATOR", "RELIEVER", "SQUAD", "OTHER"]>>;
     dutyDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     startTime: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     endTime: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, "strip", z.ZodTypeAny, {
-    role: "OTHER" | "CHIEF" | "INVIGILATOR" | "RELIEVER" | "SQUAD";
+    role: "OTHER" | "CONTROLLER_OF_EXAMINATIONS" | "CHIEF_SUPERINTENDENT" | "DEPUTY_CHIEF_SUPERINTENDENT_INTERNAL" | "DEPUTY_CHIEF_SUPERINTENDENT_EXTERNAL" | "EXAM_COORDINATOR" | "ROOM_SUPERINTENDENT" | "RELIEVING_SUPERINTENDENT" | "SQUAD_MEMBER" | "SQUAD_CHAIRMAN" | "OBSERVER" | "INTERNAL_EXAMINER" | "EXTERNAL_EXAMINER" | "VALUER" | "MODERATOR" | "SCRUTINIZER" | "QUESTION_PAPER_SETTER" | "SUPPORT_STAFF" | "CHIEF" | "INVIGILATOR" | "RELIEVER" | "SQUAD";
     facultyId: number;
     startTime?: string | null | undefined;
     endTime?: string | null | undefined;
@@ -19,7 +19,7 @@ export declare const invigilationSchema: z.ZodObject<{
     startTime?: string | null | undefined;
     endTime?: string | null | undefined;
     roomId?: number | null | undefined;
-    role?: "OTHER" | "CHIEF" | "INVIGILATOR" | "RELIEVER" | "SQUAD" | undefined;
+    role?: "OTHER" | "CONTROLLER_OF_EXAMINATIONS" | "CHIEF_SUPERINTENDENT" | "DEPUTY_CHIEF_SUPERINTENDENT_INTERNAL" | "DEPUTY_CHIEF_SUPERINTENDENT_EXTERNAL" | "EXAM_COORDINATOR" | "ROOM_SUPERINTENDENT" | "RELIEVING_SUPERINTENDENT" | "SQUAD_MEMBER" | "SQUAD_CHAIRMAN" | "OBSERVER" | "INTERNAL_EXAMINER" | "EXTERNAL_EXAMINER" | "VALUER" | "MODERATOR" | "SCRUTINIZER" | "QUESTION_PAPER_SETTER" | "SUPPORT_STAFF" | "CHIEF" | "INVIGILATOR" | "RELIEVER" | "SQUAD" | undefined;
     dutyDate?: string | null | undefined;
 }>;
 export declare function assignInvigilation(actor: ExamActor, examSubjectId: number, body: z.infer<typeof invigilationSchema>): Promise<{

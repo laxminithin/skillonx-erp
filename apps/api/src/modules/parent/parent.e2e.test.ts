@@ -21,9 +21,14 @@ import {
   parentNotices,
   parentReceipt,
   parentResults,
+  parentActOnLeaveRequest,
+  parentLeaveRequests,
+  parentSubmitLeaveForChild,
   parentTransport,
   type ParentActor,
 } from './service.js';
+import * as requests from '../studentServices/requestEngine.js';
+import { ensureCollegeServicesDefaults } from '../studentServices/defaults.js';
 
 const PASSWORD = 'Password123';
 
@@ -251,6 +256,52 @@ describe('parent guardian portal E2E', () => {
     const mentoring = await parentMentoring(actor(ctx.parentA), Number(ctx.childA.id));
     assert.ok(mentoring.interactions.some((i) => i.purpose === 'Parent Portal E2E visible'));
     assert.equal(mentoring.interactions.some((i) => i.purpose === 'Parent Portal E2E confidential'), false);
+  });
+
+  it('supports parent leave approval and parent-initiated leave only for linked children', async () => {
+    if (!ctx) return;
+    await ensureCollegeServicesDefaults(ctx.collegeId);
+    const studentActor = { studentId: Number(ctx.childA.id), collegeId: ctx.collegeId };
+    const probeDate = '2099-04-12';
+    const created = await requests.createRequest(studentActor, {
+      requestTypeCode: 'STUDENT_LEAVE_REQUEST',
+      title: 'Parent approval E2E leave',
+      formData: { leaveType: 'NORMAL_LEAVE', fromDate: probeDate, toDate: probeDate, days: 1, reason: 'Family function' },
+    });
+    const submitted = await requests.submitRequest(studentActor, created.id);
+    assert.equal(submitted.parentActionState, 'PENDING');
+
+    await assert.rejects(
+      () => parentActOnLeaveRequest(actor(ctx.parentB), created.id, { action: 'APPROVE' }),
+      /authorized|linked|access/i,
+    );
+    const approved = await parentActOnLeaveRequest(actor(ctx.parentA), created.id, { action: 'APPROVE', remarks: 'Acknowledged' });
+    assert.equal(approved.parentActionState, 'APPROVED');
+    assert.equal(approved.timeline.some((t: any) => t.actorRole === 'PARENT' && t.status === 'COMPLETED'), true);
+
+    const list = await parentLeaveRequests(actor(ctx.parentA), Number(ctx.childA.id));
+    assert.equal(list.requests.some((r) => r.id === created.id), true);
+    await assert.rejects(
+      () => parentLeaveRequests(actor(ctx.parentA), Number(ctx.childB.id)),
+      /authorized|linked|access/i,
+    );
+
+    const parentCreated = await parentSubmitLeaveForChild(actor(ctx.parentA), Number(ctx.childA.id), {
+      requestTypeCode: 'STUDENT_LEAVE_REQUEST',
+      title: 'Parent initiated illness leave',
+      formData: { leaveType: 'MEDICAL_LEAVE', fromDate: '2099-04-13', toDate: '2099-04-13', days: 1, reason: 'Illness' },
+      submit: true,
+    });
+    assert.equal(parentCreated.requesterType, 'PARENT');
+    assert.equal(parentCreated.parentActionState, 'ACKNOWLEDGED');
+    await assert.rejects(
+      () => parentSubmitLeaveForChild(actor(ctx.parentB), Number(ctx.childA.id), {
+        requestTypeCode: 'STUDENT_LEAVE_REQUEST',
+        title: 'Unauthorized parent leave',
+        formData: { leaveType: 'NORMAL_LEAVE', fromDate: '2099-04-14', toDate: '2099-04-14', reason: 'Nope' },
+      }),
+      /authorized|linked|access/i,
+    );
   });
 
   it('does not expose grievance, welfare, HR, faculty, or T&P administration surfaces', async () => {

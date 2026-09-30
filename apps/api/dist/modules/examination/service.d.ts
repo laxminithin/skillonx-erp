@@ -6,7 +6,7 @@ export declare const createExamSchema: z.ZodObject<{
     semesterId: z.ZodNumber;
     schemeId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
     examPolicyId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
-    examType: z.ZodEnum<["CIE", "SEE", "SUPPLEMENTARY", "MAKEUP", "IMPROVEMENT", "PRACTICAL", "VIVA", "PROJECT"]>;
+    examType: z.ZodEnum<["CIE", "INTERNAL", "LAB", "SEE", "SUPPLEMENTARY", "MAKEUP", "BACKLOG", "IMPROVEMENT", "PRACTICAL", "VIVA", "PROJECT"]>;
     name: z.ZodString;
     code: z.ZodString;
     startDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -16,7 +16,7 @@ export declare const createExamSchema: z.ZodObject<{
     name: string;
     academicYearId: number;
     semesterId: number;
-    examType: "MAKEUP" | "PRACTICAL" | "PROJECT" | "CIE" | "SEE" | "SUPPLEMENTARY" | "VIVA" | "IMPROVEMENT";
+    examType: "MAKEUP" | "LAB" | "PRACTICAL" | "BACKLOG" | "PROJECT" | "CIE" | "SEE" | "SUPPLEMENTARY" | "VIVA" | "INTERNAL" | "IMPROVEMENT";
     startDate?: string | null | undefined;
     endDate?: string | null | undefined;
     programId?: number | null | undefined;
@@ -27,7 +27,7 @@ export declare const createExamSchema: z.ZodObject<{
     name: string;
     academicYearId: number;
     semesterId: number;
-    examType: "MAKEUP" | "PRACTICAL" | "PROJECT" | "CIE" | "SEE" | "SUPPLEMENTARY" | "VIVA" | "IMPROVEMENT";
+    examType: "MAKEUP" | "LAB" | "PRACTICAL" | "BACKLOG" | "PROJECT" | "CIE" | "SEE" | "SUPPLEMENTARY" | "VIVA" | "INTERNAL" | "IMPROVEMENT";
     startDate?: string | null | undefined;
     endDate?: string | null | undefined;
     programId?: number | null | undefined;
@@ -109,6 +109,11 @@ export declare function listExams(actor: ExamActor, filters?: {
     startDate: any;
     endDate: any;
     status: any;
+    governanceType: any;
+    sourceOfTruth: any;
+    externalReference: any;
+    frozenAt: any;
+    frozenBy: number | null;
     createdBy: number | null;
     createdAt: any;
     updatedAt: any;
@@ -136,6 +141,63 @@ export declare function coeDashboard(actor: ExamActor): Promise<{
     revaluationsByStatus: {
         [k: string]: number;
     };
+    readiness: {
+        governanceType: "VTU_AFFILIATED" | "AUTONOMOUS";
+        exam: null;
+        status: string;
+        score: number;
+        checks: never[];
+    } | {
+        governanceType: "VTU_AFFILIATED" | "AUTONOMOUS";
+        exam: {
+            id: number;
+            collegeId: number;
+            academicYearId: number;
+            programId: number | null;
+            semesterId: number;
+            schemeId: number | null;
+            examPolicyId: number | null;
+            examType: any;
+            name: any;
+            code: any;
+            startDate: any;
+            endDate: any;
+            status: any;
+            governanceType: any;
+            sourceOfTruth: any;
+            externalReference: any;
+            frozenAt: any;
+            frozenBy: number | null;
+            createdBy: number | null;
+            createdAt: any;
+            updatedAt: any;
+        };
+        status: string;
+        score: number;
+        checks: {
+            label: string;
+            status: "READY" | "BLOCKED" | "WARNING";
+            actual: number;
+            expected: number;
+            note: string | undefined;
+        }[];
+    };
+    capabilities: {
+        governanceType: "VTU_AFFILIATED" | "AUTONOMOUS";
+        capabilities: {
+            capabilityKey: import("./types.js").ExaminationCapabilityKey;
+            name: string;
+            governanceType: "VTU_AFFILIATED" | "AUTONOMOUS";
+            ownership: "UNIVERSITY" | "SHARED" | "INSTITUTIONAL" | "OPTIONAL";
+            enabled: boolean;
+            mandatory: boolean;
+            sourceOfTruth: string;
+            requiresApproval: boolean;
+            requiresFreeze: boolean;
+            supportsAudit: boolean;
+            supportsEvidence: boolean;
+        }[];
+    };
     recentExams: {
         id: number;
         collegeId: number;
@@ -150,6 +212,11 @@ export declare function coeDashboard(actor: ExamActor): Promise<{
         startDate: any;
         endDate: any;
         status: any;
+        governanceType: any;
+        sourceOfTruth: any;
+        externalReference: any;
+        frozenAt: any;
+        frozenBy: number | null;
         createdBy: number | null;
         createdAt: any;
         updatedAt: any;
@@ -168,6 +235,8 @@ export declare function coeDashboard(actor: ExamActor): Promise<{
 }>;
 export declare function questionPaperStatus(actor: ExamActor): Promise<{
     total: number;
+    governanceType: "VTU_AFFILIATED" | "AUTONOMOUS";
+    ownership: "UNIVERSITY" | "SHARED" | "INSTITUTIONAL" | "OPTIONAL" | null;
     byStatus: {
         [k: string]: number;
     };
@@ -216,6 +285,11 @@ export declare function getExam(actor: ExamActor, examId: number): Promise<{
     startDate: any;
     endDate: any;
     status: any;
+    governanceType: any;
+    sourceOfTruth: any;
+    externalReference: any;
+    frozenAt: any;
+    frozenBy: number | null;
     createdBy: number | null;
     createdAt: any;
     updatedAt: any;
@@ -252,6 +326,11 @@ export declare function createExam(actor: ExamActor, body: z.infer<typeof create
     startDate: any;
     endDate: any;
     status: any;
+    governanceType: any;
+    sourceOfTruth: any;
+    externalReference: any;
+    frozenAt: any;
+    frozenBy: number | null;
     createdBy: number | null;
     createdAt: any;
     updatedAt: any;
@@ -306,9 +385,55 @@ export declare function updateExamStatus(actor: ExamActor, examId: number, statu
     startDate: any;
     endDate: any;
     status: any;
+    governanceType: any;
+    sourceOfTruth: any;
+    externalReference: any;
+    frozenAt: any;
+    frozenBy: number | null;
     createdBy: number | null;
     createdAt: any;
     updatedAt: any;
+}>;
+export declare function examReadiness(actor: ExamActor, examId?: number): Promise<{
+    governanceType: "VTU_AFFILIATED" | "AUTONOMOUS";
+    exam: null;
+    status: string;
+    score: number;
+    checks: never[];
+} | {
+    governanceType: "VTU_AFFILIATED" | "AUTONOMOUS";
+    exam: {
+        id: number;
+        collegeId: number;
+        academicYearId: number;
+        programId: number | null;
+        semesterId: number;
+        schemeId: number | null;
+        examPolicyId: number | null;
+        examType: any;
+        name: any;
+        code: any;
+        startDate: any;
+        endDate: any;
+        status: any;
+        governanceType: any;
+        sourceOfTruth: any;
+        externalReference: any;
+        frozenAt: any;
+        frozenBy: number | null;
+        createdBy: number | null;
+        createdAt: any;
+        updatedAt: any;
+    };
+    status: string;
+    score: number;
+    checks: {
+        label: string;
+        status: "READY" | "BLOCKED" | "WARNING";
+        actual: number;
+        expected: number;
+        note: string | undefined;
+    }[];
 }>;
 export declare function autoPopulateSubjectsFromClass(actor: ExamActor, examId: number, classId: number): Promise<{
     id: number;

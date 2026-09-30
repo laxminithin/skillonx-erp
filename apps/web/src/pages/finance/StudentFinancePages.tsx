@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { CreditCard, FileText, IndianRupee, Receipt, ScrollText, ShieldCheck } from 'lucide-react';
 import { api } from '../../lib/api';
-import { Button, PageHeader, Skeleton, Surface } from '../../components/ui';
+import { Button, EmptyState, Field, Input, PageHeader, Skeleton, Surface } from '../../components/ui';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 import { formatDate } from '../../lib/utils';
 import { StatusPill, StudentEmpty, statusToneFor } from '../lms/studentUi';
@@ -398,6 +398,14 @@ export function StudentScholarshipsPage() {
   return (
     <div className="animate-fade-in space-y-4">
       <PageHeader title="Scholarships" subtitle="Your scholarship applications and sanctions" />
+      <div className="flex flex-wrap gap-2">
+        <Link to="/lms/fees/scholarships/apply" className="inline-flex items-center gap-1.5 rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm hover:border-border-strong">
+          <IndianRupee className="h-4 w-4" /> Apply for a Scholarship
+        </Link>
+        <Link to="/lms/fees/scholarships/applications" className="inline-flex items-center gap-1.5 rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm hover:border-border-strong">
+          <ScrollText className="h-4 w-4" /> My Applications
+        </Link>
+      </div>
       {scholarships.length === 0 ? (
         <StudentEmpty title="No scholarships" body="Scholarship records will appear here when assigned." />
       ) : (
@@ -420,6 +428,292 @@ export function StudentScholarshipsPage() {
       )}
     </div>
   );
+}
+
+type Scheme = {
+  id: number;
+  code: string;
+  name: string;
+  description: string | null;
+  provider: string | null;
+  benefitType: string;
+  isExternal: boolean;
+  externalPortalUrl: string | null;
+  allowMultipleApplications: boolean;
+};
+
+type StudentApplication = {
+  id: number;
+  schemeName: string;
+  schemeCode: string;
+  benefitType: string;
+  status: string;
+  eligibilityStatus: string;
+  requestedAmount: string | null;
+  sanctionedAmount: string | null;
+  studentRemarks: string | null;
+  submittedAt: string | null;
+};
+
+export function StudentScholarshipSchemesPage() {
+  const [schemes, setSchemes] = useState<Scheme[]>([]);
+  const [academicYearId, setAcademicYearId] = useState('');
+  const [busyId, setBusyId] = useState<number | null>(null);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  useDocumentTitle('Apply for a Scholarship');
+
+  useEffect(() => {
+    api<{ schemes: Scheme[] }>('/api/student/finance/scholarship-schemes').then((d) => setSchemes(d.schemes));
+  }, []);
+
+  async function apply(schemeId: number) {
+    if (!academicYearId) {
+      setError('Enter the academic year ID for this application (ask your scholarship office if unsure).');
+      return;
+    }
+    setBusyId(schemeId);
+    setError('');
+    try {
+      const draft = await api<{ id: number }>('/api/student/finance/scholarship-applications', {
+        method: 'POST',
+        body: JSON.stringify({ schemeId, academicYearId: Number(academicYearId) }),
+      });
+      navigate(`/lms/fees/scholarships/applications/${draft.id}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not start application');
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  return (
+    <div className="animate-fade-in space-y-4">
+      <PageHeader title="Apply for a Scholarship" subtitle="Browse active schemes and start an application" />
+      <Field label="Academic Year ID">
+        <Input value={academicYearId} onChange={(e) => setAcademicYearId(e.target.value)} placeholder="e.g. 4" />
+      </Field>
+      {error ? <p className="text-sm text-danger">{error}</p> : null}
+      {schemes.length === 0 ? (
+        <EmptyState title="No schemes open" body="No scholarship schemes are currently accepting applications." />
+      ) : (
+        <div className="space-y-3">
+          {schemes.map((s) => (
+            <Surface key={s.id} className="p-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="font-medium">{s.name}</p>
+                  {s.provider ? <p className="text-xs text-ink-muted">{s.provider}</p> : null}
+                  {s.description ? <p className="mt-1 text-sm text-ink-muted">{s.description}</p> : null}
+                  <p className="mt-1 text-xs uppercase tracking-wide text-ink-muted">{s.benefitType.replace(/_/g, ' ')}</p>
+                </div>
+                {s.isExternal ? (
+                  <a href={s.externalPortalUrl ?? '#'} target="_blank" rel="noreferrer">
+                    <Button variant="secondary" size="sm">Apply on External Portal</Button>
+                  </a>
+                ) : (
+                  <Button size="sm" disabled={busyId === s.id} onClick={() => apply(s.id)}>
+                    {busyId === s.id ? 'Starting…' : 'Apply'}
+                  </Button>
+                )}
+              </div>
+            </Surface>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function StudentScholarshipApplicationsPage() {
+  const [rows, setRows] = useState<StudentApplication[]>([]);
+  useDocumentTitle('My Scholarship Applications');
+
+  useEffect(() => {
+    api<{ applications: StudentApplication[] }>('/api/student/finance/scholarship-applications').then((d) => setRows(d.applications));
+  }, []);
+
+  return (
+    <div className="animate-fade-in space-y-4">
+      <PageHeader title="My Applications" subtitle="Track the status of your scholarship applications" />
+      {rows.length === 0 ? (
+        <StudentEmpty title="No applications yet" body="Applications you start will appear here." />
+      ) : (
+        <div className="space-y-3">
+          {rows.map((r) => (
+            <Link key={r.id} to={`/lms/fees/scholarships/applications/${r.id}`} className="block rounded-[var(--radius-lg)] border border-border bg-surface p-4 hover:border-border-strong">
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <div>
+                  <p className="font-medium">{r.schemeName}</p>
+                  {r.requestedAmount ? <p className="text-sm text-ink-muted">Requested: {formatInr(r.requestedAmount)}</p> : null}
+                </div>
+                <StatusPill tone={statusToneFor(r.status)}>{r.status.replace(/_/g, ' ')}</StatusPill>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function StudentScholarshipApplicationDetailPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [app, setApp] = useState<StudentApplication | null>(null);
+  const [documents, setDocuments] = useState<Array<{ id: number; category: string; originalFilename: string; status: string }>>([]);
+  const [requestedAmount, setRequestedAmount] = useState('');
+  const [income, setIncome] = useState('');
+  const [category, setCategory] = useState('');
+  const [docCategory, setDocCategory] = useState('income_certificate');
+  const [file, setFile] = useState<File | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  useDocumentTitle('Application Detail');
+
+  function load() {
+    if (!id) return;
+    api<StudentApplication>(`/api/student/finance/scholarship-applications/${id}`).then(setApp);
+    api<{ documents: typeof documents }>(`/api/student/finance/scholarship-applications/${id}/documents`).then((d) => setDocuments(d.documents));
+  }
+
+  useEffect(load, [id]);
+
+  const editable = app ? ['DRAFT', 'RETURNED'].includes(app.status) : false;
+
+  async function saveDraft() {
+    if (!id) return;
+    setBusy(true);
+    setError('');
+    try {
+      await api(`/api/student/finance/scholarship-applications/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          requestedAmount: requestedAmount ? Number(requestedAmount) : undefined,
+          selfDeclaredIncome: income ? Number(income) : undefined,
+          selfDeclaredCategory: category || undefined,
+        }),
+      });
+      load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not save');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function submit() {
+    if (!id) return;
+    setBusy(true);
+    setError('');
+    try {
+      await api(`/api/student/finance/scholarship-applications/${id}/submit`, { method: 'POST' });
+      load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not submit application');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function withdraw() {
+    if (!id) return;
+    setBusy(true);
+    try {
+      await api(`/api/student/finance/scholarship-applications/${id}/withdraw`, { method: 'POST' });
+      navigate('/lms/fees/scholarships/applications');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not withdraw application');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function upload() {
+    if (!id || !file) return;
+    setBusy(true);
+    setError('');
+    try {
+      const contentBase64 = await fileToBase64(file);
+      await api(`/api/student/finance/scholarship-applications/${id}/documents`, {
+        method: 'POST',
+        body: JSON.stringify({ category: docCategory, fileName: file.name, mimeType: file.type || 'application/pdf', contentBase64 }),
+      });
+      setFile(null);
+      load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Upload failed');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (!app) return <Skeleton className="h-40 w-full" />;
+
+  return (
+    <div className="animate-fade-in max-w-xl space-y-4">
+      <PageHeader title={app.schemeName} subtitle="Application detail" />
+
+      <Surface className="space-y-2 p-4">
+        <div className="flex justify-between"><span className="text-ink-muted">Status</span><StatusPill tone={statusToneFor(app.status)}>{app.status.replace(/_/g, ' ')}</StatusPill></div>
+        {app.studentRemarks ? <p className="text-sm text-warning">{app.studentRemarks}</p> : null}
+      </Surface>
+
+      {editable ? (
+        <Surface className="space-y-3 p-4">
+          <h2 className="font-semibold">Application Details</h2>
+          <Field label="Requested Amount"><Input type="number" value={requestedAmount} onChange={(e) => setRequestedAmount(e.target.value)} /></Field>
+          <Field label="Self-Declared Annual Income (optional)"><Input type="number" value={income} onChange={(e) => setIncome(e.target.value)} /></Field>
+          <Field label="Self-Declared Category (optional)"><Input value={category} onChange={(e) => setCategory(e.target.value)} /></Field>
+          <Button variant="secondary" disabled={busy} onClick={saveDraft}>Save</Button>
+        </Surface>
+      ) : (
+        <Surface className="space-y-1 p-4 text-sm">
+          {app.requestedAmount ? <p>Requested: {formatInr(app.requestedAmount)}</p> : null}
+          {app.sanctionedAmount ? <p>Sanctioned: {formatInr(app.sanctionedAmount)}</p> : null}
+        </Surface>
+      )}
+
+      <Surface className="space-y-3 p-4">
+        <h2 className="font-semibold">Evidence Documents</h2>
+        {documents.length === 0 ? <p className="text-sm text-ink-muted">No documents uploaded yet.</p> : (
+          <ul className="space-y-1 text-sm">
+            {documents.map((d) => <li key={d.id}>{d.category.replace(/_/g, ' ')}: {d.originalFilename}</li>)}
+          </ul>
+        )}
+        {editable ? (
+          <div className="flex flex-wrap items-end gap-2 border-t border-border pt-3">
+            <Field label="Category"><Input value={docCategory} onChange={(e) => setDocCategory(e.target.value)} /></Field>
+            <input type="file" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="text-sm" />
+            <Button size="sm" disabled={busy || !file} onClick={upload}>Upload</Button>
+          </div>
+        ) : null}
+      </Surface>
+
+      {error ? <p className="text-sm text-danger">{error}</p> : null}
+
+      {editable ? (
+        <div className="flex flex-wrap gap-2">
+          <Button disabled={busy} onClick={submit}>Submit Application</Button>
+          <Button disabled={busy} variant="secondary" onClick={withdraw}>Withdraw</Button>
+        </div>
+      ) : ['SUBMITTED', 'UNDER_VERIFICATION'].includes(app.status) ? (
+        <Button disabled={busy} variant="secondary" onClick={withdraw}>Withdraw Application</Button>
+      ) : null}
+    </div>
+  );
+}
+
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result ?? '');
+      resolve(result.split(',')[1] ?? '');
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
 
 export function StudentNoDuePage() {

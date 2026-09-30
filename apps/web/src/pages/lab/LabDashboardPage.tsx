@@ -26,7 +26,7 @@ export function LabDashboardPage() {
 
   const s = data?.summary ?? {};
   return (
-    <div>
+    <div className="min-w-0 max-w-full overflow-x-hidden">
       <PageHeader title="Lab Dashboard" subtitle="What needs attention across your assigned laboratories today." />
 
       <StatStrip

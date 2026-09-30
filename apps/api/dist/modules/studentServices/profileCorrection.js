@@ -6,6 +6,7 @@ const SAFE_FIELDS = {
     EMAIL: 'email',
     PHONE: 'phone',
     SECTION: 'class_section_id',
+    DOB: 'date_of_birth',
 };
 const RESTRICTED_FIELDS = ['USN', 'PROGRAM', 'BRANCH', 'SEMESTER', 'SCHEME', 'ACADEMIC_YEAR'];
 export async function applyProfileCorrection(actor, requestId) {

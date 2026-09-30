@@ -88,6 +88,9 @@ async function buildDocumentData(
     organization: formData.organization ?? '',
     issueDate: new Date().toISOString().slice(0, 10),
     conductStatement: formData.conductStatement ?? '',
+    reason: formData.reason ?? '',
+    lastAttendanceDate: formData.lastAttendanceDate ?? '',
+    destinationInstitution: formData.destinationInstitution ?? '',
   };
 
   if (certificateType === 'GRADE_CARD' || certificateType === 'PROVISIONAL_RESULT') {
@@ -241,10 +244,105 @@ export async function generateCertificateForRequest(
   return serializeDocument(doc!);
 }
 
+/**
+ * Issues a duplicate of a still-VALID original document (distinct from
+ * `reissueDocument`, which only applies to a REVOKED original). The
+ * original is never touched — a new, separately-numbered document is
+ * created and linked via `duplicate_of_id`. Idempotent: a retry against
+ * the same request returns the already-issued duplicate instead of
+ * minting a second one.
+ */
+export async function duplicateDocument(
+  collegeId: number,
+  requestId: number,
+  issuedByFacultyId: number,
+) {
+  const request = await db('student_service_requests').where({ id: requestId, college_id: collegeId }).first();
+  if (!request) throw new AppError(404, 'Request not found');
+
+  const existing = await db('student_service_documents')
+    .where({ request_id: requestId, status: 'VALID' })
+    .first();
+  if (existing) return serializeDocument(existing);
+
+  const formData = parseJson<Record<string, unknown>>(request.form_data, {});
+  const originalId = Number(formData.originalDocumentId);
+  if (!originalId) throw new AppError(400, 'No original certificate was selected on this request');
+
+  const original = await db('student_service_documents')
+    .where({ id: originalId, college_id: collegeId, student_id: request.student_id })
+    .first();
+  if (!original) throw new AppError(404, 'Original certificate not found');
+  if (original.status !== 'VALID') throw new AppError(400, 'Only a currently valid certificate can be duplicated — a revoked document should be reissued instead');
+
+  const reason = String(formData.reason ?? 'Duplicate requested');
+  const certificateNumber = await nextCertificateNumber(collegeId, 'DUP');
+  const documentUuid = randomUUID();
+  const verificationCode = generateVerificationCode();
+  const originalData = parseJson<Record<string, unknown>>(original.document_data, {});
+
+  let docId: number;
+  try {
+    [docId] = await db('student_service_documents').insert({
+      college_id: collegeId,
+      student_id: request.student_id,
+      request_id: requestId,
+      issue_key: `request:${requestId}`,
+      document_type: original.document_type,
+      certificate_number: certificateNumber,
+      document_uuid: documentUuid,
+      verification_code: verificationCode,
+      status: 'VALID',
+      duplicate_of_id: originalId,
+      duplicate_reason: reason,
+      document_data: JSON.stringify({ ...originalData, isDuplicate: true, originalCertificateNumber: original.certificate_number }),
+      issued_by_faculty_id: issuedByFacultyId,
+      issued_at: db.fn.now(),
+    });
+  } catch (error) {
+    if ((error as { code?: string }).code !== 'ER_DUP_ENTRY') throw error;
+    const alreadyIssued = await db('student_service_documents').where({ issue_key: `request:${requestId}`, status: 'VALID' }).first();
+    if (!alreadyIssued) throw error;
+    return serializeDocument(alreadyIssued);
+  }
+
+  await db('student_service_requests').where({ id: requestId }).update({
+    status: 'READY',
+    current_stage: 'Duplicate Ready',
+    updated_at: db.fn.now(),
+  });
+
+  await recordServicesAudit({
+    collegeId,
+    actorId: issuedByFacultyId,
+    actorType: 'FACULTY',
+    action: 'CERTIFICATE_DUPLICATED',
+    entityType: 'student_service_document',
+    entityId: docId,
+    afterState: { certificateNumber, duplicateOfId: originalId },
+    reason,
+  });
+
+  await notifyStudent({
+    studentId: Number(request.student_id),
+    collegeId,
+    type: 'CERTIFICATE_READY',
+    title: 'Duplicate certificate ready',
+    body: `Your duplicate certificate (${certificateNumber}) is ready for download.`,
+    link: `/lms/services/certificates/${docId}`,
+    relatedType: 'certificate',
+    relatedId: docId,
+  });
+
+  const doc = await db('student_service_documents').where({ id: docId }).first();
+  return serializeDocument(doc!);
+}
+
 function serializeDocument(row: Row) {
   return {
     id: Number(row.id),
     documentType: row.document_type,
+    duplicateOfId: row.duplicate_of_id != null ? Number(row.duplicate_of_id) : null,
     certificateNumber: row.certificate_number,
     documentUuid: row.document_uuid,
     verificationCode: row.verification_code,

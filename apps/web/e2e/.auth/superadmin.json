@@ -6,7 +6,7 @@
       "localStorage": [
         {
           "name": "survey_token",
-          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJraW5kIjoiZmFjdWx0eSIsImZhY3VsdHlVc2VySWQiOjEwLCJjb2xsZWdlSWQiOjQsImRlcGFydG1lbnRJZCI6bnVsbCwicm9sZSI6IlNVUEVSX0FETUlOIiwiZW1haWwiOiJhZG1pbkBza2lsbG9ueC5jb20iLCJuYW1lIjoiTml0aGluIEsiLCJpYXQiOjE3ODk0MDA3OTEsImV4cCI6MTc5MDAwNTU5MX0.Djyz-tlN06BhFUuPIIoP9A1MxlKuoAZkpC68HkpoUno"
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJraW5kIjoiZmFjdWx0eSIsImZhY3VsdHlVc2VySWQiOjEwLCJjb2xsZWdlSWQiOjQsImRlcGFydG1lbnRJZCI6bnVsbCwicm9sZSI6IlNVUEVSX0FETUlOIiwiZW1haWwiOiJhZG1pbkBza2lsbG9ueC5jb20iLCJuYW1lIjoiUGxhdGZvcm0gU3VwZXIgQWRtaW4iLCJpYXQiOjE3OTA0ODc3NDQsImV4cCI6MTc5MTA5MjU0NH0.I_krk3vY-c7oPzMLkMzAkxTZKUBQdRTHx96MWO0OM30"
         }
       ]
     }

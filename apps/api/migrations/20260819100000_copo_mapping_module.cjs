@@ -266,7 +266,7 @@ exports.up = async function up(knex) {
     t.integer('reopened_by').unsigned().nullable().references('id').inTable('faculty_users').onDelete('SET NULL');
     t.timestamp('reopened_at').nullable();
     t.timestamps(true, true);
-    t.index(['college_id', 'course_id', 'academic_year_id', 'is_current'], { indexName: 'copo_versions_course_year_current_idx' });
+    t.index(['college_id', 'course_id', 'academic_year_id', 'is_current'], 'copo_versions_course_year_current_idx');
     t.index(['college_id', 'status']);
     t.index(['college_id', 'program_id']);
   });

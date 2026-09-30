@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../lib/api';
-import { Button, PageHeader, Skeleton, Surface } from '../../components/ui';
+import { Button, PageHeader, Surface } from '../../components/ui';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 import { formatDate } from '../../lib/utils';
 import { StatusPill, statusToneFor } from '../lms/studentUi';

@@ -4,4 +4,8 @@ export declare function notifyReceiptGenerated(studentId: number, collegeId: num
 export declare function notifyFeeDueSoon(studentId: number, collegeId: number, dueDate: string, amount: string): Promise<void>;
 export declare function notifyFeeOverdue(studentId: number, collegeId: number, amount: string): Promise<void>;
 export declare function notifyScholarshipSanctioned(studentId: number, collegeId: number, amount: unknown): Promise<void>;
+export declare function notifyApplicationSubmitted(studentId: number, collegeId: number, applicationId: number, schemeName: string): Promise<void>;
+export declare function notifyApplicationReturned(studentId: number, collegeId: number, applicationId: number, schemeName: string, remarks?: string | null): Promise<void>;
+export declare function notifyApplicationDecision(studentId: number, collegeId: number, applicationId: number, schemeName: string, decision: 'APPROVED' | 'REJECTED'): Promise<void>;
+export declare function notifyApplicationSanctioned(studentId: number, collegeId: number, applicationId: number, schemeName: string, amount: unknown): Promise<void>;
 export declare function notifyRefundProcessed(studentId: number, collegeId: number, amount: unknown): Promise<void>;

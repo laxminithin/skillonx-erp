@@ -150,6 +150,96 @@ const DEFAULT_REQUEST_TYPES = [
         ],
     },
     {
+        code: 'TRANSFER_CERTIFICATE',
+        label: 'Transfer Certificate',
+        category: 'CERTIFICATE',
+        description: 'Institution-issued Transfer Certificate confirming you have left the institution in good standing.',
+        instructions: 'Requires clearance from Finance, Library, Hostel and Transport before processing. Provide the reason for transfer.',
+        estimatedProcess: '7-10 working days',
+        requiresApproval: true,
+        autoApprove: false,
+        generatesCertificate: true,
+        certificateSeries: 'TC',
+        feeRequired: true,
+        feeAmount: 300,
+        feeHeadCode: 'TC_FEE',
+        formSchema: [
+            { key: 'reason', label: 'Reason for Transfer', type: 'textarea', required: true },
+            { key: 'lastAttendanceDate', label: 'Last Date of Attendance', type: 'date' },
+        ],
+        workflowSteps: [
+            { stepKey: 'FINANCE_CLEARANCE', label: 'Finance / No-Due Clearance', actorRole: 'COLLEGE_ADMIN' },
+            { stepKey: 'HOD_APPROVAL', label: 'HOD Approval', actorRole: 'HOD' },
+            { stepKey: 'PRINCIPAL_APPROVAL', label: 'Principal Approval', actorRole: 'PRINCIPAL' },
+            { stepKey: 'ADMIN_PROCESS', label: 'Document Generation', actorRole: 'COLLEGE_ADMIN', isFinal: true },
+        ],
+    },
+    {
+        code: 'MIGRATION_CERTIFICATE',
+        label: 'Migration Certificate',
+        category: 'CERTIFICATE',
+        description: 'Institution-issued Migration Certificate confirming your academic record for the purpose of migrating to another university. ' +
+            'This is the institution-side document only — any separate university-issued migration process is external and not handled here.',
+        instructions: 'Requires clearance from Finance, Library, Hostel and Transport before processing.',
+        estimatedProcess: '7-10 working days',
+        requiresApproval: true,
+        autoApprove: false,
+        generatesCertificate: true,
+        certificateSeries: 'MC',
+        feeRequired: true,
+        feeAmount: 300,
+        feeHeadCode: 'MIGRATION_FEE',
+        formSchema: [
+            { key: 'destinationInstitution', label: 'Destination Institution/University', type: 'text', required: true },
+            { key: 'reason', label: 'Reason', type: 'textarea', required: true },
+        ],
+        workflowSteps: [
+            { stepKey: 'FINANCE_CLEARANCE', label: 'Finance / No-Due Clearance', actorRole: 'COLLEGE_ADMIN' },
+            { stepKey: 'PRINCIPAL_APPROVAL', label: 'Principal Approval', actorRole: 'PRINCIPAL' },
+            { stepKey: 'ADMIN_PROCESS', label: 'Document Generation', actorRole: 'COLLEGE_ADMIN', isFinal: true },
+        ],
+    },
+    {
+        code: 'COURSE_COMPLETION_CERTIFICATE',
+        label: 'Course Completion Certificate',
+        category: 'CERTIFICATE',
+        description: 'Certificate confirming successful completion of your programme of study.',
+        estimatedProcess: '5-7 working days',
+        requiresApproval: true,
+        autoApprove: false,
+        generatesCertificate: true,
+        certificateSeries: 'CP',
+        formSchema: [
+            { key: 'purpose', label: 'Purpose', type: 'text', required: true },
+        ],
+        workflowSteps: [
+            { stepKey: 'HOD_APPROVAL', label: 'HOD Approval', actorRole: 'HOD' },
+            { stepKey: 'ADMIN_PROCESS', label: 'Document Generation', actorRole: 'COLLEGE_ADMIN', isFinal: true },
+        ],
+    },
+    {
+        code: 'DUPLICATE_CERTIFICATE',
+        label: 'Duplicate Certificate',
+        category: 'CERTIFICATE',
+        description: 'Request a duplicate copy of a certificate already issued to you. The original remains valid and unchanged.',
+        instructions: 'Select the original certificate and the reason a duplicate is needed (e.g. lost, damaged).',
+        estimatedProcess: '3-5 working days',
+        requiresApproval: true,
+        autoApprove: false,
+        generatesCertificate: false,
+        feeRequired: true,
+        feeAmount: 200,
+        feeHeadCode: 'DUPLICATE_CERT_FEE',
+        formSchema: [
+            { key: 'originalDocumentId', label: 'Original Certificate', type: 'select', required: true },
+            { key: 'reason', label: 'Reason', type: 'select', options: ['Lost', 'Damaged', 'Other'], required: true },
+            { key: 'reasonDetails', label: 'Additional Details', type: 'textarea' },
+        ],
+        workflowSteps: [
+            { stepKey: 'ADMIN_PROCESS', label: 'Duplicate Issuance', actorRole: 'COLLEGE_ADMIN', isFinal: true },
+        ],
+    },
+    {
         code: 'PROFILE_CORRECTION',
         label: 'Profile Correction',
         category: 'CORRECTION',
@@ -163,7 +253,7 @@ const DEFAULT_REQUEST_TYPES = [
                 key: 'field',
                 label: 'Field to Correct',
                 type: 'select',
-                options: ['NAME', 'EMAIL', 'PHONE', 'SECTION'],
+                options: ['NAME', 'EMAIL', 'PHONE', 'SECTION', 'DOB'],
                 required: true,
             },
             { key: 'currentValue', label: 'Current Value', type: 'text', required: true },
@@ -198,20 +288,25 @@ const DEFAULT_REQUEST_TYPES = [
         label: 'Leave Request',
         category: 'LEAVE',
         description: 'Apply for short leave or academic leave. Routed to your assigned mentor for approval.',
-        instructions: 'Provide the leave dates and reason. Attach supporting documents where applicable.',
+        instructions: 'Provide the leave dates and reason. Parent, mentor, coordinator and HOD routing follows institutional leave policy.',
         estimatedProcess: '1-2 working days',
         requiresApproval: true,
         autoApprove: false,
         generatesCertificate: false,
         formSchema: [
-            { key: 'leaveType', label: 'Leave Type', type: 'select', options: ['Medical', 'Personal', 'Academic', 'Other'], required: true },
+            { key: 'leaveType', label: 'Leave Type', type: 'select', options: ['NORMAL_LEAVE', 'MEDICAL_LEAVE', 'EMERGENCY_LEAVE', 'HALF_DAY', 'OFFICIAL_DUTY', 'RETROSPECTIVE_LEAVE', 'Other'], required: true },
             { key: 'fromDate', label: 'From Date', type: 'date', required: true },
             { key: 'toDate', label: 'To Date', type: 'date', required: true },
+            { key: 'dayPart', label: 'Day Part', type: 'select', options: ['FULL_DAY', 'FIRST_HALF', 'SECOND_HALF'] },
             { key: 'days', label: 'Number of Days', type: 'number' },
             { key: 'reason', label: 'Reason', type: 'textarea', required: true },
+            { key: 'alsoRequestHostelLeave', label: 'Also request Hostel Leave / Outing', type: 'select', options: ['NO', 'YES'] },
         ],
         workflowSteps: [
-            { stepKey: 'MENTOR_APPROVAL', label: 'Mentor Approval', actorRole: 'MENTOR', isFinal: true },
+            { stepKey: 'PARENT_ACTION', label: 'Parent Action', actorRole: 'PARENT' },
+            { stepKey: 'MENTOR_APPROVAL', label: 'Mentor Approval', actorRole: 'MENTOR' },
+            { stepKey: 'COORDINATOR_APPROVAL', label: 'Class Coordinator Approval', actorRole: 'CLASS_COORDINATOR' },
+            { stepKey: 'HOD_APPROVAL', label: 'HOD Approval', actorRole: 'HOD', isFinal: true },
         ],
     },
     {
@@ -225,14 +320,17 @@ const DEFAULT_REQUEST_TYPES = [
         autoApprove: false,
         generatesCertificate: false,
         formSchema: [
-            { key: 'permissionType', label: 'Type', type: 'select', options: ['Gate Pass', 'On-Duty', 'Late Entry', 'Early Exit', 'Other'], required: true },
+            { key: 'permissionType', label: 'Type', type: 'select', options: ['SHORT_PERMISSION', 'OFFICIAL_DUTY', 'Gate Pass', 'On-Duty', 'Late Entry', 'Early Exit', 'Other'], required: true },
             { key: 'onDate', label: 'Date', type: 'date', required: true },
             { key: 'fromTime', label: 'From Time', type: 'text' },
             { key: 'toTime', label: 'To Time', type: 'text' },
+            { key: 'fromPeriod', label: 'From Period', type: 'number' },
+            { key: 'toPeriod', label: 'To Period', type: 'number' },
             { key: 'hours', label: 'Number of Hours', type: 'number' },
             { key: 'reason', label: 'Reason', type: 'textarea', required: true },
         ],
         workflowSteps: [
+            { stepKey: 'MENTOR_REVIEW', label: 'Mentor Review', actorRole: 'MENTOR' },
             { stepKey: 'COORDINATOR_APPROVAL', label: 'Class Coordinator Approval', actorRole: 'CLASS_COORDINATOR', isFinal: true },
         ],
     },
@@ -301,6 +399,21 @@ const DEFAULT_CERTIFICATE_TEMPLATES = [
         title: 'Attendance Certificate',
         bodyTemplate: 'This is to certify that {{studentName}} (USN: {{usn}}) has maintained {{attendancePercentage}}% attendance during {{periodLabel}}.',
     },
+    {
+        certificateType: 'TRANSFER_CERTIFICATE',
+        title: 'Transfer Certificate',
+        bodyTemplate: 'This is to certify that {{studentName}} (USN: {{usn}}) was a bonafide student of {{programName}}, {{departmentName}} at {{collegeName}} and has been granted a Transfer Certificate. Last date of attendance: {{lastAttendanceDate}}. Reason: {{reason}}. The student bears a good moral character.',
+    },
+    {
+        certificateType: 'MIGRATION_CERTIFICATE',
+        title: 'Migration Certificate',
+        bodyTemplate: 'This is to certify that {{studentName}} (USN: {{usn}}) of {{programName}}, {{departmentName}} at {{collegeName}} is permitted to migrate to {{destinationInstitution}}. This institution-issued certificate does not constitute a university-issued migration certificate.',
+    },
+    {
+        certificateType: 'COURSE_COMPLETION_CERTIFICATE',
+        title: 'Course Completion Certificate',
+        bodyTemplate: 'This is to certify that {{studentName}} (USN: {{usn}}) has successfully completed the programme {{programName}} at {{departmentName}}, {{collegeName}}. Issued for the purpose of: {{purpose}}.',
+    },
 ];
 export async function ensureCollegeServicesDefaults(collegeId) {
     if (!(await db.schema.hasTable('student_service_request_types')))
@@ -331,8 +444,21 @@ export async function ensureCollegeServicesDefaults(collegeId) {
                 insertData.fee_amount = def.feeAmount ?? null;
                 insertData.fee_head_code = def.feeHeadCode ?? null;
             }
-            const [typeId] = await db('student_service_request_types').insert(insertData);
-            typeRow = { id: typeId };
+            try {
+                const [typeId] = await db('student_service_request_types').insert(insertData);
+                typeRow = { id: typeId };
+            }
+            catch (error) {
+                // Concurrent seeding of the same college (e.g. two API instances or two
+                // parallel test suites both calling ensureCollegeServicesDefaults for the
+                // first time) can race on the unique (college_id, code) constraint. The
+                // loser just re-reads the winner's row instead of erroring.
+                if (error.code !== 'ER_DUP_ENTRY')
+                    throw error;
+                typeRow = await db('student_service_request_types').where({ college_id: collegeId, code: def.code }).first();
+                if (!typeRow)
+                    throw error;
+            }
         }
         else if (await db.schema.hasColumn('student_service_request_types', 'fee_required') && def.feeRequired) {
             await db('student_service_request_types').where({ id: typeRow.id }).update({

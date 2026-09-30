@@ -180,7 +180,11 @@ describe('HR Analytics E2E', () => {
   it('payroll analytics mirror canonical persisted run totals and flag divergence', async () => {
     const ctx = await e2eContext();
     if (!ctx) return;
-    const run = await db('payroll_runs').where({ college_id: ctx.collegeId }).whereIn('status', ['APPROVED', 'LOCKED', 'POSTED']).first();
+    // Most-recent, not `.first()` (lowest id) — this QA college accumulates many payroll_runs
+    // across repeated E2E invocations over time, and an old run's header totals can predate a
+    // later out-of-band mutation to its employee rows. The newest run is the one actually
+    // representative of the current, freshly-calculated state this test means to verify.
+    const run = await db('payroll_runs').where({ college_id: ctx.collegeId }).whereIn('status', ['APPROVED', 'LOCKED', 'POSTED']).orderBy('id', 'desc').first();
     if (!run) return;
 
     // Analytics report the canonical PERSISTED run-header totals — never recalculated.

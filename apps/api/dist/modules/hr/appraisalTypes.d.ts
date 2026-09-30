@@ -405,6 +405,7 @@ export declare const selfAppraisalSchema: z.ZodObject<{
         selfRating?: number | null | undefined;
         selfComments?: string | null | undefined;
     }[] | undefined;
+    submit?: boolean | undefined;
     employeeSummary?: string | null | undefined;
     goals?: {
         goalId: number;
@@ -412,13 +413,13 @@ export declare const selfAppraisalSchema: z.ZodObject<{
         selfComments?: string | null | undefined;
         selfProgress?: number | null | undefined;
     }[] | undefined;
-    submit?: boolean | undefined;
 }, {
     criteria?: {
         criterionId: number;
         selfRating?: number | null | undefined;
         selfComments?: string | null | undefined;
     }[] | undefined;
+    submit?: boolean | undefined;
     employeeSummary?: string | null | undefined;
     goals?: {
         goalId: number;
@@ -426,7 +427,6 @@ export declare const selfAppraisalSchema: z.ZodObject<{
         selfComments?: string | null | undefined;
         selfProgress?: number | null | undefined;
     }[] | undefined;
-    submit?: boolean | undefined;
 }>;
 export declare const reviewCriterionSchema: z.ZodObject<{
     criterionId: z.ZodNumber;
@@ -481,12 +481,12 @@ export declare const reviewAppraisalSchema: z.ZodObject<{
         reviewerRating?: number | null | undefined;
         reviewerComments?: string | null | undefined;
     }[] | undefined;
+    submit?: boolean | undefined;
     goals?: {
         goalId: number;
         reviewerRating?: number | null | undefined;
         reviewerComments?: string | null | undefined;
     }[] | undefined;
-    submit?: boolean | undefined;
     reviewerSummary?: string | null | undefined;
     reviewerPrivateNotes?: string | null | undefined;
     promotionRecommendation?: "YES" | "NO" | "DEFER" | null | undefined;
@@ -499,12 +499,12 @@ export declare const reviewAppraisalSchema: z.ZodObject<{
         reviewerRating?: number | null | undefined;
         reviewerComments?: string | null | undefined;
     }[] | undefined;
+    submit?: boolean | undefined;
     goals?: {
         goalId: number;
         reviewerRating?: number | null | undefined;
         reviewerComments?: string | null | undefined;
     }[] | undefined;
-    submit?: boolean | undefined;
     reviewerSummary?: string | null | undefined;
     reviewerPrivateNotes?: string | null | undefined;
     promotionRecommendation?: "YES" | "NO" | "DEFER" | null | undefined;

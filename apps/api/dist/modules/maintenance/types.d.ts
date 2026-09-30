@@ -9,7 +9,7 @@ export type MaintActor = {
     role: string;
     name: string;
 };
-export declare const MAINT_PERMISSIONS: readonly ["maint.ticket.create", "maint.ticket.view.own", "maint.queue.view", "maint.triage", "maint.assign", "maint.work", "maint.parts.request", "maint.parts.approve", "maint.config", "maint.report.view", "maint.oversight.view"];
+export declare const MAINT_PERMISSIONS: readonly ["maint.ticket.create", "maint.ticket.view.own", "maint.queue.view", "maint.triage", "maint.assign", "maint.work", "maint.parts.request", "maint.parts.approve", "maint.config", "maint.report.view", "maint.oversight.view", "maint.preventive.manage"];
 export type MaintPermission = (typeof MAINT_PERMISSIONS)[number];
 export declare const PRIORITIES: readonly ["LOW", "NORMAL", "HIGH", "CRITICAL"];
 export type Priority = (typeof PRIORITIES)[number];
@@ -51,6 +51,7 @@ export declare const createTicketSchema: z.ZodObject<{
     sourceEntityType: z.ZodOptional<z.ZodString>;
     sourceEntityId: z.ZodOptional<z.ZodNumber>;
     assetRef: z.ZodOptional<z.ZodString>;
+    assetId: z.ZodOptional<z.ZodNumber>;
     erpModule: z.ZodOptional<z.ZodString>;
     erpRoute: z.ZodOptional<z.ZodString>;
     attachments: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -84,6 +85,7 @@ export declare const createTicketSchema: z.ZodObject<{
         sizeBytes?: number | undefined;
         dataUrl?: string | undefined;
     }[] | undefined;
+    assetId?: number | undefined;
     categoryCode?: string | undefined;
     categoryId?: number | undefined;
     subcategory?: string | undefined;
@@ -106,6 +108,7 @@ export declare const createTicketSchema: z.ZodObject<{
         sizeBytes?: number | undefined;
         dataUrl?: string | undefined;
     }[] | undefined;
+    assetId?: number | undefined;
     categoryCode?: string | undefined;
     categoryId?: number | undefined;
     subcategory?: string | undefined;
@@ -173,10 +176,10 @@ export declare const statusSchema: z.ZodObject<{
     status: z.ZodEnum<["OPEN", "TRIAGED", "ASSIGNED", "ACKNOWLEDGED", "IN_PROGRESS", "WAITING_PARTS", "WAITING_APPROVAL", "WAITING_REQUESTER", "RESOLVED", "CONFIRMED", "CLOSED", "CANCELLED", "REOPENED"]>;
     note: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    status: "CLOSED" | "CONFIRMED" | "CANCELLED" | "REOPENED" | "IN_PROGRESS" | "OPEN" | "RESOLVED" | "ACKNOWLEDGED" | "TRIAGED" | "ASSIGNED" | "WAITING_PARTS" | "WAITING_APPROVAL" | "WAITING_REQUESTER";
+    status: "CLOSED" | "CONFIRMED" | "CANCELLED" | "REOPENED" | "IN_PROGRESS" | "OPEN" | "RESOLVED" | "ACKNOWLEDGED" | "ASSIGNED" | "TRIAGED" | "WAITING_PARTS" | "WAITING_APPROVAL" | "WAITING_REQUESTER";
     note?: string | undefined;
 }, {
-    status: "CLOSED" | "CONFIRMED" | "CANCELLED" | "REOPENED" | "IN_PROGRESS" | "OPEN" | "RESOLVED" | "ACKNOWLEDGED" | "TRIAGED" | "ASSIGNED" | "WAITING_PARTS" | "WAITING_APPROVAL" | "WAITING_REQUESTER";
+    status: "CLOSED" | "CONFIRMED" | "CANCELLED" | "REOPENED" | "IN_PROGRESS" | "OPEN" | "RESOLVED" | "ACKNOWLEDGED" | "ASSIGNED" | "TRIAGED" | "WAITING_PARTS" | "WAITING_APPROVAL" | "WAITING_REQUESTER";
     note?: string | undefined;
 }>;
 export declare const resolveSchema: z.ZodObject<{
@@ -325,6 +328,111 @@ export declare const teamSchema: z.ZodObject<{
     kind?: "FACILITIES" | "IT" | undefined;
     isTriage?: boolean | undefined;
     memberFacultyIds?: number[] | undefined;
+}>;
+export declare const FREQUENCY_UNITS: readonly ["DAYS", "WEEKS", "MONTHS", "YEARS"];
+export type FrequencyUnit = (typeof FREQUENCY_UNITS)[number];
+export declare const preventivePlanSchema: z.ZodObject<{
+    name: z.ZodString;
+    description: z.ZodOptional<z.ZodString>;
+    assetId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    categoryId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    teamId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    vendorId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    roomId: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    building: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    frequencyUnit: z.ZodOptional<z.ZodEnum<["DAYS", "WEEKS", "MONTHS", "YEARS"]>>;
+    frequencyValue: z.ZodOptional<z.ZodNumber>;
+    priority: z.ZodOptional<z.ZodEnum<["LOW", "NORMAL", "HIGH", "CRITICAL"]>>;
+    checklist: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    nextDueDate: z.ZodString;
+    notes: z.ZodOptional<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    nextDueDate: string;
+    notes?: string | undefined;
+    roomId?: number | null | undefined;
+    description?: string | undefined;
+    building?: string | null | undefined;
+    priority?: "HIGH" | "LOW" | "CRITICAL" | "NORMAL" | undefined;
+    assetId?: number | null | undefined;
+    checklist?: string[] | undefined;
+    categoryId?: number | null | undefined;
+    teamId?: number | null | undefined;
+    vendorId?: number | null | undefined;
+    frequencyUnit?: "YEARS" | "WEEKS" | "DAYS" | "MONTHS" | undefined;
+    frequencyValue?: number | undefined;
+}, {
+    name: string;
+    nextDueDate: string;
+    notes?: string | undefined;
+    roomId?: number | null | undefined;
+    description?: string | undefined;
+    building?: string | null | undefined;
+    priority?: "HIGH" | "LOW" | "CRITICAL" | "NORMAL" | undefined;
+    assetId?: number | null | undefined;
+    checklist?: string[] | undefined;
+    categoryId?: number | null | undefined;
+    teamId?: number | null | undefined;
+    vendorId?: number | null | undefined;
+    frequencyUnit?: "YEARS" | "WEEKS" | "DAYS" | "MONTHS" | undefined;
+    frequencyValue?: number | undefined;
+}>;
+export declare const preventivePlanUpdateSchema: z.ZodObject<{
+    name: z.ZodOptional<z.ZodString>;
+    description: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+    assetId: z.ZodOptional<z.ZodOptional<z.ZodNullable<z.ZodNumber>>>;
+    categoryId: z.ZodOptional<z.ZodOptional<z.ZodNullable<z.ZodNumber>>>;
+    teamId: z.ZodOptional<z.ZodOptional<z.ZodNullable<z.ZodNumber>>>;
+    vendorId: z.ZodOptional<z.ZodOptional<z.ZodNullable<z.ZodNumber>>>;
+    roomId: z.ZodOptional<z.ZodOptional<z.ZodNullable<z.ZodNumber>>>;
+    building: z.ZodOptional<z.ZodOptional<z.ZodNullable<z.ZodString>>>;
+    frequencyUnit: z.ZodOptional<z.ZodOptional<z.ZodEnum<["DAYS", "WEEKS", "MONTHS", "YEARS"]>>>;
+    frequencyValue: z.ZodOptional<z.ZodOptional<z.ZodNumber>>;
+    priority: z.ZodOptional<z.ZodOptional<z.ZodEnum<["LOW", "NORMAL", "HIGH", "CRITICAL"]>>>;
+    checklist: z.ZodOptional<z.ZodOptional<z.ZodArray<z.ZodString, "many">>>;
+    nextDueDate: z.ZodOptional<z.ZodString>;
+    notes: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+} & {
+    status: z.ZodOptional<z.ZodEnum<["ACTIVE", "PAUSED", "ENDED"]>>;
+}, "strip", z.ZodTypeAny, {
+    status?: "ACTIVE" | "ENDED" | "PAUSED" | undefined;
+    notes?: string | undefined;
+    name?: string | undefined;
+    roomId?: number | null | undefined;
+    description?: string | undefined;
+    building?: string | null | undefined;
+    priority?: "HIGH" | "LOW" | "CRITICAL" | "NORMAL" | undefined;
+    assetId?: number | null | undefined;
+    checklist?: string[] | undefined;
+    categoryId?: number | null | undefined;
+    teamId?: number | null | undefined;
+    vendorId?: number | null | undefined;
+    frequencyUnit?: "YEARS" | "WEEKS" | "DAYS" | "MONTHS" | undefined;
+    frequencyValue?: number | undefined;
+    nextDueDate?: string | undefined;
+}, {
+    status?: "ACTIVE" | "ENDED" | "PAUSED" | undefined;
+    notes?: string | undefined;
+    name?: string | undefined;
+    roomId?: number | null | undefined;
+    description?: string | undefined;
+    building?: string | null | undefined;
+    priority?: "HIGH" | "LOW" | "CRITICAL" | "NORMAL" | undefined;
+    assetId?: number | null | undefined;
+    checklist?: string[] | undefined;
+    categoryId?: number | null | undefined;
+    teamId?: number | null | undefined;
+    vendorId?: number | null | undefined;
+    frequencyUnit?: "YEARS" | "WEEKS" | "DAYS" | "MONTHS" | undefined;
+    frequencyValue?: number | undefined;
+    nextDueDate?: string | undefined;
+}>;
+export declare const preventiveGenerateSchema: z.ZodObject<{
+    asOf: z.ZodOptional<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    asOf?: string | undefined;
+}, {
+    asOf?: string | undefined;
 }>;
 export declare const routingRuleSchema: z.ZodObject<{
     name: z.ZodString;

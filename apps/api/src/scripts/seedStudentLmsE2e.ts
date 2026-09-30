@@ -581,6 +581,11 @@ export async function seedStudentLmsE2e(options: { closeDb?: boolean; collegeId?
     );
   }
 
+  await db('faculty_users').where({ id: coordinator.id }).update({
+    password_hash: await bcrypt.hash(studentE2ePassword(), 10),
+    is_active: true,
+  });
+
   const ids: Ids = {
     collegeId,
     yearId: Number(year.id),
@@ -1224,7 +1229,52 @@ export async function seedStudentLmsE2e(options: { closeDb?: boolean; collegeId?
         academic_class_id: current.classId,
         student_id: lowId,
         status: 'APPROVED',
+        requested_at: db.fn.now(),
+        approved_at: db.fn.now(),
       });
+    }
+
+    // The eligibility E2E test derives NOT_ELIGIBLE/ATTENDANCE_SHORTAGE from real attendance via
+    // computeEligibility() — it does not read the exam_eligibility.attendance_pct fabricated
+    // below at face value. Without real low-attendance source records, a later recompute
+    // (triggered by the "eligible student" test, which also calls computeEligibility()) recalculates
+    // this student's status from actual attendance and overwrites it back to ELIGIBLE. Seed enough
+    // COMPLETED sessions with this student mostly ABSENT so the authoritative source data itself
+    // is low, not just the derived field.
+    if (lowAttStudent && (await db.schema.hasTable('attendance_sessions'))) {
+      const existingLowAttSession = await db('attendance_sessions')
+        .where({ academic_class_id: current.classId, course_id: dsId, topic_label: 'E2E Low Attendance Fixture' })
+        .first();
+      if (!existingLowAttSession) {
+        const baseDate = new Date('2026-02-02');
+        const outcomes: Array<'PRESENT' | 'ABSENT'> = ['ABSENT', 'ABSENT', 'ABSENT', 'PRESENT'];
+        for (let i = 0; i < outcomes.length; i++) {
+          const sessionDate = new Date(baseDate);
+          sessionDate.setDate(sessionDate.getDate() + i);
+          const [sessionId] = await db('attendance_sessions').insert({
+            college_id: ids.collegeId,
+            academic_class_id: current.classId,
+            course_id: dsId,
+            faculty_id: ids.facultyDsId,
+            academic_year_id: ids.yearId,
+            semester_id: ids.semester3Id,
+            session_date: sessionDate.toISOString().slice(0, 10),
+            period_number: 2,
+            topic_label: 'E2E Low Attendance Fixture',
+            status: 'COMPLETED',
+            created_by: ids.facultyDsId,
+            completed_at: db.fn.now(),
+          });
+          await db('attendance_records').insert({
+            attendance_session_id: sessionId,
+            college_id: ids.collegeId,
+            student_id: lowAttStudent.id,
+            status: outcomes[i],
+            marked_at: db.fn.now(),
+            marked_by: ids.facultyDsId,
+          });
+        }
+      }
     }
 
     if (await db.schema.hasTable('rooms')) {
@@ -1244,6 +1294,14 @@ export async function seedStudentLmsE2e(options: { closeDb?: boolean; collegeId?
           { college_id: ids.collegeId, exam_subject_id: dsExamSubjectId, room_id: room302Id, capacity: 32, assigned_count: 0 },
         ]);
       }
+    }
+
+    // A prior run's "condonation records audit" E2E test permanently condones the low-attendance
+    // student's eligibility row (condonation is intentionally sticky/authoritative — computeEligibility
+    // never overwrites it). Clear that one row so this idempotent reseed restores the fixture's own
+    // starting point rather than leaving a stale CONDONED override from an earlier test invocation.
+    if (lowAttStudent) {
+      await db('exam_eligibility').where({ exam_id: exam.id, student_id: lowAttStudent.id, status: 'CONDONED' }).del();
     }
 
     // Compute eligibility via direct insert for deterministic E2E
@@ -2161,6 +2219,43 @@ export async function seedStudentLmsE2e(options: { closeDb?: boolean; collegeId?
           status: 'ACTIVE',
         });
       }
+    }
+
+    let facultyWarden = await db('faculty_users')
+      .where({ college_id: ids.collegeId, email: 'qa.faculty.warden@vviet.edu.in' })
+      .first();
+    const facultyWardenPatch = {
+      college_id: ids.collegeId,
+      department_id: ids.departmentId,
+      name: 'QA Faculty Warden',
+      password_hash: await bcrypt.hash('Password123', 10),
+      role: 'FACULTY',
+      is_active: true,
+      archived_at: null,
+      updated_at: db.fn.now(),
+    };
+    if (!facultyWarden) {
+      const [facultyWardenId] = await db('faculty_users').insert({
+        ...facultyWardenPatch,
+        email: 'qa.faculty.warden@vviet.edu.in',
+        employee_id: `QA-FAC-WARDEN-${ids.collegeId}`,
+      });
+      facultyWarden = await db('faculty_users').where({ id: facultyWardenId }).first();
+    } else {
+      await db('faculty_users').where({ id: facultyWarden.id }).update(facultyWardenPatch);
+      facultyWarden = await db('faculty_users').where({ id: facultyWarden.id }).first();
+    }
+    const facultyWardenAssignment = await db('hostel_warden_assignments')
+      .where({ college_id: ids.collegeId, hostel_id: hostel.id, faculty_user_id: facultyWarden.id, status: 'ACTIVE' })
+      .first();
+    if (!facultyWardenAssignment) {
+      await db('hostel_warden_assignments').insert({
+        college_id: ids.collegeId,
+        hostel_id: hostel.id,
+        faculty_user_id: facultyWarden.id,
+        assignment_role: 'WARDEN',
+        status: 'ACTIVE',
+      });
     }
 
     let management = await db('faculty_users')

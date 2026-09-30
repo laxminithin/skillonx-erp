@@ -68,6 +68,55 @@ export async function notifyScholarshipSanctioned(studentId, collegeId, amount) 
         link: '/lms/fees/scholarships',
     });
 }
+export async function notifyApplicationSubmitted(studentId, collegeId, applicationId, schemeName) {
+    await notifyStudent({
+        studentId,
+        collegeId,
+        type: 'SCHOLARSHIP_APPLICATION_SUBMITTED',
+        title: 'Scholarship Application Submitted',
+        body: `Your application for ${schemeName} has been submitted.`,
+        link: '/lms/fees/scholarships',
+        relatedType: 'scholarship_application',
+        relatedId: applicationId,
+    });
+}
+export async function notifyApplicationReturned(studentId, collegeId, applicationId, schemeName, remarks) {
+    await notifyStudent({
+        studentId,
+        collegeId,
+        type: 'SCHOLARSHIP_APPLICATION_RETURNED',
+        title: 'Scholarship Application Needs Attention',
+        body: `Your application for ${schemeName} was returned for more information.${remarks ? ` ${remarks}` : ''}`,
+        link: '/lms/fees/scholarships',
+        relatedType: 'scholarship_application',
+        relatedId: applicationId,
+        dedupeKeyOverride: `SCHOLARSHIP_APPLICATION_RETURNED:${applicationId}:${Date.now()}`,
+    });
+}
+export async function notifyApplicationDecision(studentId, collegeId, applicationId, schemeName, decision) {
+    await notifyStudent({
+        studentId,
+        collegeId,
+        type: `SCHOLARSHIP_APPLICATION_${decision}`,
+        title: decision === 'APPROVED' ? 'Scholarship Application Approved' : 'Scholarship Application Rejected',
+        body: `Your application for ${schemeName} was ${decision.toLowerCase()}.`,
+        link: '/lms/fees/scholarships',
+        relatedType: 'scholarship_application',
+        relatedId: applicationId,
+    });
+}
+export async function notifyApplicationSanctioned(studentId, collegeId, applicationId, schemeName, amount) {
+    await notifyStudent({
+        studentId,
+        collegeId,
+        type: 'SCHOLARSHIP_APPLICATION_SANCTIONED',
+        title: 'Scholarship Sanctioned',
+        body: `Your ${schemeName} scholarship of ${toMoney(amount)} has been sanctioned.`,
+        link: '/lms/fees/scholarships',
+        relatedType: 'scholarship_application',
+        relatedId: applicationId,
+    });
+}
 export async function notifyRefundProcessed(studentId, collegeId, amount) {
     await notifyStudent({
         studentId,

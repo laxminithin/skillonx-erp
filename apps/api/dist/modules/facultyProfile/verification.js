@@ -1,6 +1,6 @@
 import { db } from '../../db/index.js';
 import { AppError } from '../../utils/errors.js';
-import { canEditOwnRecords, canVerify } from './access.js';
+import { canEditOwnRecords, canVerify, hodDepartmentIds } from './access.js';
 import { getRecord, loadRecordRow } from './records.js';
 import { domainConfig } from './types.js';
 async function recordHistory(collegeId, recordId, action, fromStatus, toStatus, actor, remarks) {
@@ -84,16 +84,17 @@ export async function verificationInbox(actor, filters = {}) {
         .where('r.verification_status', filters.verificationStatus ?? 'SUBMITTED');
     const isInstitution = ['PRINCIPAL', 'MANAGEMENT', 'CHAIRMAN', 'IQAC_COORDINATOR', 'NBA_COORDINATOR', 'COLLEGE_ADMIN']
         .includes(actor.role);
-    if (actor.role === 'HOD') {
-        if (actor.departmentId == null)
-            return [];
-        q.where('e.department_id', actor.departmentId);
+    const hodDepts = hodDepartmentIds(actor);
+    if (isInstitution) {
+        if (filters.departmentId)
+            q.where('e.department_id', filters.departmentId);
     }
-    else if (!isInstitution) {
+    else if (hodDepts.length > 0) {
+        // HOD (canonical Academic Leadership or legacy role) — own department(s) only.
+        q.whereIn('e.department_id', hodDepts);
+    }
+    else {
         return []; // faculty / others have no inbox
-    }
-    else if (filters.departmentId) {
-        q.where('e.department_id', filters.departmentId);
     }
     const rows = await q
         .select('r.id', 'r.domain', 'r.record_type', 'r.title', 'r.academic_year_label', 'r.status', 'r.verification_status', 'r.submitted_at', 'r.employee_id', 'e.display_name as faculty_name', 'e.employee_number', 'd.name as department_name')

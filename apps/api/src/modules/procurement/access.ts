@@ -9,7 +9,7 @@ const ROLE_PERMISSIONS: Record<string, ProcurementPermission[]> = {
     'procurement.po.create', 'procurement.po.approve', 'procurement.grn.create',
     'inventory.view', 'inventory.master.manage', 'inventory.issue', 'inventory.return',
     'inventory.transfer', 'inventory.adjust', 'procurement.analytics.view',
-    'procurement.finance.handoff',
+    'procurement.finance.handoff', 'procurement.asset.handoff',
   ],
   COLLEGE_ADMIN: [
     'procurement.view', 'procurement.indent.create', 'procurement.indent.approve',
@@ -17,7 +17,7 @@ const ROLE_PERMISSIONS: Record<string, ProcurementPermission[]> = {
     'procurement.po.create', 'procurement.po.approve', 'procurement.grn.create',
     'inventory.view', 'inventory.master.manage', 'inventory.issue', 'inventory.return',
     'inventory.transfer', 'inventory.adjust', 'procurement.analytics.view',
-    'procurement.finance.handoff',
+    'procurement.finance.handoff', 'procurement.asset.handoff',
   ],
   PRINCIPAL: ['procurement.view', 'procurement.indent.approve', 'procurement.po.approve', 'inventory.view', 'procurement.analytics.view'],
   MANAGEMENT: ['procurement.view', 'inventory.view', 'procurement.analytics.view'],
@@ -27,15 +27,20 @@ const ROLE_PERMISSIONS: Record<string, ProcurementPermission[]> = {
   LAB_ASSISTANT: ['procurement.view', 'procurement.indent.create', 'inventory.view'],
   MAINTENANCE_MANAGER: ['procurement.view', 'procurement.indent.create', 'inventory.view'],
   FACILITIES_OFFICER: ['procurement.view', 'procurement.indent.create', 'inventory.view', 'inventory.issue', 'inventory.return', 'inventory.transfer'],
-  STORE_KEEPER: ['procurement.view', 'procurement.indent.create', 'inventory.view', 'inventory.issue', 'inventory.return', 'inventory.transfer', 'procurement.grn.create'],
+  STORE_KEEPER: ['procurement.view', 'procurement.indent.create', 'inventory.view', 'inventory.issue', 'inventory.return', 'inventory.transfer', 'procurement.grn.create', 'procurement.asset.handoff'],
   PROCUREMENT_OFFICER: [
     'procurement.view', 'procurement.indent.create', 'procurement.vendor.manage',
     'procurement.rfq.manage', 'procurement.quotation.manage', 'procurement.po.create',
     'procurement.grn.create', 'inventory.view', 'inventory.master.manage',
     'inventory.issue', 'inventory.return', 'inventory.transfer', 'procurement.analytics.view',
-    'procurement.finance.handoff',
+    'procurement.finance.handoff', 'procurement.asset.handoff',
   ],
   ACCOUNTANT: ['procurement.view', 'inventory.view', 'procurement.finance.handoff'],
+  // Campus OS Phase 2 — Canteen consumes createIssue/createReturn for its own POS
+  // stock consumption/refund; these grants let those calls pass procurement's own
+  // permission check without duplicating inventory movement logic in Canteen.
+  CANTEEN_MANAGER: ['procurement.view', 'inventory.view', 'inventory.issue', 'inventory.return'],
+  CANTEEN_STAFF: ['procurement.view', 'inventory.view', 'inventory.issue', 'inventory.return'],
 };
 
 export function procurementPermissionsForRole(role: string): ProcurementPermission[] {

@@ -4,9 +4,11 @@ import { db } from '../../db/index.js';
 import { AppError } from '../../utils/errors.js';
 import type { ProcurementActor } from './types.js';
 import { assertDepartmentScope, assertProcurementPermission } from './access.js';
+import { registerAsset } from '../assetManagement/service.js';
+import type { AssetActor } from '../assetManagement/types.js';
 
 const itemTypes = ['CONSUMABLE', 'NON_CONSUMABLE', 'SPARE', 'EQUIPMENT', 'ASSET_TRACKABLE'] as const;
-const consumerModules = ['LAB', 'HOSTEL', 'TRANSPORT', 'MAINTENANCE', 'DEPARTMENT', 'ADMINISTRATION', 'IT', 'OTHER'] as const;
+const consumerModules = ['LAB', 'HOSTEL', 'TRANSPORT', 'MAINTENANCE', 'DEPARTMENT', 'ADMINISTRATION', 'IT', 'CANTEEN', 'OTHER'] as const;
 
 export const unitSchema = z.object({ code: z.string().trim().min(1).max(32), name: z.string().trim().min(1).max(96) }).strict();
 export const categorySchema = z.object({ code: z.string().trim().min(1).max(64), name: z.string().trim().min(1).max(128) }).strict();
@@ -102,6 +104,7 @@ export const grnSchema = z.object({
   receivingStoreId: z.number().int().positive(),
   inspectionStatus: z.enum(['ACCEPTED', 'PARTIALLY_ACCEPTED', 'REJECTED', 'PENDING_INSPECTION']).optional(),
   remarks: z.string().trim().max(2000).optional().nullable(),
+  idempotencyKey: z.string().trim().max(191).optional().nullable(),
   items: z.array(z.object({
     poItemId: z.number().int().positive(),
     receivedQuantity: z.number().positive(),
@@ -142,6 +145,16 @@ export const adjustmentSchema = z.object({
   reason: z.string().trim().min(3).max(2000),
 }).strict();
 export const financeHandoffSchema = z.object({ invoiceReference: z.string().trim().max(128).optional().nullable(), idempotencyKey: z.string().trim().max(191).optional().nullable() }).strict();
+export const assetHandoffSchema = z.object({
+  assets: z.array(z.object({
+    assetTag: z.string().trim().min(1).max(64),
+    serialNumber: z.string().trim().max(160).optional().nullable(),
+    name: z.string().trim().max(255).optional().nullable(),
+  }).strict()).min(1).max(50),
+  departmentId: z.number().int().positive().optional().nullable(),
+  custodianFacultyId: z.number().int().positive().optional().nullable(),
+  locationRoomId: z.number().int().positive().optional().nullable(),
+}).strict();
 
 function n(value: unknown) { return Number(value ?? 0); }
 function money(value: unknown) { return Number(value ?? 0).toFixed(2); }
@@ -182,7 +195,7 @@ async function assertStoreScope(trx: Knex.Transaction | typeof db, actor: Procur
   const store = await assertCollegeRow(trx, 'inventory_stores', actor.collegeId, storeId);
   if (!store.is_active) throw new AppError(400, 'Store is inactive');
   if (!mutate) return store;
-  if (['STORE_KEEPER', 'FACILITIES_OFFICER'].includes(actor.role) && store.responsible_faculty_id && n(store.responsible_faculty_id) !== actor.facultyUserId) {
+  if (['STORE_KEEPER', 'FACILITIES_OFFICER', 'CANTEEN_MANAGER', 'CANTEEN_STAFF'].includes(actor.role) && store.responsible_faculty_id && n(store.responsible_faculty_id) !== actor.facultyUserId) {
     throw new AppError(403, 'This store is outside your assignment scope');
   }
   return store;
@@ -535,10 +548,17 @@ export async function createGrn(actor: ProcurementActor, poId: number, input: z.
   return db.transaction(async (trx) => {
     const po = await trx('procurement_purchase_orders').where({ id: poId, college_id: actor.collegeId }).forUpdate().first();
     if (!po) throw new AppError(404, 'PO not found');
+    if (input.idempotencyKey) {
+      // Same PO row is already locked above, so a concurrent replay serializes here:
+      // the second caller sees the first caller's committed GRN and returns it unchanged
+      // instead of posting stock a second time. Campus OS Phase 1 §13.
+      const existing = await trx('procurement_grns').where({ college_id: actor.collegeId, po_id: poId, idempotency_key: input.idempotencyKey }).first();
+      if (existing) return getGrn(actor, n(existing.id), trx);
+    }
     if (!['ISSUED', 'PARTIALLY_RECEIVED'].includes(po.status)) throw new AppError(400, 'PO is not receivable');
     await assertStoreScope(trx, actor, input.receivingStoreId, true);
     const grnNo = await nextNo(trx, actor.collegeId, 'GRN');
-    const [grnId] = await trx('procurement_grns').insert({ college_id: actor.collegeId, grn_no: grnNo, po_id: poId, vendor_id: po.vendor_id, delivery_reference: input.deliveryReference ?? null, invoice_reference: input.invoiceReference ?? null, received_date: input.receivedDate, receiving_store_id: input.receivingStoreId, inspection_status: input.inspectionStatus ?? 'PENDING_INSPECTION', received_by: actor.facultyUserId, remarks: input.remarks ?? null });
+    const [grnId] = await trx('procurement_grns').insert({ college_id: actor.collegeId, grn_no: grnNo, po_id: poId, vendor_id: po.vendor_id, delivery_reference: input.deliveryReference ?? null, invoice_reference: input.invoiceReference ?? null, received_date: input.receivedDate, receiving_store_id: input.receivingStoreId, inspection_status: input.inspectionStatus ?? 'PENDING_INSPECTION', received_by: actor.facultyUserId, remarks: input.remarks ?? null, idempotency_key: input.idempotencyKey ?? null });
     for (const it of input.items) {
       const poi = await trx('procurement_purchase_order_items').where({ id: it.poItemId, po_id: poId, college_id: actor.collegeId }).forUpdate().first();
       if (!poi) throw new AppError(404, 'PO item not found');
@@ -569,6 +589,102 @@ export async function getGrn(actor: ProcurementActor, id: number, trx: Knex.Tran
   if (!grn) throw new AppError(404, 'GRN not found');
   const items = await trx('procurement_grn_items as gi').join('inventory_items as i', 'i.id', 'gi.item_id').where({ 'gi.college_id': actor.collegeId, grn_id: id }).select('gi.*', 'i.name as item_name', 'i.item_code');
   return { ...shape(grn), items: items.map(shape) };
+}
+
+/**
+ * Campus OS Phase 1 — Asset handoff.
+ *
+ * A GRN line for an ASSET_TRACKABLE item is not automatically turned into an asset —
+ * this is a separate, explicitly governed transition, gated by `procurement.asset.handoff`
+ * (Phase-1 brief §5/§31). It calls the frozen P0.2 Asset Management engine's own
+ * `registerAsset()` unchanged; P0.2's schema/code is never modified.
+ *
+ * Idempotency (§32): `procurement_asset_handoffs` has a unique (college_id, grn_item_id)
+ * constraint, so at most one handoff is ever recorded per GRN line. Additionally, each
+ * asset tag is checked for prior existence before creating it, so a retry after a
+ * partial failure (§50) reuses already-created assets instead of erroring or duplicating.
+ */
+export async function handoffGrnItemToAssets(actor: ProcurementActor, grnItemId: number, input: z.infer<typeof assetHandoffSchema>) {
+  assertProcurementPermission(actor, 'procurement.asset.handoff');
+
+  const existing = await db('procurement_asset_handoffs').where({ college_id: actor.collegeId, grn_item_id: grnItemId }).first();
+  if (existing) {
+    return { assetIds: typeof existing.asset_ids === 'string' ? JSON.parse(existing.asset_ids) : existing.asset_ids, idempotent: true };
+  }
+
+  const grnItem = await assertCollegeRow(db, 'procurement_grn_items', actor.collegeId, grnItemId);
+  const item = await assertCollegeRow(db, 'inventory_items', actor.collegeId, n(grnItem.item_id));
+  if (item.item_type !== 'ASSET_TRACKABLE') {
+    throw new AppError(400, 'Only ASSET_TRACKABLE items can be handed off to Asset Management');
+  }
+  const acceptedQuantity = Math.round(n(grnItem.accepted_quantity));
+  if (input.assets.length !== acceptedQuantity) {
+    throw new AppError(400, `Expected exactly ${acceptedQuantity} asset registration(s) for this GRN line, received ${input.assets.length}`);
+  }
+  const grn = await assertCollegeRow(db, 'procurement_grns', actor.collegeId, n(grnItem.grn_id));
+  let categoryName = 'PROCUREMENT_ASSET';
+  if (item.category_id) {
+    const category = await db('inventory_item_categories').where({ id: item.category_id, college_id: actor.collegeId }).first();
+    if (category) categoryName = String(category.code);
+  }
+
+  const assetActor: AssetActor = { facultyUserId: actor.facultyUserId, collegeId: actor.collegeId, departmentId: actor.departmentId, role: actor.role, name: actor.name };
+  const assetIds: number[] = [];
+  for (const spec of input.assets) {
+    const tag = spec.assetTag.toUpperCase();
+    const alreadyRegistered = await db('campus_assets').where({ college_id: actor.collegeId, asset_tag: tag }).first();
+    if (alreadyRegistered) {
+      assetIds.push(n(alreadyRegistered.id));
+      continue;
+    }
+    try {
+      const asset = await registerAsset(assetActor, {
+        assetTag: tag,
+        name: spec.name ?? item.name,
+        category: categoryName,
+        vendorId: n(grn.vendor_id),
+        purchaseReference: String(grn.grn_no),
+        departmentId: input.departmentId ?? null,
+        custodianFacultyId: input.custodianFacultyId ?? null,
+        locationRoomId: input.locationRoomId ?? null,
+        serialNumber: spec.serialNumber ?? null,
+      });
+      assetIds.push(n((asset as unknown as { id: unknown }).id));
+    } catch (err: any) {
+      if (err?.code !== 'ER_DUP_ENTRY') throw err;
+      // Concurrent handoff attempt registered the same tag a moment ago; reuse it.
+      const raced = await db('campus_assets').where({ college_id: actor.collegeId, asset_tag: tag }).first();
+      if (!raced) throw err;
+      assetIds.push(n(raced.id));
+    }
+  }
+
+  try {
+    await db('procurement_asset_handoffs').insert({
+      college_id: actor.collegeId,
+      grn_item_id: grnItemId,
+      grn_id: n(grnItem.grn_id),
+      item_id: n(grnItem.item_id),
+      asset_ids: JSON.stringify(assetIds),
+      created_by: actor.facultyUserId,
+    });
+    await audit(actor, 'ASSET_HANDOFF_CREATE', 'procurement_grn_item', grnItemId, { assetIds });
+    return { assetIds, idempotent: false };
+  } catch (err: any) {
+    if (err?.code !== 'ER_DUP_ENTRY') throw err;
+    // Lost the race to record the handoff row itself: the concurrent winner's
+    // handoff (and its assets, which this call may have redundantly reused above)
+    // is authoritative — return it, not this call's own view.
+    const winner = await db('procurement_asset_handoffs').where({ college_id: actor.collegeId, grn_item_id: grnItemId }).first();
+    return { assetIds: typeof winner.asset_ids === 'string' ? JSON.parse(winner.asset_ids) : winner.asset_ids, idempotent: true };
+  }
+}
+
+export async function getAssetHandoff(actor: ProcurementActor, grnItemId: number) {
+  assertProcurementPermission(actor, 'procurement.view');
+  const row = await db('procurement_asset_handoffs').where({ college_id: actor.collegeId, grn_item_id: grnItemId }).first();
+  if (!row) return null;
+  return shape({ ...row, asset_ids: typeof row.asset_ids === 'string' ? JSON.parse(row.asset_ids) : row.asset_ids });
 }
 
 export async function listGrns(actor: ProcurementActor) {
@@ -698,4 +814,42 @@ export async function reports(actor: ProcurementActor) {
     db('procurement_purchase_orders').where({ college_id: actor.collegeId }).whereIn('status', ['ISSUED', 'PARTIALLY_RECEIVED']).count<{ c: number }>('id as c').first(),
   ]);
   return { purchaseHistory: purchaseHistory.map(shape), consumption: consumption.map(shape), pendingPurchaseOrders: n(pendingPo?.c) };
+}
+
+/**
+ * Campus OS Phase 0 — Vendor Master consolidation.
+ *
+ * `procurement_vendors` is the canonical, cross-campus vendor master (see
+ * docs/CAMPUS_OS_PHASE0_PREIMPLEMENTATION_AUDIT.md). This accessor exists so future
+ * consumers (Asset Management, and any later module) can read the vendor directory
+ * without pulling the full `/masters` bundle and without a second vendor table.
+ * It does not add columns or change existing vendor behaviour.
+ */
+export const VENDOR_CATEGORY_SUGGESTIONS = [
+  'SUPPLIER', 'SERVICE_PROVIDER', 'CONTRACTOR', 'TRANSPORT_VENDOR', 'MAINTENANCE_VENDOR', 'EQUIPMENT_VENDOR', 'OTHER',
+] as const;
+
+export async function listVendorDirectory(actor: ProcurementActor, opts: { activeOnly?: boolean } = {}) {
+  assertProcurementPermission(actor, 'procurement.view');
+  let query = db('procurement_vendors').where({ college_id: actor.collegeId });
+  if (opts.activeOnly) query = query.andWhere({ is_active: true });
+  const rows = await query
+    .select('id', 'vendor_code', 'name', 'contact_person', 'phone', 'email', 'tax_identifier', 'categories', 'verification_status', 'is_active', 'rating')
+    .orderBy('name')
+    .limit(500);
+  return rows.map((row) => shape({ ...row, categories: row.categories ? JSON.parse(row.categories) : [] }));
+}
+
+/**
+ * Internal cross-module lookup, not exposed over HTTP. Tenant-scoped by the caller's
+ * own collegeId. Returns null rather than throwing so a stale/removed vendor reference
+ * degrades gracefully in a consumer module's display, instead of breaking it.
+ */
+export async function findVendorRef(collegeId: number, vendorId: number | null | undefined) {
+  if (!vendorId) return null;
+  const row = await db('procurement_vendors')
+    .where({ id: vendorId, college_id: collegeId })
+    .select('id', 'vendor_code', 'name', 'is_active')
+    .first();
+  return row ? shape(row) : null;
 }

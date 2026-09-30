@@ -1,7 +1,8 @@
 import { db } from '../../db/index.js';
 import type { MaintActor } from './types.js';
 import { OPEN_STATUSES } from './types.js';
-import { assertMaintPermission, hodDepartmentIds } from './access.js';
+import { assertMaintPermission, hasMaintPermission, hodDepartmentIds } from './access.js';
+import { upcomingDue } from './preventive.js';
 
 /**
  * Operational reports + recurring-issue analytics. All deterministic aggregated
@@ -71,6 +72,7 @@ export async function reports(actor: MaintActor) {
     byLocation: byLocation.map((r) => ({ room: r.room, building: r.building, count: Number(r.n) })),
     itVsFacilities: itVsFacilities.map((r) => ({ kind: r.kind ?? 'UNKNOWN', count: Number(r.n) })),
     recurring: await recurringIssues(actor, deptFilter),
+    preventiveDue: hasMaintPermission(actor, 'maint.preventive.manage') ? await upcomingDue(collegeId, 30) : [],
   };
 }
 

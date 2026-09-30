@@ -2,11 +2,12 @@ import { Router } from 'express';
 import { asyncHandler, validate } from '../../utils/errors.js';
 import { requireAuth, requireStudentAuth } from '../../middleware/auth.js';
 import { db } from '../../db/index.js';
-import { createTicketSchema, commentSchema, workLogSchema, assignSchema, prioritySchema, statusSchema, resolveSchema, partRequestSchema, partDecisionSchema, reopenSchema, confirmSchema, escalateSchema, vendorSchema, categorySchema, teamSchema, routingRuleSchema, MAINT_PERMISSIONS, PRIORITIES, STATUSES, SOURCE_MODULES, } from './types.js';
+import { createTicketSchema, commentSchema, workLogSchema, assignSchema, prioritySchema, statusSchema, resolveSchema, partRequestSchema, partDecisionSchema, reopenSchema, confirmSchema, escalateSchema, vendorSchema, categorySchema, teamSchema, routingRuleSchema, preventivePlanSchema, preventivePlanUpdateSchema, preventiveGenerateSchema, MAINT_PERMISSIONS, PRIORITIES, STATUSES, SOURCE_MODULES, } from './types.js';
 import { maintPermissionsForRole, isManager, hasMaintPermission } from './access.js';
 import * as tickets from './tickets.js';
 import * as config from './config.js';
 import * as integrations from './integrations.js';
+import * as preventive from './preventive.js';
 import { managerDashboard, technicianDashboard } from './dashboard.js';
 import { reports } from './reports.js';
 function facultyActor(req) {
@@ -154,6 +155,28 @@ maintenanceRouter.patch('/config/routing-rules/:id', asyncHandler(async (req, re
 }));
 maintenanceRouter.delete('/config/routing-rules/:id', asyncHandler(async (req, res) => {
     res.json(await config.deleteRoutingRule(facultyActor(req), Number(req.params.id)));
+}));
+// Preventive maintenance
+maintenanceRouter.get('/preventive/plans', asyncHandler(async (req, res) => {
+    res.json(await preventive.listPlans(facultyActor(req), { status: req.query.status, assetId: num(req.query.assetId) }));
+}));
+maintenanceRouter.post('/preventive/plans', asyncHandler(async (req, res) => {
+    res.status(201).json(await preventive.createPlan(facultyActor(req), validate(preventivePlanSchema, req.body)));
+}));
+maintenanceRouter.get('/preventive/plans/:id', asyncHandler(async (req, res) => {
+    res.json(await preventive.getPlan(facultyActor(req), Number(req.params.id)));
+}));
+maintenanceRouter.patch('/preventive/plans/:id', asyncHandler(async (req, res) => {
+    res.json(await preventive.updatePlan(facultyActor(req), Number(req.params.id), validate(preventivePlanUpdateSchema, req.body)));
+}));
+maintenanceRouter.get('/preventive/plans/:id/occurrences', asyncHandler(async (req, res) => {
+    res.json(await preventive.listOccurrences(facultyActor(req), Number(req.params.id)));
+}));
+maintenanceRouter.post('/preventive/generate', asyncHandler(async (req, res) => {
+    res.json(await preventive.generateDue(facultyActor(req), validate(preventiveGenerateSchema, req.body ?? {})));
+}));
+maintenanceRouter.post('/preventive/occurrences/:id/generate-ticket', asyncHandler(async (req, res) => {
+    res.status(201).json(await preventive.retryOccurrenceTicket(facultyActor(req), Number(req.params.id)));
 }));
 // ═══════════════════════ STUDENT ROUTER ═══════════════════════════════════
 export const studentMaintenanceRouter = Router();

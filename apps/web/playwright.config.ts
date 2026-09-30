@@ -18,7 +18,7 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: 'npm run dev -w @skillonx/survey-api',
+      command: 'NODE_ENV=test HR_LIFECYCLE_SCHEDULER_DISABLED=1 npm run dev -w @skillonx/survey-api',
       url: `http://127.0.0.1:${API_PORT}/api/health`,
       reuseExistingServer: true,
       timeout: 120_000,

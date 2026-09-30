@@ -8,6 +8,7 @@ const SAFE_FIELDS: Record<string, string> = {
   EMAIL: 'email',
   PHONE: 'phone',
   SECTION: 'class_section_id',
+  DOB: 'date_of_birth',
 };
 
 const RESTRICTED_FIELDS = ['USN', 'PROGRAM', 'BRANCH', 'SEMESTER', 'SCHEME', 'ACADEMIC_YEAR'];

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-export type FinancePermission = 'finance.view' | 'finance.fee_structure.manage' | 'finance.demand.generate' | 'finance.payment.record' | 'finance.payroll.post' | 'finance.receipt.view' | 'finance.concession.approve' | 'finance.scholarship.manage' | 'finance.refund.approve' | 'finance.report.view';
+export type FinancePermission = 'finance.view' | 'finance.fee_structure.manage' | 'finance.demand.generate' | 'finance.payment.record' | 'finance.payroll.post' | 'finance.receipt.view' | 'finance.concession.approve' | 'finance.scholarship.manage' | 'finance.refund.approve' | 'finance.report.view' | 'finance.scholarship_application.process' | 'finance.scholarship_application.approve';
 export type FinanceActor = {
     facultyUserId: number;
     collegeId: number;
@@ -373,4 +373,184 @@ export declare const voidReceiptSchema: z.ZodObject<{
     reason: string;
 }, {
     reason: string;
+}>;
+export declare const eligibilityCriteriaSchema: z.ZodObject<{
+    programIds: z.ZodOptional<z.ZodArray<z.ZodNumber, "many">>;
+    minSemester: z.ZodOptional<z.ZodNumber>;
+    minCgpa: z.ZodOptional<z.ZodNumber>;
+    maxIncome: z.ZodOptional<z.ZodNumber>;
+    categories: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    minAttendancePercent: z.ZodOptional<z.ZodNumber>;
+    requiredDocumentCategories: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+}, "strict", z.ZodTypeAny, {
+    programIds?: number[] | undefined;
+    minSemester?: number | undefined;
+    minCgpa?: number | undefined;
+    maxIncome?: number | undefined;
+    categories?: string[] | undefined;
+    minAttendancePercent?: number | undefined;
+    requiredDocumentCategories?: string[] | undefined;
+}, {
+    programIds?: number[] | undefined;
+    minSemester?: number | undefined;
+    minCgpa?: number | undefined;
+    maxIncome?: number | undefined;
+    categories?: string[] | undefined;
+    minAttendancePercent?: number | undefined;
+    requiredDocumentCategories?: string[] | undefined;
+}>;
+export declare const createEligibilityPolicySchema: z.ZodObject<{
+    schemeId: z.ZodNumber;
+    academicYearId: z.ZodNumber;
+    criteria: z.ZodObject<{
+        programIds: z.ZodOptional<z.ZodArray<z.ZodNumber, "many">>;
+        minSemester: z.ZodOptional<z.ZodNumber>;
+        minCgpa: z.ZodOptional<z.ZodNumber>;
+        maxIncome: z.ZodOptional<z.ZodNumber>;
+        categories: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+        minAttendancePercent: z.ZodOptional<z.ZodNumber>;
+        requiredDocumentCategories: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "strict", z.ZodTypeAny, {
+        programIds?: number[] | undefined;
+        minSemester?: number | undefined;
+        minCgpa?: number | undefined;
+        maxIncome?: number | undefined;
+        categories?: string[] | undefined;
+        minAttendancePercent?: number | undefined;
+        requiredDocumentCategories?: string[] | undefined;
+    }, {
+        programIds?: number[] | undefined;
+        minSemester?: number | undefined;
+        minCgpa?: number | undefined;
+        maxIncome?: number | undefined;
+        categories?: string[] | undefined;
+        minAttendancePercent?: number | undefined;
+        requiredDocumentCategories?: string[] | undefined;
+    }>;
+}, "strip", z.ZodTypeAny, {
+    academicYearId: number;
+    criteria: {
+        programIds?: number[] | undefined;
+        minSemester?: number | undefined;
+        minCgpa?: number | undefined;
+        maxIncome?: number | undefined;
+        categories?: string[] | undefined;
+        minAttendancePercent?: number | undefined;
+        requiredDocumentCategories?: string[] | undefined;
+    };
+    schemeId: number;
+}, {
+    academicYearId: number;
+    criteria: {
+        programIds?: number[] | undefined;
+        minSemester?: number | undefined;
+        minCgpa?: number | undefined;
+        maxIncome?: number | undefined;
+        categories?: string[] | undefined;
+        minAttendancePercent?: number | undefined;
+        requiredDocumentCategories?: string[] | undefined;
+    };
+    schemeId: number;
+}>;
+export declare const createSchemeSchema: z.ZodObject<{
+    code: z.ZodString;
+    name: z.ZodString;
+    description: z.ZodOptional<z.ZodString>;
+    provider: z.ZodOptional<z.ZodString>;
+    providerType: z.ZodOptional<z.ZodEnum<["INSTITUTION", "GOVERNMENT", "TRUST", "CORPORATE", "ALUMNI", "OTHER"]>>;
+    benefitType: z.ZodOptional<z.ZodEnum<["FEE_CONCESSION", "FEE_WAIVER", "REIMBURSEMENT", "DIRECT_PAYMENT", "STIPEND", "OTHER"]>>;
+    isExternal: z.ZodOptional<z.ZodBoolean>;
+    externalPortalUrl: z.ZodOptional<z.ZodString>;
+    allowMultipleApplications: z.ZodOptional<z.ZodBoolean>;
+    renewalAllowed: z.ZodOptional<z.ZodBoolean>;
+    applicationStartDate: z.ZodOptional<z.ZodString>;
+    applicationEndDate: z.ZodOptional<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    code: string;
+    name: string;
+    description?: string | undefined;
+    provider?: string | undefined;
+    providerType?: "ALUMNI" | "OTHER" | "INSTITUTION" | "GOVERNMENT" | "TRUST" | "CORPORATE" | undefined;
+    benefitType?: "OTHER" | "FEE_CONCESSION" | "FEE_WAIVER" | "REIMBURSEMENT" | "DIRECT_PAYMENT" | "STIPEND" | undefined;
+    isExternal?: boolean | undefined;
+    externalPortalUrl?: string | undefined;
+    allowMultipleApplications?: boolean | undefined;
+    renewalAllowed?: boolean | undefined;
+    applicationStartDate?: string | undefined;
+    applicationEndDate?: string | undefined;
+}, {
+    code: string;
+    name: string;
+    description?: string | undefined;
+    provider?: string | undefined;
+    providerType?: "ALUMNI" | "OTHER" | "INSTITUTION" | "GOVERNMENT" | "TRUST" | "CORPORATE" | undefined;
+    benefitType?: "OTHER" | "FEE_CONCESSION" | "FEE_WAIVER" | "REIMBURSEMENT" | "DIRECT_PAYMENT" | "STIPEND" | undefined;
+    isExternal?: boolean | undefined;
+    externalPortalUrl?: string | undefined;
+    allowMultipleApplications?: boolean | undefined;
+    renewalAllowed?: boolean | undefined;
+    applicationStartDate?: string | undefined;
+    applicationEndDate?: string | undefined;
+}>;
+export declare const draftApplicationSchema: z.ZodObject<{
+    schemeId: z.ZodNumber;
+    academicYearId: z.ZodNumber;
+    requestedAmount: z.ZodOptional<z.ZodNumber>;
+    selfDeclaredIncome: z.ZodOptional<z.ZodNumber>;
+    selfDeclaredCategory: z.ZodOptional<z.ZodString>;
+}, "strict", z.ZodTypeAny, {
+    academicYearId: number;
+    schemeId: number;
+    requestedAmount?: number | undefined;
+    selfDeclaredIncome?: number | undefined;
+    selfDeclaredCategory?: string | undefined;
+}, {
+    academicYearId: number;
+    schemeId: number;
+    requestedAmount?: number | undefined;
+    selfDeclaredIncome?: number | undefined;
+    selfDeclaredCategory?: string | undefined;
+}>;
+export declare const applicationActionSchema: z.ZodObject<{
+    remarks: z.ZodOptional<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    remarks?: string | undefined;
+}, {
+    remarks?: string | undefined;
+}>;
+export declare const sanctionApplicationSchema: z.ZodObject<{
+    sanctionedAmount: z.ZodNumber;
+}, "strip", z.ZodTypeAny, {
+    sanctionedAmount: number;
+}, {
+    sanctionedAmount: number;
+}>;
+export declare const completeApplicationSchema: z.ZodObject<{
+    evidenceReference: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    evidenceReference: string;
+}, {
+    evidenceReference: string;
+}>;
+export declare const applicationDocumentUploadSchema: z.ZodObject<{
+    category: z.ZodString;
+    fileName: z.ZodString;
+    mimeType: z.ZodString;
+    contentBase64: z.ZodString;
+    description: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    expiryDate: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+}, "strict", z.ZodTypeAny, {
+    category: string;
+    fileName: string;
+    mimeType: string;
+    contentBase64: string;
+    description?: string | null | undefined;
+    expiryDate?: string | null | undefined;
+}, {
+    category: string;
+    fileName: string;
+    mimeType: string;
+    contentBase64: string;
+    description?: string | null | undefined;
+    expiryDate?: string | null | undefined;
 }>;

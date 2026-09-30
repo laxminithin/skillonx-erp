@@ -1,0 +1,1170 @@
+{
+  "startedAt": "2026-09-29T08:33:26.629Z",
+  "target": "https://campus.skillonx.com",
+  "headers": {
+    "root": {
+      "status": 200,
+      "headers": {
+        "access-control-allow-methods": "GET",
+        "access-control-allow-origin": "*",
+        "connection": "keep-alive",
+        "content-encoding": "br",
+        "content-type": "text/html",
+        "date": "Tue, 29 Sep 2026 08:33:26 GMT",
+        "server": "nginx",
+        "transfer-encoding": "chunked",
+        "x-powered-by": "PleskLin"
+      }
+    },
+    "apiHealth": {
+      "path": "/api/health",
+      "status": 200,
+      "ok": true,
+      "ms": 230,
+      "contentType": "application/json; charset=utf-8",
+      "location": null,
+      "bodySample": "{\"ok\":true,\"service\":\"skillonx-survey-api\"}"
+    }
+  },
+  "unauthRoutes": [
+    {
+      "browser": "chromium",
+      "route": "/login",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1470
+    },
+    {
+      "browser": "chromium",
+      "route": "/lms/login",
+      "finalPath": "/lms/login",
+      "title": "Student sign in · Student LMS · SkillonX",
+      "h1": "Student sign in",
+      "ms": 1257
+    },
+    {
+      "browser": "chromium",
+      "route": "/parent/login",
+      "finalPath": "/parent/login",
+      "title": "Parent Portal Login · Lecturer LMS · SkillonX",
+      "h1": "A verified guardian view of academics, fees, and campus services.",
+      "ms": 1341
+    },
+    {
+      "browser": "chromium",
+      "route": "/alumni/login",
+      "finalPath": "/alumni/login",
+      "title": "Alumni Login · Lecturer LMS · SkillonX",
+      "h1": "Verified alumni access for profiles, events, opportunities, and institutional engagement.",
+      "ms": 1219
+    },
+    {
+      "browser": "chromium",
+      "route": "/platform",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1126
+    },
+    {
+      "browser": "chromium",
+      "route": "/admin",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1116
+    },
+    {
+      "browser": "chromium",
+      "route": "/dashboard",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1122
+    },
+    {
+      "browser": "chromium",
+      "route": "/management",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1276
+    },
+    {
+      "browser": "chromium",
+      "route": "/principal",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1128
+    },
+    {
+      "browser": "chromium",
+      "route": "/hod",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1122
+    },
+    {
+      "browser": "chromium",
+      "route": "/finance",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1127
+    },
+    {
+      "browser": "chromium",
+      "route": "/hostel",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1029
+    },
+    {
+      "browser": "chromium",
+      "route": "/transport",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1116
+    },
+    {
+      "browser": "chromium",
+      "route": "/examinations",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1117
+    },
+    {
+      "browser": "chromium",
+      "route": "/admissions",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1127
+    },
+    {
+      "browser": "chromium",
+      "route": "/hr",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1185
+    },
+    {
+      "browser": "chromium",
+      "route": "/placements",
+      "finalPath": "/login",
+      "title": "Sign In · Lecturer LMS · SkillonX",
+      "h1": "Your academic teaching workspace.",
+      "ms": 1119
+    },
+    {
+      "browser": "chromium",
+      "route": "/this-route-should-not-exist",
+      "finalPath": "/this-route-should-not-exist",
+      "title": "Page not found · Lecturer LMS · SkillonX",
+      "h1": "Page not found",
+      "ms": 1138
+    }
+  ],
+  "loginApi": [
+    {
+      "key": "superadmin",
+      "kind": "staff",
+      "status": 200,
+      "ok": true,
+      "ms": 207,
+      "user": {
+        "role": "SUPER_ADMIN",
+        "collegeId": 1,
+        "portalContexts": [
+          "FACULTY"
+        ]
+      }
+    },
+    {
+      "key": "collegeAdmin",
+      "kind": "staff",
+      "status": 200,
+      "ok": true,
+      "ms": 172,
+      "user": {
+        "role": "COLLEGE_ADMIN",
+        "collegeId": 1,
+        "portalContexts": [
+          "FACULTY"
+        ]
+      }
+    },
+    {
+      "key": "faculty",
+      "kind": "staff",
+      "status": 200,
+      "ok": true,
+      "ms": 152,
+      "user": {
+        "role": "FACULTY",
+        "collegeId": 1,
+        "portalContexts": [
+          "FACULTY"
+        ]
+      }
+    },
+    {
+      "key": "management",
+      "kind": "staff",
+      "status": 200,
+      "ok": true,
+      "ms": 145,
+      "user": {
+        "role": "MANAGEMENT",
+        "collegeId": 1,
+        "portalContexts": [
+          "FACULTY"
+        ]
+      }
+    },
+    {
+      "key": "student",
+      "kind": "student",
+      "status": 200,
+      "ok": true,
+      "ms": 206,
+      "user": {
+        "role": "STUDENT",
+        "kind": "student",
+        "collegeId": 1
+      }
+    },
+    {
+      "key": "parent",
+      "kind": "parent",
+      "status": 200,
+      "ok": true,
+      "ms": 173,
+      "user": {
+        "role": "PARENT",
+        "kind": "parent",
+        "collegeId": 1
+      }
+    },
+    {
+      "key": "alumni",
+      "kind": "alumni",
+      "status": 200,
+      "ok": true,
+      "ms": 192,
+      "user": {
+        "role": "ALUMNI",
+        "kind": "alumni",
+        "collegeId": 1
+      }
+    },
+    {
+      "key": "transport",
+      "kind": "staff",
+      "status": 200,
+      "ok": true,
+      "ms": 195,
+      "user": {
+        "role": "TRANSPORT_OFFICER",
+        "collegeId": 1,
+        "portalContexts": [
+          "FACULTY"
+        ]
+      }
+    },
+    {
+      "key": "warden",
+      "kind": "staff",
+      "status": 200,
+      "ok": true,
+      "ms": 161,
+      "user": {
+        "role": "WARDEN",
+        "collegeId": 1,
+        "portalContexts": [
+          "WARDEN"
+        ]
+      }
+    },
+    {
+      "key": "hr",
+      "kind": "staff",
+      "status": 200,
+      "ok": true,
+      "ms": 149,
+      "user": {
+        "role": "HR_MANAGER",
+        "collegeId": 1,
+        "portalContexts": [
+          "FACULTY"
+        ]
+      }
+    }
+  ],
+  "authRoutes": [
+    {
+      "roleKey": "superadmin",
+      "route": "/platform",
+      "finalPath": "/platform",
+      "title": "Platform Dashboard · Lecturer LMS · SkillonX",
+      "h1": "Platform Dashboard",
+      "ms": 1953,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "superadmin",
+      "route": "/platform/tenants",
+      "finalPath": "/platform/tenants",
+      "title": "Tenants · Lecturer LMS · SkillonX",
+      "h1": "Tenants / Colleges",
+      "ms": 1742,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "superadmin",
+      "route": "/platform/health",
+      "finalPath": "/platform/health",
+      "title": "Platform Health · Lecturer LMS · SkillonX",
+      "h1": "Platform Health",
+      "ms": 1768,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "superadmin",
+      "route": "/platform/audit",
+      "finalPath": "/platform/audit",
+      "title": "Audit · Lecturer LMS · SkillonX",
+      "h1": "Privileged audit history",
+      "ms": 1696,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "collegeAdmin",
+      "route": "/admin",
+      "finalPath": "/admin",
+      "title": "Overview · Admin · Admin · SkillonX",
+      "h1": "Overview",
+      "ms": 2037,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "collegeAdmin",
+      "route": "/admin/faculty",
+      "finalPath": "/admin/faculty",
+      "title": "Faculty · Admin · Admin · SkillonX",
+      "h1": "Faculty",
+      "ms": 2117,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "collegeAdmin",
+      "route": "/finance",
+      "finalPath": "/finance",
+      "title": "Finance Dashboard · Lecturer LMS · SkillonX",
+      "h1": "Finance Dashboard",
+      "ms": 1633,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "collegeAdmin",
+      "route": "/admissions",
+      "finalPath": "/admissions",
+      "title": "SkillonX LMS",
+      "h1": "Admissions Dashboard",
+      "ms": 1772,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "faculty",
+      "route": "/dashboard",
+      "finalPath": "/dashboard",
+      "title": "Dashboard · Lecturer LMS · SkillonX",
+      "h1": "Good afternoon, Anita",
+      "ms": 1944,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "faculty",
+      "route": "/courses",
+      "finalPath": "/courses",
+      "title": "Courses · Lecturer LMS · SkillonX",
+      "h1": "My Courses",
+      "ms": 1761,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "faculty",
+      "route": "/classes",
+      "finalPath": "/classes",
+      "title": "Academic Classes · Lecturer LMS · SkillonX",
+      "h1": "Academic Classes",
+      "ms": 1868,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "faculty",
+      "route": "/mentoring",
+      "finalPath": "/mentoring",
+      "title": "Mentoring · Lecturer LMS · SkillonX",
+      "h1": "Mentoring & Student Advisory",
+      "ms": 1761,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "faculty",
+      "route": "/faculty-profile",
+      "finalPath": "/faculty-profile",
+      "title": "Academic Profile · Lecturer LMS · SkillonX",
+      "h1": "My Academic Profile",
+      "ms": 1978,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "management",
+      "route": "/management",
+      "finalPath": "/management",
+      "title": "Command Center · Lecturer LMS · SkillonX",
+      "h1": "Institution Command Center",
+      "ms": 2066,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "management",
+      "route": "/management/finance",
+      "finalPath": "/management/finance",
+      "title": "Institutional Finance · Lecturer LMS · SkillonX",
+      "h1": "Institutional Finance",
+      "ms": 1944,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "management",
+      "route": "/management/placement",
+      "finalPath": "/management/placement",
+      "title": "Training & Placement · Lecturer LMS · SkillonX",
+      "h1": "Training & Placement",
+      "ms": 2046,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "management",
+      "route": "/management/reports",
+      "finalPath": "/management/reports",
+      "title": "Executive Reports · Lecturer LMS · SkillonX",
+      "h1": "Executive Reports",
+      "ms": 1850,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "student",
+      "route": "/lms",
+      "finalPath": "/lms",
+      "title": "Dashboard · Student LMS · SkillonX",
+      "h1": "Aarav",
+      "ms": 1925,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "student",
+      "route": "/lms/courses",
+      "finalPath": "/lms/courses",
+      "title": "Page not found · Student LMS · SkillonX",
+      "h1": "Page not found",
+      "ms": 1745,
+      "loginRedirect": false,
+      "visibleError": true,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "student",
+      "route": "/lms/attendance",
+      "finalPath": "/lms/attendance",
+      "title": "Attendance · Student LMS · SkillonX",
+      "h1": "Attendance",
+      "ms": 1845,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "student",
+      "route": "/lms/placements",
+      "finalPath": "/lms/placements",
+      "title": "Career & Placements · Student LMS · SkillonX",
+      "h1": "Career & Placements",
+      "ms": 1847,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "parent",
+      "route": "/parent",
+      "finalPath": "/parent",
+      "title": "Parent Dashboard · Lecturer LMS · SkillonX",
+      "h1": "Aarav Approved",
+      "ms": 2293,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "parent",
+      "route": "/parent/attendance",
+      "finalPath": "/parent/attendance",
+      "title": "Parent Attendance · Lecturer LMS · SkillonX",
+      "h1": "Aarav Approved",
+      "ms": 1773,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "parent",
+      "route": "/parent/finance",
+      "finalPath": "/parent/finance",
+      "title": "Page not found · Lecturer LMS · SkillonX",
+      "h1": "Page not found",
+      "ms": 1835,
+      "loginRedirect": false,
+      "visibleError": true,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "alumni",
+      "route": "/alumni",
+      "finalPath": "/alumni",
+      "title": "Alumni Home · Lecturer LMS · SkillonX",
+      "h1": "Welcome, Diya PresentAbsent",
+      "ms": 1983,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "alumni",
+      "route": "/alumni/360",
+      "finalPath": "/alumni/360",
+      "title": "My Alumni 360 · Lecturer LMS · SkillonX",
+      "h1": "My Alumni 360",
+      "ms": 1717,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "alumni",
+      "route": "/alumni/recognition",
+      "finalPath": "/alumni/recognition",
+      "title": "My Recognition · Lecturer LMS · SkillonX",
+      "h1": "Recognition & Value",
+      "ms": 1712,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "transport",
+      "route": "/transport",
+      "finalPath": "/transport",
+      "title": "Transport Officer Portal · Lecturer LMS · SkillonX",
+      "h1": "Transport Officer Portal",
+      "ms": 2066,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "transport",
+      "route": "/transport/routes",
+      "finalPath": "/transport/routes",
+      "title": "Transport Routes · Lecturer LMS · SkillonX",
+      "h1": "Routes & Stops",
+      "ms": 1662,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "transport",
+      "route": "/transport/passengers",
+      "finalPath": "/transport/passengers",
+      "title": "Transport Members · Lecturer LMS · SkillonX",
+      "h1": "Passengers / Members",
+      "ms": 1709,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "transport",
+      "route": "/transport/reports",
+      "finalPath": "/transport/reports",
+      "title": "Transport Reports · Lecturer LMS · SkillonX",
+      "h1": "Reports",
+      "ms": 1736,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "warden",
+      "route": "/hostel",
+      "finalPath": "/hostel",
+      "title": "Warden Portal · Lecturer LMS · SkillonX",
+      "h1": "Warden Portal",
+      "ms": 1991,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "warden",
+      "route": "/hostel/residents",
+      "finalPath": "/hostel/residents",
+      "title": "Residents · Lecturer LMS · SkillonX",
+      "h1": "Resident Directory",
+      "ms": 1695,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "warden",
+      "route": "/hostel/rooms",
+      "finalPath": "/hostel/rooms",
+      "title": "Rooms & Beds · Lecturer LMS · SkillonX",
+      "h1": "Rooms & Beds",
+      "ms": 1693,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "warden",
+      "route": "/hostel/reports",
+      "finalPath": "/hostel/reports",
+      "title": "Hostel Reports · Lecturer LMS · SkillonX",
+      "h1": "Hostel Reports",
+      "ms": 1691,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "hr",
+      "route": "/hr/admin",
+      "finalPath": "/hr/admin",
+      "title": "HR Admin · Lecturer LMS · SkillonX",
+      "h1": "HR Dashboard",
+      "ms": 1988,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "hr",
+      "route": "/hr/admin/employees",
+      "finalPath": "/hr/admin/employees",
+      "title": "Employees · Lecturer LMS · SkillonX",
+      "h1": "Employees",
+      "ms": 1699,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "hr",
+      "route": "/hr/payroll",
+      "finalPath": "/hr/payroll",
+      "title": "Payroll Dashboard · Lecturer LMS · SkillonX",
+      "h1": "Payroll",
+      "ms": 1659,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    },
+    {
+      "roleKey": "hr",
+      "route": "/hr/recruitment",
+      "finalPath": "/hr/recruitment",
+      "title": "Recruitment · Lecturer LMS · SkillonX",
+      "h1": "Recruitment",
+      "ms": 1885,
+      "loginRedirect": false,
+      "visibleError": false,
+      "apiErrors": [],
+      "failedRequests": [],
+      "consoleEvents": []
+    }
+  ],
+  "apiAuthz": [
+    {
+      "path": "/api/platform/dashboard",
+      "key": "faculty",
+      "status": 403,
+      "ms": 282,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/platform/dashboard",
+      "key": "management",
+      "status": 403,
+      "ms": 232,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/platform/dashboard",
+      "key": "superadmin",
+      "status": 200,
+      "ms": 87,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/academic-leadership/hod/dashboard",
+      "key": "faculty",
+      "status": 403,
+      "ms": 61,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/academic-leadership/hod/dashboard",
+      "key": "collegeAdmin",
+      "status": 400,
+      "ms": 81,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/academic-leadership/hod/dashboard",
+      "key": "management",
+      "status": 400,
+      "ms": 84,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/management/dashboard",
+      "key": "faculty",
+      "status": 403,
+      "ms": 72,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/management/dashboard",
+      "key": "management",
+      "status": 404,
+      "ms": 70,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "/api/management/dashboard",
+      "key": "student",
+      "status": 403,
+      "ms": 105,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/hostel/dashboard",
+      "key": "faculty",
+      "status": 403,
+      "ms": 72,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/hostel/dashboard",
+      "key": "warden",
+      "status": 200,
+      "ms": 55,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/hostel/dashboard",
+      "key": "student",
+      "status": 403,
+      "ms": 51,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/transport/dashboard",
+      "key": "faculty",
+      "status": 403,
+      "ms": 67,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/transport/dashboard",
+      "key": "transport",
+      "status": 200,
+      "ms": 74,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/transport/dashboard",
+      "key": "student",
+      "status": 403,
+      "ms": 82,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/hr/admin/dashboard",
+      "key": "faculty",
+      "status": 403,
+      "ms": 78,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/hr/admin/dashboard",
+      "key": "hr",
+      "status": 200,
+      "ms": 88,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/hr/admin/dashboard",
+      "key": "student",
+      "status": 403,
+      "ms": 74,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/admin/overview",
+      "key": "faculty",
+      "status": 403,
+      "ms": 82,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/admin/overview",
+      "key": "collegeAdmin",
+      "status": 200,
+      "ms": 83,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/admin/overview",
+      "key": "student",
+      "status": 403,
+      "ms": 81,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/student-auth/me",
+      "key": "student",
+      "status": 200,
+      "ms": 55,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/auth/me",
+      "key": "faculty",
+      "status": 200,
+      "ms": 83,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "/api/auth/me",
+      "key": "student",
+      "status": 403,
+      "ms": 68,
+      "contentType": "application/json; charset=utf-8"
+    }
+  ],
+  "responsive": [
+    {
+      "route": "/login",
+      "width": 320,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 41,
+        "y": 297.046875,
+        "width": 238,
+        "height": 40
+      }
+    },
+    {
+      "route": "/login",
+      "width": 360,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 41,
+        "y": 297.046875,
+        "width": 278,
+        "height": 40
+      }
+    },
+    {
+      "route": "/login",
+      "width": 375,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 41,
+        "y": 297.046875,
+        "width": 293,
+        "height": 40
+      }
+    },
+    {
+      "route": "/login",
+      "width": 390,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 41,
+        "y": 297.046875,
+        "width": 308,
+        "height": 40
+      }
+    },
+    {
+      "route": "/login",
+      "width": 412,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 41,
+        "y": 297.046875,
+        "width": 330,
+        "height": 40
+      }
+    },
+    {
+      "route": "/login",
+      "width": 768,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 193,
+        "y": 297.046875,
+        "width": 382,
+        "height": 40
+      }
+    },
+    {
+      "route": "/login",
+      "width": 1024,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 568.03125,
+        "y": 328,
+        "width": 358.96875,
+        "height": 40
+      }
+    },
+    {
+      "route": "/login",
+      "width": 1280,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 685.796875,
+        "y": 424,
+        "width": 382,
+        "height": 40
+      }
+    },
+    {
+      "route": "/login",
+      "width": 1366,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 725.359375,
+        "y": 456.5,
+        "width": 382,
+        "height": 40
+      }
+    },
+    {
+      "route": "/login",
+      "width": 1440,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 759.390625,
+        "y": 484,
+        "width": 382,
+        "height": 40
+      }
+    },
+    {
+      "route": "/login",
+      "width": 1920,
+      "finalPath": "/login",
+      "horizontalOverflow": false,
+      "firstInputBox": {
+        "x": 980.1875,
+        "y": 484,
+        "width": 382,
+        "height": 40
+      }
+    }
+  ],
+  "browserSmoke": [
+    {
+      "browser": "chromium",
+      "consoleEvents": [],
+      "failedRequests": [],
+      "apiErrors": []
+    },
+    {
+      "browser": "firefox",
+      "error": "Error: browserType.launch: Executable doesn't exist at /Users/nithinkswamy/Library/Caches/ms-playwright/firefox-1538/firefox/Nightly.app/Contents/MacOS/firefox\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run t"
+    },
+    {
+      "browser": "webkit",
+      "error": "Error: browserType.launch: Executable doesn't exist at /Users/nithinkswamy/Library/Caches/ms-playwright/webkit-2336/pw_run.sh\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download n"
+    }
+  ],
+  "invalidAuth": [
+    {
+      "path": "/api/auth/login",
+      "status": 400,
+      "ok": false,
+      "ms": 65,
+      "contentType": "application/json; charset=utf-8",
+      "location": null,
+      "bodySample": "{\"error\":\"Validation failed\",\"details\":{\"formErrors\":[],\"fieldErrors\":{\"email\":[\"Required\"],\"password\":[\"Required\"]}}}"
+    },
+    {
+      "path": "/api/auth/login",
+      "status": 400,
+      "ok": false,
+      "ms": 81,
+      "contentType": "application/json; charset=utf-8",
+      "location": null,
+      "bodySample": "{\"error\":\"Validation failed\",\"details\":{\"formErrors\":[],\"fieldErrors\":{\"email\":[\"Invalid email\"]}}}"
+    },
+    {
+      "path": "/api/auth/login",
+      "status": 401,
+      "ok": false,
+      "ms": 83,
+      "contentType": "application/json; charset=utf-8",
+      "location": null,
+      "bodySample": "{\"error\":\"Invalid email or password\"}"
+    }
+  ],
+  "notes": []
+}

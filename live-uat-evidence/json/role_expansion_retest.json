@@ -1,0 +1,208 @@
+{
+  "executedAt": "2026-09-29T09:40:33.803Z",
+  "roles": [
+    {
+      "expected": "ACCOUNTANT",
+      "actual": "ACCOUNTANT",
+      "landing": "/accountant",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/accountant",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "ADMISSIONS_OFFICER",
+      "actual": "ADMISSIONS_OFFICER",
+      "landing": "/admissions",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/admissions",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "COE",
+      "actual": "COE",
+      "landing": "/coe",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/coe",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "GRIEVANCE_OFFICER",
+      "actual": "GRIEVANCE_OFFICER",
+      "landing": "/student-services/grievances",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/student-services/grievances",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "HOD",
+      "actual": "HOD",
+      "landing": "/dashboard",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/dashboard",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "LAB_ASSISTANT",
+      "actual": "LAB_ASSISTANT",
+      "landing": "/lab",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/lab",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "LIBRARIAN",
+      "actual": "LIBRARIAN",
+      "landing": "/library",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/library",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "MAINTENANCE_MANAGER",
+      "actual": "MAINTENANCE_MANAGER",
+      "landing": "/maintenance/manager",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/maintenance/manager",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "OFFICE_ADMIN",
+      "actual": "OFFICE_ADMIN",
+      "landing": "/office",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/office",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "PRINCIPAL",
+      "actual": "PRINCIPAL",
+      "landing": "/dashboard",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/dashboard",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "PLACEMENT_OFFICER",
+      "actual": "PLACEMENT_OFFICER",
+      "landing": "/dashboard",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/dashboard",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    },
+    {
+      "expected": "IQAC_COORDINATOR",
+      "actual": "IQAC_COORDINATOR",
+      "landing": "/iqac",
+      "loginStatus": 200,
+      "meStatus": 200,
+      "forbiddenPlatformStatus": 403,
+      "ui": {
+        "url": "/iqac",
+        "notLogin": true,
+        "notFound": false,
+        "hasContent": true,
+        "pageErrorCount": 0
+      },
+      "pass": true
+    }
+  ],
+  "logout": {
+    "pass": true,
+    "finalPath": "/login",
+    "serverInvalidation": "FAIL_TOKEN_REMAINS_VALID",
+    "reusedTokenStatus": 200
+  },
+  "summary": {
+    "total": 12,
+    "pass": 12,
+    "fail": 0
+  }
+}

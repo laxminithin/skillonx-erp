@@ -61,6 +61,12 @@ export const enquirySchema = z.object({
     nextFollowUp: z.string().optional().nullable(),
     notes: z.string().max(2000).optional().nullable(),
 });
+export const guardianSchema = z.object({
+    name: z.string().trim().min(1).max(255).optional().nullable(),
+    email: z.string().trim().toLowerCase().email().optional().nullable(),
+    phone: z.string().trim().max(32).optional().nullable(),
+    relationship: z.string().trim().max(32).optional().nullable(),
+}).strict();
 export const applicantSchema = z.object({
     cycleId: z.number().int().positive(),
     enquiryId: z.number().int().positive().optional().nullable(),
@@ -69,7 +75,7 @@ export const applicantSchema = z.object({
     phone: z.string().trim().max(32).optional().nullable(),
     profile: z.record(z.unknown()).optional().nullable(),
     address: z.record(z.unknown()).optional().nullable(),
-    guardian: z.record(z.unknown()).optional().nullable(),
+    guardian: guardianSchema.optional().nullable(),
     password: z.string().optional(),
     admissionCategory: z.string().trim().max(64).optional().nullable(),
     education: z.array(z.object({
@@ -789,141 +795,254 @@ async function activateResetForStudent(trx, studentId) {
     });
     return rawToken;
 }
+async function activateResetForParent(trx, parentId) {
+    // Deliberately reuses the stronger hashed-token + 7-day-expiry convention from
+    // activateResetForStudent (above) rather than parent/service.ts's own
+    // forgotParentPassword, which stores an unhashed token with a 1-hour expiry.
+    const rawToken = randomBytes(32).toString('hex');
+    const tokenHash = createHash('sha256').update(rawToken).digest('hex');
+    await trx('parent_users').where({ id: parentId }).update({
+        reset_token: tokenHash,
+        reset_token_expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        updated_at: trx.fn.now(),
+    });
+    return rawToken;
+}
+async function provisionGuardianAccount(actor, applicantId, studentId) {
+    const applicant = await db('admission_applicants').where({ id: applicantId, college_id: actor.collegeId }).first();
+    const guardian = parseJson(applicant?.guardian_json, {});
+    if (!guardian?.email || !guardian?.name) {
+        return { status: 'SKIPPED_NO_DATA' };
+    }
+    const email = String(guardian.email).trim().toLowerCase();
+    return db.transaction(async (trx) => {
+        let parent = await trx('parent_users').where({ email }).first();
+        if (parent && Number(parent.college_id) !== actor.collegeId) {
+            await auditFromActor(actor, 'APPLICANT_GUARDIAN_LINK_CONFLICT', 'admission_applicant', applicantId, {
+                after: { email, existingParentCollegeId: Number(parent.college_id) },
+            });
+            return { status: 'CONFLICT_OTHER_COLLEGE' };
+        }
+        let created = false;
+        if (!parent) {
+            try {
+                const passwordHash = await bcrypt.hash(randomBytes(24).toString('hex'), 10);
+                const [parentId] = await trx('parent_users').insert({
+                    college_id: actor.collegeId,
+                    name: guardian.name,
+                    email,
+                    phone: guardian.phone ?? null,
+                    password_hash: passwordHash,
+                    identity_verified: true,
+                    is_active: true,
+                });
+                parent = await trx('parent_users').where({ id: parentId }).first();
+                created = true;
+            }
+            catch (err) {
+                // Concurrent creation of the same guardian email lost the race — reuse the winner's row.
+                const isDup = err?.code === 'ER_DUP_ENTRY' || /duplicate/i.test(String(err?.message ?? ''));
+                if (!isDup)
+                    throw err;
+                parent = await trx('parent_users').where({ email }).first();
+            }
+        }
+        if (!parent)
+            throw new AppError(500, 'Guardian account provisioning failed unexpectedly');
+        await trx('parent_student_links')
+            .insert({
+            college_id: actor.collegeId,
+            parent_user_id: parent.id,
+            student_id: studentId,
+            relationship_type: guardian.relationship ?? 'Guardian',
+            is_primary_guardian: true,
+            verification_state: 'VERIFIED',
+            is_active: true,
+            verified_by_faculty_id: actor.facultyUserId ?? null,
+            verified_at: trx.fn.now(),
+        })
+            .onConflict(['college_id', 'parent_user_id', 'student_id'])
+            .merge({ is_active: true, verification_state: 'VERIFIED', updated_at: trx.fn.now() });
+        let activationToken = null;
+        if (created) {
+            activationToken = await activateResetForParent(trx, Number(parent.id));
+        }
+        await auditFromActor(actor, created ? 'APPLICANT_GUARDIAN_PROVISIONED' : 'APPLICANT_GUARDIAN_LINKED', 'admission_applicant', applicantId, {
+            after: { parentId: Number(parent.id), studentId, created },
+        });
+        return { status: 'OK', parentId: Number(parent.id), created, activationToken };
+    });
+}
+// Admission numbers are allocated by counting existing rows, not by a DB
+// sequence. Two concurrent confirmAdmission calls for different applicants
+// in the same college/year can compute the same next number; the unique
+// indexes below prevent either from ever being *persisted* twice, but the
+// loser previously surfaced a raw duplicate-key error instead of getting a
+// fresh number. MAX_ADMISSION_NUMBER_ATTEMPTS bounds a retry limited to
+// exactly that conflict — see isAdmissionNumberConflict.
+const MAX_ADMISSION_NUMBER_ATTEMPTS = 5;
+function isAdmissionNumberConflict(err) {
+    if (!err)
+        return false;
+    const code = err.code ?? err.errno;
+    if (code !== 'ER_DUP_ENTRY' && code !== 1062)
+        return false;
+    const message = String(err.sqlMessage ?? err.message ?? '');
+    return (message.includes('students_college_admission_number_unique') ||
+        message.includes('adm_conv_college_admno_unique'));
+}
 export async function confirmAdmission(actor, applicantId, input) {
     assertAdmissionPermission(actor, 'admissions.confirm');
     let conversion;
     let activationToken = null;
-    await db.transaction(async (trx) => {
-        const applicant = await trx('admission_applicants').where({ id: applicantId, college_id: actor.collegeId }).forUpdate().first();
-        if (!applicant)
-            throw new AppError(404, 'Applicant not found');
-        const existing = await trx('admission_student_conversions').where({ applicant_id: applicantId }).first();
-        if (existing) {
-            conversion = existing;
-            return;
+    for (let attempt = 1; attempt <= MAX_ADMISSION_NUMBER_ATTEMPTS; attempt++) {
+        try {
+            await runConfirmAdmissionTransaction();
+            break;
         }
-        const { intake } = await assertConfirmationGate(trx, applicant, input.intakeId);
-        const duplicateEmail = await trx('students')
-            .where({ college_id: actor.collegeId, email: String(applicant.email).toLowerCase() })
-            .first();
-        if (duplicateEmail) {
-            throw new AppError(409, 'A canonical student already exists with this verified email', {
-                studentId: Number(duplicateEmail.id),
-            }, 'POTENTIAL_DUPLICATE_STUDENT');
+        catch (err) {
+            if (isAdmissionNumberConflict(err)) {
+                if (attempt === MAX_ADMISSION_NUMBER_ATTEMPTS) {
+                    throw new AppError(409, 'Admission number allocation is contended; please retry confirmation', undefined, 'ADMISSION_NUMBER_CONTENDED');
+                }
+                continue;
+            }
+            throw err;
         }
-        const admissionNumber = await nextAdmissionNumber(trx, actor.collegeId);
-        const hash = await bcrypt.hash(randomBytes(24).toString('hex'), 10);
-        const [studentId] = await trx('students').insert({
-            college_id: actor.collegeId,
-            department_id: intake.department_id ?? null,
-            program_id: intake.program_id,
-            scheme_id: intake.scheme_id ?? null,
-            academic_year_id: intake.academic_year_id,
-            semester_id: intake.semester_id ?? null,
-            class_section_id: intake.class_section_id ?? null,
-            name: applicant.name,
-            usn: null,
-            admission_number: admissionNumber,
-            email: String(applicant.email).toLowerCase(),
-            phone: applicant.phone ?? null,
-            password_hash: hash,
-            is_active: true,
-            profile_completed_at: trx.fn.now(),
-        });
-        const [registrationId] = await trx('student_semester_registrations').insert({
-            college_id: actor.collegeId,
-            student_id: studentId,
-            academic_year_id: intake.academic_year_id,
-            program_id: intake.program_id,
-            department_id: intake.department_id ?? null,
-            semester_id: intake.semester_id,
-            scheme_id: intake.scheme_id ?? null,
-            class_section_id: intake.class_section_id ?? null,
-            status: 'ACTIVE',
-        });
-        const academicClass = await trx('academic_classes')
-            .where({
-            college_id: actor.collegeId,
-            academic_year_id: intake.academic_year_id,
-            program_id: intake.program_id,
-            semester_id: intake.semester_id,
-        })
-            .modify((q) => {
-            if (intake.class_section_id)
-                q.andWhere('class_section_id', intake.class_section_id);
-        })
-            .first();
-        if (academicClass) {
-            await trx('academic_class_enrollments').insert({
+    }
+    async function runConfirmAdmissionTransaction() {
+        await db.transaction(async (trx) => {
+            const applicant = await trx('admission_applicants').where({ id: applicantId, college_id: actor.collegeId }).forUpdate().first();
+            if (!applicant)
+                throw new AppError(404, 'Applicant not found');
+            const existing = await trx('admission_student_conversions').where({ applicant_id: applicantId }).first();
+            if (existing) {
+                conversion = existing;
+                return;
+            }
+            const { intake } = await assertConfirmationGate(trx, applicant, input.intakeId);
+            const duplicateEmail = await trx('students')
+                .where({ college_id: actor.collegeId, email: String(applicant.email).toLowerCase() })
+                .first();
+            if (duplicateEmail) {
+                throw new AppError(409, 'A canonical student already exists with this verified email', {
+                    studentId: Number(duplicateEmail.id),
+                }, 'POTENTIAL_DUPLICATE_STUDENT');
+            }
+            const admissionNumber = await nextAdmissionNumber(trx, actor.collegeId);
+            const hash = await bcrypt.hash(randomBytes(24).toString('hex'), 10);
+            const [studentId] = await trx('students').insert({
+                college_id: actor.collegeId,
+                department_id: intake.department_id ?? null,
+                program_id: intake.program_id,
+                scheme_id: intake.scheme_id ?? null,
+                academic_year_id: intake.academic_year_id,
+                semester_id: intake.semester_id ?? null,
+                class_section_id: intake.class_section_id ?? null,
+                name: applicant.name,
+                usn: null,
+                admission_number: admissionNumber,
+                email: String(applicant.email).toLowerCase(),
+                phone: applicant.phone ?? null,
+                password_hash: hash,
+                is_active: true,
+                profile_completed_at: trx.fn.now(),
+            });
+            const [registrationId] = await trx('student_semester_registrations').insert({
                 college_id: actor.collegeId,
                 student_id: studentId,
-                academic_class_id: academicClass.id,
-                semester_registration_id: registrationId,
-                status: 'APPROVED',
-                requested_at: trx.fn.now(),
-                approved_at: trx.fn.now(),
-                approved_by: actor.facultyUserId ?? null,
-                remarks: 'Created by Admissions conversion',
+                academic_year_id: intake.academic_year_id,
+                program_id: intake.program_id,
+                department_id: intake.department_id ?? null,
+                semester_id: intake.semester_id,
+                scheme_id: intake.scheme_id ?? null,
+                class_section_id: intake.class_section_id ?? null,
+                status: 'ACTIVE',
             });
-        }
-        await trx('admission_seat_allocations').insert({
-            college_id: actor.collegeId,
-            applicant_id: applicantId,
-            intake_id: input.intakeId,
-            allocated_by: actor.facultyUserId ?? null,
-        });
-        await trx('admission_program_intakes').where({ id: input.intakeId }).increment('admitted_count', 1);
-        const snapshot = {
-            academicYearId: Number(intake.academic_year_id),
-            programId: Number(intake.program_id),
-            departmentId: intake.department_id != null ? Number(intake.department_id) : null,
-            schemeId: intake.scheme_id != null ? Number(intake.scheme_id) : null,
-            semesterId: intake.semester_id != null ? Number(intake.semester_id) : null,
-            classSectionId: intake.class_section_id != null ? Number(intake.class_section_id) : null,
-            academicClassId: academicClass ? Number(academicClass.id) : null,
-        };
-        const [conversionId] = await trx('admission_student_conversions').insert({
-            college_id: actor.collegeId,
-            applicant_id: applicantId,
-            student_id: studentId,
-            admission_number: admissionNumber,
-            converted_by: actor.facultyUserId ?? null,
-            mapping_snapshot: json(snapshot),
-        });
-        await trx('admission_applicants').where({ id: applicantId }).update({
-            status: 'CONVERTED_TO_STUDENT',
-            updated_at: trx.fn.now(),
-        });
-        const admissionDemandIds = await trx('admission_finance_demands')
-            .where({ applicant_id: applicantId, college_id: actor.collegeId })
-            .pluck('demand_id');
-        if (admissionDemandIds.length) {
-            await trx('student_fee_demands')
-                .whereIn('id', admissionDemandIds)
-                .update({ student_id: studentId, updated_at: trx.fn.now() });
-            const paymentIds = await trx('payment_allocations')
-                .whereIn('demand_id', admissionDemandIds)
-                .pluck('payment_id');
-            if (paymentIds.length) {
-                await trx('student_payments')
-                    .whereIn('id', paymentIds)
+            const academicClass = await trx('academic_classes')
+                .where({
+                college_id: actor.collegeId,
+                academic_year_id: intake.academic_year_id,
+                program_id: intake.program_id,
+                semester_id: intake.semester_id,
+            })
+                .modify((q) => {
+                if (intake.class_section_id)
+                    q.andWhere('class_section_id', intake.class_section_id);
+            })
+                .first();
+            if (academicClass) {
+                await trx('academic_class_enrollments').insert({
+                    college_id: actor.collegeId,
+                    student_id: studentId,
+                    academic_class_id: academicClass.id,
+                    semester_registration_id: registrationId,
+                    status: 'APPROVED',
+                    requested_at: trx.fn.now(),
+                    approved_at: trx.fn.now(),
+                    approved_by: actor.facultyUserId ?? null,
+                    remarks: 'Created by Admissions conversion',
+                });
+            }
+            await trx('admission_seat_allocations').insert({
+                college_id: actor.collegeId,
+                applicant_id: applicantId,
+                intake_id: input.intakeId,
+                allocated_by: actor.facultyUserId ?? null,
+            });
+            await trx('admission_program_intakes').where({ id: input.intakeId }).increment('admitted_count', 1);
+            const snapshot = {
+                academicYearId: Number(intake.academic_year_id),
+                programId: Number(intake.program_id),
+                departmentId: intake.department_id != null ? Number(intake.department_id) : null,
+                schemeId: intake.scheme_id != null ? Number(intake.scheme_id) : null,
+                semesterId: intake.semester_id != null ? Number(intake.semester_id) : null,
+                classSectionId: intake.class_section_id != null ? Number(intake.class_section_id) : null,
+                academicClassId: academicClass ? Number(academicClass.id) : null,
+            };
+            const [conversionId] = await trx('admission_student_conversions').insert({
+                college_id: actor.collegeId,
+                applicant_id: applicantId,
+                student_id: studentId,
+                admission_number: admissionNumber,
+                converted_by: actor.facultyUserId ?? null,
+                mapping_snapshot: json(snapshot),
+            });
+            await trx('admission_applicants').where({ id: applicantId }).update({
+                status: 'CONVERTED_TO_STUDENT',
+                updated_at: trx.fn.now(),
+            });
+            const admissionDemandIds = await trx('admission_finance_demands')
+                .where({ applicant_id: applicantId, college_id: actor.collegeId })
+                .pluck('demand_id');
+            if (admissionDemandIds.length) {
+                await trx('student_fee_demands')
+                    .whereIn('id', admissionDemandIds)
                     .update({ student_id: studentId, updated_at: trx.fn.now() });
-                for (const paymentId of [...new Set(paymentIds.map((id) => Number(id)))]) {
-                    const payment = await trx('student_payments').where({ id: paymentId }).first();
-                    if (payment?.status === 'SUCCESS') {
-                        await generateReceipt(trx, {
-                            collegeId: actor.collegeId,
-                            studentId: Number(studentId),
-                            paymentId,
-                            actorId: actor.facultyUserId,
-                        });
+                const paymentIds = await trx('payment_allocations')
+                    .whereIn('demand_id', admissionDemandIds)
+                    .pluck('payment_id');
+                if (paymentIds.length) {
+                    await trx('student_payments')
+                        .whereIn('id', paymentIds)
+                        .update({ student_id: studentId, updated_at: trx.fn.now() });
+                    for (const paymentId of [...new Set(paymentIds.map((id) => Number(id)))]) {
+                        const payment = await trx('student_payments').where({ id: paymentId }).first();
+                        if (payment?.status === 'SUCCESS') {
+                            await generateReceipt(trx, {
+                                collegeId: actor.collegeId,
+                                studentId: Number(studentId),
+                                paymentId,
+                                actorId: actor.facultyUserId,
+                            });
+                        }
                     }
                 }
             }
-        }
-        activationToken = await activateResetForStudent(trx, Number(studentId));
-        conversion = await trx('admission_student_conversions').where({ id: conversionId }).first();
-    });
+            activationToken = await activateResetForStudent(trx, Number(studentId));
+            conversion = await trx('admission_student_conversions').where({ id: conversionId }).first();
+        });
+    }
     if (!conversion)
         throw new AppError(500, 'Admission conversion failed');
     await auditFromActor(actor, 'ADMISSION_CONFIRMED_AND_CONVERTED', 'admission_applicant', applicantId, {
@@ -954,7 +1073,28 @@ export async function confirmAdmission(actor, applicantId, input) {
         relatedId: Number(conversion.id),
         dedupeKeyOverride: `STUDENT_ACTIVATION_READY:admission_conversion:${conversion.id}`,
     });
+    try {
+        await provisionGuardianAccount(actor, applicantId, Number(conversion.student_id));
+    }
+    catch (err) {
+        await auditFromActor(actor, 'APPLICANT_GUARDIAN_PROVISION_FAILED', 'admission_applicant', applicantId, {
+            after: { error: err instanceof Error ? err.message : String(err) },
+        });
+    }
     return { conversion, activationToken };
+}
+export async function updateApplicantGuardian(actor, applicantId, input) {
+    assertAdmissionPermission(actor, 'admissions.application.manage');
+    const before = await assertApplicantVisible(actor, applicantId);
+    await db('admission_applicants').where({ id: applicantId }).update({
+        guardian_json: json(input),
+        updated_at: db.fn.now(),
+    });
+    await auditFromActor(actor, 'APPLICANT_GUARDIAN_UPDATED', 'admission_applicant', applicantId, {
+        before: { guardian: before.guardian_json ?? null },
+        after: { guardian: input },
+    });
+    return db('admission_applicants').where({ id: applicantId }).first();
 }
 export async function createAdmissionFeeDemand(actor, applicantId, input) {
     assertAdmissionPermission(actor, 'admissions.offer.manage');

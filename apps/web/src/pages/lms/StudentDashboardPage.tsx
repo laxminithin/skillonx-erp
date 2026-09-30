@@ -456,6 +456,7 @@ export function StudentMorePage() {
     { to: '/lms/attendance', label: 'Attendance' },
     { to: '/lms/timetable', label: 'Timetable' },
     { to: '/lms/calendar', label: 'Calendar' },
+    { to: '/lms/events', label: 'Campus events' },
     { to: '/lms/saved', label: 'Saved items' },
     { to: '/lms/notifications', label: 'Notifications' },
     { to: '/lms/history', label: 'Academic history' },

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { requireApplicantAuth, requireAuth } from '../../middleware/auth.js';
 import { asyncHandler, validate } from '../../utils/errors.js';
-import { admissionDemandSchema, applicantLogin, applicantLoginSchema, applicantMe, applicantSchema, cancelApplication, confirmAdmission, confirmSchema, createAdmissionFeeDemand, createApplicant, createCycle, createDocumentRequirement, createEligibilityRule, createEnquiry, createIntake, cycleSchema, dashboard, documentRequirementSchema, documentUploadSchema, eligibilityRuleSchema, enquirySchema, evaluateEligibility, getApplicationWorkspace, intakeSchema, issueOffer, listApplications, offerSchema, overrideEligibility, overrideEligibilitySchema, selectApplicant, selectionSchema, submitApplication, uploadDocument, verifyDocument, } from './service.js';
+import { admissionDemandSchema, applicantLogin, applicantLoginSchema, applicantMe, applicantSchema, cancelApplication, confirmAdmission, confirmSchema, createAdmissionFeeDemand, createApplicant, createCycle, createDocumentRequirement, createEligibilityRule, createEnquiry, createIntake, cycleSchema, dashboard, documentRequirementSchema, documentUploadSchema, eligibilityRuleSchema, enquirySchema, evaluateEligibility, getApplicationWorkspace, guardianSchema, intakeSchema, issueOffer, listApplications, offerSchema, overrideEligibility, overrideEligibilitySchema, selectApplicant, selectionSchema, submitApplication, updateApplicantGuardian, uploadDocument, verifyDocument, } from './service.js';
 import { listApplicantNotifications } from './notify.js';
 export const admissionsRouter = Router();
 function staffActor(req) {
@@ -100,6 +100,11 @@ staffRouter.patch('/documents/:id/verification', asyncHandler(async (req, res) =
 }));
 staffRouter.post('/eligibility-rules', asyncHandler(async (req, res) => {
     res.status(201).json({ rule: await createEligibilityRule(staffActor(req), validate(eligibilityRuleSchema, req.body)) });
+}));
+staffRouter.patch('/applications/:id/guardian', asyncHandler(async (req, res) => {
+    res.json({
+        applicant: await updateApplicantGuardian(staffActor(req), Number(req.params.id), validate(guardianSchema, req.body)),
+    });
 }));
 staffRouter.post('/applications/:id/eligibility/evaluate', asyncHandler(async (req, res) => {
     res.json({ decision: await evaluateEligibility(staffActor(req), Number(req.params.id)) });

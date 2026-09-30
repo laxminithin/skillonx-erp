@@ -1,7 +1,8 @@
 import { db } from '../../db/index.js';
 import { OPEN_STATUSES } from './types.js';
-import { assertMaintPermission, actorTeamIds } from './access.js';
+import { assertMaintPermission, hasMaintPermission, actorTeamIds } from './access.js';
 import { shapeTicket } from './tickets.js';
+import { upcomingDue } from './preventive.js';
 const openTicketQuery = (collegeId) => db('service_tickets as t')
     .leftJoin('service_categories as c', 'c.id', 't.category_id')
     .leftJoin('service_teams as tm', 'tm.id', 't.team_id')
@@ -49,6 +50,7 @@ export async function managerDashboard(actor) {
         .count('* as n')
         .groupBy('tm.id', 'tm.name', 'tm.kind');
     const byTeam = byTeamRaw.map((r) => ({ teamId: r.team_id ? Number(r.team_id) : null, teamName: r.team_name ?? 'Unassigned', kind: r.kind ?? null, open: Number(r.n) }));
+    const preventiveDue = hasMaintPermission(actor, 'maint.preventive.manage') ? await upcomingDue(collegeId, 14) : [];
     const recent = await db('service_ticket_events as e')
         .join('service_tickets as t', 't.id', 'e.ticket_id')
         .where('e.college_id', collegeId).where('e.visibility', 'PUBLIC')
@@ -74,7 +76,9 @@ export async function managerDashboard(actor) {
             slaBreached: breached.length, slaApproaching: approaching.length, reopened: reopened.length,
             waitingParts: waitingParts.length, waitingApproval: waitingApproval.length,
             resolvedToday: Number(resolvedToday[0]?.n ?? 0), closedToday: Number(closedToday[0]?.n ?? 0),
+            preventiveDue: preventiveDue.length,
         },
+        preventiveDue,
         queueHealth: health,
         byTeam,
         recentActivity: recent.map((r) => ({

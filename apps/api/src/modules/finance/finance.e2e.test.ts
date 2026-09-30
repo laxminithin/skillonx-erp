@@ -8,6 +8,7 @@ import type { FinanceActor } from './access.js';
 import { getStudentFinancialStatus, getStudentNoDueStatus, hasOutstandingDues, getFinancialClearance } from './clearance.js';
 import { bulkGenerateDemands, recalculateDemandTotals } from './demands.js';
 import { recordManualPayment } from './payments.js';
+import { archiveFeeStructure, getFeeStructure } from './feeStructures.js';
 import { createConcession } from './scholarships.js';
 import { createRefund, approveRefund, processRefund } from './scholarships.js';
 import { toMoney } from './money.js';
@@ -72,15 +73,39 @@ function financeActor(row: { id: number; college_id: number; department_id?: num
   };
 }
 
-/** Restore approved student to seeded partial-payment baseline between suite runs. */
+/**
+ * Restore approved student to seeded partial-payment baseline between suite runs.
+ *
+ * Fixture isolation, not product behavior: `4VV24CS001` is a shared E2E fixture student
+ * reused by other suites (e.g. Library's fine-to-Finance handoff tests), which legitimately
+ * create their own ad-hoc demands (LIBRARY_FINE, ...) against the same student. Those
+ * demands are real, correctly-created Finance records — getStudentFinancialStatus summing
+ * across ALL of a student's non-cancelled demands is intended behavior, not a bug. This
+ * suite's baseline is specifically about the ONE semester-fee demand, so isolation here
+ * means: (a) neutralize any other suite's non-cancelled demand for this student so it
+ * doesn't leak into this suite's totals, and (b) apply the seeded 40000 payment to the
+ * semester demand only — previously this loop re-initialized a fresh 40000 budget per
+ * demand, which silently fully-paid every stray ad-hoc demand too.
+ */
 async function restoreFinanceE2eBaseline(ctx: NonNullable<Awaited<ReturnType<typeof e2eContext>>>) {
   const studentId = Number(ctx.approved!.id);
   const collegeId = Number(ctx.cls.college_id);
-  const demands = await db('student_fee_demands')
+  const allDemands = await db('student_fee_demands')
     .where({ student_id: studentId, college_id: collegeId })
     .whereNot('status', 'CANCELLED');
+  const demands = allDemands.filter((d) => d.demand_type === 'SEMESTER_FEE');
+  const foreignDemandIds = allDemands
+    .filter((d) => d.demand_type !== 'SEMESTER_FEE')
+    .map((d) => Number(d.id));
 
   await db.transaction(async (trx) => {
+    if (foreignDemandIds.length) {
+      await trx('student_fee_demands').whereIn('id', foreignDemandIds).update({
+        status: 'CANCELLED',
+        updated_at: trx.fn.now(),
+      });
+    }
+
     const extraPayments = await trx('student_payments')
       .where({ student_id: studentId, college_id: collegeId })
       .whereNot('transaction_reference', 'E2E-UPI-40000')
@@ -94,16 +119,24 @@ async function restoreFinanceE2eBaseline(ctx: NonNullable<Awaited<ReturnType<typ
       .whereNot('transaction_reference', 'E2E-UPI-40000')
       .delete();
 
+    let remainingPaid = 40000;
     for (const demand of demands) {
       const items = await trx('student_fee_demand_items').where({ demand_id: demand.id });
-      let remainingPaid = 40000;
       for (const item of items) {
         const gross = Number(item.gross_amount);
-        const discount = Number(item.discount_amount);
-        const net = gross - discount;
+        // Baseline has no concession/discount/scholarship/adjustment applied — reset all four
+        // explicitly rather than inheriting whatever a prior test (e.g. a concession or
+        // scholarship-sanction test elsewhere) left behind. recalculateDemandTotals derives
+        // net as gross - discount - scholarship + adjustment, so any of the four left non-zero
+        // silently bakes a stale reduction into this "baseline".
+        const net = gross;
         const itemPaid = Math.min(remainingPaid, net);
         remainingPaid -= itemPaid;
         await trx('student_fee_demand_items').where({ id: item.id }).update({
+          discount_amount: toMoney(0),
+          scholarship_amount: toMoney(0),
+          adjustment_amount: toMoney(0),
+          net_amount: toMoney(net),
           paid_amount: toMoney(itemPaid),
           outstanding_amount: toMoney(net - itemPaid),
           updated_at: trx.fn.now(),
@@ -288,6 +321,35 @@ describe('finance E2E', () => {
       .where({ id: demand.id, college_id: wrongCollege })
       .first();
     assert.equal(row, undefined);
+  });
+
+  it('tenant isolation - cross-college fee structure returns a safe 404', async () => {
+    const ctx = await e2eContext();
+    if (!ctx?.admin || !ctx.structure) return;
+    const wrongTenantActor = { ...financeActor(ctx.admin), collegeId: Number(ctx.cls.college_id) + 9999 };
+    await assert.rejects(
+      () => getFeeStructure(wrongTenantActor, Number(ctx.structure.id)),
+      (error: unknown) =>
+        error instanceof Error &&
+        'status' in error &&
+        (error as { status: number }).status === 404,
+    );
+  });
+
+  it('tenant isolation - cross-college fee structure archive neither reads nor mutates', async () => {
+    const ctx = await e2eContext();
+    if (!ctx?.admin || !ctx.structure) return;
+    const original = await db('fee_structures').where({ id: ctx.structure.id }).first();
+    const wrongTenantActor = { ...financeActor(ctx.admin), collegeId: Number(ctx.cls.college_id) + 9999 };
+    await assert.rejects(
+      () => archiveFeeStructure(wrongTenantActor, Number(ctx.structure.id)),
+      (error: unknown) =>
+        error instanceof Error &&
+        'status' in error &&
+        (error as { status: number }).status === 404,
+    );
+    const after = await db('fee_structures').where({ id: ctx.structure.id }).first();
+    assert.equal(after?.status, original?.status);
   });
 
   it('principal and college admin cannot perform accountant-only mutations', async () => {

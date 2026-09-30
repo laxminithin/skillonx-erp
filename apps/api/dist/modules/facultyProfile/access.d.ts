@@ -10,6 +10,17 @@ export type EmployeeScope = {
 export declare function actorEmployee(actor: FacultyProfileActor): Promise<EmployeeScope | null>;
 export declare function isOwner(actor: FacultyProfileActor, employee: EmployeeScope): boolean;
 /**
+ * Departments the actor is HOD of. Prefers the canonical Academic Leadership
+ * authority (`hodDepartmentIds`, populated by the router's leadership
+ * enrichment); falls back to the legacy `faculty_users.role === 'HOD'` +
+ * `departmentId` representation when the actor was not enriched (unit fixtures,
+ * already-seeded role-based HODs). This is the single source of HOD scope for
+ * Faculty Profile — it does not introduce a second HOD model.
+ */
+export declare function hodDepartmentIds(actor: FacultyProfileActor): number[];
+/** True when the actor can act as a verifier for anyone (UI capability hint). */
+export declare function canActAsVerifier(actor: FacultyProfileActor): boolean;
+/**
  * Can the actor view this employee's academic profile?
  * - owner: always
  * - HOD: only within their own department
